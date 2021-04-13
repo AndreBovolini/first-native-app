@@ -18,11 +18,6 @@ const LineChartRender = props => {
 
   return (
     <View style={{flex: 1}}>
-    { props.selecionado !== null ?
-      <View style={{height: 40}}>
-        <Text style={{color: '#FFF', fontSize: 35}}> {props.selecionado}</Text>
-      </View>
-      : null}
 
       <View style={styles.container}>
         <LineChart

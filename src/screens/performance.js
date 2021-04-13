@@ -13,14 +13,14 @@ import ValueBox from '../components/valueBox';
 import globalStyles from '../styles/globalStyles';
 
 import LineChartRender from '../components/LineChart';
-import OutroPie from '../components/PieChart';
+import SelectPeriod from '../components/SelectPeriod';
 
 import {
     dataHomeBox
 } from '../data/data';
 
 
-export const Home = () => {
+export const Performance = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
   const [inputValue, setInputValue] = useState('');
@@ -89,13 +89,16 @@ export const Home = () => {
       marker: 'Vitality: 350 pts',
     },
   ]);
-  const [selectedEntry, setSelectedEntry] = useState(null);
-    const [selecionadoPie, setSelecionadoPie] = useState({})
-    const [sandwiches, setSandwiches] = useState(35);
-    const [salads, setSalads] = useState(35);
-    const [soup, setSoup] = useState(35);
-    const [beverages, setBeverages] = useState(35);
-    const [desserts, setDesserts] = useState(35);
+  const [anoSelecionado, setAnoSelecionado] = useState('2017');
+    const [indiceAno, setIndiceAno] = useState(0);
+
+    function handleSelecionaAno(ano) {
+        setAnoSelecionado(ano);
+        let indice = anos.indexOf(ano);
+        setIndiceAno(indice);
+    }
+
+    const anos = ['1m', '3m', '2021', '1 year', 'Tudo']
 
   const greenBlue = 'rgb(26, 182, 151)';
   const petrel = 'rgb(59, 145, 153)';
@@ -112,18 +115,6 @@ export const Home = () => {
 
     console.log(event.nativeEvent);
   }
-
-  function handleSelectPie(event) {
-    let entry = event.nativeEvent
-    if (entry == null) {
-      setSelectedEntry(null)
-    } else {
-      setSelectedEntry(JSON.stringify(entry))
-      setSelecionadoPie(entry)
-    }
-
-    console.log(event.nativeEvent)
-};
 
   const data = {
     dataSets: [
@@ -166,27 +157,13 @@ export const Home = () => {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>Portfólio</Text>
-            <View style={styles.valueBoxContainer}>
-                <View style={styles.valueBoxContainerRow}>
-                    <ValueBox title={dataHomeBox[0].label} value={dataHomeBox[0].value + ' %'}/>
-                    <ValueBox title={dataHomeBox[1].label} value={dataHomeBox[1].value + ' %'}/>
-                </View>
-                <View style={styles.valueBoxContainerRow}>
-                    <ValueBox title={dataHomeBox[2].label} value={dataHomeBox[2].value + ' %'}/>
-                    <ValueBox title={dataHomeBox[3].label} value={'R$ ' +  dataHomeBox[3].value}/>
-                </View>
-            </View>
-            <View style={styles.chartContainer}>
-                <OutroPie handleSelect={handleSelectPie} 
-                selectedEntry={selectedEntry}
-                sandwiches={sandwiches}
-                salads={salads}
-                soup={soup}
-                beverages={beverages}
-                desserts={desserts}
-                valorCentro={selecionadoPie.data ? selecionadoPie.data.value.toString() :  ''}
-                />      
+            <Text style={styles.title}>Performance</Text>
+            <View style={styles.containerSelector}>
+            {anos.map((el, i) => {
+                return (
+                  <SelectPeriod ano={el} key={i} anoSelecionado={anoSelecionado} handleSelecionaAno={handleSelecionaAno}/>
+                )
+            })}
             </View>
             <View style={styles.chartContainer}>
                 <LineChartRender
@@ -228,10 +205,9 @@ const styles = StyleSheet.create({
     },
     chartContainer: {
         width: globalStyles.dimensions.width,
-        height: globalStyles.dimensions.height / 1.5,
-        marginTop: 20
-      },
-      label: {
+        height: globalStyles.dimensions.height / 1.6,
+    },
+    label: {
         alignItems: 'center',
         backgroundColor: 'black',
         flex: 0.5
@@ -240,4 +216,12 @@ const styles = StyleSheet.create({
         fontSize: 40,
         color: 'white',
     },
+    containerSelector: {
+        height: 30,
+        width: (globalStyles.dimensions.width *4)/5,
+        marginRight: globalStyles.dimensions.width /5,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+      alignItems: 'center',
+    }
 })
