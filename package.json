@@ -13,6 +13,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.9",
     "@react-navigation/native": "^5.9.4",
+    "immutability-helper": "^3.1.1",
     "react": "17.0.1",
     "react-native": "0.64.0",
     "react-native-charts-wrapper": "^0.5.7",
