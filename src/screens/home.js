@@ -13,7 +13,7 @@ import ValueBox from '../components/valueBox';
 import globalStyles from '../styles/globalStyles';
 
 
-export const Home = () => {
+ const Home = ({navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Portfólio</Text>
@@ -30,6 +30,8 @@ export const Home = () => {
         </SafeAreaView>
     )
 }
+
+export default Home;
 
 const styles = StyleSheet.create({
     container: {
