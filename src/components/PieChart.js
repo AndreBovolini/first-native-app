@@ -32,7 +32,7 @@ const OutroPie = (props) => {
       }
     })
     setChartData(arrayData);
-  },)
+  },[])
   
     const infos = {
         legend: {

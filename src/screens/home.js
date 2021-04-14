@@ -22,7 +22,7 @@ import {
 import { useEffect } from 'react';
 
 
-export const Home = () => {
+export const Home = ({navigation}) => {
     const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
   const [inputValue, setInputValue] = useState('');
@@ -231,6 +231,8 @@ export const Home = () => {
         </ScrollView>
     )
 }
+
+export default Home;
 
 const styles = StyleSheet.create({
     container: {

@@ -23,7 +23,7 @@ import {
 } from '../data/data';
 
 
-export const Performance = () => {
+const Performance = ({navigation}) => {
     const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
   const [inputValue, setInputValue] = useState('');
@@ -280,6 +280,7 @@ export const Performance = () => {
         </ScrollView>
     )
 }
+export default Performance;
 
 const styles = StyleSheet.create({
     container: {

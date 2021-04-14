@@ -52,7 +52,7 @@ const Login = ({navigation}) => {
               } catch (error) {
                 console.log(error)
               }
-              let dateLogin = new Date().getTime() + (1000*60*30);
+              let dateLogin = new Date().getTime() + (1000*60*1);
               AsyncStorage.setItem('token', dateLogin.toString())
               navigation.navigate('Home');
           }
@@ -88,7 +88,7 @@ const Login = ({navigation}) => {
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {
               console.log('Credentials successfully loaded for user ' + credentials.username + ' password: ' + credentials.password);
-              let dateLogin = new Date().getTime() + (1000*60*30);
+              let dateLogin = new Date().getTime() + (1000*60*1);
               AsyncStorage.setItem('token', dateLogin.toString())
               navigation.navigate('Home');
             } else {
