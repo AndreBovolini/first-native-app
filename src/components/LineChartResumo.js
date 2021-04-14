@@ -12,7 +12,7 @@ import update from 'immutability-helper';
 import {LineChart} from 'react-native-charts-wrapper';
 
 
-const LineChartRender = props => {
+const LineChartResumo = props => {
   const greenBlue = 'rgb(26, 182, 151)';
   const petrel = 'rgb(59, 145, 153)';
 
@@ -25,7 +25,7 @@ const LineChartRender = props => {
           data={props.data}
           chartDescription={{text: ''}}
           legend={{
-            enabled: true,
+            enabled: false,
             textSize: 15,
             textColor: processColor('white'),
             form: 'CIRCLE',
@@ -43,7 +43,7 @@ const LineChartRender = props => {
             textSize: 15,
           }}
           xAxis={{
-            enabled: true,
+            enabled: false,
             granularity: 25,
             drawLabels: true,
             position: 'BOTTOM',
@@ -57,7 +57,7 @@ const LineChartRender = props => {
           }}
           yAxis={{
             left: {
-              enabled: true,
+              enabled:false,
               drawGridLines: false,
               drawLabels: true,
               drawAxisLine: true,
@@ -101,8 +101,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   chart: {
-    height: 400,
+    flex: 1,
   },
 });
 
-export default LineChartRender;
+export default LineChartResumo;

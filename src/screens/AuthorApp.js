@@ -11,7 +11,7 @@ const AuthOrApp = (props) => {
     useEffect(async() => {
         const userToken = await AsyncStorage.getItem('userToken');
         let token = parseInt(userToken);
-        let date = new Date();
+        let date = new Date().getTime();
 
         if (token > date) {
             props.navigation.navigate('Login')

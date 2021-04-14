@@ -10,4 +10,4 @@ import  AuthOrApp from './src/screens/AuthorApp';
 import Login from './src/screens/Login';
 import {name as appName} from './app.json';
 
-AppRegistry.registerComponent(appName, () => Home);
+AppRegistry.registerComponent(appName, () => Performance);
