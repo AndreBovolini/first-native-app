@@ -1,33 +1,202 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
+  processColor,
   View,
 } from 'react-native';
 
 import ValueBox from '../components/valueBox';
 import globalStyles from '../styles/globalStyles';
 
+import LineChartRender from '../components/LineChart';
+import OutroPie from '../components/PieChart';
 
- const Home = ({navigation}) => {
+import {
+    dataHomeBox
+} from '../data/data';
+
+
+export const Home = ({navigation}) => {
+    const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selecionadoLine, setSelecionadoLine] = useState({})
+  const [inputValue, setInputValue] = useState('');
+  const [inputMarker, setInputMarker] = useState('');
+  const [values1, setValues1] = useState([
+    {
+      y: 650,
+      x: 0,
+      marker: 'BDS: 650 pts',
+    },
+    {
+      y: 770,
+      x: 1,
+      marker: 'BDS: 770 pts',
+    },
+    {
+      y: 760,
+      x: 2,
+      marker: 'BDS: 760 pts',
+    },
+    {
+      y: 740,
+      x: 3,
+      marker: 'BDS: 740 pts',
+    },
+    {
+      y: 760,
+      x: 4,
+      marker: 'BDS: 760 pts',
+    },
+    {
+      y: 650,
+      x: 5,
+      marker: 'BDS: 650 pts',
+    },
+  ]);
+  const [values2, setValues2] = useState([
+    {
+      y: 350,
+      x: 0,
+      marker: 'Vitality: 350 pts',
+    },
+    {
+      y: 470,
+      x: 1,
+      marker: 'Vitality: 470 pts',
+    },
+    {
+      y: 500,
+      x: 2,
+      marker: 'Vitality: 460 pts',
+    },
+    {
+      y: 600,
+      x: 3,
+      marker: 'Vitality: 440 pts',
+    },
+    {
+      y: 700,
+      x: 4,
+      marker: 'Vitality: 460 pts',
+    },
+    {
+      y: 350,
+      x: 5,
+      marker: 'Vitality: 350 pts',
+    },
+  ]);
+  const [selectedEntry, setSelectedEntry] = useState(null);
+    const [selecionadoPie, setSelecionadoPie] = useState({})
+    const [sandwiches, setSandwiches] = useState(35);
+    const [salads, setSalads] = useState(35);
+    const [soup, setSoup] = useState(35);
+    const [beverages, setBeverages] = useState(35);
+    const [desserts, setDesserts] = useState(35);
+
+  const greenBlue = 'rgb(26, 182, 151)';
+  const petrel = 'rgb(59, 145, 153)';
+
+  function handleSelectLine(event) {
+    let entry = event.nativeEvent;
+    if (entry == null) {
+      setSelectedEvent(null);
+      setSelecionadoLine({});
+    } else {
+      setSelectedEvent(JSON.stringify(entry));
+      setSelecionadoLine(entry);
+    }
+
+    console.log(event.nativeEvent);
+  }
+
+  function handleSelectPie(event) {
+    let entry = event.nativeEvent
+    if (entry == null) {
+      setSelectedEntry(null)
+    } else {
+      setSelectedEntry(JSON.stringify(entry))
+      setSelecionadoPie(entry)
+    }
+
+    console.log(event.nativeEvent)
+};
+
+  const data = {
+    dataSets: [
+      {
+        values: values1,
+        label: 'BDS',
+        config: {
+          mode: 'CUBIC_BEZIER',
+          drawValues: false,
+          lineWidth: 2,
+          drawCircles: true,
+          circleColor: processColor(greenBlue),
+          drawCircleHole: false,
+          circleRadius: 5,
+          highlightColor: processColor('transparent'),
+          color: processColor(greenBlue),
+
+          valueTextSize: 15,
+        },
+      },
+
+      {
+        values: values2,
+        label: 'Vitality',
+        config: {
+          mode: 'CUBIC_BEZIER',
+          drawValues: false,
+          lineWidth: 2,
+          drawCircles: true,
+          circleColor: processColor(petrel),
+          drawCircleHole: false,
+          circleRadius: 5,
+          highlightColor: processColor('transparent'),
+          color: processColor(petrel),
+          valueTextSize: 15,
+        },
+      },
+    ],
+  };
+
     return (
-        <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title}>Portfólio</Text>
             <View style={styles.valueBoxContainer}>
                 <View style={styles.valueBoxContainerRow}>
-                    <ValueBox title='teste1' value='R$ 400,40'/>
-                    <ValueBox title='teste1' value='R$ 400,40'/>
+                    <ValueBox title={dataHomeBox[0].label} value={dataHomeBox[0].value + ' %'}/>
+                    <ValueBox title={dataHomeBox[1].label} value={dataHomeBox[1].value + ' %'}/>
                 </View>
                 <View style={styles.valueBoxContainerRow}>
-                    <ValueBox title='teste1' value='R$ 400,40'/>
-                    <ValueBox title='teste1' value='R$ 400,40'/>
+                    <ValueBox title={dataHomeBox[2].label} value={dataHomeBox[2].value + ' %'}/>
+                    <ValueBox title={dataHomeBox[3].label} value={'R$ ' +  dataHomeBox[3].value}/>
                 </View>
             </View>
-        </SafeAreaView>
+            <View style={styles.chartContainer}>
+                <OutroPie handleSelect={handleSelectPie} 
+                selectedEntry={selectedEntry}
+                sandwiches={sandwiches}
+                salads={salads}
+                soup={soup}
+                beverages={beverages}
+                desserts={desserts}
+                valorCentro={selecionadoPie.data ? selecionadoPie.data.value.toString() :  ''}
+                />      
+            </View>
+            <View style={styles.chartContainer}>
+                <LineChartRender
+                handleSelect={handleSelectLine}
+                selectedEvent={selectedEvent}
+                selecionado={selecionadoLine.data ? selecionadoLine.data.marker : null}
+                data={data}
+                />
+            </View>
+        </ScrollView>
     )
 }
 
@@ -35,7 +204,8 @@ export default Home;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        height: globalStyles.dimensions.height *2,
+        width: globalStyles.dimensions.width,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -57,5 +227,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'space-around',
         marginVertical: 5
-    }
+    },
+    chartContainer: {
+        width: globalStyles.dimensions.width,
+        height: globalStyles.dimensions.height / 1.5,
+        marginTop: 20
+      },
+      label: {
+        alignItems: 'center',
+        backgroundColor: 'black',
+        flex: 0.5
+    },
+    labelText: {
+        fontSize: 40,
+        color: 'white',
+    },
 })

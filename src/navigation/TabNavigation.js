@@ -2,18 +2,21 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
+import Login from '../screens/Login'
+import AuthorApp from '../screens/AuthorApp'
 import Home from '../screens/home';
 import Carteira from '../screens/carteira';
 import Performance from '../screens/performance'
 import globalStyles from '../styles/globalStyles';
 
-
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
-export default function NavigationTab() {
+const TabNavigation = () => {
     return (
-        <NavigationContainer>      
+            
             <Tab.Navigator 
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
@@ -45,8 +48,9 @@ export default function NavigationTab() {
                 
     
 
-                initialRouteName="Home" 
+                
                 tabBarOptions={{
+                   
                     activeTintColor: globalStyles.colors.fontColor,
                     inactiveTintColor: '#000',
                     labelStyle: { fontSize: 15},
@@ -60,15 +64,35 @@ export default function NavigationTab() {
                         borderTopWidth: 0,
                         position: 'absolute'
                     }
-                }}
+                }} initialRouteName="Home"
             >
+                
+                
                 <Tab.Screen name="Performance" component={Performance} />
                 <Tab.Screen name="Home" component={Home} />
                 <Tab.Screen name="Carteira" component={Carteira} />
 
             </Tab.Navigator>
-        </NavigationContainer>
     
 
 )
 }
+
+const AuthNavigator = () => {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>   
+            <Stack.Screen name="AuthOrApp" component={AuthorApp} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Home" component={TabNavigation} />
+        </Stack.Navigator>
+    );
+};
+
+const Navigator = () => {
+    return (
+        <NavigationContainer>
+            <AuthNavigator />
+        </NavigationContainer>
+    );
+};
+export default Navigator
