@@ -114,19 +114,19 @@ const Performance = ({navigation}) => {
 
   function oneMonthPeriod(value) {
     let date = Date.parse(alteraDataPTParaEN(value.data));
-    let dataAtual = new Date().getTime() - (1000*60*60*24*98);
+    let dataAtual = new Date().getTime() - (1000*60*60*24*31);
     return date >= dataAtual
   }
 
   function threeMonthPeriod(value) {
     let date = Date.parse(alteraDataPTParaEN(value.data));
-    let dataAtual = new Date().getTime() - (1000*60*60*24*128);
+    let dataAtual = new Date().getTime() - (1000*60*60*24*92);
     return date >= dataAtual
   }
 
   function oneYearPeriod(value) {
     let date = Date.parse(alteraDataPTParaEN(value.data));
-    let dataAtual = new Date().getTime() - (1000*60*60*24*430);
+    let dataAtual = new Date().getTime() - (1000*60*60*24*365);
     return date >= dataAtual
   }
 
@@ -203,7 +203,7 @@ const Performance = ({navigation}) => {
     dataSets: [
       {
         values: values1,
-        label: 'BDS',
+        label: 'Carteira',
         config: {
           mode: 'CUBIC_BEZIER',
           drawValues: false,
@@ -221,7 +221,7 @@ const Performance = ({navigation}) => {
 
       {
         values: values2,
-        label: 'Vitality',
+        label: 'CDI',
         config: {
           mode: 'CUBIC_BEZIER',
           drawValues: false,
@@ -330,9 +330,9 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     containerTable: {
-      height: 300,
+      height: 200,
       marginVertical: 20,
-      marginHorizontal: 5,
+      marginHorizontal: 0,
       backgroundColor: '#161616',
       borderRadius: 10,
     },

@@ -54,7 +54,7 @@ export default Cards
 const styles = StyleSheet.create({
       text: {
         color: '#FFF',
-        fontSize: 23,
+        fontSize: 20,
         margin: 8
       },
       bloco: {
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     },
       value: {
           color: globalStyles.colors.fontColor,
-          fontSize: 30,
+          fontSize: 25,
       },
       expandLeft:{
         justifyContent: 'space-between'

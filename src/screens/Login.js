@@ -38,7 +38,7 @@ const Login = ({navigation}) => {
     }, [])
 
   const handleForgotPassword = () => {
-    navigation.navigate('Reset Password');
+    navigation.navigate('ResetPassword');
   }
 
   async function handleLogin() {

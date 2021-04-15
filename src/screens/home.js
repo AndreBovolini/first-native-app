@@ -6,8 +6,10 @@ import {
   StyleSheet,
   Text,
   processColor,
+  TouchableOpacity,
   View,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Cards from '../components/cards'
 import ValueBox from '../components/valueBox';
@@ -93,6 +95,13 @@ export const Home = ({navigation}) => {
     },
   ]);
   const [labels, setLabels] = useState([]);
+  const [selectedEntry, setSelectedEntry] = useState(null);
+  const [selecionadoPie, setSelecionadoPie] = useState({})
+  const [sandwiches, setSandwiches] = useState(35);
+  const [salads, setSalads] = useState(35);
+  const [soup, setSoup] = useState(35);
+  const [beverages, setBeverages] = useState(35);
+  const [desserts, setDesserts] = useState(35);
 
   const greenBlue = 'rgb(26, 182, 151)';
   const petrel = 'rgb(59, 145, 153)';
@@ -102,14 +111,14 @@ export const Home = ({navigation}) => {
         return {
             y: parseFloat(el.ibov),
             x: parseFloat(i),
-            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' PETR4: ' + parseFloat(el.petr4, 3) + ' %',
+            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%',
         }
     });
     const valores2 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
         return {
-            y: parseFloat(el.cdi),
+            y: parseFloat(el.baseLine),
             x: parseFloat(i),
-            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' CDI: ' + parseFloat(el.cdi, 3) + ' %',
+            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%',
         }
     });
     const linelabes = resposta1.resposta["tab-p1"].linha.map((el, i) => {
@@ -120,10 +129,9 @@ export const Home = ({navigation}) => {
     setLabels(linelabes);
   }, [])
 
-  function handleSelectLine(event) {
 
+  function handleSelectLine(event) {
     let entry = event.nativeEvent;
-     console.warn('aaaa')
     if (entry == null) {
       setSelectedEvent(null);
       setSelecionadoLine({});
@@ -131,9 +139,17 @@ export const Home = ({navigation}) => {
       setSelectedEvent(JSON.stringify(entry));
       setSelecionadoLine(entry);
     }
-
-    console.log(event.nativeEvent);
   }
+
+  function handleSelectPie(event) {
+    let entry = event.nativeEvent
+    if (entry == null) {
+      setSelectedEntry(null)
+    } else {
+      setSelectedEntry(JSON.stringify(entry))
+      setSelecionadoPie(entry)
+    }
+};
 
   const data = {
     dataSets: [
@@ -160,14 +176,19 @@ export const Home = ({navigation}) => {
         label: 'CDI',
         config: {
           mode: 'CUBIC_BEZIER',
+          enableDashedLine: true,
           drawValues: false,
-          lineWidth: 2,
+          lineWidth: 0.5,
+          dashedLine: {
+            lineLength: 10,
+            spaceLength: 10
+          },
           drawCircles: false,
-          circleColor: processColor(petrel),
+          circleColor: processColor('white'),
           drawCircleHole: false,
           circleRadius: 5,
           highlightColor: processColor('transparent'),
-          color: processColor(petrel),
+          color: processColor('white'),
           valueTextSize: 15,
         },
       },
@@ -190,6 +211,12 @@ export const Home = ({navigation}) => {
                     <ValueBox title={dataHomeBox[3].label} value={'R$ ' +  dataHomeBox[3].value}/>
                 </View>
             </View>
+            <View style={styles.titleNavigationContainer}>
+              <Text style={styles.titleNavigation}>Performance</Text>
+              <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Performance')}>
+               <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor}/>
+              </TouchableOpacity>
+            </View>
             <View style={styles.lineChartContainer}>
                 <LineChartResumo
                 handleSelect={handleSelectLine}
@@ -198,6 +225,23 @@ export const Home = ({navigation}) => {
                 data={data}
                 label={labels}
                 />
+            </View>
+            <View style={styles.titleNavigationContainer}>
+              <Text style={styles.titleNavigation}>Carteira</Text>
+              <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Carteira')}>
+               <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor}/>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.chartContainer}>
+                <OutroPie handleSelect={handleSelectPie} 
+                selectedEntry={selectedEntry}
+                sandwiches={sandwiches}
+                salads={salads}
+                soup={soup}
+                beverages={beverages}
+                desserts={desserts}
+                valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  ''}
+                />      
             </View>
         </ScrollView>
     )
@@ -231,6 +275,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'space-around',
         marginVertical: 5,
+    },
+    titleNavigationContainer: {
+      flexDirection: 'row',
+      alignSelf: 'flex-start',
+      marginLeft: 20,
+    },
+    titleNavigation: {
+      color: globalStyles.colors.fontColor,
+      fontSize: 30,
+      fontWeight: '300',
     },
     chartContainer: {
         width: globalStyles.dimensions.width,

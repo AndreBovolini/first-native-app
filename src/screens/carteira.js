@@ -67,17 +67,6 @@ const Carteira = ({navigation}) => {
                 valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  ''}
                 />      
             </View>
-            {/* <View style={styles.chartContainer}>
-                <OutroPie handleSelect={handleSelectPie} 
-                selectedEntry={selectedEntry}
-                sandwiches={sandwiches}
-                salads={salads}
-                soup={soup}
-                beverages={beverages}
-                desserts={desserts}
-                valorCentro={selecionadoPie.data ? selecionadoPie.data.value.toString() :  ''}
-                />      
-            </View> */}
             <View style={styles.containerCards}>
               {arrayAtivos.map((el, i) => {
                 return <Cards id={i} 
