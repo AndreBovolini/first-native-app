@@ -10,7 +10,9 @@ import AuthorApp from '../screens/AuthorApp'
 import Home from '../screens/home';
 import Carteira from '../screens/carteira';
 import Performance from '../screens/performance'
+import ResetPassword from  '../screens/ResetPassword';
 import globalStyles from '../styles/globalStyles';
+import { StackRouter } from 'react-navigation';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -84,6 +86,7 @@ const AuthNavigator = () => {
             <Stack.Screen name="AuthOrApp" component={AuthorApp} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Home" component={TabNavigation} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword}/>
         </Stack.Navigator>
     );
 };
