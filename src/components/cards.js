@@ -9,32 +9,28 @@ import {
 import globalStyles from '../styles/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const Cards = (props) => {
+const Cards = ({id, title,value, show, handleClick, cor}) => {
 
-    const [show,setShow] = useState([false])
-
-    function handleClick(index) {
-        const newArray = [false,false,false]
-        console.log(newArray)
-        newArray[index]= !show[index]
-        setShow(newArray)
-    }
     return (
         <View>
+        <View style={[styles.blocoCor, {backgroundColor: cor}]}>
              <View style={styles.bloco}>
-                <Text style={styles.text}>Ativo {props.id}</Text>
+                <Text style={styles.text}>{title}</Text>
                 <TouchableOpacity style={styles.right}
-                    onPress={()=> handleClick(props.id)}
+                    onPress={()=> handleClick(id)}
                 >
-                    { show[props.id] ?   <Icon name="chevron-up" size={20} color="#FFF"/>
+                    { show ?   <Icon name="chevron-up" size={20} color="#FFF"/>
                     :  <Icon name="chevron-down" size={20} color="#FFF"/>}
-                </TouchableOpacity> 
+                </TouchableOpacity>
+                </View>
              </View>
-                { show[props.id] && (
+                { show && (
+                  <View style={[styles.blocoExpandCor, {backgroundColor: cor}]}>
                     <View style={styles.blocoExpand}>
-                        <Text style={styles.text}>{props.title}</Text>
-                        <Text style={styles.text}>{props.value}</Text>
+                        <Text style={styles.text}>{title}</Text>
+                        <Text style={styles.text}>{value}</Text>
                     </View>
+                  </View>
                 )}
         </View>
     )
@@ -48,15 +44,23 @@ const styles = StyleSheet.create({
         fontSize: 24,
       },
       bloco: {
-        
         flexDirection: 'row',  
         backgroundColor: globalStyles.colors.firstLayer,
         alignItems: 'center',
-        marginTop: 5,
         padding: 5,
-        height: 60,
+        height: 70,
         borderRadius: 10,
-        width: 385,
+        width: globalStyles.dimensions.width / 1.15,
+        justifyContent: 'space-between'
+      },
+      blocoCor: {
+        flexDirection: 'row',  
+        alignItems: 'center',
+        marginTop: 20,
+        padding: 5,
+        height: 70,
+        borderRadius: 10,
+        width: globalStyles.dimensions.width / 1.15,
         justifyContent: 'space-between'
       
       },
@@ -71,10 +75,21 @@ const styles = StyleSheet.create({
         backgroundColor: globalStyles.colors.firstLayer,
         alignItems: 'center',
         marginTop: -10,
+        marginBottom: 0,
+        padding: 5,
+        borderBottomEndRadius: 10,
+        borderBottomStartRadius: 10,
+        width: globalStyles.dimensions.width / 1.15,
+      },
+      blocoExpandCor: {
+        flexDirection: 'row',
+        backgroundColor: globalStyles.colors.firstLayer,
+        width: globalStyles.dimensions.width / 1.15,
+        alignItems: 'center',
+        marginTop: -10,
         marginBottom: 5,
         padding: 5,
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10
-        
       }
     })

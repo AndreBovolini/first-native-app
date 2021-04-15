@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 
+import Cards from '../components/cards'
 import ValueBox from '../components/valueBox';
 import globalStyles from '../styles/globalStyles';
 
@@ -23,7 +24,7 @@ import { useEffect } from 'react';
 
 
 export const Home = ({navigation}) => {
-    const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
   const [inputValue, setInputValue] = useState('');
   const [inputMarker, setInputMarker] = useState('');
@@ -113,9 +114,9 @@ export const Home = ({navigation}) => {
     });
     const valores2 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
         return {
-            y: parseFloat(el.petr4),
+            y: parseFloat(el.cdi),
             x: parseFloat(i),
-            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' PETR4: ' + parseFloat(el.petr4, 3) + ' %',
+            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' CDI: ' + parseFloat(el.cdi, 3) + ' %',
         }
     });
     const linelabes = resposta1.resposta["tab-p1"].linha.map((el, i) => {
@@ -127,6 +128,9 @@ export const Home = ({navigation}) => {
   }, [])
 
   function handleSelectLine(event) {
+    
+
+    
     let entry = event.nativeEvent;
      console.warn('aaaa')
     if (entry == null) {
@@ -157,7 +161,7 @@ export const Home = ({navigation}) => {
     dataSets: [
       {
         values: values1,
-        label: 'BDS',
+        label: 'Certeira',
         config: {
           mode: 'CUBIC_BEZIER',
           drawValues: false,
@@ -175,7 +179,7 @@ export const Home = ({navigation}) => {
 
       {
         values: values2,
-        label: 'Vitality',
+        label: 'CDI',
         config: {
           mode: 'CUBIC_BEZIER',
           drawValues: false,
@@ -225,7 +229,7 @@ export const Home = ({navigation}) => {
                 soup={soup}
                 beverages={beverages}
                 desserts={desserts}
-                valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  'Carteira'}
+                valorCentro={selecionadoPie.data ? selecionadoPie.data.value.toString() :  'Carteira'}
                 />      
             </View>
         </ScrollView>

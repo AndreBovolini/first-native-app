@@ -92,7 +92,7 @@ return (
               enabled: true,
               markerColor: processColor('black'),
               textColor: processColor('white'),
-              textSize: 20,
+              textSize: 30,
             }}
             highlights={infos.highlights}
 
