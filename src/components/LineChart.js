@@ -70,8 +70,8 @@ const LineChartRender = props => {
           }}
           autoScaleMinMaxEnabled={true}
           animation={{
-            durationX: 0,
-            durationY: 1500,
+            durationX: 1300,
+            durationY: 0,
             easingY: 'EaseInOutQuart',
           }}
           drawGridBackground={false}

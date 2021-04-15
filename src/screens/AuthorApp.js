@@ -12,7 +12,6 @@ const AuthOrApp = (props) => {
         const userToken = await AsyncStorage.getItem('token');
         let token = parseInt(userToken);
         let date = new Date().getTime();
-        console.warn(token, date)
 
         if (token) {
         if (token < date) {

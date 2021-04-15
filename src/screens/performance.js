@@ -207,7 +207,6 @@ const Performance = ({navigation}) => {
       setSelecionadoLine(entry);
     }
 
-    console.log(event.nativeEvent);
   }
 
   const data = {
@@ -299,7 +298,7 @@ export default Performance;
 
 const styles = StyleSheet.create({
     container: {
-        height: globalStyles.dimensions.height *1.8,
+        height: globalStyles.dimensions.height *1.7,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',
         alignItems: 'center',
