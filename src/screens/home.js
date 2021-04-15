@@ -250,7 +250,7 @@ export default Home;
 
 const styles = StyleSheet.create({
     container: {
-        height: globalStyles.dimensions.height *2,
+        height: globalStyles.dimensions.height *1.6,
         width: globalStyles.dimensions.width,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',

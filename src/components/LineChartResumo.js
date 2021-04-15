@@ -40,7 +40,7 @@ const LineChartResumo = props => {
             digits: 2,
             markerColor: processColor('black'),
             textColor: processColor('white'),
-            textSize: 15,
+            textSize: 20,
           }}
           xAxis={{
             enabled: false,

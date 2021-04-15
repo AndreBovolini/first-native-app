@@ -92,6 +92,8 @@ const Performance = ({navigation}) => {
       marker: 'Vitality: 350 pts',
     },
   ]);
+  const [labels, setLabels] = useState([]);
+  const [granularity, setGranularity] = useState(50)
   const [anoSelecionado, setAnoSelecionado] = useState('2017');
   const [periodoSelecionado, setPeriodoSelecionado] = useState('Tudo');
   const [indiceAno, setIndiceAno] = useState(0);
@@ -143,18 +145,23 @@ const Performance = ({navigation}) => {
     switch (periodoSelecionado) {
       case '1m':
         filteredData = resposta1.resposta['tab-p1'].linha.filter(oneMonthPeriod);
+        setGranularity(7)
       break;
       case '3m':
         filteredData = resposta1.resposta['tab-p1'].linha.filter(threeMonthPeriod);
+        setGranularity(20)
       break;
       case '2021':
         filteredData = resposta1.resposta['tab-p1'].linha.filter(thisYear);
+        setGranularity(40)
       break;
       case '1 year':
+        setGranularity(50)
         filteredData = resposta1.resposta['tab-p1'].linha.filter(oneYearPeriod);
         break;
       case 'Tudo':
         filteredData = resposta1.resposta['tab-p1'].linha;
+        setGranularity(50)
       break;
     };
 
@@ -163,19 +170,23 @@ const Performance = ({navigation}) => {
         return {
             y: parseFloat(el.ibov),
             x: parseFloat(i),
-            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' PETR4: ' + parseFloat(el.petr4, 3) + ' %',
+            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%' + ' CDI: ' + parseFloat(el.cdi, 3) + '%',
         }
     });
     const valores2 = filteredData.map((el, i) => {
         return {
             y: parseFloat(el.cdi),
             x: parseFloat(i),
-            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' CDI: ' + parseFloat(el.cdi, 3) + ' %',
+            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%' + ' CDI: ' + parseFloat(el.cdi, 3) + '%',
         }
     });
+    const linelabes = filteredData.map((el, i) => {
+      return el.data
+  })
 
     setValues1(valores1);
     setValues2(valores2);
+    setLabels(linelabes)
   };
   }, [periodoSelecionado])
 
@@ -254,9 +265,11 @@ const Performance = ({navigation}) => {
                 selectedEvent={selectedEvent}
                 selecionado={selecionadoLine.data ? selecionadoLine.data.marker : null}
                 data={data}
+                labels={labels}
+                granularity={granularity}
                 />
             </View>
-            <View style={styles.containerSelector}>
+            <View style={styles.containerSelectorTable}>
       {anos.map((el, i) => {
           return (
             <SelectPeriod ano={el} key={i} selecionado={anoSelecionado} handleSelecionado={handleSelecionaAno}/>
@@ -264,6 +277,7 @@ const Performance = ({navigation}) => {
       })}
         
       </View>
+      <View style={{height: 500, borderRadius: 20,  width: globalStyles.dimensions.width *0.9}}>
       <ScrollView style={styles.containerTable} nestedScrollEnabled = {true}>
         <View style={styles.containerHeader}>
         <Text style={styles.textoHeader}>Período</Text>
@@ -277,6 +291,7 @@ const Performance = ({navigation}) => {
             )
         })}
       </ScrollView>
+      </View>
         </ScrollView>
     )
 }
@@ -284,8 +299,7 @@ export default Performance;
 
 const styles = StyleSheet.create({
     container: {
-        height: globalStyles.dimensions.height *2,
-        width: globalStyles.dimensions.width,
+        height: globalStyles.dimensions.height *1.8,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -330,11 +344,12 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     containerTable: {
-      height: 200,
-      marginVertical: 20,
+      width: globalStyles.dimensions.width *0.90,
+      height: 500,
+      marginVertical: 5,
       marginHorizontal: 0,
       backgroundColor: '#161616',
-      borderRadius: 10,
+      borderRadius: 20,
     },
     containerHeader: {
       flexDirection: 'row',
@@ -350,5 +365,15 @@ const styles = StyleSheet.create({
       fontSize: 20,
       fontWeight: '700',
       color: '#161616',
+    },
+    containerSelectorTable: {
+      height: 50,
+       width: globalStyles.dimensions.width *0.9,
+      backgroundColor: '#161616',
+      marginTop: 10,
+      borderRadius: 10,
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+    alignItems: 'center',
     },
 })

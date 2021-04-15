@@ -40,11 +40,11 @@ const LineChartRender = props => {
             digits: 2,
             markerColor: processColor('black'),
             textColor: processColor('white'),
-            textSize: 15,
+            textSize: 20,
           }}
           xAxis={{
             enabled: true,
-            granularity: 25,
+            granularity: props.granularity,
             drawLabels: true,
             position: 'BOTTOM',
             drawAxisLine: true,
@@ -53,7 +53,7 @@ const LineChartRender = props => {
             fontWeight: 'bold',
             textSize: 12,
             textColor: processColor('white'),
-            valueFormatter: props.label,
+            valueFormatter: props.labels,
           }}
           yAxis={{
             left: {
