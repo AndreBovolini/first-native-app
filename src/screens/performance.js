@@ -168,9 +168,9 @@ const Performance = ({navigation}) => {
     });
     const valores2 = filteredData.map((el, i) => {
         return {
-            y: parseFloat(el.petr4),
+            y: parseFloat(el.cdi),
             x: parseFloat(i),
-            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' PETR4: ' + parseFloat(el.petr4, 3) + ' %',
+            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' CDI: ' + parseFloat(el.cdi, 3) + ' %',
         }
     });
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -17,20 +17,21 @@ import {
 
 const Carteira = ({navigation}) => {
   const [selectedEntry, setSelectedEntry] = useState(null);
-  const [selecionadoPie, setSelecionadoPie] = useState({})
-  const [sandwiches, setSandwiches] = useState(35);
-  const [salads, setSalads] = useState(35);
-  const [soup, setSoup] = useState(35);
-  const [beverages, setBeverages] = useState(35);
-  const [desserts, setDesserts] = useState(35);
+  const [selecionadoPie, setSelecionadoPie] = useState({});
+  const [arrayAtivos, setArrayAtivos] = useState([])
+  const [cores, setCores] = useState(['#5456A2','#7A77B7','#ABA2D0','#5f8dca','#7FAADB', '#a7d7d2', '#48A192']);
 
-  let ativos = AtivosCarteira.map(n => {
-    return n.label
-  })
-  // let ativos = ['sandwiches', 'salads', 'soup', 'beverages', 'desserts']
+  useEffect(() => {
+    let ativos = []
+    AtivosCarteira.forEach((el, i) => {
+      ativos.push(el.label);
+    });
+    setArrayAtivos(ativos);
+  }, []);
+  
   const [show,setShow] = useState([false])
     function handleClick(index) {
-        const newArray = [false]
+        const newArray = Array(arrayAtivos.length).fill(false)
         newArray[index]= !show[index]
         setShow(newArray)
     }
@@ -45,11 +46,9 @@ const Carteira = ({navigation}) => {
       setSelecionadoPie(entry)
       try{
         let selectName = event.nativeEvent.data.label
-        console.log('name ' + selectName)
-        handleClick(ativos.indexOf(selectName))
+        handleClick(arrayAtivos.indexOf(selectName));
         // ativos.splice(ativos.indexOf(selectName, 1))
         // ativos.unshift(selectName)
-        console.log('ativos '+ ativos)
       }catch{
         setShow([false])
       }
@@ -61,15 +60,11 @@ const Carteira = ({navigation}) => {
 
       return (
         <ScrollView contentContainerStyle={styles.container}>
-             <View style={styles.chartContainer}>
+        <Text style={styles.title}>Carteira</Text>
+            <View style={styles.chartContainer}>
                 <OutroPie handleSelect={handleSelectPie} 
                 selectedEntry={selectedEntry}
-                sandwiches={sandwiches}
-                salads={salads}
-                soup={soup}
-                beverages={beverages}
-                desserts={desserts}
-                valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  'Carteira'}
+                valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  ''}
                 />      
             </View>
             {/* <View style={styles.chartContainer}>
@@ -84,14 +79,15 @@ const Carteira = ({navigation}) => {
                 />      
             </View> */}
             <View style={styles.containerCards}>
-              {ativos.map(n => {
-                return <Cards id={ativos.indexOf(n)} 
-                              title={n} 
-                              value={AtivosCarteira[ativos.indexOf(n)].value}
-                              label={AtivosCarteira[ativos.indexOf(n)].label}
-                              key={ativos.indexOf(n)} 
+              {arrayAtivos.map((el, i) => {
+                return <Cards id={i} 
+                              title={el} 
+                              value={AtivosCarteira[arrayAtivos.indexOf(el)].value}
+                              data={AtivosCarteira[arrayAtivos.indexOf(el)].data}
+                              key={i} 
                               handleClick={handleClick}
-                              show={show}/>;
+                              show={show[i]}
+                              cor={cores[i]}/>;
               })}
             </View>
         </ScrollView>
@@ -109,6 +105,14 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
       },
+      title: {
+        color: globalStyles.colors.fontColor,
+        fontSize: 40,
+        fontWeight: '300',
+        alignSelf: 'flex-start',
+        marginVertical: 10, 
+        marginLeft: 10,
+    },
       text: {
         color: globalStyles.colors.fontColor,
         fontSize: 24,
@@ -119,7 +123,8 @@ const styles = StyleSheet.create({
     },
     chartContainer: {
       width: globalStyles.dimensions.width,
-      height: globalStyles.dimensions.height / 1.5,
+      height: globalStyles.dimensions.height / 1.8,
       marginTop: 20
     },
+    
 })

@@ -107,9 +107,9 @@ export const Home = ({navigation}) => {
     });
     const valores2 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
         return {
-            y: parseFloat(el.petr4),
+            y: parseFloat(el.cdi),
             x: parseFloat(i),
-            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' PETR4: ' + parseFloat(el.petr4, 3) + ' %',
+            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' CDI: ' + parseFloat(el.cdi, 3) + ' %',
         }
     });
     const linelabes = resposta1.resposta["tab-p1"].linha.map((el, i) => {
@@ -139,7 +139,7 @@ export const Home = ({navigation}) => {
     dataSets: [
       {
         values: values1,
-        label: 'BDS',
+        label: 'Certeira',
         config: {
           mode: 'CUBIC_BEZIER',
           drawValues: false,
@@ -157,7 +157,7 @@ export const Home = ({navigation}) => {
 
       {
         values: values2,
-        label: 'Vitality',
+        label: 'CDI',
         config: {
           mode: 'CUBIC_BEZIER',
           drawValues: false,
@@ -224,12 +224,13 @@ const styles = StyleSheet.create({
     valueBoxContainer: {
         height: globalStyles.dimensions.height / 3.6,
         width: globalStyles.dimensions.width,
+        
     }, 
     valueBoxContainerRow: {
         flex: 1, 
         flexDirection: 'row', 
         justifyContent: 'space-around',
-        marginVertical: 5
+        marginVertical: 5,
     },
     chartContainer: {
         width: globalStyles.dimensions.width,

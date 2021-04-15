@@ -7,10 +7,9 @@ import {
 
 import globalStyles from '../styles/globalStyles';
 
-
 const ValueBox = (props) => {
     return (
-        <View style={styles.container}>
+        <View  style={styles.container}>
             <Text style={styles.title}>{props.title}</Text>
             <Text style={styles.value}>{props.value}</Text>
         </View>
@@ -27,6 +26,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         borderRadius: 5,
+
+        
     },
     title: {
         color: globalStyles.colors.fontColor,

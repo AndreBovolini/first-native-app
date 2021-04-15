@@ -24,31 +24,38 @@ export const dataHomeBox = [
 export const AtivosCarteira = [
     {
         value: 56467.56,
-        label: 'Ações'
+        label: 'Ações',
+        data:  '16/09/2020'
     },
     {
         value: 102500.45,
-        label: 'CDB'
+        label: 'CDB',
+        data:  '14/05/2020'
     },
     {
         value: 32560.80,
-        label: 'CDI'
+        label: 'CDI',
+        data:  '13/09/2019'
     },
     {
         value: 25698.34,
-        label: 'LCA'
+        label: 'LCA',
+        data:  '06/05/2020'
     },
     {
         value: 250487.78,
         label: 'Fundos',
+        data:  '02/03/2021'
     },
     {
         value: 75845.26,
-        label: 'Tesouro Direto'
+        label: 'Tesouro Direto',
+        data:  '17/12/2020'
     },
     {
         value: 10452.78,
-        label: 'Moedas'
+        label: 'Moedas',
+        data:  '25/04/2020'
     },
 ]
 
