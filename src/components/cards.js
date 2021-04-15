@@ -9,13 +9,24 @@ import {
 import globalStyles from '../styles/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const Cards = ({id, title,value, show, handleClick, cor}) => {
 
+
+const Cards = ({id, title,value, show, handleClick, cor, data}) => {
+    function numberToReal(numeros) {
+      let numero = numeros.toFixed(2).split('.');
+      numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join('.');
+      return numero.join(',');
+    }
+    const valor = numberToReal(value)
+    console.log(valor)
     return (
         <View>
         <View style={[styles.blocoCor, {backgroundColor: cor}]}>
              <View style={styles.bloco}>
-                <Text style={styles.text}>{title}</Text>
+               <View style={styles.leftSide}>
+                  <Icon name="circle" size={10} color={cor}/>
+                  <Text style={styles.title}>{title}</Text>
+                </View>
                 <TouchableOpacity style={styles.right}
                     onPress={()=> handleClick(id)}
                 >
@@ -27,8 +38,10 @@ const Cards = ({id, title,value, show, handleClick, cor}) => {
                 { show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: cor}]}>
                     <View style={styles.blocoExpand}>
-                        <Text style={styles.text}>{title}</Text>
-                        <Text style={styles.text}>{value}</Text>
+                      <View style={styles.expandLeft}>
+                        <Text style={styles.text}>data: {data}</Text>
+                        <Text style={styles.text}>valor: {valor}</Text>
+                      </View>
                     </View>
                   </View>
                 )}
@@ -41,7 +54,8 @@ export default Cards
 const styles = StyleSheet.create({
       text: {
         color: '#FFF',
-        fontSize: 24,
+        fontSize: 20,
+        margin: 8
       },
       bloco: {
         flexDirection: 'row',  
@@ -74,6 +88,7 @@ const styles = StyleSheet.create({
       blocoExpand: {
         backgroundColor: globalStyles.colors.firstLayer,
         alignItems: 'center',
+        flexDirection: 'row',
         marginTop: -10,
         marginBottom: 0,
         padding: 5,
@@ -91,5 +106,27 @@ const styles = StyleSheet.create({
         padding: 5,
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10
-      }
+      },
+      leftSide: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding:5,
+      },
+      title: {
+        color: globalStyles.colors.fontColor,
+        fontSize: 23,
+        alignSelf: 'flex-start',
+        marginLeft: 10,
+        marginVertical: 5,
+    },
+      value: {
+          color: globalStyles.colors.fontColor,
+          fontSize: 25,
+      },
+      expandLeft:{
+        justifyContent: 'space-between'
+    },
+      expandRigh:{
+        justifyContent: 'space-around'
+    },
     })

@@ -71,7 +71,8 @@ const Carteira = ({navigation}) => {
               {arrayAtivos.map((el, i) => {
                 return <Cards id={i} 
                               title={el} 
-                              value={el} 
+                              value={AtivosCarteira[arrayAtivos.indexOf(el)].value}
+                              data={AtivosCarteira[arrayAtivos.indexOf(el)].data}
                               key={i} 
                               handleClick={handleClick}
                               show={show[i]}
@@ -114,4 +115,5 @@ const styles = StyleSheet.create({
       height: globalStyles.dimensions.height / 1.8,
       marginTop: 20
     },
+    
 })

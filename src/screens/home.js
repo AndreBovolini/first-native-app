@@ -96,12 +96,12 @@ export const Home = ({navigation}) => {
   ]);
   const [labels, setLabels] = useState([]);
   const [selectedEntry, setSelectedEntry] = useState(null);
-    const [selecionadoPie, setSelecionadoPie] = useState({})
-    const [sandwiches, setSandwiches] = useState(35);
-    const [salads, setSalads] = useState(35);
-    const [soup, setSoup] = useState(35);
-    const [beverages, setBeverages] = useState(35);
-    const [desserts, setDesserts] = useState(35);
+  const [selecionadoPie, setSelecionadoPie] = useState({})
+  const [sandwiches, setSandwiches] = useState(35);
+  const [salads, setSalads] = useState(35);
+  const [soup, setSoup] = useState(35);
+  const [beverages, setBeverages] = useState(35);
+  const [desserts, setDesserts] = useState(35);
 
   const greenBlue = 'rgb(26, 182, 151)';
   const petrel = 'rgb(59, 145, 153)';
@@ -128,6 +128,7 @@ export const Home = ({navigation}) => {
     setValues2(valores2);
     setLabels(linelabes);
   }, [])
+
 
   function handleSelectLine(event) {
     let entry = event.nativeEvent;
@@ -267,12 +268,13 @@ const styles = StyleSheet.create({
     valueBoxContainer: {
         height: globalStyles.dimensions.height / 3.6,
         width: globalStyles.dimensions.width,
+        
     }, 
     valueBoxContainerRow: {
         flex: 1, 
         flexDirection: 'row', 
         justifyContent: 'space-around',
-        marginVertical: 5
+        marginVertical: 5,
     },
     titleNavigationContainer: {
       flexDirection: 'row',

@@ -92,7 +92,7 @@ return (
               enabled: true,
               markerColor: processColor('black'),
               textColor: processColor('white'),
-              textSize: 30,
+              textSize: 23,
             }}
             highlights={infos.highlights}
 
@@ -105,7 +105,7 @@ return (
             rotationEnabled={true}
             rotationAngle={45}
             usePercentValues={true}
-            styledCenterText={{text: props.valorCentro, color: processColor('white'), fontFamily: 'HelveticaNeue-Medium', size: 40}}
+            styledCenterText={{text: props.valorCentro, color: processColor('white'), fontFamily: 'HelveticaNeue-Medium', size: 30}}
             centerTextRadiusPercent={90}
             holeRadius={60}
             holeColor={processColor('#000')}
