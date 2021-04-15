@@ -88,7 +88,7 @@ return (
             holeColor={processColor('#000')}
             transparentCircleRadius={40}
             transparentCircleColor={processColor('#000')}
-            maxAngle={350}
+            maxAngle={360}
             onSelect={props.handleSelect}
             onChange={(event) => console.log(event.nativeEvent)}
           />

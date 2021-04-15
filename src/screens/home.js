@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 
+import Cards from '../components/cards'
 import ValueBox from '../components/valueBox';
 import globalStyles from '../styles/globalStyles';
 
@@ -21,7 +22,7 @@ import {
 
 
 export const Home = ({navigation}) => {
-    const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
   const [inputValue, setInputValue] = useState('');
   const [inputMarker, setInputMarker] = useState('');
@@ -89,18 +90,15 @@ export const Home = ({navigation}) => {
       marker: 'Vitality: 350 pts',
     },
   ]);
-  const [selectedEntry, setSelectedEntry] = useState(null);
-    const [selecionadoPie, setSelecionadoPie] = useState({})
-    const [sandwiches, setSandwiches] = useState(35);
-    const [salads, setSalads] = useState(35);
-    const [soup, setSoup] = useState(35);
-    const [beverages, setBeverages] = useState(35);
-    const [desserts, setDesserts] = useState(35);
 
   const greenBlue = 'rgb(26, 182, 151)';
   const petrel = 'rgb(59, 145, 153)';
 
+
   function handleSelectLine(event) {
+    
+
+    
     let entry = event.nativeEvent;
     if (entry == null) {
       setSelectedEvent(null);
@@ -112,18 +110,6 @@ export const Home = ({navigation}) => {
 
     console.log(event.nativeEvent);
   }
-
-  function handleSelectPie(event) {
-    let entry = event.nativeEvent
-    if (entry == null) {
-      setSelectedEntry(null)
-    } else {
-      setSelectedEntry(JSON.stringify(entry))
-      setSelecionadoPie(entry)
-    }
-
-    console.log(event.nativeEvent)
-};
 
   const data = {
     dataSets: [
@@ -176,17 +162,6 @@ export const Home = ({navigation}) => {
                     <ValueBox title={dataHomeBox[2].label} value={dataHomeBox[2].value + ' %'}/>
                     <ValueBox title={dataHomeBox[3].label} value={'R$ ' +  dataHomeBox[3].value}/>
                 </View>
-            </View>
-            <View style={styles.chartContainer}>
-                <OutroPie handleSelect={handleSelectPie} 
-                selectedEntry={selectedEntry}
-                sandwiches={sandwiches}
-                salads={salads}
-                soup={soup}
-                beverages={beverages}
-                desserts={desserts}
-                valorCentro={selecionadoPie.data ? selecionadoPie.data.value.toString() :  ''}
-                />      
             </View>
             <View style={styles.chartContainer}>
                 <LineChartRender

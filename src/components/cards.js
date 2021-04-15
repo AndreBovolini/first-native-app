@@ -9,31 +9,26 @@ import {
 import globalStyles from '../styles/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const Cards = (props) => {
+const Cards = ({id, title,value, show, handleClick}) => {
 
-    const [show,setShow] = useState([false])
+    
 
-    function handleClick(index) {
-        const newArray = [false,false,false]
-        console.log(newArray)
-        newArray[index]= !show[index]
-        setShow(newArray)
-    }
+    
     return (
         <View>
              <View style={styles.bloco}>
-                <Text style={styles.text}>Ativo {props.id}</Text>
+                <Text style={styles.text}>{title}</Text>
                 <TouchableOpacity style={styles.right}
-                    onPress={()=> handleClick(props.id)}
+                    onPress={()=> handleClick(id)}
                 >
-                    { show[props.id] ?   <Icon name="chevron-up" size={20} color="#FFF"/>
+                    { show[id] ?   <Icon name="chevron-up" size={20} color="#FFF"/>
                     :  <Icon name="chevron-down" size={20} color="#FFF"/>}
                 </TouchableOpacity> 
              </View>
-                { show[props.id] && (
+                { show[id] && (
                     <View style={styles.blocoExpand}>
-                        <Text style={styles.text}>{props.title}</Text>
-                        <Text style={styles.text}>{props.value}</Text>
+                        <Text style={styles.text}>{title}</Text>
+                        <Text style={styles.text}>{value}</Text>
                     </View>
                 )}
         </View>
