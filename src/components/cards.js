@@ -9,7 +9,7 @@ import {
 import globalStyles from '../styles/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const Cards = ({id, title,value, show, handleClick}) => {
+const Cards = ({id, title,value,label, show, handleClick}) => {
 
     
 
@@ -27,7 +27,7 @@ const Cards = ({id, title,value, show, handleClick}) => {
              </View>
                 { show[id] && (
                     <View style={styles.blocoExpand}>
-                        <Text style={styles.text}>{title}</Text>
+                        <Text style={styles.text}>{label}</Text>
                         <Text style={styles.text}>{value}</Text>
                     </View>
                 )}

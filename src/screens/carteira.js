@@ -11,7 +11,8 @@ import Cards from '../components/cards'
 import OutroPie from '../components/PieChart';
 
 import {
-  dataHomeBox
+  dataHomeBox,
+  AtivosCarteira
 } from '../data/data';
 
 const Carteira = ({navigation}) => {
@@ -23,12 +24,14 @@ const Carteira = ({navigation}) => {
   const [beverages, setBeverages] = useState(35);
   const [desserts, setDesserts] = useState(35);
 
-  let ativos = ['sandwiches', 'salads', 'soup', 'beverages', 'desserts']
-  
+
+  let ativos = AtivosCarteira.map(n => {
+    return n.label
+  })
+  // let ativos = ['sandwiches', 'salads', 'soup', 'beverages', 'desserts']
   const [show,setShow] = useState([false])
     function handleClick(index) {
         const newArray = [false]
-        console.log(newArray)
         newArray[index]= !show[index]
         setShow(newArray)
     }
@@ -42,7 +45,8 @@ const Carteira = ({navigation}) => {
       setSelectedEntry(JSON.stringify(entry))
       setSelecionadoPie(entry)
       try{
-        let selectName = event.nativeEvent.data.label.toLowerCase()
+        let selectName = event.nativeEvent.data.label
+        console.log('name ' + selectName)
         handleClick(ativos.indexOf(selectName))
         ativos.splice(ativos.indexOf(selectName, 1))
         ativos.unshift(selectName)
@@ -58,7 +62,18 @@ const Carteira = ({navigation}) => {
 
       return (
         <ScrollView contentContainerStyle={styles.container}>
-            <View style={styles.chartContainer}>
+             <View style={styles.chartContainer}>
+                <OutroPie handleSelect={handleSelectPie} 
+                selectedEntry={selectedEntry}
+                sandwiches={sandwiches}
+                salads={salads}
+                soup={soup}
+                beverages={beverages}
+                desserts={desserts}
+                valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  'Carteira'}
+                />      
+            </View>
+            {/* <View style={styles.chartContainer}>
                 <OutroPie handleSelect={handleSelectPie} 
                 selectedEntry={selectedEntry}
                 sandwiches={sandwiches}
@@ -68,12 +83,13 @@ const Carteira = ({navigation}) => {
                 desserts={desserts}
                 valorCentro={selecionadoPie.data ? selecionadoPie.data.value.toString() :  ''}
                 />      
-            </View>
+            </View> */}
             <View style={styles.containerCards}>
               {ativos.map(n => {
                 return <Cards id={ativos.indexOf(n)} 
                               title={n} 
-                              value={n} 
+                              value={AtivosCarteira[ativos.indexOf(n)].value}
+                              label={AtivosCarteira[ativos.indexOf(n)].label}
                               key={ativos.indexOf(n)} 
                               handleClick={handleClick}
                               show={show}/>;

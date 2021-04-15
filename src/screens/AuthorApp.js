@@ -9,15 +9,19 @@ import { useEffect } from 'react';
 const AuthOrApp = (props) => {
 
     useEffect(async() => {
-        const userToken = await AsyncStorage.getItem('userToken');
+        const userToken = await AsyncStorage.getItem('token');
         let token = parseInt(userToken);
-        let date = new Date();
-        
+        let date = new Date().getTime();
+        console.warn(token, date)
 
-        if (token > date) {
+        if (token) {
+        if (token < date) {
             props.navigation.navigate('Login')
         } else {
             props.navigation.navigate('Home')
+        }
+        } else {
+            props.navigation.navigate('Login')
         }
     },[]);
 

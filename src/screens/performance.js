@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -14,9 +14,12 @@ import globalStyles from '../styles/globalStyles';
 
 import LineChartRender from '../components/LineChart';
 import SelectPeriod from '../components/SelectPeriod';
+import TableRow from '../components/TableRow';
 
 import {
-    dataHomeBox
+    dataHomeBox,
+    dados,
+    resposta1
 } from '../data/data';
 
 
@@ -90,7 +93,8 @@ const Performance = ({navigation}) => {
     },
   ]);
   const [anoSelecionado, setAnoSelecionado] = useState('2017');
-    const [indiceAno, setIndiceAno] = useState(0);
+  const [periodoSelecionado, setPeriodoSelecionado] = useState('Tudo');
+  const [indiceAno, setIndiceAno] = useState(0);
 
     function handleSelecionaAno(ano) {
         setAnoSelecionado(ano);
@@ -98,7 +102,86 @@ const Performance = ({navigation}) => {
         setIndiceAno(indice);
     }
 
-    const anos = ['1m', '3m', '2021', '1 year', 'Tudo']
+    function handleSelecionaPeriodo(periodo) {
+      setPeriodoSelecionado(periodo)
+  }
+
+  const alteraDataPTParaEN = data => {
+    data = data.split('/');
+    data = data[2] + '-' + data[1] + '-' + data[0];
+    return data;
+  };
+
+  function oneMonthPeriod(value) {
+    let date = Date.parse(alteraDataPTParaEN(value.data));
+    let dataAtual = new Date().getTime() - (1000*60*60*24*98);
+    return date >= dataAtual
+  }
+
+  function threeMonthPeriod(value) {
+    let date = Date.parse(alteraDataPTParaEN(value.data));
+    let dataAtual = new Date().getTime() - (1000*60*60*24*128);
+    return date >= dataAtual
+  }
+
+  function oneYearPeriod(value) {
+    let date = Date.parse(alteraDataPTParaEN(value.data));
+    let dataAtual = new Date().getTime() - (1000*60*60*24*430);
+    return date >= dataAtual
+  }
+
+  function thisYear(value) {
+    let year =  value.data.slice(-4);
+    return year === periodoSelecionado
+  }
+
+
+  useEffect(() => {
+
+    let filteredData = [];
+    
+    switch (periodoSelecionado) {
+      case '1m':
+        filteredData = resposta1.resposta['tab-p1'].linha.filter(oneMonthPeriod);
+      break;
+      case '3m':
+        filteredData = resposta1.resposta['tab-p1'].linha.filter(threeMonthPeriod);
+      break;
+      case '2021':
+        filteredData = resposta1.resposta['tab-p1'].linha.filter(thisYear);
+      break;
+      case '1 year':
+        filteredData = resposta1.resposta['tab-p1'].linha.filter(oneYearPeriod);
+        break;
+      case 'Tudo':
+        filteredData = resposta1.resposta['tab-p1'].linha;
+      break;
+    };
+
+    if (filteredData !== []) {
+    const valores1 = filteredData.map((el, i) => {
+        return {
+            y: parseFloat(el.ibov),
+            x: parseFloat(i),
+            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' PETR4: ' + parseFloat(el.petr4, 3) + ' %',
+        }
+    });
+    const valores2 = filteredData.map((el, i) => {
+        return {
+            y: parseFloat(el.petr4),
+            x: parseFloat(i),
+            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' PETR4: ' + parseFloat(el.petr4, 3) + ' %',
+        }
+    });
+
+    setValues1(valores1);
+    setValues2(valores2);
+  };
+  }, [periodoSelecionado])
+
+  const periodos = ['1m', '3m', '2021', '1 year', 'Tudo'];
+  const anos = ['2017', '2018', '2019', '2020', '2021'];
+  const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
   const greenBlue = 'rgb(26, 182, 151)';
   const petrel = 'rgb(59, 145, 153)';
@@ -125,7 +208,7 @@ const Performance = ({navigation}) => {
           mode: 'CUBIC_BEZIER',
           drawValues: false,
           lineWidth: 2,
-          drawCircles: true,
+          drawCircles: false,
           circleColor: processColor(greenBlue),
           drawCircleHole: false,
           circleRadius: 5,
@@ -143,7 +226,7 @@ const Performance = ({navigation}) => {
           mode: 'CUBIC_BEZIER',
           drawValues: false,
           lineWidth: 2,
-          drawCircles: true,
+          drawCircles: false,
           circleColor: processColor(petrel),
           drawCircleHole: false,
           circleRadius: 5,
@@ -159,9 +242,9 @@ const Performance = ({navigation}) => {
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title}>Performance</Text>
             <View style={styles.containerSelector}>
-            {anos.map((el, i) => {
+            {periodos.map((el, i) => {
                 return (
-                  <SelectPeriod ano={el} key={i} anoSelecionado={anoSelecionado} handleSelecionaAno={handleSelecionaAno}/>
+                  <SelectPeriod ano={el} key={i} selecionado={periodoSelecionado} handleSelecionado={handleSelecionaPeriodo}/>
                 )
             })}
             </View>
@@ -173,7 +256,27 @@ const Performance = ({navigation}) => {
                 data={data}
                 />
             </View>
-           
+            <View style={styles.containerSelector}>
+      {anos.map((el, i) => {
+          return (
+            <SelectPeriod ano={el} key={i} selecionado={anoSelecionado} handleSelecionado={handleSelecionaAno}/>
+          )
+      })}
+        
+      </View>
+      <ScrollView style={styles.containerTable} nestedScrollEnabled = {true}>
+        <View style={styles.containerHeader}>
+        <Text style={styles.textoHeader}>Período</Text>
+          <Text style={styles.textoHeader}>Carteira</Text>
+          <Text style={styles.textoHeader}>IPCADP</Text>
+          <Text style={styles.textoHeader}>%IPCADP</Text>
+        </View>
+        {dados[indiceAno].response.map((el, i) => {
+            return (
+                <TableRow key={i} index={i} col1={meses[i]} col2={el.carteira} col3={el.IPCADP} col4={el.IPCADPP}/>
+            )
+        })}
+      </ScrollView>
         </ScrollView>
     )
 }
@@ -225,5 +328,27 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
       alignItems: 'center',
-    }
+    },
+    containerTable: {
+      height: 300,
+      marginVertical: 20,
+      marginHorizontal: 5,
+      backgroundColor: '#161616',
+      borderRadius: 10,
+    },
+    containerHeader: {
+      flexDirection: 'row',
+      height: 35,
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      backgroundColor: '#C4C4C4',
+      marginTop: 10,
+      marginHorizontal: 10,
+      borderRadius: 5,
+    },
+    textoHeader: {
+      fontSize: 20,
+      fontWeight: '700',
+      color: '#161616',
+    },
 })

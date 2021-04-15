@@ -13,12 +13,14 @@ import Cards from '../components/cards'
 import ValueBox from '../components/valueBox';
 import globalStyles from '../styles/globalStyles';
 
-import LineChartRender from '../components/LineChart';
+import LineChartResumo from '../components/LineChartResumo';
 import OutroPie from '../components/PieChart';
 
 import {
-    dataHomeBox
+    dataHomeBox,
+    resposta1
 } from '../data/data';
+import { useEffect } from 'react';
 
 
 export const Home = ({navigation}) => {
@@ -90,16 +92,38 @@ export const Home = ({navigation}) => {
       marker: 'Vitality: 350 pts',
     },
   ]);
+  const [labels, setLabels] = useState([]);
 
   const greenBlue = 'rgb(26, 182, 151)';
   const petrel = 'rgb(59, 145, 153)';
 
+  useEffect(() => {
+    const valores1 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
+        return {
+            y: parseFloat(el.ibov),
+            x: parseFloat(i),
+            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' PETR4: ' + parseFloat(el.petr4, 3) + ' %',
+        }
+    });
+    const valores2 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
+        return {
+            y: parseFloat(el.petr4),
+            x: parseFloat(i),
+            marker: 'IBOV: ' + parseFloat(el.ibov, 3) + ' %' + ' PETR4: ' + parseFloat(el.petr4, 3) + ' %',
+        }
+    });
+    const linelabes = resposta1.resposta["tab-p1"].linha.map((el, i) => {
+        return el.data
+    })
+    setValues1(valores1);
+    setValues2(valores2);
+    setLabels(linelabes);
+  }, [])
 
   function handleSelectLine(event) {
-    
 
-    
     let entry = event.nativeEvent;
+     console.warn('aaaa')
     if (entry == null) {
       setSelectedEvent(null);
       setSelecionadoLine({});
@@ -120,7 +144,7 @@ export const Home = ({navigation}) => {
           mode: 'CUBIC_BEZIER',
           drawValues: false,
           lineWidth: 2,
-          drawCircles: true,
+          drawCircles: false,
           circleColor: processColor(greenBlue),
           drawCircleHole: false,
           circleRadius: 5,
@@ -138,7 +162,7 @@ export const Home = ({navigation}) => {
           mode: 'CUBIC_BEZIER',
           drawValues: false,
           lineWidth: 2,
-          drawCircles: true,
+          drawCircles: false,
           circleColor: processColor(petrel),
           drawCircleHole: false,
           circleRadius: 5,
@@ -149,6 +173,9 @@ export const Home = ({navigation}) => {
       },
     ],
   };
+
+ 
+
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -163,12 +190,13 @@ export const Home = ({navigation}) => {
                     <ValueBox title={dataHomeBox[3].label} value={'R$ ' +  dataHomeBox[3].value}/>
                 </View>
             </View>
-            <View style={styles.chartContainer}>
-                <LineChartRender
+            <View style={styles.lineChartContainer}>
+                <LineChartResumo
                 handleSelect={handleSelectLine}
                 selectedEvent={selectedEvent}
                 selecionado={selecionadoLine.data ? selecionadoLine.data.marker : null}
                 data={data}
+                label={labels}
                 />
             </View>
         </ScrollView>
@@ -205,8 +233,13 @@ const styles = StyleSheet.create({
     },
     chartContainer: {
         width: globalStyles.dimensions.width,
-        height: globalStyles.dimensions.height / 1.5,
-        marginTop: 20
+        height: globalStyles.dimensions.height / 1.75,
+        marginTop: 20, 
+      },
+      lineChartContainer: {
+        width: globalStyles.dimensions.width,
+        height: globalStyles.dimensions.height / 3,
+        marginTop: 20, 
       },
       label: {
         alignItems: 'center',
