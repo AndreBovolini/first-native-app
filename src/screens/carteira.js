@@ -24,7 +24,6 @@ const Carteira = ({navigation}) => {
   const [beverages, setBeverages] = useState(35);
   const [desserts, setDesserts] = useState(35);
 
-
   let ativos = AtivosCarteira.map(n => {
     return n.label
   })
@@ -48,8 +47,8 @@ const Carteira = ({navigation}) => {
         let selectName = event.nativeEvent.data.label
         console.log('name ' + selectName)
         handleClick(ativos.indexOf(selectName))
-        ativos.splice(ativos.indexOf(selectName, 1))
-        ativos.unshift(selectName)
+        // ativos.splice(ativos.indexOf(selectName, 1))
+        // ativos.unshift(selectName)
         console.log('ativos '+ ativos)
       }catch{
         setShow([false])
