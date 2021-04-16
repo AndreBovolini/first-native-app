@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import TouchID from 'react-native-touch-id'
+import globalStyles from '../styles/globalStyles';
 
 const FingerPrint = (props) => {
 	
@@ -29,6 +30,6 @@ export default FingerPrint;
 
 const styles = StyleSheet.create({
     text: {
-        color:'#FFF'
+        color:globalStyles.colors.fontColor
     }
 })

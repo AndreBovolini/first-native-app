@@ -5,11 +5,15 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   processColor,
   TouchableOpacity,
   View,
+  BackHandler,
+  Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Cards from '../components/cards'
 import ValueBox from '../components/valueBox';
@@ -23,7 +27,6 @@ import {
     resposta1
 } from '../data/data';
 import { useEffect } from 'react';
-
 
 export const Home = ({navigation}) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -195,8 +198,38 @@ export const Home = ({navigation}) => {
     ],
   };
 
- 
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', (e) => {
+        const action = e.data.action;
+        e.preventDefault();
 
+        Alert.alert(
+          'O que você deseja fazer?',
+          '',
+          [
+            { text: "Manter",
+             style: 'cancel',
+              onPress: () => {} },
+            {
+              text: 'Sair',
+              style: 'destructive',
+              onPress: () => BackHandler.exitApp(),
+            },
+            { text: 'Fazer Logoff',
+              style: 'logoff',
+              onPress: () => {
+                AsyncStorage.removeItem('token');
+                navigation.navigate('Login', {
+                  credentials: false
+                })
+                }
+            }
+          ]
+        );
+      }),
+    []
+  );
 
     return (
         <ScrollView contentContainerStyle={styles.container}>

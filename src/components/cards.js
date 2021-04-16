@@ -30,8 +30,8 @@ const Cards = ({id, title,value, show, handleClick, cor, data}) => {
                 <TouchableOpacity style={styles.right}
                     onPress={()=> handleClick(id)}
                 >
-                    { show ?   <Icon name="chevron-up" size={20} color="#FFF"/>
-                    :  <Icon name="chevron-down" size={20} color="#FFF"/>}
+                    { show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
+                    :  <Icon name="chevron-down" size={20} color={globalStyles.colors.fontColor}/>}
                 </TouchableOpacity>
                 </View>
              </View>
@@ -53,7 +53,7 @@ export default Cards
 
 const styles = StyleSheet.create({
       text: {
-        color: '#FFF',
+        color: globalStyles.colors.fontColor,
         fontSize: 20,
         margin: 8
       },

@@ -10,8 +10,8 @@ import {
 import update from 'immutability-helper';
 
 import {LineChart} from 'react-native-charts-wrapper';
-
 import globalStyles from '../styles/globalStyles';
+
 
 
 const LineChartRender = props => {

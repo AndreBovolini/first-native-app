@@ -18,8 +18,8 @@ const CustomModal = props => {
     <View style={styles.container}>
       <Modal isVisible={props.visible}>
         <View
-          style={[styles.modal, {backgroundColor: '#161616', height: props.height, width: props.width}]}>
-          <Text style={{marginHorizontal: 20, marginVertical: 20, fontSize: 25, color: '#FFF', textAlign: 'center'}}>Uma nova senha foi enviada para o seu e-mail!</Text>
+          style={[styles.modal, {backgroundColor: globalStyles.colors.firstLayer, height: props.height, width: props.width}]}>
+          <Text style={{marginHorizontal: 20, marginVertical: 20, fontSize: 25, color: globalStyles.colors.fontColor, textAlign: 'center'}}>Uma nova senha foi enviada para o seu e-mail!</Text>
           <TouchableOpacity activeOpacity={0.7} onPress={props.buttonAction}>
             <View style={styles.button}>
               <Text style={styles.buttonText}>Enviar</Text>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#FFF',
+    color: globalStyles.colors.fontColor,
     fontSize: 20,
   },
 });

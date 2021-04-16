@@ -40,7 +40,7 @@ const Carteira = ({navigation}) => {
         showCount = showCount +1;
       }
     })
-    const increasedHeight = (showCount * 90);
+    const increasedHeight = (showCount * 93);
     setScrollViewHeight(1183 + increasedHeight)
   }, [arrayShow])
   

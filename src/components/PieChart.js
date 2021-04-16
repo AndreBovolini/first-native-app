@@ -104,7 +104,6 @@ return (
             entryLabelColor={processColor('white')}
             entryLabelTextSize={20}
             entryLabelFontFamily={'HelveticaNeue-Medium'}
-
             rotationEnabled={true}
             rotationAngle={45}
             usePercentValues={true}

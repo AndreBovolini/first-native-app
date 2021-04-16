@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
+import globalStyles from '../styles/globalStyles';
 
 const CustomInput = (props) => {
   return (
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
         height: 80,
     },
     label: {
-        color: '#FFF',
+        color: globalStyles.colors.fontColor,
     },
     containerInput: {
         backgroundColor: '#FFF',
