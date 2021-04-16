@@ -105,6 +105,8 @@ const Performance = ({navigation}) => {
     }
 
     function handleSelecionaPeriodo(periodo) {
+      setSelectedEvent(null);
+      setSelecionadoLine({});
       setPeriodoSelecionado(periodo)
   }
 
@@ -149,13 +151,13 @@ const Performance = ({navigation}) => {
       break;
       case '3m':
         filteredData = resposta1.resposta['tab-p1'].linha.filter(threeMonthPeriod);
-        setGranularity(20)
+        setGranularity(25)
       break;
       case '2021':
         filteredData = resposta1.resposta['tab-p1'].linha.filter(thisYear);
         setGranularity(40)
       break;
-      case '1 year':
+      case '12m':
         setGranularity(50)
         filteredData = resposta1.resposta['tab-p1'].linha.filter(oneYearPeriod);
         break;
@@ -190,7 +192,7 @@ const Performance = ({navigation}) => {
   };
   }, [periodoSelecionado])
 
-  const periodos = ['1m', '3m', '2021', '1 year', 'Tudo'];
+  const periodos = ['1m', '3m', '12m', '2021', 'Tudo'];
   const anos = ['2017', '2018', '2019', '2020', '2021'];
   const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
@@ -277,19 +279,21 @@ const Performance = ({navigation}) => {
         
       </View>
       <View style={{height: 500, borderRadius: 20,  width: globalStyles.dimensions.width *0.9}}>
-      <ScrollView style={styles.containerTable} nestedScrollEnabled = {true}>
+      <View style={styles.containerTable} >
         <View style={styles.containerHeader}>
         <Text style={styles.textoHeader}>Período</Text>
           <Text style={styles.textoHeader}>Carteira</Text>
           <Text style={styles.textoHeader}>IPCADP</Text>
           <Text style={styles.textoHeader}>%IPCADP</Text>
         </View>
+        <ScrollView nestedScrollEnabled = {true}>
         {dados[indiceAno].response.map((el, i) => {
             return (
                 <TableRow key={i} index={i} col1={meses[i]} col2={el.carteira} col3={el.IPCADP} col4={el.IPCADPP}/>
             )
         })}
-      </ScrollView>
+        </ScrollView>
+      </View>
       </View>
         </ScrollView>
     )
@@ -298,7 +302,7 @@ export default Performance;
 
 const styles = StyleSheet.create({
     container: {
-        height: globalStyles.dimensions.height *1.7,
+        height: 1170,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -311,19 +315,9 @@ const styles = StyleSheet.create({
         marginVertical: 10, 
         marginLeft: 10,
     },
-    valueBoxContainer: {
-        height: globalStyles.dimensions.height / 3.6,
-        width: globalStyles.dimensions.width,
-    }, 
-    valueBoxContainerRow: {
-        flex: 1, 
-        flexDirection: 'row', 
-        justifyContent: 'space-around',
-        marginVertical: 5
-    },
     chartContainer: {
         width: globalStyles.dimensions.width,
-        height: globalStyles.dimensions.height / 1.6,
+        height: 430,
     },
     label: {
         alignItems: 'center',
@@ -337,7 +331,7 @@ const styles = StyleSheet.create({
     containerSelector: {
         height: 30,
         width: (globalStyles.dimensions.width *4)/5,
-        marginRight: globalStyles.dimensions.width /5,
+        marginRight: 30,
         flexDirection: 'row',
         justifyContent: 'space-around',
       alignItems: 'center',

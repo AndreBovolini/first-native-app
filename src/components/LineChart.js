@@ -38,8 +38,9 @@ const LineChartRender = props => {
           marker={{
             enabled: true,
             digits: 2,
-            markerColor: processColor('black'),
+            markerColor: processColor('#252525'),
             textColor: processColor('white'),
+            backgroundTint: processColor('red'),
             textSize: 20,
           }}
           xAxis={{
@@ -87,6 +88,7 @@ const LineChartRender = props => {
           dragDecelerationFrictionCoef={0.99}
           keepPositionOnRotation={false}
           onSelect={props.handleSelect}
+          onTouchEnd={() => console.warn('salve')}
           onChange={event => console.log(event.nativeEvent)}
         />
       </View>

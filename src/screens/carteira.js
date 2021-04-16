@@ -19,6 +19,8 @@ const Carteira = ({navigation}) => {
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [selecionadoPie, setSelecionadoPie] = useState({});
   const [arrayAtivos, setArrayAtivos] = useState([])
+  const [scrollViewHeight, setScrollViewHeight] = useState(1183)
+  const [arrayShow, setArrayShow] = useState([])
   const [cores, setCores] = useState(['#5456A2','#7A77B7','#ABA2D0','#5f8dca','#7FAADB', '#a7d7d2', '#48A192']);
 
   useEffect(() => {
@@ -26,17 +28,29 @@ const Carteira = ({navigation}) => {
     AtivosCarteira.forEach((el, i) => {
       ativos.push(el.label);
     });
+    const newArray = Array(arrayAtivos.length).fill(false);
+    setArrayShow(newArray);
     setArrayAtivos(ativos);
   }, []);
+
+  useEffect(() => {
+    let showCount = 0
+    arrayShow.forEach((el, i) => {
+      if (el) {
+        showCount = showCount +1;
+      }
+    })
+    const increasedHeight = (showCount * 90);
+    setScrollViewHeight(1183 + increasedHeight)
+  }, [arrayShow])
   
-  const [show,setShow] = useState([false])
     function handleClick(index) {
-        const newArray = Array(arrayAtivos.length).fill(false)
-        newArray[index]= !show[index]
-        setShow(newArray)
+        const newArray = [...arrayShow];
+        newArray[index]= !arrayShow[index]
+        setArrayShow(newArray);
     }
 
-  function handleSelectPie(event) {
+  function handleSelectPie(event) { 
     let entry = event.nativeEvent
     if (entry == null) {
       setSelectedEntry(null)
@@ -50,14 +64,14 @@ const Carteira = ({navigation}) => {
         // ativos.splice(ativos.indexOf(selectName, 1))
         // ativos.unshift(selectName)
       }catch{
-        setShow([false])
+
       }
       
     }
 };
 
       return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView contentContainerStyle={[styles.container, { height: scrollViewHeight}]}>
         <Text style={styles.title}>Carteira</Text>
             <View style={styles.chartContainer}>
                 <OutroPie handleSelect={handleSelectPie} 
@@ -73,7 +87,7 @@ const Carteira = ({navigation}) => {
                               data={AtivosCarteira[arrayAtivos.indexOf(el)].data}
                               key={i} 
                               handleClick={handleClick}
-                              show={show[i]}
+                              show={arrayShow[i]}
                               cor={cores[i]}/>;
               })}
             </View>
@@ -86,7 +100,6 @@ export default Carteira;
 
 const styles = StyleSheet.create({
       container: {
-        height: globalStyles.dimensions.height *1.85,
         width: globalStyles.dimensions.width,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',
@@ -110,7 +123,7 @@ const styles = StyleSheet.create({
     },
     chartContainer: {
       width: globalStyles.dimensions.width,
-      height: globalStyles.dimensions.height / 1.8,
+      height: 382,
       marginTop: 20
     },
     

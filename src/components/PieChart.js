@@ -90,7 +90,7 @@ return (
             legend={infos.legend}
             marker={{
               enabled: true,
-              markerColor: processColor('black'),
+              markerColor: processColor('#252525'),
               textColor: processColor('white'),
               textSize: 23,
             }}

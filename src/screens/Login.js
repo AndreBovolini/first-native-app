@@ -20,20 +20,17 @@ import { useEffect } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const Login = ({navigation}) => {
+const Login = ({route, navigation}) => {
   const [inputUsuario, setInputUsuario] = useState('');
   const [inputSenha, setInputSenha] = useState('');
 
   useEffect(async () => {
-    try { 
-        let credentials = await Keychain.getGenericPassword();
+    const { credentials} = route.params;
         if (credentials) {
             pressHandler()
         } else {
         }
-      } catch (error) {
-      }
-    }, [])
+    }, []);
 
   const handleForgotPassword = () => {
     navigation.navigate('ResetPassword');

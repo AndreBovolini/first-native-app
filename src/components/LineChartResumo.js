@@ -38,7 +38,7 @@ const LineChartResumo = props => {
           marker={{
             enabled: true,
             digits: 2,
-            markerColor: processColor('black'),
+            markerColor: processColor('#252525'),
             textColor: processColor('white'),
             textSize: 20,
           }}

@@ -251,7 +251,7 @@ export default Home;
 
 const styles = StyleSheet.create({
     container: {
-        height: globalStyles.dimensions.height *1.6,
+        height: 1080,
         width: globalStyles.dimensions.width,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     valueBoxContainer: {
-        height: globalStyles.dimensions.height / 3.6,
+        height: 191,
         width: globalStyles.dimensions.width,
         
     }, 
@@ -288,12 +288,12 @@ const styles = StyleSheet.create({
     },
     chartContainer: {
         width: globalStyles.dimensions.width,
-        height: globalStyles.dimensions.height / 1.75,
+        height: 393,
         marginTop: 20, 
       },
       lineChartContainer: {
         width: globalStyles.dimensions.width,
-        height: globalStyles.dimensions.height / 3,
+        height: 230,
         marginTop: 20, 
       },
       label: {
