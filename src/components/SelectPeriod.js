@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import globalStyles from '../styles/globalStyles';
 
 
 const SelectPeriod = props => {
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
   container: {
     height: 30,
     width: 60,
-    backgroundColor: '#000',
+    backgroundColor: globalStyles.colors.backGround,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',

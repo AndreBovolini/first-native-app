@@ -94,7 +94,7 @@ const Login = ({route, navigation}) => {
        });
    }
 
-
+ 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -138,13 +138,13 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: globalStyles.colors.backGround,
     justifyContent: 'flex-end',
     alignItems: 'center',
     paddingTop: globalStyles.dimensions.width / 2,
   },
   text: {
-    color: '#FFF',
+    color: globalStyles.colors.fontColor,
     fontSize: 24,
   },
   button: {
@@ -156,10 +156,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#FFF',
+    color: globalStyles.colors.fontColor,
     fontSize: 20,
   },
   passwordReset: {
-    color: '#FFF',
+    color: globalStyles.colors.fontColor,
   },
 });

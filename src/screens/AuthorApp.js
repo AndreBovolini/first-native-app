@@ -6,6 +6,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Keychain from 'react-native-keychain';
 import { useEffect } from 'react';
+import globalStyles from '../styles/globalStyles';
 
 const AuthOrApp = (props) => {
 
@@ -57,6 +58,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#000'
+        backgroundColor: globalStyles.colors.backGround
     }
 })

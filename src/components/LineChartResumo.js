@@ -10,6 +10,7 @@ import {
 import update from 'immutability-helper';
 
 import {LineChart} from 'react-native-charts-wrapper';
+import globalStyles from '../styles/globalStyles';
 
 
 const LineChartResumo = props => {
@@ -97,7 +98,7 @@ const LineChartResumo = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: globalStyles.colors.backGround,
     padding: 20,
   },
   chart: {
