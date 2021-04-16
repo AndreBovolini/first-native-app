@@ -10,11 +10,12 @@ import {
 import update from 'immutability-helper';
 
 import {LineChart} from 'react-native-charts-wrapper';
+import globalStyles from '../styles/globalStyles';
+import { proc } from 'react-native-reanimated';
 
 
 const LineChartResumo = props => {
-  const greenBlue = 'rgb(26, 182, 151)';
-  const petrel = 'rgb(59, 145, 153)';
+
 
   return (
     <View style={{flex: 1}}>
@@ -27,7 +28,7 @@ const LineChartResumo = props => {
           legend={{
             enabled: false,
             textSize: 15,
-            textColor: processColor('white'),
+            textColor: processColor(globalStyles.chartColors.legendColor),
             form: 'CIRCLE',
 
             horizontalAlignment: 'CENTER',
@@ -38,8 +39,8 @@ const LineChartResumo = props => {
           marker={{
             enabled: true,
             digits: 2,
-            markerColor: processColor('#252525'),
-            textColor: processColor('white'),
+            markerColor: processColor(globalStyles.chartColors.tooltip),
+            textColor: processColor(globalStyles.chartColors.tooltipText),
             textSize: 20,
           }}
           xAxis={{
@@ -52,7 +53,7 @@ const LineChartResumo = props => {
             fontFamily: 'HelveticaNeue-Medium',
             fontWeight: 'bold',
             textSize: 12,
-            textColor: processColor('white'),
+            textColor: processColor(globalStyles.chartColors.axis),
             valueFormatter: props.label,
           }}
           yAxis={{
@@ -61,7 +62,7 @@ const LineChartResumo = props => {
               drawGridLines: false,
               drawLabels: true,
               drawAxisLine: true,
-              textColor: processColor('white'),
+              textColor: processColor(globalStyles.chartColors.axis),
               valueFormatter: "###'%'",
             },
             right: {
@@ -97,7 +98,7 @@ const LineChartResumo = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: globalStyles.colors.backGround,
     padding: 20,
   },
   chart: {
