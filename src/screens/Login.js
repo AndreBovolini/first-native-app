@@ -20,22 +20,17 @@ import { useEffect } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const Login = ({navigation}) => {
+const Login = ({route, navigation}) => {
   const [inputUsuario, setInputUsuario] = useState('');
   const [inputSenha, setInputSenha] = useState('');
 
   useEffect(async () => {
-    try { 
-        let credentials = await Keychain.getGenericPassword();
+    const { credentials} = route.params;
         if (credentials) {
             pressHandler()
         } else {
-          console.log('No credentials stored')
         }
-      } catch (error) {
-        console.log('Keychain couldn\'t be accessed!', error);
-      }
-    }, [])
+    }, []);
 
   const handleForgotPassword = () => {
     navigation.navigate('ResetPassword');
@@ -50,9 +45,8 @@ const Login = ({navigation}) => {
                   inputSenha
                 )
               } catch (error) {
-                console.log(error)
               }
-              let dateLogin = new Date().getTime() + (1000*60*1);
+              let dateLogin = new Date().getTime() + (1000*60*5);
               AsyncStorage.setItem('token', dateLogin.toString())
               navigation.navigate('Home');
           }
@@ -71,14 +65,14 @@ const Login = ({navigation}) => {
    .then(biometryType => {
      // Success code
      if (biometryType === 'FaceID') {
-         console.log('FaceID is supported.');
+
      } else {
-         console.log('TouchID is supported.'); 
+
      }
    })
    .catch(error => {
      // Failure code
-     console.log(error);
+
    });
  
     TouchID.authenticate('to demo this react-native component', optionalConfigObject)
@@ -87,15 +81,13 @@ const Login = ({navigation}) => {
       
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {
-              console.log('Credentials successfully loaded for user ' + credentials.username + ' password: ' + credentials.password);
-              let dateLogin = new Date().getTime() + (1000*60*1);
+            
+              let dateLogin = new Date().getTime() + (1000*60*5);
               AsyncStorage.setItem('token', dateLogin.toString())
               navigation.navigate('Home');
             } else {
-              console.log('No credentials stored')
             }
           } catch (error) {
-            console.log('Keychain couldn\'t be accessed!', error);
           }
        })
        .catch(error => {

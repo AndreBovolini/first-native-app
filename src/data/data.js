@@ -64,9 +64,39 @@ export const dados = [
     ano: '2017',
     response: [
       {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
+        carteira: '3,25',
+        IPCADP: '1,17',
+        IPCADPP: '564,5',
+      },
+      {
+        carteira: '2,36',
+        IPCADP: '0,25',
+        IPCADPP: '258,96',
+      },
+      {
+        carteira: '4,56',
+        IPCADP: '0,99',
+        IPCADPP: '458,98',
+      },
+      {
+        carteira: '5,69',
+        IPCADP: '2,36',
+        IPCADPP: '486,6',
+      },
+      {
+        carteira: '6,39',
+        IPCADP: '1,46',
+        IPCADPP: '400,25',
+      },
+      {
+        carteira: '5,23',
+        IPCADP: '2,29',
+        IPCADPP: '259,63',
+      },
+      {
+        carteira: '4,58',
+        IPCADP: '1,26',
+        IPCADPP: '589,35',
       },
       {
         carteira: '1,17',
@@ -74,54 +104,24 @@ export const dados = [
         IPCADPP: '321,35',
       },
       {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
+        carteira: '1,25',
+        IPCADP: '0,56',
+        IPCADPP: '864,68',
       },
       {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
+        carteira: '1,36',
+        IPCADP: '0,78',
+        IPCADPP: '51,68',
       },
       {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
+        carteira: '1,78',
+        IPCADP: '0,45',
+        IPCADPP: '863,25',
       },
       {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
-      },
-      {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
-      },
-      {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
-      },
-      {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
-      },
-      {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
-      },
-      {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
-      },
-      {
-        carteira: '1,17',
-        IPCADP: '0,36',
-        IPCADPP: '321,35',
+        carteira: '2,36',
+        IPCADP: '0,79',
+        IPCADPP: '466,36',
       },
     ],
   },
@@ -129,14 +129,64 @@ export const dados = [
     ano: '2018',
     response: [
       {
-        carteira: '2018',
-        IPCADP: '0,29',
+        carteira: '1,17',
+        IPCADP: '0,36',
         IPCADPP: '321,35',
       },
       {
-        carteira: '0,85',
-        IPCADP: '0,32',
-        IPCADPP: '321,35',
+        carteira: '1,25',
+        IPCADP: '0,56',
+        IPCADPP: '864,68',
+      },
+      {
+        carteira: '1,36',
+        IPCADP: '0,78',
+        IPCADPP: '51,68',
+      },
+      {
+        carteira: '1,78',
+        IPCADP: '0,45',
+        IPCADPP: '863,25',
+      },
+      {
+        carteira: '2,36',
+        IPCADP: '0,79',
+        IPCADPP: '466,36',
+      },
+      {
+        carteira: '3,25',
+        IPCADP: '1,17',
+        IPCADPP: '564,5',
+      },
+      {
+        carteira: '2,36',
+        IPCADP: '0,25',
+        IPCADPP: '258,96',
+      },
+      {
+        carteira: '4,56',
+        IPCADP: '0,99',
+        IPCADPP: '458,98',
+      },
+      {
+        carteira: '5,69',
+        IPCADP: '2,36',
+        IPCADPP: '486,6',
+      },
+      {
+        carteira: '6,39',
+        IPCADP: '1,46',
+        IPCADPP: '400,25',
+      },
+      {
+        carteira: '5,23',
+        IPCADP: '2,29',
+        IPCADPP: '259,63',
+      },
+      {
+        carteira: '4,58',
+        IPCADP: '1,26',
+        IPCADPP: '589,35',
       },
     ],
   },
@@ -144,14 +194,64 @@ export const dados = [
     ano: '2019',
     response: [
       {
-        carteira: '2019',
-        IPCADP: '0,29',
+        carteira: '1,36',
+        IPCADP: '0,78',
+        IPCADPP: '51,68',
+      },
+      {
+        carteira: '1,78',
+        IPCADP: '0,45',
+        IPCADPP: '863,25',
+      },
+      {
+        carteira: '1,17',
+        IPCADP: '0,36',
         IPCADPP: '321,35',
       },
       {
-        carteira: '0,85',
-        IPCADP: '0,32',
-        IPCADPP: '321,35',
+        carteira: '1,25',
+        IPCADP: '0,56',
+        IPCADPP: '864,68',
+      },
+      {
+        carteira: '2,36',
+        IPCADP: '0,25',
+        IPCADPP: '258,96',
+      },
+      {
+        carteira: '4,56',
+        IPCADP: '0,99',
+        IPCADPP: '458,98',
+      },
+      {
+        carteira: '2,36',
+        IPCADP: '0,79',
+        IPCADPP: '466,36',
+      },
+      {
+        carteira: '3,25',
+        IPCADP: '1,17',
+        IPCADPP: '564,5',
+      },
+      {
+        carteira: '5,23',
+        IPCADP: '2,29',
+        IPCADPP: '259,63',
+      },
+      {
+        carteira: '4,58',
+        IPCADP: '1,26',
+        IPCADPP: '589,35',
+      },
+      {
+        carteira: '5,69',
+        IPCADP: '2,36',
+        IPCADPP: '486,6',
+      },
+      {
+        carteira: '6,39',
+        IPCADP: '1,46',
+        IPCADPP: '400,25',
       },
     ],
   },
@@ -159,14 +259,65 @@ export const dados = [
     ano: '2020',
     response: [
       {
-        carteira: '2020',
-        IPCADP: '0,29',
+        carteira: '2,36',
+        IPCADP: '0,25',
+        IPCADPP: '258,96',
+      },
+      {
+        carteira: '3,25',
+        IPCADP: '1,17',
+        IPCADPP: '564,5',
+      },
+      {
+        carteira: '5,69',
+        IPCADP: '2,36',
+        IPCADPP: '486,6',
+      },
+      {
+        carteira: '4,56',
+        IPCADP: '0,99',
+        IPCADPP: '458,98',
+      },
+      {
+        carteira: '5,23',
+        IPCADP: '2,29',
+        IPCADPP: '259,63',
+      },
+      {
+        carteira: '6,39',
+        IPCADP: '1,46',
+        IPCADPP: '400,25',
+      },
+      
+      {
+        carteira: '1,17',
+        IPCADP: '0,36',
         IPCADPP: '321,35',
       },
       {
-        carteira: '0,85',
-        IPCADP: '0,32',
-        IPCADPP: '321,35',
+        carteira: '4,58',
+        IPCADP: '1,26',
+        IPCADPP: '589,35',
+      },
+      {
+        carteira: '1,36',
+        IPCADP: '0,78',
+        IPCADPP: '51,68',
+      },
+      {
+        carteira: '1,25',
+        IPCADP: '0,56',
+        IPCADPP: '864,68',
+      },
+      {
+        carteira: '2,36',
+        IPCADP: '0,79',
+        IPCADPP: '466,36',
+      },
+      {
+        carteira: '1,78',
+        IPCADP: '0,45',
+        IPCADPP: '863,25',
       },
     ],
   },
@@ -174,14 +325,64 @@ export const dados = [
     ano: '2021',
     response: [
       {
-        carteira: '2021',
-        IPCADP: '0,29',
+        carteira: '5,69',
+        IPCADP: '2,36',
+        IPCADPP: '486,6',
+      },
+      {
+        carteira: '6,39',
+        IPCADP: '1,46',
+        IPCADPP: '400,25',
+      },
+      {
+        carteira: '5,23',
+        IPCADP: '2,29',
+        IPCADPP: '259,63',
+      },
+      {
+        carteira: '3,25',
+        IPCADP: '1,17',
+        IPCADPP: '564,5',
+      },
+      {
+        carteira: '2,36',
+        IPCADP: '0,25',
+        IPCADPP: '258,96',
+      },
+      {
+        carteira: '4,56',
+        IPCADP: '0,99',
+        IPCADPP: '458,98',
+      },
+      {
+        carteira: '1,36',
+        IPCADP: '0,78',
+        IPCADPP: '51,68',
+      },
+      {
+        carteira: '1,78',
+        IPCADP: '0,45',
+        IPCADPP: '863,25',
+      },
+      {
+        carteira: '2,36',
+        IPCADP: '0,79',
+        IPCADPP: '466,36',
+      },
+      {
+        carteira: '4,58',
+        IPCADP: '1,26',
+        IPCADPP: '589,35',
+      },
+      {
+        carteira: '1,17',
+        IPCADP: '0,36',
         IPCADPP: '321,35',
       },
       {
-        carteira: '0,85',
-        IPCADP: '0,32',
-        IPCADPP: '321,35',
+        carteira: '1,25',
+        IPCADP: '0,56',
+        IPCADPP: '864,68',
       },
     ],
   },

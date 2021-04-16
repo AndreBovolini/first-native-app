@@ -4,6 +4,7 @@ import {
 } from 'react-native'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Keychain from 'react-native-keychain';
 import { useEffect } from 'react';
 
 const AuthOrApp = (props) => {
@@ -12,16 +13,33 @@ const AuthOrApp = (props) => {
         const userToken = await AsyncStorage.getItem('token');
         let token = parseInt(userToken);
         let date = new Date().getTime();
-        console.warn(token, date)
 
         if (token) {
         if (token < date) {
-            props.navigation.navigate('Login')
+            let credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                props.navigation.navigate('Login', {
+                    credentials: true
+                })
+            } else {
+                props.navigation.navigate('Login', {
+                    credentials: false
+                })
+            }
         } else {
             props.navigation.navigate('Home')
         }
         } else {
-            props.navigation.navigate('Login')
+            let credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                props.navigation.navigate('Login', {
+                    credentials: true
+                })
+            } else {
+                props.navigation.navigate('Login', {
+                    credentials: false
+                })
+            }
         }
     },[]);
 

@@ -38,13 +38,14 @@ const LineChartRender = props => {
           marker={{
             enabled: true,
             digits: 2,
-            markerColor: processColor('black'),
+            markerColor: processColor('#252525'),
             textColor: processColor('white'),
-            textSize: 15,
+            backgroundTint: processColor('red'),
+            textSize: 20,
           }}
           xAxis={{
             enabled: true,
-            granularity: 25,
+            granularity: props.granularity,
             drawLabels: true,
             position: 'BOTTOM',
             drawAxisLine: true,
@@ -53,7 +54,7 @@ const LineChartRender = props => {
             fontWeight: 'bold',
             textSize: 12,
             textColor: processColor('white'),
-            valueFormatter: props.label,
+            valueFormatter: props.labels,
           }}
           yAxis={{
             left: {
@@ -70,8 +71,8 @@ const LineChartRender = props => {
           }}
           autoScaleMinMaxEnabled={true}
           animation={{
-            durationX: 0,
-            durationY: 1500,
+            durationX: 1300,
+            durationY: 0,
             easingY: 'EaseInOutQuart',
           }}
           drawGridBackground={false}
@@ -87,6 +88,7 @@ const LineChartRender = props => {
           dragDecelerationFrictionCoef={0.99}
           keepPositionOnRotation={false}
           onSelect={props.handleSelect}
+          onTouchEnd={() => console.warn('salve')}
           onChange={event => console.log(event.nativeEvent)}
         />
       </View>

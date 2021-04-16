@@ -18,7 +18,7 @@ const Cards = ({id, title,value, show, handleClick, cor, data}) => {
       return numero.join(',');
     }
     const valor = numberToReal(value)
-    console.log(valor)
+
     return (
         <View>
         <View style={[styles.blocoCor, {backgroundColor: cor}]}>
