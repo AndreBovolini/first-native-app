@@ -18,5 +18,8 @@ export default {
         series2: 'rgb(59, 145, 153)',
         pieChartColors: ['#5456A2','#7A77B7', '#ABA2D0', '#5f8dca','#7FAADB', '#a7d7d2', '#48A192'],
         pieChartHole: '#000',
+        legendColor:'#FFF',
+        axis: '#FFF',
+        centerText: '#FFF',
     }
 }

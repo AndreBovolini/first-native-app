@@ -96,19 +96,18 @@ const Login = ({route, navigation}) => {
        });
    }
 
-   const routes = useRoute()
-   console.log(routes.name)
+  const currentRoute = useRoute()
+  console.log(currentRoute.name)
    useEffect(() => {
-    
     const backAction = () => {
-      
-      if(routes.name === 'Login'){
-        BackHandler.exitApp()
-        return true;
-    }else{
-      return
-    }
+      console.log('bbbb', currentRoute)
+      if(currentRoute.name === 'Login') {
+       BackHandler.exitApp() 
+      }if (currentRoute.name === 'Home'){
+        navigation.navigate('Home')
       }
+      return true;
+    };
 
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",

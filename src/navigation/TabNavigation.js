@@ -10,6 +10,7 @@ import AuthorApp from '../screens/AuthorApp'
 import Home from '../screens/home';
 import Carteira from '../screens/carteira';
 import Performance from '../screens/performance'
+import Profile from '../screens/Profile'
 import ResetPassword from  '../screens/ResetPassword';
 import globalStyles from '../styles/globalStyles';
 import { StackRouter } from 'react-navigation';
@@ -40,6 +41,11 @@ const TabNavigation = () => {
                                 ? 'trending-up' 
                                 : 'trending-up';
                             break;
+                        case 'Perfil':
+                            iconName = focused
+                                ? 'person'
+                                : 'person';
+                            break;
                     
                     }
         
@@ -59,7 +65,7 @@ const TabNavigation = () => {
                     showLabel: true,
                     keyboardHidesTabBar: true,
                     style: {
-                        backgroundColor: globalStyles.colors.firstLayer,
+                        backgroundColor: '#272727',
                         borderTopEndRadius: 19,
                         borderTopStartRadius: 19,
                         height:55,
@@ -73,6 +79,7 @@ const TabNavigation = () => {
                 <Tab.Screen name="Performance" component={Performance} />
                 <Tab.Screen name="Home" component={Home} />
                 <Tab.Screen name="Carteira" component={Carteira} />
+                <Tab.Screen name="Perfil" component={Profile} />
 
             </Tab.Navigator>
     

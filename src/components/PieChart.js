@@ -11,6 +11,7 @@ import {PieChart} from 'react-native-charts-wrapper';
 import { proc } from 'react-native-reanimated';
 
 import { AtivosCarteira } from '../data/data';
+import globalStyles from '../styles/globalStyles';
 
 const OutroPie = (props) => {
   const [chartData, setChartData] = useState(AtivosCarteira);
@@ -38,7 +39,7 @@ const OutroPie = (props) => {
         legend: {
           enabled: true,
           textSize: 15,
-          textColor: processColor('white'),
+          textColor: processColor(globalStyles.chartColors.legendColor),
           form: 'CIRCLE',
   
           horizontalAlignment: "CENTER",
@@ -51,7 +52,9 @@ const OutroPie = (props) => {
             values: chartData,
             label: '',
             config: {
-              colors: [processColor('#5456A2'),processColor('#7A77B7'), processColor('#ABA2D0'), processColor('#5f8dca'),processColor('#7FAADB'), processColor('#a7d7d2'), processColor('#48A192')],
+              colors: globalStyles.chartColors.pieChartColors.map(el => {
+                return processColor(el)
+              }),
               valueTextSize: 0,
               valueTextColor: processColor('black'),
               sliceSpace: 5,
@@ -84,14 +87,14 @@ return (
           <PieChart
             style={styles.chart}
             logEnabled={true}
-            chartBackgroundColor={processColor('black')}
+            chartBackgroundColor={processColor(globalStyles.colors.backGround)}
             chartDescription={infos.description}
             data={infos.data}
             legend={infos.legend}
             marker={{
               enabled: true,
-              markerColor: processColor('#252525'),
-              textColor: processColor('white'),
+              markerColor: processColor(globalStyles.chartColors.tooltip),
+              textColor: processColor(globalStyles.chartColors.tooltipText),
               textSize: 23,
             }}
             highlights={infos.highlights}
@@ -104,12 +107,12 @@ return (
             rotationEnabled={true}
             rotationAngle={45}
             usePercentValues={true}
-            styledCenterText={{text: props.valorCentro, color: processColor('white'), fontFamily: 'HelveticaNeue-Medium', size: 30}}
+            styledCenterText={{text: 'Carteira', color: processColor(globalStyles.chartColors.centerText), fontFamily: 'HelveticaNeue-Medium', size: 30}}
             centerTextRadiusPercent={90}
             holeRadius={60}
-            holeColor={processColor('#000')}
+            holeColor={processColor(globalStyles.chartColors.pieChartHole)}
             transparentCircleRadius={40}
-            transparentCircleColor={processColor('#000')}
+            transparentCircleColor={processColor(globalStyles.chartColors.pieChartHole)}
             maxAngle={360}
             onSelect={props.handleSelect}
             onChange={(event) => console.log(event.nativeEvent)}

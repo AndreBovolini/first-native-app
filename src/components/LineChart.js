@@ -13,9 +13,8 @@ import {LineChart} from 'react-native-charts-wrapper';
 import globalStyles from '../styles/globalStyles';
 
 
+
 const LineChartRender = props => {
-  const greenBlue = 'rgb(26, 182, 151)';
-  const petrel = 'rgb(59, 145, 153)';
 
   return (
     <View style={{flex: 1}}>
@@ -28,7 +27,7 @@ const LineChartRender = props => {
           legend={{
             enabled: true,
             textSize: 15,
-            textColor: processColor('white'),
+            textColor: processColor(globalStyles.chartColors.legendColor),
             form: 'CIRCLE',
 
             horizontalAlignment: 'CENTER',
@@ -39,9 +38,8 @@ const LineChartRender = props => {
           marker={{
             enabled: true,
             digits: 2,
-            markerColor: processColor('#252525'),
-            textColor: processColor('white'),
-            backgroundTint: processColor('red'),
+            markerColor: processColor(globalStyles.chartColors.tooltip),
+            textColor: processColor(globalStyles.chartColors.tooltipText),
             textSize: 20,
           }}
           xAxis={{
@@ -54,7 +52,7 @@ const LineChartRender = props => {
             fontFamily: 'HelveticaNeue-Medium',
             fontWeight: 'bold',
             textSize: 12,
-            textColor: processColor('white'),
+            textColor: processColor(globalStyles.chartColors.axis),
             valueFormatter: props.labels,
           }}
           yAxis={{
@@ -63,7 +61,7 @@ const LineChartRender = props => {
               drawGridLines: false,
               drawLabels: true,
               drawAxisLine: true,
-              textColor: processColor('white'),
+              textColor: processColor(globalStyles.chartColors.axis),
               valueFormatter: "###'%'",
             },
             right: {
@@ -89,7 +87,6 @@ const LineChartRender = props => {
           dragDecelerationFrictionCoef={0.99}
           keepPositionOnRotation={false}
           onSelect={props.handleSelect}
-          onTouchEnd={() => console.warn('salve')}
           onChange={event => console.log(event.nativeEvent)}
         />
       </View>

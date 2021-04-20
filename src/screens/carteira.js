@@ -21,7 +21,7 @@ const Carteira = ({navigation}) => {
   const [arrayAtivos, setArrayAtivos] = useState([])
   const [scrollViewHeight, setScrollViewHeight] = useState(1183)
   const [arrayShow, setArrayShow] = useState([])
-  const [cores, setCores] = useState(['#5456A2','#7A77B7','#ABA2D0','#5f8dca','#7FAADB', '#a7d7d2', '#48A192']);
+  const [cores, setCores] = useState(globalStyles.chartColors.pieChartColors);
 
   useEffect(() => {
     let ativos = []
@@ -40,7 +40,7 @@ const Carteira = ({navigation}) => {
         showCount = showCount +1;
       }
     })
-    const increasedHeight = (showCount * 90);
+    const increasedHeight = (showCount * 93);
     setScrollViewHeight(1183 + increasedHeight)
   }, [arrayShow])
   
