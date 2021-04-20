@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  Alert
+  Alert,
+  BackHandler
 } from 'react-native';
 
 import CustomInput from '../components/CustomInput';
@@ -19,6 +20,7 @@ import TouchID from 'react-native-touch-id'
 import { useEffect } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useRoute } from '@react-navigation/native';
 
 const Login = ({route, navigation}) => {
   const [inputUsuario, setInputUsuario] = useState('');
@@ -93,6 +95,28 @@ const Login = ({route, navigation}) => {
        .catch(error => {
        });
    }
+
+  const currentRoute = useRoute()
+  console.log(currentRoute.name)
+   useEffect(() => {
+    const backAction = () => {
+      console.log('bbbb', currentRoute)
+      if(currentRoute.name === 'Login') {
+       BackHandler.exitApp() 
+      }if (currentRoute.name === 'Home'){
+        navigation.navigate('Home')
+      }
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+
+  }, []);
 
  
   return (

@@ -27,6 +27,7 @@ import {
     resposta1
 } from '../data/data';
 import { useEffect } from 'react';
+import { useRoute } from '@react-navigation/native';
 
 export const Home = ({navigation}) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -198,38 +199,75 @@ export const Home = ({navigation}) => {
     ],
   };
 
-  useEffect(
-    () =>
-      navigation.addListener('beforeRemove', (e) => {
-        const action = e.data.action;
-        e.preventDefault();
+  const route = useRoute()
+  console.log(route.name)
 
-        Alert.alert(
-          'O que você deseja fazer?',
-          '',
-          [
-            { text: "Manter",
-             style: 'cancel',
-              onPress: () => {} },
-            {
-              text: 'Sair',
-              style: 'destructive',
-              onPress: () => BackHandler.exitApp(),
-            },
-            { text: 'Fazer Logoff',
-              style: 'logoff',
-              onPress: () => {
-                AsyncStorage.removeItem('token');
-                navigation.navigate('Login', {
-                  credentials: false
-                })
-                }
-            }
-          ]
-        );
-      }),
-    []
-  );
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert("O que você deseja fazer?",'', [
+        {
+          text: "Manter",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { 
+          text: "Sair", 
+          onPress: () => BackHandler.exitApp() 
+        },
+        {
+          text: 'Fazer Logoff',
+          onPress: () => {
+            AsyncStorage.removeItem('token');
+            navigation.navigate('Login', {
+              credentials: false
+            })
+        }
+      }
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  // useEffect(() => {
+  //     console.log('effect')
+  //     navigation.addListener('beforeRemove', (e) => {
+  //       const action = e.data.action;
+  //       e.preventDefault();
+  //       console.log('aaaa');
+
+  //       Alert.alert(
+  //         'O que você deseja fazer?',
+  //         '',
+  //         [
+  //           { text: "Manter",
+  //            style: 'cancel',
+  //             onPress: () => {} },
+  //           {
+  //             text: 'Sair',
+  //             style: 'destructive',
+  //             onPress: () => BackHandler.exitApp(),
+  //           },
+  //           { text: 'Fazer Logoff',
+  //             style: 'logoff',
+  //             onPress: () => {
+  //               AsyncStorage.removeItem('token');
+  //               navigation.navigate('Login', {
+  //                 credentials: false
+  //               })
+  //               }
+  //           }
+  //         ]
+  //       );
+  //     })},
+  //   []
+  // );
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
