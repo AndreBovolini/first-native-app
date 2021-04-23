@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {Picker} from '@react-native-picker/picker';
 import globalStyles from '../styles/globalStyles';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomInput from '../components/CustomInput';
+import { Picker } from '@react-native-picker/picker';
 
 const CardAlteraCarteira = (props) => {
-    const [carteira, setAlteraCarteira] = useState('');
+    const [carteira, setAlteraCarteira] = useState('Carteira 1');
     
 
 return (
@@ -34,20 +36,26 @@ return (
          { props.show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
                     <View style={styles.blocoExpand}>
-                      <Picker 
-                        style={styles.pickerContainer}
-                        mode={'dropdown'}
-                        selectedValue={carteira}
-                        onValueChange={(carteira) => setAlteraCarteira(carteira)}
-                        
-                      >
-                          <Picker.Item label = "Selecione a carteira:" value=""/>
-                          <Picker.Item label="Carteira 1" value="Carteira 1" />
-                          <Picker.Item label="Carteira 2" value="Carteira 2" />
-                          <Picker.Item label="Carteira 3" value="Carteira 3" />
-
-
-                      </Picker>
+                    <TouchableOpacity activeOpacity={0.7} >
+                          <View style={styles.buttonView}>
+                          <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
+                          <Picker
+                          style={styles.pickerContainer}
+                          mode={'dropdown'}
+                          selectedValue={carteira}
+                          onValueChange={(carteira) => setAlteraCarteira(carteira)}
+                          
+                        >
+                            <Picker.Item label = "Selecione a carteira:" value=""/>
+                            <Picker.Item label="Carteira 1" value="Carteira 1" />
+                            <Picker.Item label="Carteira 2" value="Carteira 2" />
+                            <Picker.Item label="Carteira 3" value="Carteira 3" />
+  
+  
+                        </Picker>
+                            </View>
+                        </TouchableOpacity>
+                      
                     </View>
                   </View>
                 )}
@@ -135,23 +143,22 @@ const styles = StyleSheet.create({
       expandRigh:{
         justifyContent: 'space-around'
     },
-    button: {
-        height: 50,
-        width: globalStyles.dimensions.width * 0.6,
-        backgroundColor: '#1A0873',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-      },
-      buttonText: {
-        color: globalStyles.colors.fontColor,
-        fontSize: 20,
-      },
+    buttonView: {
+      height: 50,
+      width: 270,
+      backgroundColor: '#2A0DB8',
+      borderRadius: 10,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 20,
+  },
+  buttonText: {
+      color: globalStyles.colors.fontColor,
+  },
       pickerContainer: {
-          width: 300,
+          width: 220,
           height: 30,
           color: globalStyles.colors.fontColor,
-
       }
     })

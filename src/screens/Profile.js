@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -21,7 +21,7 @@ import CardAlteraCarteira from '../components/CardAlteraCarteira'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useEffect } from 'react/cjs/react.development';
+
 
 const Profile = ({navigation}) => {
     const [showAlteraSenha, setShowAlteraSenha] = useState(false);

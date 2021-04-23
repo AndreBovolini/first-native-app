@@ -97,10 +97,8 @@ const Login = ({route, navigation}) => {
    }
 
   const currentRoute = useRoute()
-  console.log(currentRoute.name)
    useEffect(() => {
     const backAction = () => {
-      console.log('bbbb', currentRoute)
       if(currentRoute.name === 'Login') {
        BackHandler.exitApp() 
       }if (currentRoute.name === 'Home'){

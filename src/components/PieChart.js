@@ -115,7 +115,6 @@ return (
             transparentCircleColor={processColor(globalStyles.chartColors.pieChartHole)}
             maxAngle={360}
             onSelect={props.handleSelect}
-            onChange={(event) => console.log(event.nativeEvent)}
           />
         </View>
       </View>

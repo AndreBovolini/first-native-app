@@ -87,7 +87,6 @@ const LineChartRender = props => {
           dragDecelerationFrictionCoef={0.99}
           keepPositionOnRotation={false}
           onSelect={props.handleSelect}
-          onChange={event => console.log(event.nativeEvent)}
         />
       </View>
     </View>

@@ -200,7 +200,6 @@ export const Home = ({navigation}) => {
   };
 
   const route = useRoute()
-  console.log(route.name)
 
   useEffect(() => {
     const backAction = () => {

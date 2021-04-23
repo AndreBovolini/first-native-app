@@ -11,9 +11,8 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.2",
-    "@react-native-community/datetimepicker": "react-native-community/datetimepicker",
+    "@react-native-community/datetimepicker": "^3.4.6",
     "@react-native-community/masked-view": "^0.1.10",
-    "@react-native-community/picker": "^1.8.1",
     "@react-native-picker/picker": "^1.15.0",
     "@react-navigation/bottom-tabs": "^5.11.9",
     "@react-navigation/native": "^5.9.4",
