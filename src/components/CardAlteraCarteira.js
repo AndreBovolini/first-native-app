@@ -40,12 +40,12 @@ return (
                         selectedValue={carteira}
                         onValueChange={(carteira) => setAlteraCarteira(carteira)}
                         
+                        
                       >
-                          <Picker.Item label = "Selecione a carteira:" value=""/>
+                          <Picker.Item label = "Selecione:" value=""/>
                           <Picker.Item label="Carteira 1" value="Carteira 1" />
                           <Picker.Item label="Carteira 2" value="Carteira 2" />
                           <Picker.Item label="Carteira 3" value="Carteira 3" />
-
 
                       </Picker>
                     </View>
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
       },
       pickerContainer: {
-          width: 300,
+          width: 160,
           height: 30,
           color: globalStyles.colors.fontColor,
 
