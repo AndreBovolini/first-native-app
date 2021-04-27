@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     height: 120, 
     width: 120, 
-    resizeMode: 'stretch'
+    resizeMode: 'stretch',
     },
   textUser: {
     color: globalStyles.colors.fontColor,

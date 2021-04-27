@@ -24,7 +24,7 @@ return (
          <View style={styles.bloco}>
            <View style={styles.leftSide}>
               <Icon name="circle" size={10} color={'#FFF'}/>
-              <Text style={styles.title}>Carteira Atual: {carteira}</Text>
+              <Text style={styles.title}>{`Carteira Atual: ${ carteira }`}</Text>
             </View>
             <TouchableOpacity style={styles.right}
                 onPress={()=> props.handleClick()}
@@ -37,25 +37,18 @@ return (
          { props.show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
                     <View style={styles.blocoExpand}>
-                    <TouchableOpacity activeOpacity={0.7} >
-                          <View style={styles.buttonView}>
-                          <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
-                          <Picker
-                          style={styles.pickerContainer}
-                          mode={'dropdown'}
-                          selectedValue={carteira}
-                          onValueChange={(carteira) => setAlteraCarteira(carteira)}
-                          
-                        >
-                            <Picker.Item label = "Selecione a carteira:" value=""/>
-                            <Picker.Item label="Carteira 1" value="Carteira 1" />
-                            <Picker.Item label="Carteira 2" value="Carteira 2" />
-                            <Picker.Item label="Carteira 3" value="Carteira 3" />
-  
-  
-                        </Picker>
+                      <TouchableOpacity activeOpacity={0.7} onPress={() => setAlteraCarteira('Carteira 1')} >
+                            <View style={styles.buttonView}>
+                              <Text style={styles.buttonText}>Carteira 1</Text>
+                              <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
-                        </TouchableOpacity>
+                      </TouchableOpacity>
+                      <TouchableOpacity activeOpacity={0.7} onPress={() => setAlteraCarteira('Carteira 2')} >
+                            <View style={styles.buttonView}>
+                              <Text style={styles.buttonText}>Carteira 2</Text>
+                              <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
+                            </View>
+                      </TouchableOpacity>
                       
                     </View>
                   </View>
@@ -145,21 +138,21 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     },
     buttonView: {
-      height: 50,
-      width: 270,
+      height: 40,
+      width: 170,
       backgroundColor: '#2A0DB8',
       borderRadius: 10,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: 20,
-  },
-  buttonText: {
+      marginTop: 10,
+      marginBottom: 10
+    },
+    buttonText: {
       color: globalStyles.colors.fontColor,
-  },
-      pickerContainer: {
-          width: 220,
-          height: 30,
-          color: globalStyles.colors.fontColor,
-      }
+      fontSize: 18,
+      marginRight: 20,
+
+    }
+
     })
