@@ -22,13 +22,14 @@ import CardAlteraCarteira from '../components/CardAlteraCarteira'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+import { Provider } from 'react-redux';
+import store from '../store/index';
+
 
 const Profile = ({navigation}) => {
     const [showAlteraSenha, setShowAlteraSenha] = useState(false);
     const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
-    const [dataInicial, setDataInicial] = useState(new Date('2017-08-03'));
-    const [dataFinal, setDataFinal] = useState(new Date());
     const [height, setHeight] = useState(620);
 
     useEffect(() => {
@@ -55,14 +56,6 @@ const Profile = ({navigation}) => {
 
     const handleCardDatePicker = () => {
         setShowDatePicker(!showDatePicker);
-    };
-
-    const handleAlteraDataInicial = (data) => {
-        setDataInicial(data.nativeEvent.timestamp);
-    };
-
-    const handleAlteraDataFinal = (data) => {
-        setDataFinal(data.nativeEvent.timestamp);
     };
 
     const handleClickLogout = () => {
@@ -93,13 +86,11 @@ const Profile = ({navigation}) => {
         </View> */}
         <View>
               <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
+              <Provider store={store}>
               <CardDatePicker
                show={showDatePicker}
-               handleClick={handleCardDatePicker}
-               dataInicial={dataInicial}
-               dataFinal={dataFinal}
-               handleAlteraDataFinal={handleAlteraDataFinal} 
-               handleAlteraDataInicial={handleAlteraDataInicial} />
+               handleClick={handleCardDatePicker}  />
+               </Provider>
               <CardAlteraSenha show={showAlteraSenha} handleClick={handleCardSenha}/>
         </View>
         <TouchableOpacity activeOpacity={0.7} onPress={handleClickLogout}>

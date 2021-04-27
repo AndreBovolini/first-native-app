@@ -22,6 +22,11 @@ import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useRoute } from '@react-navigation/native';
 
+import comdadoLogin from '../utils/conta/Login';
+
+import { Container } from './Login/styles';
+
+
 const Login = ({route, navigation}) => {
   const [inputUsuario, setInputUsuario] = useState('');
   const [inputSenha, setInputSenha] = useState('');
@@ -41,16 +46,22 @@ const Login = ({route, navigation}) => {
   async function handleLogin() {
       if (inputUsuario !== '') {
           if (inputSenha !== '') {
-            try{
-                await Keychain.setGenericPassword(
-                  inputUsuario,
-                  inputSenha
-                )
-              } catch (error) {
-              }
-              let dateLogin = new Date().getTime() + (1000*60*5);
-              AsyncStorage.setItem('token', dateLogin.toString())
-              navigation.navigate('Home');
+            // try{
+            //     await Keychain.setGenericPassword(
+            //       inputUsuario,
+            //       inputSenha
+            //     )
+            //   } catch (error) {
+            //   }
+            //   let dateLogin = new Date().getTime() + (1000*60*5);
+            //   AsyncStorage.setItem('token', dateLogin.toString())
+            //   navigation.navigate('Home');
+            comdadoLogin(inputUsuario, inputSenha).then(response => {
+              console.log(response)
+            }
+            ).catch(error => {
+              console.log(error)
+            })
           }
       };
   }

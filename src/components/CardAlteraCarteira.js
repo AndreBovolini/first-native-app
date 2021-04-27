@@ -13,6 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomInput from '../components/CustomInput';
 import { Picker } from '@react-native-picker/picker';
 
+
 const CardAlteraCarteira = (props) => {
     const [carteira, setAlteraCarteira] = useState('Carteira 1');
     

@@ -12,7 +12,7 @@ export default {
     },
     chartColors: {
         background: '#000',
-        toooltip: '#252525',
+        tooltip: '#252525',
         tooltipText: '#FFF',
         series1: 'rgb(26, 182, 151)',
         series2: 'rgb(59, 145, 153)',

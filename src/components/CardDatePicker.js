@@ -15,11 +15,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import { connect } from 'react-redux';
+import * as Actions from '../store/actions';
+import { bindActionCreators } from 'redux'
 
 
 
-
-const CardDatePicker = (props) => {
+const CardDatePicker = ({ show, handleClick, datas, newDataInicial, newDataFinal}) => {
   const [showSelectorInicial, setShowSelectorInicial] = useState(false)
   const [showSelectorFinal, setShowSelectorFinal] = useState(false)
 
@@ -32,14 +34,16 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateInicial = (data) => {  
-    setShowSelectorInicial(false)
-    props.handleAlteraDataInicial(data)
+    setShowSelectorInicial(false);
+    newDataInicial(datas, data);
   };
 
   const selectNewDateFinal = (data) => {
     setShowSelectorFinal(false);
-    props.handleAlteraDataFinal(data)
+    newDataFinal(datas, data);
   }
+
+  
 
 
     return (
@@ -51,32 +55,32 @@ const CardDatePicker = (props) => {
                   <Text style={styles.title}>Escolha o período</Text>
                 </View>
                 <TouchableOpacity style={styles.right}
-                    onPress={()=> props.handleClick()}
+                    onPress={()=> handleClick()}
                 >
-                    { props.show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
+                    { show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
                     :  <Icon name="chevron-down" size={20} color={globalStyles.colors.fontColor}/>}
                 </TouchableOpacity>
                 </View>
              </View>
-                { props.show && (
+                { show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
                     <View style={styles.blocoExpand}>
                       <TouchableOpacity activeOpacity={0.7} onPress={showDateInicial}>
                             <View style={styles.buttonView}>
-                                <Text style={styles.buttonText}>De: {props.dataInicial.toLocaleDateString()}</Text>
+                                <Text style={styles.buttonText}>De: {datas.dataInicial.toLocaleDateString()}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.7} onPress={showDateFinal}>
                             <View style={styles.buttonView}>
-                                <Text style={styles.buttonText}>Até: {props.dataFinal.toLocaleDateString()}</Text>
+                                <Text style={styles.buttonText}>Até: {datas.dataFinal.toLocaleDateString()}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
                         {showSelectorInicial && (
                             <DateTimePicker
                             testID="dateTimePicker"
-                            value={props.dataInicial}
+                            value={datas.dataInicial}
                             mode={'date'}
                             is24Hour={true}
                             display="default"
@@ -86,7 +90,7 @@ const CardDatePicker = (props) => {
                         {showSelectorFinal && (
                             <DateTimePicker
                             testID="dateTimePicker"
-                            value={props.dataFinal}
+                            value={datas.dataFinal}
                             mode={'date'}
                             is24Hour={true}
                             display="default"
@@ -100,7 +104,14 @@ const CardDatePicker = (props) => {
     )
 }
 
-export default CardDatePicker;
+const mapStateToProps = state => ({
+  datas: state.dates
+});
+
+const mapDispatchToProps = dispatch => 
+  bindActionCreators(Actions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardDatePicker);
 
 const styles = StyleSheet.create({
       text: {
