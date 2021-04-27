@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {Picker} from '@react-native-picker/picker';
 import globalStyles from '../styles/globalStyles';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomInput from '../components/CustomInput';
+import { Picker } from '@react-native-picker/picker';
 
 const CardAlteraCarteira = (props) => {
-    const [carteira, setAlteraCarteira] = useState('');
+    const [carteira, setAlteraCarteira] = useState('Carteira 1');
     
 
 return (
@@ -21,7 +23,7 @@ return (
          <View style={styles.bloco}>
            <View style={styles.leftSide}>
               <Icon name="circle" size={10} color={'#FFF'}/>
-              <Text style={styles.title}>Carteira Atual: {carteira}</Text>
+              <Text style={styles.title}>{`Carteira Atual: ${ carteira }`}</Text>
             </View>
             <TouchableOpacity style={styles.right}
                 onPress={()=> props.handleClick()}
@@ -34,20 +36,19 @@ return (
          { props.show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
                     <View style={styles.blocoExpand}>
-                      <Picker 
-                        style={styles.pickerContainer}
-                        mode={'dropdown'}
-                        selectedValue={carteira}
-                        onValueChange={(carteira) => setAlteraCarteira(carteira)}
-                        
-                        
-                      >
-                          <Picker.Item label = "Selecione:" value=""/>
-                          <Picker.Item label="Carteira 1" value="Carteira 1" />
-                          <Picker.Item label="Carteira 2" value="Carteira 2" />
-                          <Picker.Item label="Carteira 3" value="Carteira 3" />
-
-                      </Picker>
+                      <TouchableOpacity activeOpacity={0.7} onPress={() => setAlteraCarteira('Carteira 1')} >
+                            <View style={styles.buttonView}>
+                              <Text style={styles.buttonText}>Carteira 1</Text>
+                              <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
+                            </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity activeOpacity={0.7} onPress={() => setAlteraCarteira('Carteira 2')} >
+                            <View style={styles.buttonView}>
+                              <Text style={styles.buttonText}>Carteira 2</Text>
+                              <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
+                            </View>
+                      </TouchableOpacity>
+                      
                     </View>
                   </View>
                 )}
@@ -135,23 +136,22 @@ const styles = StyleSheet.create({
       expandRigh:{
         justifyContent: 'space-around'
     },
-    button: {
-        height: 50,
-        width: globalStyles.dimensions.width * 0.6,
-        backgroundColor: '#1A0873',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-      },
-      buttonText: {
-        color: globalStyles.colors.fontColor,
-        fontSize: 20,
-      },
-      pickerContainer: {
-          width: 160,
-          height: 30,
-          color: globalStyles.colors.fontColor,
+    buttonView: {
+      height: 40,
+      width: 170,
+      backgroundColor: '#2A0DB8',
+      borderRadius: 10,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 10,
+      marginBottom: 10
+    },
+    buttonText: {
+      color: globalStyles.colors.fontColor,
+      fontSize: 18,
+      marginRight: 20,
 
-      }
+    }
+
     })

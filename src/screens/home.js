@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
   BackHandler,
-  Alert
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Cards from '../components/cards'
 import ValueBox from '../components/valueBox';
 import globalStyles from '../styles/globalStyles';
+// import setTimeOut from 'timers'
 
 import LineChartResumo from '../components/LineChartResumo';
 import OutroPie from '../components/PieChart';
@@ -28,8 +29,10 @@ import {
 } from '../data/data';
 import { useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
+import SkeletonHome from '../components/SkeletonHome'
 
 export const Home = ({navigation}) => {
+  const [loading, setLoading] = useState(true)
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
   const [inputValue, setInputValue] = useState('');
@@ -200,7 +203,6 @@ export const Home = ({navigation}) => {
   };
 
   const route = useRoute()
-  console.log(route.name)
 
   useEffect(() => {
     const backAction = () => {
@@ -234,6 +236,9 @@ export const Home = ({navigation}) => {
 
     return () => backHandler.remove();
   }, []);
+
+  
+  setTimeout(() => {setLoading(false)}, 3000)
 
   // useEffect(() => {
   //     console.log('effect')
@@ -270,7 +275,12 @@ export const Home = ({navigation}) => {
   // );
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+      <View>
+        {loading ? <SkeletonHome isLoading={loading}/> :
+      
+      
+      
+        (<ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title}>Portfólio</Text>
             <View style={styles.valueBoxContainer}>
                 <View style={styles.valueBoxContainerRow}>
@@ -314,7 +324,10 @@ export const Home = ({navigation}) => {
                 valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  ''}
                 />      
             </View>
+            
         </ScrollView>
+        )}
+        </View>
     )
 }
 
