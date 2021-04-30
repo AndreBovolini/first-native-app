@@ -13,6 +13,7 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Ionicons from 'react-native-vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Cards from '../components/cards'
@@ -22,6 +23,10 @@ import globalStyles from '../styles/globalStyles';
 
 import LineChartResumo from '../components/LineChartResumo';
 import OutroPie from '../components/PieChart';
+import Filtro from '../components/FiltroHome';
+import Benchmarks from '../components/Benchmarks'
+
+
 
 import {
     dataHomeBox,
@@ -32,6 +37,11 @@ import { useRoute } from '@react-navigation/native';
 import SkeletonHome from '../components/SkeletonHome'
 
 export const Home = ({navigation}) => {
+  const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
+  const [percent, setPercent] = useState(true)
+  const [currency, setCurrency] = useState (false)
+  const [showModal, setShowModal] = useState(false);
+  const [showBench, setShowBench] = useState(false);
   const [loading, setLoading] = useState(true)
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
@@ -240,6 +250,34 @@ export const Home = ({navigation}) => {
   
   setTimeout(() => {setLoading(false)}, 3000)
 
+  const handleOpenModal = () => {
+    setShowModal(true)
+  }
+  const handlePercent = () => {
+    setPercent(true)
+    setCurrency(false)
+  }
+  const handleCurrency = () => {
+    setCurrency(true)
+    setPercent(false)
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(false)
+  
+  }
+  const handleCardCarteira = () => {
+    setShowAlteraCarteira(!showAlteraCarteira);
+  };
+
+  const handleOpenBench = () => {
+    setShowBench(true)
+  }
+
+  const handleCloseBench = () => {
+    setShowBench(false)
+  }
+
   // useEffect(() => {
   //     console.log('effect')
   //     navigation.addListener('beforeRemove', (e) => {
@@ -274,24 +312,100 @@ export const Home = ({navigation}) => {
   //   []
   // );
 
+  
     return (
       <View>
         {loading ? <SkeletonHome isLoading={loading}/> :
-      
-      
-      
         (<ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>Portfólio</Text>
-            <View style={styles.valueBoxContainer}>
-                <View style={styles.valueBoxContainerRow}>
-                    <ValueBox title={dataHomeBox[0].label} value={dataHomeBox[0].value + ' %'}/>
-                    <ValueBox title={dataHomeBox[1].label} value={dataHomeBox[1].value + ' %'}/>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Filtro visible={showModal} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseModal}/>
+            </View>
+            <View style={styles.titleContainer}>
+              <View style={styles.left}>
+                <Text style={styles.title}>Portfólio</Text> 
+              </View>
+              <View>
+                <TouchableOpacity style={styles.right} onPress={handleOpenModal}>
+                  <Icon name="bars" size={25} color='#FFF'/>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.buttonView}>
+              <TouchableOpacity style={styles.right} onPress={handleCurrency} activeOpacity={1} pressDuration={0.5}>
+                <View style={currency ? styles.currencyPress : styles.currency}>
+                  <Text style={
+                    currency ? {color:globalStyles.colors.firstLayer, fontSize:25, marginRight: 4} :
+                    {color:'#FFF', fontSize:25, marginRight: 4} 
+                    }>R$</Text>
                 </View>
-                <View style={styles.valueBoxContainerRow}>
-                    <ValueBox title={dataHomeBox[2].label} value={dataHomeBox[2].value + ' %'}/>
-                    <ValueBox title={dataHomeBox[3].label} value={'R$ ' +  dataHomeBox[3].value}/>
+              </TouchableOpacity>
+              {/* <TouchableOpacity style={styles.right} onPress={handlePercent}>
+                <View  style={percent ? styles.percentPress : styles.percent}>
+                  <Text percent style={percent ? 
+                  {color:'#000', fontSize:25, marginLeft: 4} :
+                  {color:'#FFF', fontSize:25, marginLeft: 4}
+                  }>
+                   R$
+                  </Text>
+                  { percent ? <Icon name="bars" size={25} color={globalStyles.colors.firstLayer} />
+                  :
+                  <Icon name="percent" size={25} color='#FFF' />}
+                </View>
+
+              </TouchableOpacity> */}
+              <View  style={percent ? styles.percentPress : styles.percent}>
+                {percent ? <Icon.Button
+                  name="percent"
+                  color={globalStyles.colors.firstLayer}
+                  backgroundColor="#FFF"
+                  iconStyle={{
+                    alignItems:'center',
+                    alignSelf:'center',
+                  marginLeft:8}
+                  }
+                  onPress={handlePercent}
+                />
+                  :
+                <Icon.Button
+                  name="percent"
+                  color='#FFF'
+                  backgroundColor={globalStyles.colors.firstLayer}
+                  iconStyle={{
+                    alignItems:'center',
+                    alignSelf:'center',
+                  marginLeft:8
+                }}
+                  onPress={handlePercent}
+                />}
                 </View>
             </View>
+            <View style={styles.valueBoxContainer}>
+                <View style={styles.valueBoxContainerRow}>
+                   
+                    {percent ? <ValueBox title={dataHomeBox[0].label} value={dataHomeBox[0].percent + ' %'}/> :
+                      <ValueBox title={dataHomeBox[0].label} value={'R$ ' + dataHomeBox[0].value}/>}
+                      
+                    {percent ? <ValueBox title={dataHomeBox[1].label} value={dataHomeBox[1].percent + ' %'}/> :
+                      <ValueBox title={dataHomeBox[1].label} value={'R$ ' + dataHomeBox[1].value}/>}
+                </View>
+                <View style={styles.valueBoxContainerRow}>
+                    {percent ? <ValueBox title={dataHomeBox[2].label} value={dataHomeBox[2].percent + ' %'}/> :
+                      <ValueBox title={dataHomeBox[2].label} value={'R$ ' + dataHomeBox[2].value}/>}
+
+                    {percent ? <ValueBox title={dataHomeBox[3].label} value={dataHomeBox[3].percent + ' %'}/> : 
+                      <ValueBox title={dataHomeBox[3].label} value={'R$ ' +  dataHomeBox[3].value}/>}
+                    
+                </View>
+            </View>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Benchmarks visible={showBench} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseBench}/>
+            </View>
+            <View style={styles.benchmarksButton}>
+              <Text style={{fontSize:20, color:'#FFF', marginRight: 10}}>Benchmarks</Text>
+                <TouchableOpacity style={styles.right, {marginTop: -3}} onPress={handleOpenBench}>
+                  <Icon name="sort-down" size={25} color='#FFF'/>
+                </TouchableOpacity>
+              </View>
             <View style={styles.titleNavigationContainer}>
               <Text style={styles.titleNavigation}>Performance</Text>
               <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Performance')}>
@@ -347,7 +461,58 @@ const styles = StyleSheet.create({
         fontWeight: '300',
         alignSelf: 'flex-start',
         marginVertical: 10, 
-        marginLeft: 10,
+    },
+    titleContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: globalStyles.dimensions.width / 1.15,
+    },
+    left: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    right: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+
+    },
+    buttonView:{
+      flexDirection: 'row',
+      alignSelf: 'flex-start',
+      marginLeft: 7,
+      marginBottom: 5
+    },
+
+    currency:{
+      backgroundColor: globalStyles.colors.firstLayer,
+      width: 48,
+      alignItems:'center',
+      paddingVertical: 2,
+      borderBottomLeftRadius: 5,
+      borderTopLeftRadius:5
+    },
+    currencyPress:{
+      backgroundColor:'#FFF',
+      width: 48,
+      paddingVertical: 2,
+      alignItems:'center',
+      borderBottomLeftRadius: 5,
+      borderTopLeftRadius:5
+    },
+    percent:{
+      backgroundColor: globalStyles.colors.firstLayer,
+      
+      borderTopRightRadius: 5,
+      borderBottomRightRadius: 5
+
+    },
+    percentPress:{
+      backgroundColor:'#FFF',
+      borderTopRightRadius: 5,
+      borderBottomRightRadius: 5
+
     },
     valueBoxContainer: {
         height: 191,
@@ -359,6 +524,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'space-around',
         marginVertical: 5,
+    },
+    benchmarksButton:{
+      marginTop: 10,
+      flexDirection: 'row',
+      alignSelf: 'center',
+      backgroundColor: globalStyles.colors.firstLayer,
+      padding: 5,
+      borderRadius: 10,
+      paddingRight: 8
     },
     titleNavigationContainer: {
       flexDirection: 'row',

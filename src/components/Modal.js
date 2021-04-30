@@ -36,11 +36,13 @@ export default CustomModal;
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        
     },
     modal: {
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 10
     },
   button: {
     height: 50,
