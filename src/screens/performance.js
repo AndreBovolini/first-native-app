@@ -94,7 +94,7 @@ const Performance = ({navigation}) => {
   ]);
   const [labels, setLabels] = useState([]);
   const [granularity, setGranularity] = useState(50)
-  const [anoSelecionado, setAnoSelecionado] = useState('2017');
+  const [anoSelecionado, setAnoSelecionado] = useState('2021');
   const [periodoSelecionado, setPeriodoSelecionado] = useState('Tudo');
   const [indiceAno, setIndiceAno] = useState(0);
 
@@ -193,7 +193,7 @@ const Performance = ({navigation}) => {
   }, [periodoSelecionado])
 
   const periodos = ['1m', '3m', '12m', '2021', 'Tudo'];
-  const anos = ['2017', '2018', '2019', '2020', '2021'];
+  const anos = ['2021', '2020', '2019', '2018', '2017'];
   const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
   const greenBlue = 'rgb(26, 182, 151)';

@@ -16,7 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { connect } from 'react-redux';
-import * as Actions from '../store/actions';
+import * as Actions from '../store/actions/actions';
 import { bindActionCreators } from 'redux'
 
 

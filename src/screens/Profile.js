@@ -85,8 +85,8 @@ const Profile = ({navigation}) => {
             </View>
         </View> */}
         <View>
-              <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
               <Provider store={store}>
+              <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
               <CardDatePicker
                show={showDatePicker}
                handleClick={handleCardDatePicker}  />

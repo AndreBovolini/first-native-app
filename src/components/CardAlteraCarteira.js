@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,11 +12,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomInput from '../components/CustomInput';
 import { Picker } from '@react-native-picker/picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const CardAlteraCarteira = (props) => {
-    const [carteira, setAlteraCarteira] = useState('Carteira 1');
-    
+import { connect } from 'react-redux';
+import * as Actions from '../store/actions/actions';
+import { bindActionCreators } from 'redux'
+
+
+const CardAlteraCarteira = ({show, handleClick, stateCarteira, alteraCarteira}) => {
+    const [carteiras, setCarteiras] = useState(['Carteira 1', 'Carteira 2', 'Carteira 3'])
+    const [carteira, setAlteraCarteira] = useState('');
+
 
 return (
     <View>
@@ -24,39 +31,45 @@ return (
          <View style={styles.bloco}>
            <View style={styles.leftSide}>
               <Icon name="circle" size={10} color={'#FFF'}/>
-              <Text style={styles.title}>{`Carteira Atual: ${ carteira }`}</Text>
+              <Text style={styles.title}>{`Carteira Atual: ${ stateCarteira.carteira }`}</Text>
             </View>
             <TouchableOpacity style={styles.right}
-                onPress={()=> props.handleClick()}
+                onPress={()=> handleClick()}
             >
-                { props.show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
+                { show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
                 :  <Icon name="chevron-down" size={20} color={globalStyles.colors.fontColor}/>}
             </TouchableOpacity>
             </View>
          </View>
-         { props.show && (
+         { show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
                     <View style={styles.blocoExpand}>
-                      <TouchableOpacity activeOpacity={0.7} onPress={() => setAlteraCarteira('Carteira 1')} >
+                    {
+                      carteiras.map((el, i) => {
+                        return (
+                          <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => alteraCarteira(el)} >
                             <View style={styles.buttonView}>
-                              <Text style={styles.buttonText}>Carteira 1</Text>
+                              <Text style={styles.buttonText}>{el}</Text>
                               <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                       </TouchableOpacity>
-                      <TouchableOpacity activeOpacity={0.7} onPress={() => setAlteraCarteira('Carteira 2')} >
-                            <View style={styles.buttonView}>
-                              <Text style={styles.buttonText}>Carteira 2</Text>
-                              <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
-                            </View>
-                      </TouchableOpacity>
-                      
+                        )
+                      })
+                    }
                     </View>
                   </View>
                 )}
     </View>
     )}
 
-export default CardAlteraCarteira;
+    const mapStateToProps = state => ({
+      stateCarteira: state.dates
+    });
+    
+    const mapDispatchToProps = dispatch => 
+      bindActionCreators(Actions, dispatch);
+    
+    export default connect(mapStateToProps, mapDispatchToProps)(CardAlteraCarteira);
 
 const styles = StyleSheet.create({
       text: {

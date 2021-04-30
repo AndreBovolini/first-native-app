@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Login from '../screens/Login'
 import AuthorApp from '../screens/AuthorApp'
+import AfterLogin from '../screens/AfterLogin'
 import Home from '../screens/home';
 import Carteira from '../screens/carteira';
 import Performance from '../screens/performance'
@@ -14,6 +15,9 @@ import Profile from '../screens/Profile'
 import ResetPassword from  '../screens/ResetPassword';
 import globalStyles from '../styles/globalStyles';
 import { StackRouter } from 'react-navigation';
+
+import { Provider } from 'react-redux';
+import store from '../store/index';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -89,12 +93,15 @@ const TabNavigation = () => {
 
 const AuthNavigator = () => {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>   
-            <Stack.Screen name="AuthOrApp" component={AuthorApp} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Home" component={TabNavigation} />
-            <Stack.Screen name="ResetPassword" component={ResetPassword}/>
-        </Stack.Navigator>
+        <Provider store={store}>
+            <Stack.Navigator screenOptions={{ headerShown: false }}> 
+                <Stack.Screen name="AuthOrApp" component={AuthorApp} />
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="AfterLogin" component={AfterLogin} /> 
+                <Stack.Screen name="Home" component={TabNavigation} />
+                <Stack.Screen name="ResetPassword" component={ResetPassword}/>
+            </Stack.Navigator>
+        </Provider>
     );
 };
 

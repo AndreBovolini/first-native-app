@@ -9,6 +9,8 @@ import {
 import globalStyles from '../styles/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import TabChart from '../components/TabChart';
+
 
 
 const Cards = ({id, title,value, show, handleClick, cor, data}) => {
@@ -28,7 +30,7 @@ const Cards = ({id, title,value, show, handleClick, cor, data}) => {
                   <Text style={styles.title}>{title}</Text>
                 </View>
                 <TouchableOpacity style={styles.right}
-                    onPress={()=> handleClick(id)}
+                    onPress={()=> handleClick(title)}
                 >
                     { show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
                     :  <Icon name="chevron-down" size={20} color={globalStyles.colors.fontColor}/>}
@@ -41,6 +43,12 @@ const Cards = ({id, title,value, show, handleClick, cor, data}) => {
                       <View style={styles.expandLeft}>
                         <Text style={styles.text}>data: {data}</Text>
                         <Text style={styles.text}>valor: {valor}</Text>
+                        { title === 'Ações' ?
+                          <View style={styles.chartContainer} >
+                            <TabChart title={title}/>
+                          </View>
+                          : null
+                        }
                       </View>
                     </View>
                   </View>
@@ -128,5 +136,10 @@ const styles = StyleSheet.create({
     },
       expandRigh:{
         justifyContent: 'space-around'
+    },
+    chartContainer: {
+      width: globalStyles.dimensions.width / 1.2,
+      height: 250,
+      marginTop: 20
     },
     })

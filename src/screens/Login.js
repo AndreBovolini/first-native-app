@@ -22,7 +22,7 @@ import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useRoute } from '@react-navigation/native';
 
-import comdadoLogin from '../utils/conta/Login';
+import comdadoLogin from '../dados/conta/Login';
 
 import { Container } from './Login/styles';
 
@@ -46,22 +46,26 @@ const Login = ({route, navigation}) => {
   async function handleLogin() {
       if (inputUsuario !== '') {
           if (inputSenha !== '') {
-            // try{
-            //     await Keychain.setGenericPassword(
-            //       inputUsuario,
-            //       inputSenha
-            //     )
-            //   } catch (error) {
-            //   }
-            //   let dateLogin = new Date().getTime() + (1000*60*5);
-            //   AsyncStorage.setItem('token', dateLogin.toString())
-            //   navigation.navigate('Home');
-            comdadoLogin(inputUsuario, inputSenha).then(response => {
-              console.log(response)
-            }
-            ).catch(error => {
-              console.log(error)
-            })
+            try{
+                await Keychain.setGenericPassword(
+                  inputUsuario,
+                  inputSenha
+                )
+              } catch (error) {
+              }
+              let teste = await AsyncStorage.getItem('Carteira')
+              await AsyncStorage.removeItem('Carteira')
+              let teste2 = await AsyncStorage.getItem('Carteira')
+              console.log(teste, teste2)
+              let dateLogin = new Date().getTime() + (1000*60*0.5);
+              await AsyncStorage.setItem('token', dateLogin.toString())
+              navigation.navigate('AfterLogin');
+            // comdadoLogin(inputUsuario, inputSenha).then(response => {
+            //   console.log(response)
+            // }
+            // ).catch(error => {
+            //   console.log(error)
+            // })
           }
       };
   }
@@ -95,9 +99,10 @@ const Login = ({route, navigation}) => {
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {
             
-              let dateLogin = new Date().getTime() + (1000*60*5);
-              AsyncStorage.setItem('token', dateLogin.toString())
-              navigation.navigate('Home');
+              let dateLogin = new Date().getTime() + (1000*60*0.5);
+              await AsyncStorage.setItem('token', dateLogin.toString())
+              await AsyncStorage.removeItem('Carteira')
+              navigation.navigate('AfterLogin');
             } else {
             }
           } catch (error) {

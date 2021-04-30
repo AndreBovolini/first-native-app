@@ -59,6 +59,37 @@ export const AtivosCarteira = [
     },
 ]
 
+export const AcoesCarteira = [
+    {
+      value: 86467.56,
+      label: 'PETR4',
+  },
+  {
+      value: 62500.45,
+      label: 'ABEV3',
+  },
+  {
+      value: 32560.80,
+      label: 'COGN3',
+  },
+  {
+      value: 75698.34,
+      label: 'AZUL4',
+  },
+  {
+      value: 50487.78,
+      label: 'PRIO3',
+  },
+  {
+      value: 95845.26,
+      label: 'VALE3',
+  },
+  {
+      value: 10452.78,
+      label: 'OIBR3',
+  },
+]
+
 export const dados = [
   {
     ano: '2017',

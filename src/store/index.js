@@ -2,14 +2,16 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 import createSagaMiddleWare from 'redux-saga'
 
-import dates from './reducers/dates';
+import dates from './reducers/infos-gerais';
+import * as homePage from './reducers/reducer-dados-home';
 
 import rootSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleWare();
 
 const store = createStore(combineReducers({
-    dates,
+    dates: dates,
+    dadosHomePage: homePage.dadosHomePage
 }),
     applyMiddleware(sagaMiddleware),
 );

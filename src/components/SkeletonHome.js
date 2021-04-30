@@ -110,11 +110,13 @@ export default function Placehoder(props) {
           isLoading={props.isLoading}
           layout={[
               { key: 'ChartPie', 
-              flex: 1,
-              width:globalStyles.dimensions.width,
-              marginTop: 1, 
-              margin: 12,
-              height: 393},
+              height: 300,
+              borderRadius: 200,
+              width: 300,
+              marginTop: 20, 
+              marginLeft: 20,
+              marginRight: 20,
+              margin: 12},
             ]}
         />
       </ScrollView>
@@ -123,7 +125,7 @@ export default function Placehoder(props) {
 
     const styles = StyleSheet.create({
       container: {
-          height: 1080,
+          height: 1020,
           width: globalStyles.dimensions.width,
           backgroundColor: globalStyles.colors.backGround,
           justifyContent: 'flex-start',

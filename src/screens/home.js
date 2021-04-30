@@ -23,6 +23,8 @@ import globalStyles from '../styles/globalStyles';
 import LineChartResumo from '../components/LineChartResumo';
 import OutroPie from '../components/PieChart';
 
+import ModalEscolheCarteira from '../components/ModalEscolheCarteira';
+
 import {
     dataHomeBox,
     resposta1
@@ -109,6 +111,14 @@ export const Home = ({navigation}) => {
   const [soup, setSoup] = useState(35);
   const [beverages, setBeverages] = useState(35);
   const [desserts, setDesserts] = useState(35);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect( async () => {
+    let carteira = await AsyncStorage.getItem('Carteira');
+    if (!carteira) {
+      setShowModal(true)
+    }
+  }, [])
 
   const greenBlue = 'rgb(26, 182, 151)';
   const petrel = 'rgb(59, 145, 153)';
@@ -238,48 +248,11 @@ export const Home = ({navigation}) => {
   }, []);
 
   
-  setTimeout(() => {setLoading(false)}, 3000)
-
-  // useEffect(() => {
-  //     console.log('effect')
-  //     navigation.addListener('beforeRemove', (e) => {
-  //       const action = e.data.action;
-  //       e.preventDefault();
-  //       console.log('aaaa');
-
-  //       Alert.alert(
-  //         'O que você deseja fazer?',
-  //         '',
-  //         [
-  //           { text: "Manter",
-  //            style: 'cancel',
-  //             onPress: () => {} },
-  //           {
-  //             text: 'Sair',
-  //             style: 'destructive',
-  //             onPress: () => BackHandler.exitApp(),
-  //           },
-  //           { text: 'Fazer Logoff',
-  //             style: 'logoff',
-  //             onPress: () => {
-  //               AsyncStorage.removeItem('token');
-  //               navigation.navigate('Login', {
-  //                 credentials: false
-  //               })
-  //               }
-  //           }
-  //         ]
-  //       );
-  //     })},
-  //   []
-  // );
+  setTimeout(() => {setLoading(false)}, 5000)
 
     return (
       <View>
         {loading ? <SkeletonHome isLoading={loading}/> :
-      
-      
-      
         (<ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title}>Portfólio</Text>
             <View style={styles.valueBoxContainer}>

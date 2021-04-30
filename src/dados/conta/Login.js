@@ -1,5 +1,5 @@
 //Pega o token a partir do username e password já existentes
-import endPoint from '../endpoint';
+import endPoint from '../endpoint/endpoint';
 
 async function comdadoLogin(apiUsername, apiPassword) {
   const apiTeste = 'username=' + apiUsername + '&password=' + apiPassword;

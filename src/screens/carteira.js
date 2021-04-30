@@ -26,28 +26,45 @@ const Carteira = ({navigation}) => {
   useEffect(() => {
     let ativos = []
     AtivosCarteira.forEach((el, i) => {
-      ativos.push(el.label);
+      ativos.push({
+        id: i,
+        ativo: el.label,
+        value: el.value,
+        data: el.data,
+        cor: cores[i],
+        show: false,
+      });
     });
-    const newArray = Array(arrayAtivos.length).fill(false);
-    setArrayShow(newArray);
     setArrayAtivos(ativos);
   }, []);
 
   useEffect(() => {
     let showCount = 0
-    arrayShow.forEach((el, i) => {
-      if (el) {
+    let acao = 0
+    arrayAtivos.forEach((el, i) => {
+      if (el.ativo === 'Ações') {
+        acao = 1
+        showCount = showCount +1;
+      } else if (el.show){
         showCount = showCount +1;
       }
     })
-    const increasedHeight = (showCount * 93);
+    const increasedHeight = ((showCount * 93) + (acao * 300));
     setScrollViewHeight(1183 + increasedHeight)
-  }, [arrayShow])
+  }, [arrayAtivos])
   
-    function handleClick(index) {
-        const newArray = [...arrayShow];
-        newArray[index]= !arrayShow[index]
-        setArrayShow(newArray);
+    function handleClick(tipoAtivo) {
+        // const newArray = [...arrayShow];
+        // newArray[index]= !arrayShow[index]
+        // setArrayShow(newArray);
+        let newArray = [...arrayAtivos];
+        newArray = newArray.map((el, id) => {
+          if (el.ativo === tipoAtivo) {
+            el.show = !el.show
+          }
+          return el;
+        })
+        setArrayAtivos(newArray)
     }
 
   function handleSelectPie(event) { 
@@ -60,7 +77,12 @@ const Carteira = ({navigation}) => {
       setSelecionadoPie(entry)
       try{
         let selectName = event.nativeEvent.data.label
-        handleClick(arrayAtivos.indexOf(selectName));
+        let filtrado = arrayAtivos.filter(ativo => ativo.ativo === selectName)
+        filtrado[0].show = true;
+        let newArray = [...arrayAtivos];
+        newArray = newArray.filter(ativo => ativo.ativo !== selectName)
+        newArray.unshift(filtrado[0])
+        setArrayAtivos(newArray);
         // ativos.splice(ativos.indexOf(selectName, 1))
         // ativos.unshift(selectName)
       }catch{
@@ -82,13 +104,13 @@ const Carteira = ({navigation}) => {
             <View style={styles.containerCards}>
               {arrayAtivos.map((el, i) => {
                 return <Cards id={i} 
-                              title={el} 
-                              value={AtivosCarteira[arrayAtivos.indexOf(el)].value}
-                              data={AtivosCarteira[arrayAtivos.indexOf(el)].data}
+                              title={el.ativo} 
+                              value={el.value}
+                              data={el.data}
                               key={i} 
                               handleClick={handleClick}
-                              show={arrayShow[i]}
-                              cor={cores[i]}/>;
+                              show={el.show}
+                              cor={el.cor}/>;
               })}
             </View>
         </ScrollView>
