@@ -5,24 +5,60 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Modal from 'react-native-modal';
 import globalStyles from '../styles/globalStyles';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const Benchmarks = props => {
-    const [benchmarks, setBenchmarks] = useState(['IBOVESPA','IPCA'])
+    const [benchmarks, setBenchmarks] = useState(props.benchmarks)
+  
 
-    const handleBenchmark = (el) => {
+    
+    const handleBenchmark = (el,i) => {
         let newArray = [...benchmarks]
-        newArray.push(el)
+        newArray[i].isSelected = true
         setBenchmarks(newArray)
-        console.log(benchmarks)
+
     };
+    const handleFavoriteBenchmark = (el,i) => {
+        let newArray = [...benchmarks]
+        newArray[i].isFavorite = !newArray[i].isFavorite
+        newArray[i].isSelected = true
+        setBenchmarks(newArray)
+        try {
+          AsyncStorage.setItem('Selecionados', JSON.stringify(newArray));
+          
+        } catch (error) {
+          
+        }
+    };
+
+    const handleDeleteBenchmark = (el,i) => {
+        let newArray = [...benchmarks]
+        newArray[i].isSelected = false
+        setBenchmarks(newArray)
+    };
+
+    useEffect(async() => {
+        try {
+
+            const myArray = await AsyncStorage.getItem('Selecionados');
+            if (myArray !== null) {
+              let array = JSON.parse(myArray)
+              array.map((el, i) => {
+                if(array[i].isFavorite === false) {
+                  array[i].isSelected = false
+                }
+              })
+              setBenchmarks(array)
+            }
+          } catch (error) {
+          }
+    },[]);
 
     return (
         <View style={styles.container}>
@@ -47,44 +83,67 @@ const Benchmarks = props => {
           style={[styles.modal, {backgroundColor:'#252525', height: props.height, width: props.width}]}> 
             <Text style={{fontSize:25, color:'#FFF', marginBottom:15}}>Selecione os benchmarks</Text>
             <Text style={{fontSize:20, color:'#FFF', marginBottom:10}}> benchmarks selecionados: </Text>
-            
-            <View style={styles.titleContainer}> 
-              <View style={styles.left}>
-                <Icon name="star" size={15} color='#7faeff'/>
-                <Text style={styles.title}>CDI</Text> 
-              </View>
-              <View>
-                <TouchableOpacity style={styles.right} >
-                  <Icon name="check" size={25} color='#9af688'/>
-                </TouchableOpacity>
-              </View>
-            </View>
-            {/* {benchmarks.map((el, i) => {
+  
+  
+            {benchmarks.map((el, i) => {
+               if(el.isSelected) {
                 return (<View style={styles.titleContainer} key={i}> 
                 <View style={styles.left}>
-                  <Text style={styles.title}>{el}</Text> 
+                  {el.isFavorite ? <TouchableOpacity style={styles.left, {marginLeft:8}} onPress={() => handleFavoriteBenchmark(el,i)}>
+                      <Icon name="star" size={22} color='#7faeff'/>
+                  </TouchableOpacity> :
+                    <TouchableOpacity style={styles.left, {marginLeft:8}} onPress={() => handleFavoriteBenchmark(el,i)}>
+                        <Icon name="star" size={20} color='#A9A9A9'/>
+                    </TouchableOpacity> }
+                  <Text style={styles.title}>{el.label}</Text> 
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <TouchableOpacity style={styles.right} onPress={(() => handleDeleteBenchmark(el,i))}>
+                    <Icon name="trash" size={25} color='#FFF' style={{marginRight:7}}/>
+                  </TouchableOpacity>
+                  <Icon name="check" size={25} color='#9af688'/>
+                </View>
+              </View> )
+               }
+              })}
+            {/* <Text style={{fontSize:20, color:'#FFF', marginBottom:10, marginTop: 30}}
+                > benchmarks favoritos: </Text>
+            {benchmarks.map((el, i) => {
+                if (el.isFavorite && !el.isSelected) {
+                return (<View style={styles.titleContainer} key={i}> 
+                <View style={styles.left}>
+                  <TouchableOpacity style={styles.left, {marginLeft:8}} onPress={() => handleFavoriteBenchmark(el,i)}>
+                      <Icon name="star" size={20} color='#7faeff'/>
+                  </TouchableOpacity>
+                  <Text style={styles.title}>{el.label}</Text> 
                 </View>
                 <View>
-                  <TouchableOpacity style={styles.right} >
+                  <TouchableOpacity style={styles.right} onPress={() => handleBenchmark(el,i)} >
                     <Icon name="plus" size={25} color='#FFF'/>
                   </TouchableOpacity>
                 </View>
               </View> )
+              }
               })} */}
-            
+
             <Text style={{fontSize:20, color:'#FFF', marginBottom:10, marginTop: 30}}
                 > benchmarks disponíveis: </Text>
             {benchmarks.map((el, i) => {
+                if (!el.isSelected) {
                 return (<View style={styles.titleContainer} key={i}> 
                 <View style={styles.left}>
-                  <Text style={styles.title}>{el}</Text> 
+                  <TouchableOpacity style={styles.left, {marginLeft:8}} onPress={() => handleFavoriteBenchmark(el,i)}>
+                      <Icon name="star" size={20} color='#A9A9A9'/>
+                  </TouchableOpacity>
+                  <Text style={styles.title}>{el.label}</Text> 
                 </View>
                 <View>
-                  <TouchableOpacity style={styles.right} onPress={() => handleBenchmark(el)} >
+                  <TouchableOpacity style={styles.right} onPress={() => handleBenchmark(el,i)} >
                     <Icon name="plus" size={25} color='#FFF'/>
                   </TouchableOpacity>
                 </View>
               </View> )
+              }
               })}
               <View style={styles.buttonClose}>
                   <TouchableOpacity style={styles.right} onPress={props.buttonAction} >

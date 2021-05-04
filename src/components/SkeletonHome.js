@@ -28,6 +28,17 @@ export default function Placehoder(props) {
               height: styles.title.height },
             ]}
       />
+      <SkeletonContent 
+            containerStyle={styles.percentSwitch}
+            boneColor="#121212"
+            highlightColor="#333333"
+            isLoading={props.isLoading} 
+            layout={[
+              { key: 'title', 
+              width:styles.percentSwitch.width, 
+              height: styles.percentSwitch.height },
+            ]}
+      />
         <SkeletonContent 
           containerStyle={{ flexDirection: 'row', margin: 2}}
           boneColor="#121212"
@@ -64,6 +75,17 @@ export default function Placehoder(props) {
               height: 75},
             ]}
         />
+        <SkeletonContent 
+            containerStyle={styles.benchmarkSwitch}
+            boneColor="#121212"
+            highlightColor="#333333"
+            isLoading={props.isLoading} 
+            layout={[
+              { key: 'title', 
+              width:styles.benchmarkSwitch.width, 
+              height: styles.benchmarkSwitch.height },
+            ]}
+      />
         <SkeletonContent 
             containerStyle={styles.title}
             boneColor="#121212"
@@ -138,6 +160,18 @@ export default function Placehoder(props) {
           marginLeft: 10,
           height: 40
       },
+      percentSwitch: {
+        width: 80, 
+        alignSelf: 'flex-start',
+        marginLeft: 5,
+        height: 35
+    },
+    benchmarkSwitch: {
+      width: 150, 
+      alignSelf: 'center',
+      marginLeft: 5,
+      height: 30
+    },
       valueBoxContainer: {
           flex:1,
           width: globalStyles.dimensions.width,

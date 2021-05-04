@@ -75,6 +75,8 @@ const LineChartLandscape = props => {
             easingY: 'EaseInOutQuart',
           }}
           drawGridBackground={false}
+          highlightPerTapEnabled={true}
+          highlightPerDragEnabled={true}
           drawBorders={false}
           touchEnabled={true}
           dragEnabled={true}

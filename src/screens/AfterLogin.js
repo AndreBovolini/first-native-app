@@ -16,7 +16,6 @@ const AfterLogin = ({navigation, alteraCarteira}) => {
 
     useEffect(async() => {
         const carteiraDefault = await AsyncStorage.getItem('Carteira');
-        console.log(carteiraDefault)
         if (carteiraDefault) {
             alteraCarteira(carteiraDefault);
             navigation.navigate('Home');

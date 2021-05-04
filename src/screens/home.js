@@ -261,7 +261,29 @@ export const Home = ({navigation}) => {
 
   const handleCloseBench = () => {
     setShowBench(false)
+
   }
+
+  
+
+  const benchmarks = [
+    {   label: 'CDI',
+        isSelected: true,
+        isFavorite: true,   
+    },
+    {   label: 'IBOVESPA',
+        isSelected: false,
+        isFavorite: false   
+    },
+    {   label: 'IPCA',
+        isSelected: false,
+        isFavorite: false,
+    },
+    {   label: 'IGPM',
+        isSelected: false,
+        isFavorite: false
+
+    }]
 
 
   
@@ -342,7 +364,7 @@ export const Home = ({navigation}) => {
                 </View>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Benchmarks visible={showBench} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseBench}/>
+              <Benchmarks visible={showBench} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseBench} benchmarks={benchmarks}/>
             </View>
             <View style={styles.benchmarksButton}>
               <Text style={{fontSize:20, color:'#FFF', marginRight: 10}}>Benchmarks</Text>

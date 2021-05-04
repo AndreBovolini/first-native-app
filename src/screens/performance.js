@@ -273,7 +273,7 @@ const Performance = ({navigation}) => {
   };
 
   if (orientation === 'landscape') {
-    if (scrollPosition > 400) {
+    if (scrollPosition > 380) {
       return (
         <PerformanceTableLandscape>
           <View style={{height: globalStyles.dimensions.width *0.9, borderRadius: 20,  width: globalStyles.dimensions.height * 0.9}}>
@@ -312,7 +312,7 @@ const Performance = ({navigation}) => {
 
     return (
         <ScrollView contentContainerStyle={styles.container} onMomentumScrollEnd={(event) => handleScroll(event)}>
-            <Text style={styles.title}>{'Performance' + orientation}</Text>
+            <Text style={styles.title}>{'Performance'}</Text>
             <View style={styles.containerSelector}>
             {periodos.map((el, i) => {
                 return (

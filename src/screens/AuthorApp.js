@@ -27,7 +27,7 @@ const AuthOrApp = (props) => {
                 })
             }
         } else {
-            let dateLogin = new Date().getTime() + (1000*60*0.5);
+            let dateLogin = new Date().getTime() + (1000*60*5);
             AsyncStorage.setItem('token', dateLogin.toString())
             props.navigation.navigate('Home')
         }
