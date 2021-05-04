@@ -7,6 +7,7 @@ import {
   Text,
   processColor,
   View,
+  Dimensions
 } from 'react-native';
 
 import ValueBox from '../components/valueBox';
@@ -15,12 +16,16 @@ import globalStyles from '../styles/globalStyles';
 import LineChartRender from '../components/LineChart';
 import SelectPeriod from '../components/SelectPeriod';
 import TableRow from '../components/TableRow';
+import PerformanceLandscape, { PerformanceTableLandscape } from './performanceLandscape';
 
 import {
     dataHomeBox,
     dados,
     resposta1
 } from '../data/data';
+import LineChartLandscape from '../components/LineChartLandscape';
+
+
 
 
 const Performance = ({navigation}) => {
@@ -97,6 +102,19 @@ const Performance = ({navigation}) => {
   const [anoSelecionado, setAnoSelecionado] = useState('2021');
   const [periodoSelecionado, setPeriodoSelecionado] = useState('Tudo');
   const [indiceAno, setIndiceAno] = useState(0);
+  const [orientation, setOrientation] = useState('portrait')
+  const [scrollPosition, setScrollPosition] = useState(0)
+
+  useEffect(() => {
+    Dimensions.addEventListener('change', ({ window: { width, height}}) => {
+      if (width < height) {
+        setOrientation('portrait')
+        setScrollPosition(0)
+      } else {
+        setOrientation('landscape')
+      }
+    })
+  }, [])
 
     function handleSelecionaAno(ano) {
         setAnoSelecionado(ano);
@@ -109,6 +127,10 @@ const Performance = ({navigation}) => {
       setSelecionadoLine({});
       setPeriodoSelecionado(periodo)
   }
+
+  function handleScroll(event) {
+    setScrollPosition(event.nativeEvent.contentOffset.y);
+  };
 
   const alteraDataPTParaEN = data => {
     data = data.split('/');
@@ -224,7 +246,7 @@ const Performance = ({navigation}) => {
           circleColor: processColor(greenBlue),
           drawCircleHole: false,
           circleRadius: 5,
-          highlightColor: processColor('transparent'),
+          highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
           color: processColor(greenBlue),
 
           valueTextSize: 15,
@@ -242,7 +264,7 @@ const Performance = ({navigation}) => {
           circleColor: processColor(petrel),
           drawCircleHole: false,
           circleRadius: 5,
-          highlightColor: processColor('transparent'),
+          highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
           color: processColor(petrel),
           valueTextSize: 15,
         },
@@ -250,9 +272,47 @@ const Performance = ({navigation}) => {
     ],
   };
 
+  if (orientation === 'landscape') {
+    if (scrollPosition > 400) {
+      return (
+        <PerformanceTableLandscape>
+          <View style={{height: globalStyles.dimensions.width *0.9, borderRadius: 20,  width: globalStyles.dimensions.height * 0.9}}>
+          <View style={styles.containerTableLandscape} >
+            <View style={styles.containerHeader}>
+            <Text style={styles.textoHeader}>Período</Text>
+              <Text style={styles.textoHeader}>Carteira</Text>
+              <Text style={styles.textoHeader}>IPCADP</Text>
+              <Text style={styles.textoHeader}>%IPCADP</Text>
+            </View>
+            <ScrollView nestedScrollEnabled = {true}>
+            {dados[indiceAno].response.map((el, i) => {
+                return (
+                    <TableRow key={i} index={i} col1={meses[i]} col2={el.carteira} col3={el.IPCADP} col4={el.IPCADPP}/>
+                )
+            })}
+            </ScrollView>
+          </View>
+          </View>
+        </PerformanceTableLandscape>
+      )
+    }
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>Performance</Text>
+      <PerformanceLandscape>
+        <LineChartLandscape
+        handleSelect={handleSelectLine}
+        selectedEvent={selectedEvent}
+        selecionado={selecionadoLine.data ? selecionadoLine.data.marker : null}
+        data={data}
+        labels={labels}
+        granularity={granularity}
+        />
+      </PerformanceLandscape>
+    )
+  }
+
+    return (
+        <ScrollView contentContainerStyle={styles.container} onMomentumScrollEnd={(event) => handleScroll(event)}>
+            <Text style={styles.title}>{'Performance' + orientation}</Text>
             <View style={styles.containerSelector}>
             {periodos.map((el, i) => {
                 return (
@@ -341,6 +401,14 @@ const styles = StyleSheet.create({
       height: 500,
       marginVertical: 5,
       marginHorizontal: 0,
+      backgroundColor: '#161616',
+      borderRadius: 20,
+    },
+    containerTableLandscape: {
+      width: globalStyles.dimensions.height * 0.9,
+      height: globalStyles.dimensions.width * 0.9,
+      marginVertical: 10,
+      marginHorizontal: globalStyles.dimensions.height * 0.05,
       backgroundColor: '#161616',
       borderRadius: 20,
     },

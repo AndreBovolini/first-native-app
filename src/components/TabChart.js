@@ -67,7 +67,6 @@ const TabChart = (props) => {
             }
           }],
         },
-        highlights: [{x:1}],
         description: {
           text: '',
           textSize: 15,

@@ -1,11 +1,8 @@
-import React, { useState,} from 'react';
+import React, { useState, useEffect} from 'react';
 import {
-  SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  TextInput,
   processColor,
   TouchableOpacity,
   View,
@@ -13,10 +10,8 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Ionicons from 'react-native-vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import Cards from '../components/cards'
 import ValueBox from '../components/valueBox';
 import globalStyles from '../styles/globalStyles';
 // import setTimeOut from 'timers'
@@ -26,15 +21,10 @@ import OutroPie from '../components/PieChart';
 import Filtro from '../components/FiltroHome';
 import Benchmarks from '../components/Benchmarks'
 
-
-
-import ModalEscolheCarteira from '../components/ModalEscolheCarteira';
-
 import {
     dataHomeBox,
     resposta1
 } from '../data/data';
-import { useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import SkeletonHome from '../components/SkeletonHome'
 
@@ -47,8 +37,8 @@ export const Home = ({navigation}) => {
   const [loading, setLoading] = useState(true)
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
-  const [inputValue, setInputValue] = useState('');
-  const [inputMarker, setInputMarker] = useState('');
+  const [] = useState('');
+  const [] = useState('');
   const [values1, setValues1] = useState([
     {
       y: 650,
@@ -116,16 +106,11 @@ export const Home = ({navigation}) => {
   const [labels, setLabels] = useState([]);
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [selecionadoPie, setSelecionadoPie] = useState({})
-  const [sandwiches, setSandwiches] = useState(35);
-  const [salads, setSalads] = useState(35);
-  const [soup, setSoup] = useState(35);
-  const [beverages, setBeverages] = useState(35);
-  const [desserts, setDesserts] = useState(35);
+
 
 
 
   const greenBlue = 'rgb(26, 182, 151)';
-  const petrel = 'rgb(59, 145, 153)';
 
   useEffect(() => {
     const valores1 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
@@ -142,7 +127,7 @@ export const Home = ({navigation}) => {
             marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%',
         }
     });
-    const linelabes = resposta1.resposta["tab-p1"].linha.map((el, i) => {
+    const linelabes = resposta1.resposta["tab-p1"].linha.map((el) => {
         return el.data
     })
     setValues1(valores1);
@@ -216,7 +201,6 @@ export const Home = ({navigation}) => {
     ],
   };
 
-  const route = useRoute()
 
   useEffect(() => {
     const backAction = () => {
@@ -270,9 +254,6 @@ export const Home = ({navigation}) => {
     setShowModal(false)
   
   }
-  const handleCardCarteira = () => {
-    setShowAlteraCarteira(!showAlteraCarteira);
-  };
 
   const handleOpenBench = () => {
     setShowBench(true)
@@ -282,39 +263,6 @@ export const Home = ({navigation}) => {
     setShowBench(false)
   }
 
-  // useEffect(() => {
-  //     console.log('effect')
-  //     navigation.addListener('beforeRemove', (e) => {
-  //       const action = e.data.action;
-  //       e.preventDefault();
-  //       console.log('aaaa');
-
-  //       Alert.alert(
-  //         'O que você deseja fazer?',
-  //         '',
-  //         [
-  //           { text: "Manter",
-  //            style: 'cancel',
-  //             onPress: () => {} },
-  //           {
-  //             text: 'Sair',
-  //             style: 'destructive',
-  //             onPress: () => BackHandler.exitApp(),
-  //           },
-  //           { text: 'Fazer Logoff',
-  //             style: 'logoff',
-  //             onPress: () => {
-  //               AsyncStorage.removeItem('token');
-  //               navigation.navigate('Login', {
-  //                 credentials: false
-  //               })
-  //               }
-  //           }
-  //         ]
-  //       );
-  //     })},
-  //   []
-  // );
 
   
     return (
@@ -385,20 +333,12 @@ export const Home = ({navigation}) => {
             </View>
             <View style={styles.valueBoxContainer}>
                 <View style={styles.valueBoxContainerRow}>
-                   
-                    {percent ? <ValueBox title={dataHomeBox[0].label} value={dataHomeBox[0].percent + ' %'}/> :
-                      <ValueBox title={dataHomeBox[0].label} value={'R$ ' + dataHomeBox[0].value}/>}
-                      
-                    {percent ? <ValueBox title={dataHomeBox[1].label} value={dataHomeBox[1].percent + ' %'}/> :
-                      <ValueBox title={dataHomeBox[1].label} value={'R$ ' + dataHomeBox[1].value}/>}
+                  <ValueBox title={dataHomeBox[0].label} value={!percent ? 'R$ ' + dataHomeBox[0].value : dataHomeBox[0].percent + ' %'}/>
+                  <ValueBox title={dataHomeBox[0].label} value={!percent ? 'R$ ' + dataHomeBox[1].value : dataHomeBox[1].percent + ' %'}/>
                 </View>
                 <View style={styles.valueBoxContainerRow}>
-                    {percent ? <ValueBox title={dataHomeBox[2].label} value={dataHomeBox[2].percent + ' %'}/> :
-                      <ValueBox title={dataHomeBox[2].label} value={'R$ ' + dataHomeBox[2].value}/>}
-
-                    {percent ? <ValueBox title={dataHomeBox[3].label} value={dataHomeBox[3].percent + ' %'}/> : 
-                      <ValueBox title={dataHomeBox[3].label} value={'R$ ' +  dataHomeBox[3].value}/>}
-                    
+                  <ValueBox title={dataHomeBox[0].label} value={!percent ? 'R$ ' + dataHomeBox[2].value : dataHomeBox[2].percent + ' %'}/>
+                  <ValueBox title={dataHomeBox[0].label} value={!percent ? 'R$ ' + dataHomeBox[3].value : dataHomeBox[3].percent + ' %'}/> 
                 </View>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -434,11 +374,6 @@ export const Home = ({navigation}) => {
             <View style={styles.chartContainer}>
                 <OutroPie handleSelect={handleSelectPie} 
                 selectedEntry={selectedEntry}
-                sandwiches={sandwiches}
-                salads={salads}
-                soup={soup}
-                beverages={beverages}
-                desserts={desserts}
                 valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  ''}
                 />      
             </View>

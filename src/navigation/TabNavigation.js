@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -22,6 +22,16 @@ import store from '../store/index';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
 const TabNavigation = () => {
+    const [landscapeShow, setLandscapeShow] = useState(true)
+    useEffect(() => {
+        Dimensions.addEventListener('change', ({ window: { width, height}}) => {
+          if (width < height) {
+            setLandscapeShow(true)
+          } else {
+            setLandscapeShow(false)
+          }
+        })
+    }, [])
     return (
             
             <Tab.Navigator 
@@ -62,7 +72,6 @@ const TabNavigation = () => {
 
                 
                 tabBarOptions={{
-                   
                     activeTintColor: globalStyles.colors.fontColor,
                     inactiveTintColor: '#000',
                     labelStyle: { fontSize: 15},
@@ -80,7 +89,7 @@ const TabNavigation = () => {
             >
                 
                 
-                <Tab.Screen name="Performance" component={Performance} />
+                <Tab.Screen name="Performance" component={Performance} options={{ tabBarVisible: landscapeShow}}/>
                 <Tab.Screen name="Home" component={Home} />
                 <Tab.Screen name="Carteira" component={Carteira} />
                 <Tab.Screen name="Perfil" component={Profile} />
