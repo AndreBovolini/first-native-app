@@ -9,7 +9,7 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Modal from 'react-native-modal';
-import globalStyles from '../styles/globalStyles';
+import globalStyles from '../../../../styles/globalStyles';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 

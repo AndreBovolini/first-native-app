@@ -6,9 +6,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import globalStyles from '../styles/globalStyles';
+import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CustomInput from '../components/CustomInput';
+import CustomInput from '../../CustomInput';
 
 
 
@@ -16,6 +16,12 @@ const CardAlteraSenha = (props) => {
     const [senhaAntiga, setSenhaAntiga] = useState('');
     const [senhaNova, setSenhaNova] = useState('');
     const [senhaNovamente, setSenhaNovamente] = useState('')
+    const [hideSenha, setHideSenha] = useState(true);
+
+    const handleHidePassword = () => {
+      setHideSenha(!hideSenha)
+    }
+
 
     return (
         <View>
@@ -44,6 +50,7 @@ const CardAlteraSenha = (props) => {
                             style={{width: globalStyles.dimensions.width * 0.7, color:'#000'}}
                             secureTextEntry={true}
                             placeholderTextColor={'#aaa'}
+                            
                         />
                         <CustomInput
                             placeholder={'Senha nova'}

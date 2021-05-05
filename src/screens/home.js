@@ -12,21 +12,21 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import ValueBox from '../components/valueBox';
+import ValueBox from '../components/ComponentsHome/Box/valueBox';
 import globalStyles from '../styles/globalStyles';
 // import setTimeOut from 'timers'
 
-import LineChartResumo from '../components/LineChartResumo';
-import OutroPie from '../components/PieChart';
-import Filtro from '../components/FiltroHome';
-import Benchmarks from '../components/Benchmarks'
+import LineChartResumo from '../components/ComponentsHome/LineChartResumo/LineChartResumo';
+import OutroPie from '../components/ComponentsCarteira/GraficoPie/PieChart';
+import Filtro from '../components/ComponentsHome/Modal/Filtro/FiltroHome';
+import Benchmarks from '../components/ComponentsHome/Modal/Benchmarks/Benchmarks'
 
 import {
     dataHomeBox,
     resposta1
 } from '../data/data';
 import { useRoute } from '@react-navigation/native';
-import SkeletonHome from '../components/SkeletonHome'
+import SkeletonHome from '../components/ComponentsHome/Skeleton/SkeletonHome'
 
 export const Home = ({navigation}) => {
   const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);

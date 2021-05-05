@@ -12,8 +12,9 @@ import {
 
 import Modal from 'react-native-modal';
 
-import globalStyles from '../styles/globalStyles';
-import backGround from '../../assets/images/background.jpg'
+import globalStyles from '../../styles/globalStyles';
+
+import backGround from '../../../assets/images/background.jpg'
 
 const CustomModal = props => {
   return (

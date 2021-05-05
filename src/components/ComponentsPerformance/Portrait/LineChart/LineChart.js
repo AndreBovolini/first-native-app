@@ -10,11 +10,11 @@ import {
 import update from 'immutability-helper';
 
 import {LineChart} from 'react-native-charts-wrapper';
-import globalStyles from '../styles/globalStyles';
+import globalStyles from '../../../../styles/globalStyles';
 
 
 
-const LineChartLandscape = props => {
+const LineChartRender = props => {
 
   return (
     <View style={{flex: 1}}>
@@ -48,7 +48,7 @@ const LineChartLandscape = props => {
             drawLabels: true,
             position: 'BOTTOM',
             drawAxisLine: true,
-            drawGridLines: true,
+            drawGridLines: false,
             fontFamily: 'HelveticaNeue-Medium',
             fontWeight: 'bold',
             textSize: 12,
@@ -58,7 +58,7 @@ const LineChartLandscape = props => {
           yAxis={{
             left: {
               enabled: true,
-              drawGridLines: true,
+              drawGridLines: false,
               drawLabels: true,
               drawAxisLine: true,
               textColor: processColor(globalStyles.chartColors.axis),
@@ -75,16 +75,14 @@ const LineChartLandscape = props => {
             easingY: 'EaseInOutQuart',
           }}
           drawGridBackground={false}
-          highlightPerTapEnabled={true}
-          highlightPerDragEnabled={true}
           drawBorders={false}
           touchEnabled={true}
-          dragEnabled={true}
-          scaleEnabled={true}
-          scaleXEnabled={true}
-          scaleYEnabled={true}
-          pinchZoom={true}
-          doubleTapToZoomEnabled={true}
+          dragEnabled={false}
+          scaleEnabled={false}
+          scaleXEnabled={false}
+          scaleYEnabled={false}
+          pinchZoom={false}
+          doubleTapToZoomEnabled={false}
           dragDecelerationEnabled={true}
           dragDecelerationFrictionCoef={0.99}
           keepPositionOnRotation={false}
@@ -102,8 +100,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   chart: {
-    height: globalStyles.dimensions.width*0.9,
+    height: 400,
   },
 });
 
-export default LineChartLandscape;
+export default LineChartRender;

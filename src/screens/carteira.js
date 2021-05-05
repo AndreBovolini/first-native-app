@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 
 import globalStyles from '../styles/globalStyles';
-import Cards from '../components/cards'
-import OutroPie from '../components/PieChart';
+import Cards from '../components/ComponentsCarteira/Cards/cards.js'
+import OutroPie from '../components/ComponentsCarteira/GraficoPie/PieChart';
 
 import {
   dataHomeBox,
