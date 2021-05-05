@@ -53,7 +53,7 @@ const Carteira = ({navigation}) => {
     setScrollViewHeight(1183 + increasedHeight)
   }, [arrayAtivos])
   
-    function handleClick(tipoAtivo) {
+  function handleClick(tipoAtivo) {
         // const newArray = [...arrayShow];
         // newArray[index]= !arrayShow[index]
         // setArrayShow(newArray);

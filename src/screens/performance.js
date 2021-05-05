@@ -273,7 +273,7 @@ const Performance = ({navigation}) => {
   };
 
   if (orientation === 'landscape') {
-    if (scrollPosition > 380) {
+    if (scrollPosition > 390) {
       return (
         <PerformanceTableLandscape>
           <View style={{height: globalStyles.dimensions.width *0.9, borderRadius: 20,  width: globalStyles.dimensions.height * 0.9}}>
@@ -362,7 +362,7 @@ export default Performance;
 
 const styles = StyleSheet.create({
     container: {
-        height: 1170,
+        height: 1180,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',
         alignItems: 'center',

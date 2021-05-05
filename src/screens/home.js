@@ -39,70 +39,8 @@ export const Home = ({navigation}) => {
   const [selecionadoLine, setSelecionadoLine] = useState({})
   const [] = useState('');
   const [] = useState('');
-  const [values1, setValues1] = useState([
-    {
-      y: 650,
-      x: 0,
-      marker: 'BDS: 650 pts',
-    },
-    {
-      y: 770,
-      x: 1,
-      marker: 'BDS: 770 pts',
-    },
-    {
-      y: 760,
-      x: 2,
-      marker: 'BDS: 760 pts',
-    },
-    {
-      y: 740,
-      x: 3,
-      marker: 'BDS: 740 pts',
-    },
-    {
-      y: 760,
-      x: 4,
-      marker: 'BDS: 760 pts',
-    },
-    {
-      y: 650,
-      x: 5,
-      marker: 'BDS: 650 pts',
-    },
-  ]);
-  const [values2, setValues2] = useState([
-    {
-      y: 350,
-      x: 0,
-      marker: 'Vitality: 350 pts',
-    },
-    {
-      y: 470,
-      x: 1,
-      marker: 'Vitality: 470 pts',
-    },
-    {
-      y: 500,
-      x: 2,
-      marker: 'Vitality: 460 pts',
-    },
-    {
-      y: 600,
-      x: 3,
-      marker: 'Vitality: 440 pts',
-    },
-    {
-      y: 700,
-      x: 4,
-      marker: 'Vitality: 460 pts',
-    },
-    {
-      y: 350,
-      x: 5,
-      marker: 'Vitality: 350 pts',
-    },
-  ]);
+  const [values1, setValues1] = useState([{}]);
+  const [values2, setValues2] = useState([{}]);
   const [labels, setLabels] = useState([]);
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [selecionadoPie, setSelecionadoPie] = useState({})
@@ -133,6 +71,37 @@ export const Home = ({navigation}) => {
     setValues1(valores1);
     setValues2(valores2);
     setLabels(linelabes);
+
+    const backAction = () => {
+      Alert.alert("O que você deseja fazer?",'', [
+        {
+          text: "Manter",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { 
+          text: "Sair", 
+          onPress: () => BackHandler.exitApp() 
+        },
+        {
+          text: 'Fazer Logoff',
+          onPress: () => {
+            AsyncStorage.removeItem('token');
+            navigation.navigate('Login', {
+              credentials: false
+            })
+        }
+      }
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
   }, [])
 
 
@@ -203,36 +172,7 @@ export const Home = ({navigation}) => {
 
 
   useEffect(() => {
-    const backAction = () => {
-      Alert.alert("O que você deseja fazer?",'', [
-        {
-          text: "Manter",
-          onPress: () => null,
-          style: "cancel"
-        },
-        { 
-          text: "Sair", 
-          onPress: () => BackHandler.exitApp() 
-        },
-        {
-          text: 'Fazer Logoff',
-          onPress: () => {
-            AsyncStorage.removeItem('token');
-            navigation.navigate('Login', {
-              credentials: false
-            })
-        }
-      }
-      ]);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-
-    return () => backHandler.remove();
+    
   }, []);
 
   
@@ -264,8 +204,6 @@ export const Home = ({navigation}) => {
 
   }
 
-  
-
   const benchmarks = [
     {   label: 'CDI',
         isSelected: true,
@@ -284,7 +222,6 @@ export const Home = ({navigation}) => {
         isFavorite: false
 
     }]
-
 
   
     return (
@@ -366,12 +303,14 @@ export const Home = ({navigation}) => {
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Benchmarks visible={showBench} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseBench} benchmarks={benchmarks}/>
             </View>
-            <View style={styles.benchmarksButton}>
-              <Text style={{fontSize:20, color:'#FFF', marginRight: 10}}>Benchmarks</Text>
+            
                 <TouchableOpacity style={styles.right, {marginTop: -3}} onPress={handleOpenBench}>
-                  <Icon name="sort-down" size={25} color='#FFF'/>
+                <View style={styles.benchmarksButton}>
+                  <Text style={{fontSize:20, color:'#FFF', marginRight: 10,}}>Benchmarks</Text>
+                  <Icon name="sort-down" size={25} color='#FFF' style={{marginTop:-3}}/>
+                  </View>
                 </TouchableOpacity>
-              </View>
+             
             <View style={styles.titleNavigationContainer}>
               <Text style={styles.titleNavigation}>Performance</Text>
               <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Performance')}>

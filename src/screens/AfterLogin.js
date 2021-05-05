@@ -45,10 +45,10 @@ const mapStateToProps = state => ({
     stateCarteira: state.dates
   });
   
-  const mapDispatchToProps = dispatch => 
+const mapDispatchToProps = dispatch => 
     bindActionCreators(Actions, dispatch);
   
-  export default connect(mapStateToProps, mapDispatchToProps)(AfterLogin);
+export default connect(mapStateToProps, mapDispatchToProps)(AfterLogin);
 
 const styles = StyleSheet.create({
     container: {
