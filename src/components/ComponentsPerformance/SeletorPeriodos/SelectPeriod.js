@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import globalStyles from '../styles/globalStyles';
+import globalStyles from '../../../styles/globalStyles';
 
 
 const SelectPeriod = props => {

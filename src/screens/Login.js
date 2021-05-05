@@ -30,6 +30,7 @@ import { Container } from './Login/styles';
 const Login = ({route, navigation}) => {
   const [inputUsuario, setInputUsuario] = useState('');
   const [inputSenha, setInputSenha] = useState('');
+  const [hideSenha, setHideSenha] = useState(true);
 
   useEffect(async () => {
     const { credentials} = route.params;
@@ -131,6 +132,9 @@ const Login = ({route, navigation}) => {
     return () => backHandler.remove();
   }, []);
 
+    const handleHidePassword = () => {
+      setHideSenha(!hideSenha)
+    }
  
   return (
     <KeyboardAvoidingView
@@ -142,19 +146,23 @@ const Login = ({route, navigation}) => {
               value={inputUsuario}
               onChangeText={usuario => setInputUsuario(usuario)}
               label={'Usuário:'}
-              style={{width: globalStyles.dimensions.width * 0.7, color:'#000'}}
+              style={{width: globalStyles.dimensions.width * 0.67, color:'#000'}}
               keyboardType={'email-address'}
               placeholderTextColor={'#aaa'}
+              type={'usuário'}
             />
             <CustomInput
               placeholder={'Senha'}
               value={inputSenha}
               onChangeText={senha => setInputSenha(senha)}
               label={'Senha:'}
-              style={{width: globalStyles.dimensions.width * 0.7, color:'#000'}}
-              secureTextEntry={true}
+              style={{width: globalStyles.dimensions.width * 0.6, color:'#000'}}
+              secureTextEntry={hideSenha}
               placeholderTextColor={'#aaa'}
+              type={'senha'}
+              hidePassword={handleHidePassword}
             />
+            
           <TouchableOpacity activeOpacity={0.7} onPress={handleLogin}>
             <View style={styles.button}>
               <Text style={styles.buttonText}>Login</Text>

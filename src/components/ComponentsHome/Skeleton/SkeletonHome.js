@@ -6,8 +6,8 @@ import {Text,
 } from 'react-native'
 
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
-import globalStyles from '../styles/globalStyles';
-import ValueBox from './valueBox'
+import globalStyles from '../../../styles/globalStyles';
+import ValueBox from '../../ComponentsHome/Box/valueBox'
 
 import {
   dataHomeBox,

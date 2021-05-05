@@ -10,11 +10,11 @@ import {
 import update from 'immutability-helper';
 
 import {LineChart} from 'react-native-charts-wrapper';
-import globalStyles from '../styles/globalStyles';
+import globalStyles from '../../../../styles/globalStyles';
 
 
 
-const LineChartRender = props => {
+const LineChartLandscape = props => {
 
   return (
     <View style={{flex: 1}}>
@@ -48,7 +48,7 @@ const LineChartRender = props => {
             drawLabels: true,
             position: 'BOTTOM',
             drawAxisLine: true,
-            drawGridLines: false,
+            drawGridLines: true,
             fontFamily: 'HelveticaNeue-Medium',
             fontWeight: 'bold',
             textSize: 12,
@@ -58,7 +58,7 @@ const LineChartRender = props => {
           yAxis={{
             left: {
               enabled: true,
-              drawGridLines: false,
+              drawGridLines: true,
               drawLabels: true,
               drawAxisLine: true,
               textColor: processColor(globalStyles.chartColors.axis),
@@ -77,12 +77,12 @@ const LineChartRender = props => {
           drawGridBackground={false}
           drawBorders={false}
           touchEnabled={true}
-          dragEnabled={false}
-          scaleEnabled={false}
-          scaleXEnabled={false}
-          scaleYEnabled={false}
-          pinchZoom={false}
-          doubleTapToZoomEnabled={false}
+          dragEnabled={true}
+          scaleEnabled={true}
+          scaleXEnabled={true}
+          scaleYEnabled={true}
+          pinchZoom={true}
+          doubleTapToZoomEnabled={true}
           dragDecelerationEnabled={true}
           dragDecelerationFrictionCoef={0.99}
           keepPositionOnRotation={false}
@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   chart: {
-    height: 400,
+    height: globalStyles.dimensions.width*0.9,
   },
 });
 
-export default LineChartRender;
+export default LineChartLandscape;

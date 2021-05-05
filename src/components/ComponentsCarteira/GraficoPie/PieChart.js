@@ -4,27 +4,27 @@ import {
   StyleSheet,
   Text,
   View,
-  processColor, 
+  processColor,
 } from 'react-native';
 
 import {PieChart} from 'react-native-charts-wrapper';
 import { proc } from 'react-native-reanimated';
 
-import { AcoesCarteira } from '../data/data';
-import globalStyles from '../styles/globalStyles';
+import { AtivosCarteira } from '../../../data/data';
+import globalStyles from '../../../styles/globalStyles';
 
-const TabChart = (props) => {
-  const [chartData, setChartData] = useState(AcoesCarteira);
+const OutroPie = (props) => {
+  const [chartData, setChartData] = useState(AtivosCarteira);
   const [soma, setSoma] = useState(0)
 
   useEffect(() => {
     let soma = 0
     let arrayData =[]
-    AcoesCarteira.forEach((el, i) => {
+    AtivosCarteira.forEach((el, i) => {
       soma = soma + parseFloat(el.value)
     })
     setSoma(soma);
-    arrayData = AcoesCarteira.map((el, i) => {
+    arrayData = AtivosCarteira.map((el, i) => {
       let percent = ((parseFloat(el.value) / soma) *100).toFixed(2)
       return {
         value: el.value,
@@ -37,7 +37,7 @@ const TabChart = (props) => {
   
     const infos = {
         legend: {
-          enabled: false,
+          enabled: true,
           textSize: 15,
           textColor: processColor(globalStyles.chartColors.legendColor),
           form: 'CIRCLE',
@@ -50,15 +50,15 @@ const TabChart = (props) => {
         data: {
           dataSets: [{
             values: chartData,
-            label: 'Pie Dataset',
+            label: '',
             config: {
               colors: globalStyles.chartColors.pieChartColors.map(el => {
                 return processColor(el)
               }),
-              valueTextSize: 15,
+              valueTextSize: 0,
               valueTextColor: processColor('black'),
-              sliceSpace: 0,
-              selectionShift: 3,
+              sliceSpace: 5,
+              selectionShift: 13,
               // xValuePosition: "OUTSIDE_SLICE",
               // yValuePosition: "OUTSIDE_SLICE",
               valueFormatter: "#.#'%'",
@@ -67,6 +67,7 @@ const TabChart = (props) => {
             }
           }],
         },
+        highlights: [{x:2}],
         description: {
           text: '',
           textSize: 15,
@@ -86,7 +87,7 @@ return (
           <PieChart
             style={styles.chart}
             logEnabled={true}
-            chartBackgroundColor={processColor('transparent')}
+            chartBackgroundColor={processColor(globalStyles.colors.backGround)}
             chartDescription={infos.description}
             data={infos.data}
             legend={infos.legend}
@@ -99,22 +100,21 @@ return (
             highlights={infos.highlights}
 
             extraOffsets={{left: 5, top: 5, right: 5, bottom: 5}}
-            drawEntryLabels={true}
-            entryLabelColor={processColor('black')}
-            entryLabelTextSize={15}
-            entryLabelTextWeight={'600'}
+            drawEntryLabels={false}
+            entryLabelColor={processColor('white')}
+            entryLabelTextSize={20}
             entryLabelFontFamily={'HelveticaNeue-Medium'}
             rotationEnabled={true}
             rotationAngle={45}
             usePercentValues={true}
-            styledCenterText={{text: props.title, color: processColor(globalStyles.chartColors.centerText), fontFamily: 'HelveticaNeue-Medium', size: 30}}
+            styledCenterText={{text: 'Carteira', color: processColor(globalStyles.chartColors.centerText), fontFamily: 'HelveticaNeue-Medium', size: 30}}
             centerTextRadiusPercent={90}
             holeRadius={60}
-            holeColor={processColor('transparent')}
+            holeColor={processColor(globalStyles.chartColors.pieChartHole)}
             transparentCircleRadius={40}
             transparentCircleColor={processColor(globalStyles.chartColors.pieChartHole)}
             maxAngle={360}
-            onSelect={(event) => console.log(event.nativeEvent)}
+            onSelect={props.handleSelect}
           />
         </View>
       </View>
@@ -131,4 +131,4 @@ const styles = StyleSheet.create({
   });
   
 
-export default TabChart;
+export default OutroPie

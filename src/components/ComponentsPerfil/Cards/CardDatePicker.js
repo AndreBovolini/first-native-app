@@ -8,7 +8,7 @@ import {
   Platform
 } from 'react-native';
 
-import globalStyles from '../styles/globalStyles';
+import globalStyles from '../../../styles/globalStyles';
 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -16,7 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { connect } from 'react-redux';
-import * as Actions from '../store/actions/actions';
+import * as Actions from '../../../store/actions/actions';
 import { bindActionCreators } from 'redux'
 
 

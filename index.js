@@ -12,7 +12,6 @@ import TabNavigation from './src/navigation/TabNavigation';
 import  Performance  from './src/screens/performance';
 import  AuthOrApp from './src/screens/AuthorApp';
 import Login from './src/screens/Login';
-import Cards from './src/components/cards'
 
 import {name as appName} from './app.json';
 
