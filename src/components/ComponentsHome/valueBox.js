@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 
-import globalStyles from '../../../styles/globalStyles';
+import globalStyles from '../../styles/globalStyles';
 
 const ValueBox = (props) => {
     return (

@@ -10,7 +10,7 @@ import {
   Dimensions
 } from 'react-native';
 
-import ValueBox from '../components/ComponentsHome/Box/valueBox';
+import ValueBox from '../components/ComponentsHome/valueBox';
 import globalStyles from '../styles/globalStyles';
 
 import LineChartRender from '../components/ComponentsPerformance/Portrait/LineChart/LineChart';

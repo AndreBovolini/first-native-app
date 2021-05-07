@@ -12,66 +12,43 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import ValueBox from '../components/ComponentsHome/Box/valueBox';
+import ValueBox from '../components/ComponentsHome/valueBox';
 import globalStyles from '../styles/globalStyles';
 // import setTimeOut from 'timers'
 
 import LineChartResumo from '../components/ComponentsHome/LineChartResumo/LineChartResumo';
-import OutroPie from '../components/ComponentsCarteira/GraficoPie/PieChart';
-import Filtro from '../components/ComponentsHome/Modal/Filtro/FiltroHome';
-import Benchmarks from '../components/ComponentsHome/Modal/Benchmarks/Benchmarks'
+import PieChartResumo from '../components/ComponentsHome/PieChartResumo/PieChartResumo';
+import Filtro from '../components/ComponentsHome/FiltroHome';
+import Benchmarks from '../components/ComponentsHome/Benchmarks'
 
 import {
     dataHomeBox,
     resposta1
 } from '../data/data';
+
+import { dataLineChartHome } from '../components/ComponentsHome/LineChartResumo/dataLineChartResumo';
 import { useRoute } from '@react-navigation/native';
-import SkeletonHome from '../components/ComponentsHome/Skeleton/SkeletonHome'
+import SkeletonHome from '../components/ComponentsHome/SkeletonHome'
 
 export const Home = ({navigation}) => {
-  const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState (false)
   const [showModal, setShowModal] = useState(false);
   const [showBench, setShowBench] = useState(false);
-  const [loading, setLoading] = useState(true)
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [selecionadoLine, setSelecionadoLine] = useState({})
+  const [loading, setLoading] = useState(true);
   const [] = useState('');
   const [] = useState('');
-  const [values1, setValues1] = useState([{}]);
-  const [values2, setValues2] = useState([{}]);
-  const [labels, setLabels] = useState([]);
+  const [dadosLineChart, setDadosLineChart] = useState({})
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [selecionadoPie, setSelecionadoPie] = useState({})
 
+  useEffect(() => {
+    const dadosLineChart = dataLineChartHome();
+    setDadosLineChart(dadosLineChart);
+  }, [resposta1])
 
-
-
-  const greenBlue = 'rgb(26, 182, 151)';
 
   useEffect(() => {
-    const valores1 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
-        return {
-            y: parseFloat(el.ibov),
-            x: parseFloat(i),
-            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%',
-        }
-    });
-    const valores2 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
-        return {
-            y: parseFloat(el.baseLine),
-            x: parseFloat(i),
-            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%',
-        }
-    });
-    const linelabes = resposta1.resposta["tab-p1"].linha.map((el) => {
-        return el.data
-    })
-    setValues1(valores1);
-    setValues2(valores2);
-    setLabels(linelabes);
-
     const backAction = () => {
       Alert.alert("O que você deseja fazer?",'', [
         {
@@ -104,18 +81,6 @@ export const Home = ({navigation}) => {
     return () => backHandler.remove();
   }, [])
 
-
-  function handleSelectLine(event) {
-    let entry = event.nativeEvent;
-    if (entry == null) {
-      setSelectedEvent(null);
-      setSelecionadoLine({});
-    } else {
-      setSelectedEvent(JSON.stringify(entry));
-      setSelecionadoLine(entry);
-    }
-  }
-
   function handleSelectPie(event) {
     let entry = event.nativeEvent
     if (entry == null) {
@@ -126,55 +91,7 @@ export const Home = ({navigation}) => {
     }
 };
 
-  const data = {
-    dataSets: [
-      {
-        values: values1,
-        label: 'Certeira',
-        config: {
-          mode: 'CUBIC_BEZIER',
-          drawValues: false,
-          lineWidth: 2,
-          drawCircles: false,
-          circleColor: processColor(greenBlue),
-          drawCircleHole: false,
-          circleRadius: 5,
-          highlightColor: processColor('transparent'),
-          color: processColor(greenBlue),
-
-          valueTextSize: 15,
-        },
-      },
-
-      {
-        values: values2,
-        label: 'CDI',
-        config: {
-          mode: 'CUBIC_BEZIER',
-          enableDashedLine: true,
-          drawValues: false,
-          lineWidth: 0.5,
-          dashedLine: {
-            lineLength: 10,
-            spaceLength: 10
-          },
-          drawCircles: false,
-          circleColor: processColor('white'),
-          drawCircleHole: false,
-          circleRadius: 5,
-          highlightColor: processColor('transparent'),
-          color: processColor('white'),
-          valueTextSize: 15,
-        },
-      },
-    ],
-  };
-
-
-  useEffect(() => {
-    
-  }, []);
-
+  
   
   setTimeout(() => {setLoading(false)}, 3000)
 
@@ -204,24 +121,6 @@ export const Home = ({navigation}) => {
 
   }
 
-  const benchmarks = [
-    {   label: 'CDI',
-        isSelected: true,
-        isFavorite: true,   
-    },
-    {   label: 'IBOVESPA',
-        isSelected: false,
-        isFavorite: false   
-    },
-    {   label: 'IPCA',
-        isSelected: false,
-        isFavorite: false,
-    },
-    {   label: 'IGPM',
-        isSelected: false,
-        isFavorite: false
-
-    }]
 
   
     return (
@@ -250,20 +149,6 @@ export const Home = ({navigation}) => {
                     }>R$</Text>
                 </View>
               </TouchableOpacity>
-              {/* <TouchableOpacity style={styles.right} onPress={handlePercent}>
-                <View  style={percent ? styles.percentPress : styles.percent}>
-                  <Text percent style={percent ? 
-                  {color:'#000', fontSize:25, marginLeft: 4} :
-                  {color:'#FFF', fontSize:25, marginLeft: 4}
-                  }>
-                   R$
-                  </Text>
-                  { percent ? <Icon name="bars" size={25} color={globalStyles.colors.firstLayer} />
-                  :
-                  <Icon name="percent" size={25} color='#FFF' />}
-                </View>
-
-              </TouchableOpacity> */}
               <View  style={percent ? styles.percentPress : styles.percent}>
                 {percent ? <Icon.Button
                   name="percent"
@@ -301,7 +186,7 @@ export const Home = ({navigation}) => {
                 </View>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Benchmarks visible={showBench} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseBench} benchmarks={benchmarks}/>
+              <Benchmarks visible={showBench} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseBench}/>
             </View>
             
                 <TouchableOpacity style={styles.right, {marginTop: -3}} onPress={handleOpenBench}>
@@ -319,11 +204,8 @@ export const Home = ({navigation}) => {
             </View>
             <View style={styles.lineChartContainer}>
                 <LineChartResumo
-                handleSelect={handleSelectLine}
-                selectedEvent={selectedEvent}
-                selecionado={selecionadoLine.data ? selecionadoLine.data.marker : null}
-                data={data}
-                label={labels}
+                data={dadosLineChart.data}
+                label={dadosLineChart.labels}
                 />
             </View>
             <View style={styles.titleNavigationContainer}>
@@ -333,10 +215,7 @@ export const Home = ({navigation}) => {
               </TouchableOpacity>
             </View>
             <View style={styles.chartContainer}>
-                <OutroPie handleSelect={handleSelectPie} 
-                selectedEntry={selectedEntry}
-                valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  ''}
-                />      
+                <PieChartResumo />      
             </View>
             
         </ScrollView>
