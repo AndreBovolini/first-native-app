@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import CustomInput from '../components/CustomInput';
-import FingerPrint from '../components/FingerPrint';
+import FingerPrint from '../components/Login/FingerPrint';
 
 import globalStyles from '../styles/globalStyles';
 

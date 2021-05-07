@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import CustomInput from '../components/CustomInput';
-import CustomModal from '../components/ComponentsResetPassoword/Modal';
+import CustomModal from '../components/ResetPassoword/Modal';
 
 import globalStyles from '../styles/globalStyles';
 

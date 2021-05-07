@@ -20,7 +20,6 @@ const CustomInput = (props) => {
         <TouchableOpacity onPress={props.hidePassword}>
         <Ionicons name="eye" size={20} color='#000' style={{marginTop: 15, marginRight: 10, }}/>
         </TouchableOpacity>: null}
-        
       </View>
     </View>
   );

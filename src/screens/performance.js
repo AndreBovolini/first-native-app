@@ -10,12 +10,11 @@ import {
   Dimensions
 } from 'react-native';
 
-import ValueBox from '../components/ComponentsHome/Box/valueBox';
 import globalStyles from '../styles/globalStyles';
 
-import LineChartRender from '../components/ComponentsPerformance/Portrait/LineChart/LineChart';
-import SelectPeriod from '../components/ComponentsPerformance/SeletorPeriodos/SelectPeriod';
-import TableRow from '../components/ComponentsPerformance/Portrait/TableRow/TableRow';
+import LineChartRender from '../components/Portrait/LineChart/LineChart';
+import SelectPeriod from '../components/Performance/SeletorPeriodos/SelectPeriod';
+import TableRow from '../components/Portrait/TableRow/TableRow';
 import PerformanceLandscape, { PerformanceTableLandscape } from './performanceLandscape';
 
 import {
@@ -23,7 +22,7 @@ import {
     dados,
     resposta1
 } from '../data/data';
-import LineChartLandscape from '../components/ComponentsPerformance/Landscape/LineChart/LineChartLandscape';
+import LineChartLandscape from '../components/Performance/Landscape/LineChart/LineChartLandscape';
 
 
 
