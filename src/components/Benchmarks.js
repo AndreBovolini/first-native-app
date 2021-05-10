@@ -9,12 +9,29 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Modal from 'react-native-modal';
-import globalStyles from '../../../../styles/globalStyles';
+import globalStyles from '../styles/globalStyles';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const Benchmarks = props => {
-    const [benchmarks, setBenchmarks] = useState(props.benchmarks)
+    const [benchmarks, setBenchmarks] = useState([
+      {   label: 'CDI',
+          isSelected: true,
+          isFavorite: true,   
+      },
+      {   label: 'IBOVESPA',
+          isSelected: false,
+          isFavorite: false   
+      },
+      {   label: 'IPCA',
+          isSelected: false,
+          isFavorite: false,
+      },
+      {   label: 'IGPM',
+          isSelected: false,
+          isFavorite: false
+  
+      }])
   
 
     
@@ -31,7 +48,6 @@ const Benchmarks = props => {
         setBenchmarks(newArray)
         try {
           AsyncStorage.setItem('Selecionados', JSON.stringify(newArray));
-          console.warn('salvo com sucesso')
           
         } catch (error) {
           

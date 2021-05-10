@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import {PieChart} from 'react-native-charts-wrapper';
-import { proc } from 'react-native-reanimated';
+
 
 import { AtivosCarteira } from '../../../data/data';
 import globalStyles from '../../../styles/globalStyles';
@@ -59,8 +59,6 @@ const OutroPie = (props) => {
               valueTextColor: processColor('black'),
               sliceSpace: 5,
               selectionShift: 13,
-              // xValuePosition: "OUTSIDE_SLICE",
-              // yValuePosition: "OUTSIDE_SLICE",
               valueFormatter: "#.#'%'",
               valueLineColor: processColor('WHITE'),
               valueLinePart1Length: 0.5

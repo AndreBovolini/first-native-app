@@ -16,7 +16,6 @@ const AfterLogin = ({navigation, alteraCarteira}) => {
 
     useEffect(async() => {
         const carteiraDefault = await AsyncStorage.getItem('Carteira');
-        console.log(carteiraDefault)
         if (carteiraDefault) {
             alteraCarteira(carteiraDefault);
             navigation.navigate('Home');
@@ -46,10 +45,10 @@ const mapStateToProps = state => ({
     stateCarteira: state.dates
   });
   
-  const mapDispatchToProps = dispatch => 
+const mapDispatchToProps = dispatch => 
     bindActionCreators(Actions, dispatch);
   
-  export default connect(mapStateToProps, mapDispatchToProps)(AfterLogin);
+export default connect(mapStateToProps, mapDispatchToProps)(AfterLogin);
 
 const styles = StyleSheet.create({
     container: {

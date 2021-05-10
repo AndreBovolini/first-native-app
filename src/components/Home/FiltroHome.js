@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 
 import Modal from 'react-native-modal';
-import globalStyles from '../../../../styles/globalStyles';
-import CardAlteraCarteira from '../../../Perfil/Cards/CardAlteraCarteira'
-import CardDatePicker from  '../../../Perfil/Cards/CardDatePicker';
+import globalStyles from '../../styles/globalStyles';
+import CardAlteraCarteira from '../../components/Perfil/Cards/CardAlteraCarteira'
+import CardDatePicker from  '../../components/Perfil/Cards/CardDatePicker';
 const handleCardCarteira = () => {
     setShowAlteraCarteira(!showAlteraCarteira);
   };

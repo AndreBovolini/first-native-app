@@ -9,11 +9,13 @@ import {
 import globalStyles from '../styles/globalStyles';
 import Cards from '../components/Carteira/Cards/cards'
 import OutroPie from '../components/Carteira/GraficoPie/PieChart';
+import Seletor from '../components/Carteira/Seletor'
 
 import {
   dataHomeBox,
   AtivosCarteira
 } from '../data/data';
+import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 
 const Carteira = ({navigation}) => {
   const [selectedEntry, setSelectedEntry] = useState(null);
@@ -22,6 +24,11 @@ const Carteira = ({navigation}) => {
   const [scrollViewHeight, setScrollViewHeight] = useState(1183)
   const [arrayShow, setArrayShow] = useState([])
   const [cores, setCores] = useState(globalStyles.chartColors.pieChartColors);
+  const [teste,setTeste]=useState({
+    teste:false
+  }
+)
+  
 
   useEffect(() => {
     let ativos = []
@@ -53,10 +60,7 @@ const Carteira = ({navigation}) => {
     setScrollViewHeight(1183 + increasedHeight)
   }, [arrayAtivos])
   
-    function handleClick(tipoAtivo) {
-        // const newArray = [...arrayShow];
-        // newArray[index]= !arrayShow[index]
-        // setArrayShow(newArray);
+  function handleClick(tipoAtivo) {
         let newArray = [...arrayAtivos];
         newArray = newArray.map((el, id) => {
           if (el.ativo === tipoAtivo) {
@@ -83,18 +87,19 @@ const Carteira = ({navigation}) => {
         newArray = newArray.filter(ativo => ativo.ativo !== selectName)
         newArray.unshift(filtrado[0])
         setArrayAtivos(newArray);
-        // ativos.splice(ativos.indexOf(selectName, 1))
-        // ativos.unshift(selectName)
       }catch{
 
       }
       
     }
 };
+    
 
+  
       return (
         <ScrollView contentContainerStyle={[styles.container, { height: scrollViewHeight}]}>
         <Text style={styles.title}>Carteira</Text>
+        <Seletor/>
             <View style={styles.chartContainer}>
                 <OutroPie handleSelect={handleSelectPie} 
                 selectedEntry={selectedEntry}

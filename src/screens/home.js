@@ -17,189 +17,41 @@ import globalStyles from '../styles/globalStyles';
 // import setTimeOut from 'timers'
 
 import LineChartResumo from '../components/Home/LineChartResumo/LineChartResumo';
-import OutroPie from '../components/Carteira/GraficoPie/PieChart';
-import Filtro from '../components/Home/Modal/Filtro/FiltroHome';
-import Benchmarks from '../components/Home/Modal/Benchmarks/Benchmarks';
+import PieChartResumo from '../components/Home/PieChartResumo/PieChartResumo';
+import Filtro from '../components/Home/FiltroHome';
+import Benchmarks from '../components/Home/Benchmarks';
 
 import {
     dataHomeBox,
-    resposta1
+    resposta1,
+    AtivosCarteira
 } from '../data/data';
-import { useRoute } from '@react-navigation/native';
+
+import { dataLineChartHome } from '../components/Home/LineChartResumo/dataLineChartResumo';
+import { dataPieChartHome } from '../components/Home/PieChartResumo/dataPieChartResumo';
 import SkeletonHome from '../components/Home/Skeleton/SkeletonHome'
 
 export const Home = ({navigation}) => {
-  const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState (false)
   const [showModal, setShowModal] = useState(false);
   const [showBench, setShowBench] = useState(false);
-  const [loading, setLoading] = useState(true)
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [selecionadoLine, setSelecionadoLine] = useState({})
+  const [loading, setLoading] = useState(true);
   const [] = useState('');
   const [] = useState('');
-  const [values1, setValues1] = useState([
-    {
-      y: 650,
-      x: 0,
-      marker: 'BDS: 650 pts',
-    },
-    {
-      y: 770,
-      x: 1,
-      marker: 'BDS: 770 pts',
-    },
-    {
-      y: 760,
-      x: 2,
-      marker: 'BDS: 760 pts',
-    },
-    {
-      y: 740,
-      x: 3,
-      marker: 'BDS: 740 pts',
-    },
-    {
-      y: 760,
-      x: 4,
-      marker: 'BDS: 760 pts',
-    },
-    {
-      y: 650,
-      x: 5,
-      marker: 'BDS: 650 pts',
-    },
-  ]);
-  const [values2, setValues2] = useState([
-    {
-      y: 350,
-      x: 0,
-      marker: 'Vitality: 350 pts',
-    },
-    {
-      y: 470,
-      x: 1,
-      marker: 'Vitality: 470 pts',
-    },
-    {
-      y: 500,
-      x: 2,
-      marker: 'Vitality: 460 pts',
-    },
-    {
-      y: 600,
-      x: 3,
-      marker: 'Vitality: 440 pts',
-    },
-    {
-      y: 700,
-      x: 4,
-      marker: 'Vitality: 460 pts',
-    },
-    {
-      y: 350,
-      x: 5,
-      marker: 'Vitality: 350 pts',
-    },
-  ]);
-  const [labels, setLabels] = useState([]);
-  const [selectedEntry, setSelectedEntry] = useState(null);
-  const [selecionadoPie, setSelecionadoPie] = useState({})
+  const [dadosLineChart, setDadosLineChart] = useState({})
+  const [dadosPieChart, setDadosPieChart] = useState({})
 
-
-
-
-  const greenBlue = 'rgb(26, 182, 151)';
 
   useEffect(() => {
-    const valores1 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
-        return {
-            y: parseFloat(el.ibov),
-            x: parseFloat(i),
-            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%',
-        }
-    });
-    const valores2 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
-        return {
-            y: parseFloat(el.baseLine),
-            x: parseFloat(i),
-            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%',
-        }
-    });
-    const linelabes = resposta1.resposta["tab-p1"].linha.map((el) => {
-        return el.data
-    })
-    setValues1(valores1);
-    setValues2(valores2);
-    setLabels(linelabes);
-  }, [])
+    const dadosLineChart = dataLineChartHome();
+    setDadosLineChart(dadosLineChart);
+  }, [resposta1])
 
-
-  function handleSelectLine(event) {
-    let entry = event.nativeEvent;
-    if (entry == null) {
-      setSelectedEvent(null);
-      setSelecionadoLine({});
-    } else {
-      setSelectedEvent(JSON.stringify(entry));
-      setSelecionadoLine(entry);
-    }
-  }
-
-  function handleSelectPie(event) {
-    let entry = event.nativeEvent
-    if (entry == null) {
-      setSelectedEntry(null)
-    } else {
-      setSelectedEntry(JSON.stringify(entry))
-      setSelecionadoPie(entry)
-    }
-};
-
-  const data = {
-    dataSets: [
-      {
-        values: values1,
-        label: 'Certeira',
-        config: {
-          mode: 'CUBIC_BEZIER',
-          drawValues: false,
-          lineWidth: 2,
-          drawCircles: false,
-          circleColor: processColor(greenBlue),
-          drawCircleHole: false,
-          circleRadius: 5,
-          highlightColor: processColor('transparent'),
-          color: processColor(greenBlue),
-
-          valueTextSize: 15,
-        },
-      },
-
-      {
-        values: values2,
-        label: 'CDI',
-        config: {
-          mode: 'CUBIC_BEZIER',
-          enableDashedLine: true,
-          drawValues: false,
-          lineWidth: 0.5,
-          dashedLine: {
-            lineLength: 10,
-            spaceLength: 10
-          },
-          drawCircles: false,
-          circleColor: processColor('white'),
-          drawCircleHole: false,
-          circleRadius: 5,
-          highlightColor: processColor('transparent'),
-          color: processColor('white'),
-          valueTextSize: 15,
-        },
-      },
-    ],
-  };
+  // useEffect(() => {
+  //   const dadosPieChart = dataPieChartHome();
+  //   setDadosPieChart(dadosPieChart);
+  // }, []) 
 
 
   useEffect(() => {
@@ -233,8 +85,9 @@ export const Home = ({navigation}) => {
     );
 
     return () => backHandler.remove();
-  }, []);
+  }, [])
 
+  
   
   setTimeout(() => {setLoading(false)}, 3000)
 
@@ -264,26 +117,9 @@ export const Home = ({navigation}) => {
 
   }
 
-  const benchmarks = [
-    {   label: 'CDI',
-        isSelected: true,
-        isFavorite: true,   
-    },
-    {   label: 'IBOVESPA',
-        isSelected: false,
-        isFavorite: false   
-    },
-    {   label: 'IPCA',
-        isSelected: false,
-        isFavorite: false,
-    },
-    {   label: 'IGPM',
-        isSelected: false,
-        isFavorite: false
+  const dadosPie = dataPieChartHome()
+  console.log(dadosPie.infos)
 
-    }]
-
-  
     return (
       <View>
         {loading ? <SkeletonHome isLoading={loading}/> :
@@ -310,20 +146,6 @@ export const Home = ({navigation}) => {
                     }>R$</Text>
                 </View>
               </TouchableOpacity>
-              {/* <TouchableOpacity style={styles.right} onPress={handlePercent}>
-                <View  style={percent ? styles.percentPress : styles.percent}>
-                  <Text percent style={percent ? 
-                  {color:'#000', fontSize:25, marginLeft: 4} :
-                  {color:'#FFF', fontSize:25, marginLeft: 4}
-                  }>
-                   R$
-                  </Text>
-                  { percent ? <Icon name="bars" size={25} color={globalStyles.colors.firstLayer} />
-                  :
-                  <Icon name="percent" size={25} color='#FFF' />}
-                </View>
-
-              </TouchableOpacity> */}
               <View  style={percent ? styles.percentPress : styles.percent}>
                 {percent ? <Icon.Button
                   name="percent"
@@ -361,7 +183,7 @@ export const Home = ({navigation}) => {
                 </View>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Benchmarks visible={showBench} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseBench} benchmarks={benchmarks}/>
+              <Benchmarks visible={showBench} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseBench}/>
             </View>
             
                 <TouchableOpacity style={styles.right, {marginTop: -3}} onPress={handleOpenBench}>
@@ -379,11 +201,8 @@ export const Home = ({navigation}) => {
             </View>
             <View style={styles.lineChartContainer}>
                 <LineChartResumo
-                handleSelect={handleSelectLine}
-                selectedEvent={selectedEvent}
-                selecionado={selecionadoLine.data ? selecionadoLine.data.marker : null}
-                data={data}
-                label={labels}
+                data={dadosLineChart.data}
+                label={dadosLineChart.labels}
                 />
             </View>
             <View style={styles.titleNavigationContainer}>
@@ -393,10 +212,9 @@ export const Home = ({navigation}) => {
               </TouchableOpacity>
             </View>
             <View style={styles.chartContainer}>
-                <OutroPie handleSelect={handleSelectPie} 
-                selectedEntry={selectedEntry}
-                valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  ''}
-                />      
+                <PieChartResumo
+                  infos={dadosPie.infos} 
+                  />      
             </View>
             
         </ScrollView>

@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 import {LineChart} from 'react-native-charts-wrapper';
-import globalStyles from '../../styles/globalStyles';
+import globalStyles from '../../../../styles/globalStyles';
 
 
 

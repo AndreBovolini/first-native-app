@@ -83,7 +83,6 @@ const LineChartResumo = props => {
           dragDecelerationEnabled={true}
           dragDecelerationFrictionCoef={0.99}
           keepPositionOnRotation={false}
-          onSelect={props.handleSelect}
         />
       </View>
     </View>

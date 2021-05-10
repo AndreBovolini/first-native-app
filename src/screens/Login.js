@@ -54,11 +54,7 @@ const Login = ({route, navigation}) => {
                 )
               } catch (error) {
               }
-              let teste = await AsyncStorage.getItem('Carteira')
-              await AsyncStorage.removeItem('Carteira')
-              let teste2 = await AsyncStorage.getItem('Carteira')
-              console.log(teste, teste2)
-              let dateLogin = new Date().getTime() + (1000*60*0.5);
+              let dateLogin = new Date().getTime() + (1000*60*5);
               await AsyncStorage.setItem('token', dateLogin.toString())
               navigation.navigate('AfterLogin');
             // comdadoLogin(inputUsuario, inputSenha).then(response => {
@@ -100,9 +96,8 @@ const Login = ({route, navigation}) => {
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {
             
-              let dateLogin = new Date().getTime() + (1000*60*0.5);
+              let dateLogin = new Date().getTime() + (1000*60*5);
               await AsyncStorage.setItem('token', dateLogin.toString())
-              await AsyncStorage.removeItem('Carteira')
               navigation.navigate('AfterLogin');
             } else {
             }
