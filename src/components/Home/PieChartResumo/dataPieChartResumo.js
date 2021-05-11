@@ -5,9 +5,19 @@ import {
 
 
 import { AtivosCarteira } from '../../../data/data';
+import { resposta2 } from '../../../data/dataTeste'
 import globalStyles from '../../../styles/globalStyles';
 
 export const dataPieChartHome = () => {
+
+    const keysAtivos = Object.keys(resposta2.grafico1)
+    const AtivosCarteira = keysAtivos.map((el,i) => {
+      return {
+      value: parseFloat(resposta2.grafico1[el]),
+      label: el,
+          }
+  
+  })
     const [chartData, setChartData] = useState(AtivosCarteira);
     const [soma, setSoma] = useState(0)
 

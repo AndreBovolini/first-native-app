@@ -61,7 +61,12 @@ const LineChartRender = props => {
               valueFormatter: "###'%'",
             },
             right: {
-              enabled: false,
+              enabled: true,
+              drawGridLines: false,
+              drawLabels: true,
+              drawAxisLine: true,
+              textColor: processColor(globalStyles.chartColors.axis),
+              valueFormatter: "R$ ###",
             },
           }}
           autoScaleMinMaxEnabled={true}

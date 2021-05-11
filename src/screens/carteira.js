@@ -15,6 +15,10 @@ import {
   dataHomeBox,
   AtivosCarteira
 } from '../data/data';
+
+import {
+  resposta1
+} from '../data/dataTeste'
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 
 const Carteira = ({navigation}) => {
@@ -28,7 +32,14 @@ const Carteira = ({navigation}) => {
     teste:false
   }
 )
-  
+
+// const keysAtivos = Object.keys(resposta1.grafico1)
+// const AtivosCarteira = keysAtivos.map((el,i) => {
+//   return {
+//   value: parseFloat(resposta1.grafico1[el]),
+//   label: el,
+//       }
+// })
 
   useEffect(() => {
     let ativos = []

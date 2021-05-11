@@ -3,6 +3,8 @@ import { processColor } from 'react-native'
 import { resposta1 } from '../../../data/data'
 
 export const dataLineChartHome = () => {
+
+  
     const greenBlue = 'rgb(26, 182, 151)';
     const valores1 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
         return {

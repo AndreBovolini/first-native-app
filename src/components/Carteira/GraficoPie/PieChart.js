@@ -11,9 +11,20 @@ import {PieChart} from 'react-native-charts-wrapper';
 
 
 import { AtivosCarteira } from '../../../data/data';
+import { resposta1 } from '../../../data/dataTeste'
 import globalStyles from '../../../styles/globalStyles';
 
 const OutroPie = (props) => {
+
+  // const keysAtivos = Object.keys(resposta1.grafico1)
+  //   const AtivosCarteira = keysAtivos.map((el,i) => {
+  //     return {
+  //     value: parseFloat(resposta1.grafico1[el]),
+  //     label: el,
+  //         }
+  
+  // })
+
   const [chartData, setChartData] = useState(AtivosCarteira);
   const [soma, setSoma] = useState(0)
 

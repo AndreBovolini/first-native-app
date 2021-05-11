@@ -22,13 +22,15 @@ import {
     dados,
     resposta1
 } from '../data/data';
+
+import { resposta2 } from '../data/dataTeste'
 import LineChartLandscape from '../components/Performance/Landscape/LineChart/LineChartLandscape';
 
 
 
 
 const Performance = ({navigation}) => {
-    const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
   const [inputValue, setInputValue] = useState('');
   const [inputMarker, setInputMarker] = useState('');
@@ -96,6 +98,7 @@ const Performance = ({navigation}) => {
       marker: 'Vitality: 350 pts',
     },
   ]);
+  const [values, setValues] = useState([])
   const [labels, setLabels] = useState([]);
   const [granularity, setGranularity] = useState(50)
   const [anoSelecionado, setAnoSelecionado] = useState('2021');
@@ -160,55 +163,105 @@ const Performance = ({navigation}) => {
     return year === periodoSelecionado
   }
 
+    const keysDatas = Object.keys(resposta2.grafico5.Carteira)
+    const respostaDados = keysDatas.map((el,i) => {
+      return {
+      data: el,
+      Carteira: resposta2.grafico5.Carteira[el] ? resposta2.grafico5.Carteira[el] : 0,
+      CDI: resposta2.grafico5.CDI[el] ? resposta2.grafico5.CDI[el] : 0,
+      PL: resposta2.grafico5.PL[el] ? resposta2.grafico5.PL[el] : 0,
+      baseline: '0'
+       }
+   })
 
   useEffect(() => {
 
     let filteredData = [];
     
+    // switch (periodoSelecionado) {
+    //   case '1m':
+    //     filteredData = resposta1.resposta['tab-p1'].linha.filter(oneMonthPeriod);
+    //     setGranularity(7)
+    //   break;
+    //   case '3m':
+    //     filteredData = resposta1.resposta['tab-p1'].linha.filter(threeMonthPeriod);
+    //     setGranularity(25)
+    //   break;
+    //   case '2021':
+    //     filteredData = resposta1.resposta['tab-p1'].linha.filter(thisYear);
+    //     setGranularity(40)
+    //   break;
+    //   case '12m':
+    //     setGranularity(50)
+    //     filteredData = resposta1.resposta['tab-p1'].linha.filter(oneYearPeriod);
+    //     break;
+    //   case 'Tudo':
+    //     filteredData = resposta1.resposta['tab-p1'].linha;
+    //     setGranularity(50)
+    //   break;
+    // };
     switch (periodoSelecionado) {
       case '1m':
-        filteredData = resposta1.resposta['tab-p1'].linha.filter(oneMonthPeriod);
+        filteredData =respostaDados.filter(oneMonthPeriod);
         setGranularity(7)
       break;
       case '3m':
-        filteredData = resposta1.resposta['tab-p1'].linha.filter(threeMonthPeriod);
+        filteredData = respostaDados.filter(threeMonthPeriod);
         setGranularity(25)
       break;
       case '2021':
-        filteredData = resposta1.resposta['tab-p1'].linha.filter(thisYear);
+        filteredData = respostaDados.filter(thisYear);
         setGranularity(40)
       break;
       case '12m':
         setGranularity(50)
-        filteredData = resposta1.resposta['tab-p1'].linha.filter(oneYearPeriod);
+        filteredData = respostaDados.filter(oneYearPeriod);
         break;
       case 'Tudo':
-        filteredData = resposta1.resposta['tab-p1'].linha;
+        filteredData = respostaDados;
         setGranularity(50)
       break;
     };
 
+    // const keysAtivos = Object.keys(resposta2.grafico5)
+    const keysAtivos = ['Carteira', 'CDI']
+
     if (filteredData !== []) {
-    const valores1 = filteredData.map((el, i) => {
+    let values = keysAtivos.map((ativo,i) => {
+      const valores = filteredData.map((el,i) => {
         return {
-            y: parseFloat(el.ibov),
-            x: parseFloat(i),
-            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%' + ' CDI: ' + parseFloat(el.cdi, 3) + '%',
-        }
-    });
-    const valores2 = filteredData.map((el, i) => {
-        return {
-            y: parseFloat(el.cdi),
-            x: parseFloat(i),
-            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%' + ' CDI: ' + parseFloat(el.cdi, 3) + '%',
-        }
-    });
+          y: parseFloat(el[ativo]),
+          x: parseFloat(i),
+          marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
+      }
+      })
+      console.log(typeof(ativo))
+      return {
+        label: ativo,
+        dataset: valores
+      }
+    })
+    // const valores1 = filteredData.map((el, i) => {
+    //     return {
+    //         y: parseFloat(el.ibov),
+    //         x: parseFloat(i),
+    //         marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%' + ' CDI: ' + parseFloat(el.cdi, 3) + '%',
+    //     }
+    // });
+    // const valores2 = filteredData.map((el, i) => {
+    //     return {
+    //         y: parseFloat(el.cdi),
+    //         x: parseFloat(i),
+    //         marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%' + ' CDI: ' + parseFloat(el.cdi, 3) + '%',
+    //     }
+    // });
     const linelabes = filteredData.map((el, i) => {
       return el.data
   })
 
-    setValues1(valores1);
-    setValues2(valores2);
+    // setValues1(valores1);
+    // setValues2(valores2);
+    setValues(values)
     setLabels(linelabes)
   };
   }, [periodoSelecionado])
@@ -217,9 +270,10 @@ const Performance = ({navigation}) => {
   const anos = ['2021', '2020', '2019', '2018', '2017'];
   const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
-  const greenBlue = 'rgb(26, 182, 151)';
-  const petrel = 'rgb(59, 145, 153)';
-
+  const greenBlue = 'rgb(26, 192, 151)';
+  const petrel = 'rgb(59, 115, 135)';
+  const random = 'rgb(98, 85, 153)';
+  const colors = [greenBlue, petrel, random]
   function handleSelectLine(event) {
     let entry = event.nativeEvent;
     if (entry == null) {
@@ -232,44 +286,67 @@ const Performance = ({navigation}) => {
 
   }
 
-  const data = {
-    dataSets: [
-      {
-        values: values1,
-        label: 'Carteira',
-        config: {
-          mode: 'CUBIC_BEZIER',
-          drawValues: false,
-          lineWidth: 2,
-          drawCircles: false,
-          circleColor: processColor(greenBlue),
-          drawCircleHole: false,
-          circleRadius: 5,
-          highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
-          color: processColor(greenBlue),
-
-          valueTextSize: 15,
-        },
+   const dataSets = values.map((el,i) => {
+     return {
+      values: el.dataset,
+      label: el.label,
+      config: {
+        mode: 'CUBIC_BEZIER',
+        drawValues: false,
+        lineWidth: 2,
+        drawCircles: false,
+        circleColor: processColor(colors[i]),
+        drawCircleHole: false,
+        circleRadius: 5,
+        highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
+        color: processColor(colors[i]),
+        valueTextSize: 15,
       },
+    }
+   })
 
-      {
-        values: values2,
-        label: 'CDI',
-        config: {
-          mode: 'CUBIC_BEZIER',
-          drawValues: false,
-          lineWidth: 2,
-          drawCircles: false,
-          circleColor: processColor(petrel),
-          drawCircleHole: false,
-          circleRadius: 5,
-          highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
-          color: processColor(petrel),
-          valueTextSize: 15,
-        },
-      },
-    ],
-  };
+   const data = {
+     dataSets
+   }
+  // const data = {
+    
+  //   dataSets: [
+  //     {
+  //       values: values1,
+  //       label: 'Carteira',
+  //       config: {
+  //         mode: 'CUBIC_BEZIER',
+  //         drawValues: false,
+  //         lineWidth: 2,
+  //         drawCircles: false,
+  //         circleColor: processColor(greenBlue),
+  //         drawCircleHole: false,
+  //         circleRadius: 5,
+  //         highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
+  //         color: processColor(greenBlue),
+
+  //         valueTextSize: 15,
+  //       },
+  //     },
+
+  //     {
+  //       values: values2,
+  //       label: 'CDI',
+  //       config: {
+  //         mode: 'CUBIC_BEZIER',
+  //         drawValues: false,
+  //         lineWidth: 2,
+  //         drawCircles: false,
+  //         circleColor: processColor(petrel),
+  //         drawCircleHole: false,
+  //         circleRadius: 5,
+  //         highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
+  //         color: processColor(petrel),
+  //         valueTextSize: 15,
+  //       },
+  //     },
+  //   ],
+  // };
 
   if (orientation === 'landscape') {
     if (scrollPosition > 390) {
