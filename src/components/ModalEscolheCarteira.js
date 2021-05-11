@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   View,
@@ -15,18 +15,32 @@ import Modal from 'react-native-modal';
 import globalStyles from '../styles/globalStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const ModalEscolheCarteira = ({ visible, onSelectCarteira}) => {
-  const [carteiras, setCarteiras] = useState(['Carteira 1', 'Carteira 2', 'Carteira 3'])
+import { connect } from 'react-redux';
+import { pegarDadosCarteiras } from '../store/actions/actions-dados-usuario'
+import { alteraCarteira } from '../store/actions/actions'
+
+const ModalEscolheCarteira = (props) => {
+  const [carteiras, setCarteiras] = useState([])
   const [modalHeight, setModalHeight] = useState(200)
 
-  useState(() => {
+  useEffect(() => {
     let height = 200 + (carteiras.length * 40);
     setModalHeight(height);
   }, [])
+
+  useEffect(() => {
+    if (!props.isLoadingCarteirasUsuario && props.ResponseCarteirasUsuario !== []) {
+      setCarteiras(props.ResponseCarteirasUsuario)
+    }
+  }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
+
+  function onSelectCarteira(carteira) {
+    props.alteraCarteira(carteira)
+  }
   
   return (
     <View style={styles.container}>
-      <Modal isVisible={visible}>
+      <Modal isVisible={props.visible}>
         <View
           style={[styles.modal, { height: modalHeight}]}>
           <Text style={styles.titleText}>Escolha uma carteira padrão:</Text>
@@ -48,7 +62,20 @@ const ModalEscolheCarteira = ({ visible, onSelectCarteira}) => {
   );
 };
 
-export default ModalEscolheCarteira;
+
+const mapStateToProps = state => ({
+  stateCarteira: state.dates,
+  isLoadingCarteirasUsuario: state.dadosCarteiras.loading,
+  ResponseCarteirasUsuario: state.dadosCarteiras.data,
+});
+
+const mapDispatchToProps = ( dispatch )=> ({
+  alteraCarteira: (carteira) => dispatch(alteraCarteira(carteira)),
+  pegarCarteirasUsuario: (token) => dispatch(pegarDadosCarteiras(token))
+}) 
+  
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModalEscolheCarteira);
 
 const styles = StyleSheet.create({
     container: {

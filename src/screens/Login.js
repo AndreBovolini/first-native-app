@@ -45,24 +45,27 @@ const Login = ({route, navigation}) => {
   }
 
   async function handleLogin() {
+    await AsyncStorage.removeItem('Carteira')
       if (inputUsuario !== '') {
           if (inputSenha !== '') {
-            try{
-                await Keychain.setGenericPassword(
-                  inputUsuario,
-                  inputSenha
-                )
-              } catch (error) {
-              }
-              let dateLogin = new Date().getTime() + (1000*60*5);
-              await AsyncStorage.setItem('token', dateLogin.toString())
+            comdadoLogin(inputUsuario, inputSenha).then( async (response) => {
+              console.log(response)
+              await AsyncStorage.setItem('token', response['access_token'].toString())
+              await AsyncStorage.setItem('expiration', response['expires_in'].toString())
               navigation.navigate('AfterLogin');
-            // comdadoLogin(inputUsuario, inputSenha).then(response => {
-            //   console.log(response)
-            // }
-            // ).catch(error => {
-            //   console.log(error)
-            // })
+              // try{
+              //   await Keychain.setGenericPassword(
+              //     inputUsuario,
+              //     inputSenha
+              //   )
+              // } catch (error) {
+              // }
+            }
+            )
+            .catch(error => {
+              console.log(error)
+            })
+            
           }
       };
   }

@@ -30,7 +30,9 @@ import { dataLineChartHome } from '../components/ComponentsHome/LineChartResumo/
 import { useRoute } from '@react-navigation/native';
 import SkeletonHome from '../components/ComponentsHome/SkeletonHome'
 
-export const Home = ({navigation}) => {
+import { connect } from 'react-redux';
+
+export const Home = ({dadosHomePage, navigation}) => {
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState (false)
   const [showModal, setShowModal] = useState(false);
@@ -43,9 +45,15 @@ export const Home = ({navigation}) => {
   const [selecionadoPie, setSelecionadoPie] = useState({})
 
   useEffect(() => {
+    //if (!dadosHomePage.isLoading && dadosHomePage.data !== []) {
     const dadosLineChart = dataLineChartHome();
+
     setDadosLineChart(dadosLineChart);
-  }, [resposta1])
+  }, [dadosHomePage.isLoading, dadosHomePage.data])
+
+  useEffect(() => {
+    console.log(dadosHomePage)
+  }, [dadosHomePage])
 
 
   useEffect(() => {
@@ -224,7 +232,13 @@ export const Home = ({navigation}) => {
     )
 }
 
-export default Home;
+
+const mapStateToProps = state => ({
+  dadosHomePage: state.dadosHomePage
+});
+  
+
+export default connect(mapStateToProps)(Home);
 
 const styles = StyleSheet.create({
     container: {

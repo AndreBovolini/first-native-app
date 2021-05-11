@@ -16,13 +16,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 import { connect } from 'react-redux';
-import * as Actions from '../../../store/actions/actions';
-import { bindActionCreators } from 'redux'
+import { alteraCarteira } from '../../../store/actions/actions';
 
 
-const CardAlteraCarteira = ({show, handleClick, stateCarteira, alteraCarteira}) => {
+
+const CardAlteraCarteira = (props) => {
     const [carteiras, setCarteiras] = useState(['Carteira 1', 'Carteira 2', 'Carteira 3'])
-    const [carteira, setAlteraCarteira] = useState('');
+ 
+
+    useEffect(() => {
+      if (!props.isLoadingCarteirasUsuario && props.ResponseCarteirasUsuario !== []) {
+        setCarteiras(props.ResponseCarteirasUsuario)
+      }
+    }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
 
 
 return (
@@ -31,23 +37,23 @@ return (
          <View style={styles.bloco}>
            <View style={styles.leftSide}>
               <Icon name="circle" size={10} color={'#FFF'}/>
-              <Text style={styles.title}>{`Carteira Atual: ${ stateCarteira.carteira }`}</Text>
+              <Text style={styles.title}>{`Carteira Atual: ${ props.stateCarteira.carteira }`}</Text>
             </View>
             <TouchableOpacity style={styles.right}
-                onPress={()=> handleClick()}
+                onPress={()=> props.handleClick()}
             >
-                { show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
+                { props.show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
                 :  <Icon name="chevron-down" size={20} color={globalStyles.colors.fontColor}/>}
             </TouchableOpacity>
             </View>
          </View>
-         { show && (
+         { props.show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
                     <View style={styles.blocoExpand}>
                     {
                       carteiras.map((el, i) => {
                         return (
-                          <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => alteraCarteira(el)} >
+                          <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => props.alteraCarteira(el)} >
                             <View style={styles.buttonView}>
                               <Text style={styles.buttonText}>{el}</Text>
                               <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
@@ -63,11 +69,14 @@ return (
     )}
 
     const mapStateToProps = state => ({
-      stateCarteira: state.dates
+      stateCarteira: state.dates,
+      isLoadingCarteirasUsuario: state.dadosCarteiras.loading,
+      ResponseCarteirasUsuario: state.dadosCarteiras.data,
     });
     
-    const mapDispatchToProps = dispatch => 
-      bindActionCreators(Actions, dispatch);
+    const mapDispatchToProps = dispatch => ({
+      alteraCarteira: (carteira) => dispatch(alteraCarteira(carteira)),
+    })
     
     export default connect(mapStateToProps, mapDispatchToProps)(CardAlteraCarteira);
 

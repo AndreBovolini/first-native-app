@@ -2,6 +2,8 @@ const INITIAL_STATE = {
     dataInicial: new Date('2017-08-03'),
     dataFinal: new Date(),
     carteira: '',
+    dataMaisAntiga: '',
+    dataMaisRecente: '',
 }
 
 export default function dates(state= INITIAL_STATE, action) {
@@ -23,6 +25,19 @@ export default function dates(state= INITIAL_STATE, action) {
                     ...state,
                     carteira: action.carteira
                 }
+                break;
+        case 'SET_DATA_MAIS_ANTIGA':
+                return {
+                    ...state,
+                    dataMaisAntiga: action.dataMaisAntiga
+                }
+                break;
+        case 'SET_DATA_MAIS_RECENTE':
+                return {
+                    ...state,
+                    dataMaisRecente: action.dataMaisRecente
+                }
+                break;
         default:
             return state
    }
