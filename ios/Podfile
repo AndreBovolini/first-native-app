@@ -15,7 +15,6 @@ target 'first_react_native_app' do
   pod 'RNCharts', :path => '../node_modules/react-native-charts-wrapper'
 
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   target 'first_react_native_appTests' do
     inherit! :complete
