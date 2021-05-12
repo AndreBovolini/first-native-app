@@ -99,6 +99,7 @@ const Performance = ({navigation}) => {
     },
   ]);
   const [values, setValues] = useState([])
+  const [dependencyRight, setDependencyRight] = useState([])
   const [labels, setLabels] = useState([]);
   const [granularity, setGranularity] = useState(50)
   const [anoSelecionado, setAnoSelecionado] = useState('2021');
@@ -224,6 +225,8 @@ const Performance = ({navigation}) => {
     };
 
     // const keysAtivos = Object.keys(resposta2.grafico5)
+    const ativosRight = ['PL']
+    setDependencyRight(ativosRight)
     const keysAtivos = ['Carteira', 'CDI']
 
     if (filteredData !== []) {

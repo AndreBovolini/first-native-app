@@ -23,6 +23,20 @@ export function alteraCarteira(carteira) {
   }
 }
 
+export function alteraDataMaisAntiga(dataMaisAntiga) {
+  return {
+    type: 'ASYNC_SET_DATA_MAIS_ANTIGA',
+    dataMaisAntiga
+  }
+}
+
+export function alteraDataMaisRecente(dataMaisRecente) {
+  return {
+    type: 'ASYNC_SET_DATA_MAIS_RECENTE',
+    dataMaisRecente
+  }
+}
+
 
 function apiGet(data) {
   return new Promise((resolve, reject) => {
@@ -55,5 +69,19 @@ export function* asyncAlteraCarteira(action) {
   yield put({
     type: 'SET_CARTEIRA',
     carteira: action.carteira
+  })
+}
+
+export function* asyncAlteraDataMaisAntiga(action) {
+  yield put({
+    type: 'SET_DATA_MAIS_ANTIGA',
+    dataMaisAntiga: action.dataMaisAntiga
+  })
+}
+
+export function* asyncAlteraDataMaisRecente(action) {
+  yield put({
+    type: 'SET_DATA_MAIS_RECENTE',
+    dataMaisRecente: action.dataMaisRecente
   })
 }

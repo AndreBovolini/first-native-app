@@ -14,7 +14,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import ValueBox from '../components/Home/valueBox';
 import globalStyles from '../styles/globalStyles';
-// import setTimeOut from 'timers'
 
 import LineChartResumo from '../components/Home/LineChartResumo/LineChartResumo';
 import PieChartResumo from '../components/Home/PieChartResumo/PieChartResumo';
@@ -31,7 +30,9 @@ import { dataLineChartHome } from '../components/Home/LineChartResumo/dataLineCh
 import { dataPieChartHome } from '../components/Home/PieChartResumo/dataPieChartResumo';
 import SkeletonHome from '../components/Home/Skeleton/SkeletonHome'
 
-export const Home = ({navigation}) => {
+import { connect } from 'react-redux';
+
+export const Home = ({dadosHomePage, navigation}) => {
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState (false)
   const [showModal, setShowModal] = useState(false);
@@ -40,18 +41,19 @@ export const Home = ({navigation}) => {
   const [] = useState('');
   const [] = useState('');
   const [dadosLineChart, setDadosLineChart] = useState({})
-  const [dadosPieChart, setDadosPieChart] = useState({})
-
+  const [selectedEntry, setSelectedEntry] = useState(null);
+  const [selecionadoPie, setSelecionadoPie] = useState({})
 
   useEffect(() => {
+    //if (!dadosHomePage.isLoading && dadosHomePage.data !== []) {
     const dadosLineChart = dataLineChartHome();
-    setDadosLineChart(dadosLineChart);
-  }, [resposta1])
 
-  // useEffect(() => {
-  //   const dadosPieChart = dataPieChartHome();
-  //   setDadosPieChart(dadosPieChart);
-  // }, []) 
+    setDadosLineChart(dadosLineChart);
+  }, [dadosHomePage.isLoading, dadosHomePage.data])
+
+  useEffect(() => {
+    console.log(dadosHomePage)
+  }, [dadosHomePage])
 
 
   useEffect(() => {
@@ -87,6 +89,16 @@ export const Home = ({navigation}) => {
     return () => backHandler.remove();
   }, [])
 
+  function handleSelectPie(event) {
+    let entry = event.nativeEvent
+    if (entry == null) {
+      setSelectedEntry(null)
+    } else {
+      setSelectedEntry(JSON.stringify(entry))
+      setSelecionadoPie(entry)
+    }
+};
+
   
   
   setTimeout(() => {setLoading(false)}, 3000)
@@ -117,8 +129,8 @@ export const Home = ({navigation}) => {
 
   }
 
+
   const dadosPie = dataPieChartHome()
-  console.log(dadosPie.infos)
 
     return (
       <View>
@@ -214,7 +226,7 @@ export const Home = ({navigation}) => {
             <View style={styles.chartContainer}>
                 <PieChartResumo
                   infos={dadosPie.infos} 
-                  />      
+                  />    
             </View>
             
         </ScrollView>
@@ -223,7 +235,13 @@ export const Home = ({navigation}) => {
     )
 }
 
-export default Home;
+
+const mapStateToProps = state => ({
+  dadosHomePage: state.dadosHomePage
+});
+  
+
+export default connect(mapStateToProps)(Home);
 
 const styles = StyleSheet.create({
     container: {
@@ -342,3 +360,5 @@ const styles = StyleSheet.create({
         color: 'white',
     },
 })
+
+

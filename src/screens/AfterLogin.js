@@ -7,46 +7,71 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import ModalEscolheCarteira from '../components/Login/ModalEscolheCarteira';
 
 import { connect } from 'react-redux';
-import * as Actions from '../store/actions/actions';
-import { bindActionCreators } from 'redux'
+import { pegarDadosCarteiras, pegarInfosCarteiras } from '../store/actions/actions-dados-usuario'
+import { pegarDadosHomePage } from '../store/actions/action-dados-home';
+import { alteraCarteira } from '../store/actions/actions'
 
 
-const AfterLogin = ({navigation, alteraCarteira}) => {
+const AfterLogin = ({pegarDadosHomePage, ResponseInfosCarteiras, isLoadingCarteirasUsuario, navigation, stateCarteira, alteraCarteira, pegarCarteirasUsuario, ResponseCarteirasUsuario, pegarInfosCarteiras}) => {
     const [showModal, setShowModal] = useState(false)
 
+
+    useEffect(async () => {
+        let token = await AsyncStorage.getItem('token')
+        pegarCarteirasUsuario(token)
+        pegarInfosCarteiras(token)
+        setShowModal(true)
+    },[])
+
     useEffect(async() => {
-        const carteiraDefault = await AsyncStorage.getItem('Carteira');
-        if (carteiraDefault) {
-            alteraCarteira(carteiraDefault);
+        // if (!isLoadingCarteirasUsuario && ResponseCarteirasUsuario !== []) {
+        //     const carteiraDefault = await AsyncStorage.getItem('Carteira');
+        //     console.log('aaaaa',ResponseCarteirasUsuario)
+        //     if (carteiraDefault) {
+        //         alteraCarteira(carteiraDefault);
+        //         navigation.navigate('Home');
+        //     } else {
+        //         setShowModal(true)
+        //     }
+        // }
+    },[isLoadingCarteirasUsuario]);
+
+    useEffect(async () => {
+        if (stateCarteira.carteira !== '') {
+            setShowModal(false)
+            let token = await AsyncStorage.getItem('token')
             navigation.navigate('Home');
-        } else {
-            setShowModal(true)
+            pegarDadosHomePage(token)
         }
-    },[]);
+    }, [stateCarteira.carteira])
 
-    async function onSelectCarteira(carteira) {
-        if (carteira) {
-          await AsyncStorage.setItem('Carteira', carteira)
-          alteraCarteira(carteira)
-          navigation.navigate('Home');
-        }
 
-    }
-
+    useEffect(() => {
+        //console.log(ResponseInfosCarteiras)
+    }, [ResponseInfosCarteiras])
+ 
     return (
         <View style={styles.container}>
-            <ModalEscolheCarteira  visible={showModal} onSelectCarteira={onSelectCarteira}/>
+            <ModalEscolheCarteira  visible={showModal}/>
             <ActivityIndicator size='large' color='#FFF'/>
         </View>
     )
 }
 
 const mapStateToProps = state => ({
-    stateCarteira: state.dates
+    stateCarteira: state.dates,
+    isLoadingCarteirasUsuario: state.dadosCarteiras.loading,
+    ResponseCarteirasUsuario: state.dadosCarteiras.data,
+    ResponseInfosCarteiras: state.infosCarteiras,
   });
   
-const mapDispatchToProps = dispatch => 
-    bindActionCreators(Actions, dispatch);
+const mapDispatchToProps = ( dispatch )=> ({
+    alteraCarteira: (carteira) => dispatch(alteraCarteira(carteira)),
+    pegarCarteirasUsuario: (token) => dispatch(pegarDadosCarteiras(token)),
+    pegarInfosCarteiras: (token) => dispatch(pegarInfosCarteiras(token)),
+    pegarDadosHomePage: (token) => dispatch(pegarDadosHomePage(token))
+}) 
+    
   
 export default connect(mapStateToProps, mapDispatchToProps)(AfterLogin);
 
