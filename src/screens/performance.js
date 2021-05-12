@@ -248,7 +248,6 @@ const Performance = ({navigation}) => {
           circleRadius: 5,
           highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
           color: processColor(greenBlue),
-
           valueTextSize: 15,
         },
       },
@@ -267,7 +266,7 @@ const Performance = ({navigation}) => {
           highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
           color: processColor(petrel),
           valueTextSize: 15,
-        },
+       },
       },
     ],
   };

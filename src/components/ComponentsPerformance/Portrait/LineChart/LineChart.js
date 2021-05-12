@@ -65,7 +65,7 @@ const LineChartRender = props => {
               valueFormatter: "###'%'",
             },
             right: {
-              enabled: false,
+              enabled: false
             },
           }}
           autoScaleMinMaxEnabled={true}

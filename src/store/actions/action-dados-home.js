@@ -24,7 +24,7 @@ function apiGet() {
 
 export function* asyncPegarDadosHomePage(action){
     try {
-      let response = yield call(fetchDadosHomePage, action.comparador);
+      let response = yield call(apiGet, action.comparador);
       yield put({ type: 'SUCCESS_GET_DADOS_HOME_PAGE_APP',  data: response});
     } catch (err) {
       console.log(err)

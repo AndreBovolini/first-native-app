@@ -18,7 +18,6 @@ async function fetchDadosHomePage(token) {
   console.log(result)
   let blob = (result["_bodyBlob"])
   let data = (blob["_data"])
-  console.log(data["__collector"])
   return result.json()
 }
 
