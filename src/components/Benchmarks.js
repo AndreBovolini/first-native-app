@@ -123,25 +123,6 @@ const Benchmarks = props => {
               </View> )
                }
               })}
-            {/* <Text style={{fontSize:20, color:'#FFF', marginBottom:10, marginTop: 30}}
-                > benchmarks favoritos: </Text>
-            {benchmarks.map((el, i) => {
-                if (el.isFavorite && !el.isSelected) {
-                return (<View style={styles.titleContainer} key={i}> 
-                <View style={styles.left}>
-                  <TouchableOpacity style={styles.left, {marginLeft:8}} onPress={() => handleFavoriteBenchmark(el,i)}>
-                      <Icon name="star" size={20} color='#7faeff'/>
-                  </TouchableOpacity>
-                  <Text style={styles.title}>{el.label}</Text> 
-                </View>
-                <View>
-                  <TouchableOpacity style={styles.right} onPress={() => handleBenchmark(el,i)} >
-                    <Icon name="plus" size={25} color='#FFF'/>
-                  </TouchableOpacity>
-                </View>
-              </View> )
-              }
-              })} */}
 
             <Text style={{fontSize:20, color:'#FFF', marginBottom:10, marginTop: 30}}
                 > benchmarks disponíveis: </Text>

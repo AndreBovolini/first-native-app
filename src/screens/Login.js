@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import CustomInput from '../components/CustomInput';
-import FingerPrint from '../components/FingerPrint';
+import FingerPrint from '../components/Login/FingerPrint';
 
 import globalStyles from '../styles/globalStyles';
 
@@ -99,7 +99,7 @@ const Login = ({route, navigation}) => {
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {
             
-              let dateLogin = new Date().getTime() + (1000*60*5);
+              let dateLogin = new Date().getTime() + (1000*60*100);
               await AsyncStorage.setItem('token', dateLogin.toString())
               navigation.navigate('AfterLogin');
             } else {

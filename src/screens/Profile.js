@@ -15,9 +15,9 @@ import CustomInput from '../components/CustomInput';
 import globalStyles from '../styles/globalStyles';
 import profile from '../../assets/images/profile.png';
 
-import CardAlteraSenha from '../components/ComponentsPerfil/Cards/CardAlterarSenha';
-import CardDatePicker from  '../components/ComponentsPerfil/Cards/CardDatePicker';
-import CardAlteraCarteira from '../components/ComponentsPerfil/Cards/CardAlteraCarteira'
+import CardAlteraSenha from '../components/Perfil/Cards/CardAlterarSenha';
+import CardDatePicker from  '../components/Perfil/Cards/CardDatePicker';
+import CardAlteraCarteira from '../components/Perfil/Cards/CardAlteraCarteira'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage'

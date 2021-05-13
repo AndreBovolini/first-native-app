@@ -7,6 +7,7 @@ import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.keychain.KeychainPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.github.wuxudong.rncharts.MPAndroidChartPackage;

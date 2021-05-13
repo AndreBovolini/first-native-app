@@ -12,23 +12,23 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import ValueBox from '../components/ComponentsHome/valueBox';
+import ValueBox from '../components/Home/valueBox';
 import globalStyles from '../styles/globalStyles';
-// import setTimeOut from 'timers'
 
-import LineChartResumo from '../components/ComponentsHome/LineChartResumo/LineChartResumo';
-import PieChartResumo from '../components/ComponentsHome/PieChartResumo/PieChartResumo';
-import Filtro from '../components/ComponentsHome/FiltroHome';
-import Benchmarks from '../components/ComponentsHome/Benchmarks'
+import LineChartResumo from '../components/Home/LineChartResumo/LineChartResumo';
+import PieChartResumo from '../components/Home/PieChartResumo/PieChartResumo';
+import Filtro from '../components/Home/FiltroHome';
+import Benchmarks from '../components/Home/Benchmarks';
 
 import {
     dataHomeBox,
-    resposta1
+    resposta1,
+    AtivosCarteira
 } from '../data/data';
 
-import { dataLineChartHome } from '../components/ComponentsHome/LineChartResumo/dataLineChartResumo';
-import { useRoute } from '@react-navigation/native';
-import SkeletonHome from '../components/ComponentsHome/SkeletonHome'
+import { dataLineChartHome } from '../components/Home/LineChartResumo/dataLineChartResumo';
+import { dataPieChartHome } from '../components/Home/PieChartResumo/dataPieChartResumo';
+import SkeletonHome from '../components/Home/Skeleton/SkeletonHome'
 
 import { connect } from 'react-redux';
 
@@ -41,6 +41,7 @@ export const Home = ({dadosHomePage, navigation}) => {
   const [] = useState('');
   const [] = useState('');
   const [dadosLineChart, setDadosLineChart] = useState({})
+  const [dadosPie, setDadosPie] = useState({})
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [selecionadoPie, setSelecionadoPie] = useState({})
 
@@ -88,17 +89,6 @@ export const Home = ({dadosHomePage, navigation}) => {
 
     return () => backHandler.remove();
   }, [])
-
-  function handleSelectPie(event) {
-    let entry = event.nativeEvent
-    if (entry == null) {
-      setSelectedEntry(null)
-    } else {
-      setSelectedEntry(JSON.stringify(entry))
-      setSelecionadoPie(entry)
-    }
-};
-
   
   
   setTimeout(() => {setLoading(false)}, 3000)
@@ -130,7 +120,11 @@ export const Home = ({dadosHomePage, navigation}) => {
   }
 
 
-  
+  useEffect(() => {
+    const infos = dataPieChartHome()
+    setDadosPie(infos)
+  }, [])
+
     return (
       <View>
         {loading ? <SkeletonHome isLoading={loading}/> :
@@ -223,7 +217,9 @@ export const Home = ({dadosHomePage, navigation}) => {
               </TouchableOpacity>
             </View>
             <View style={styles.chartContainer}>
-                <PieChartResumo />      
+                <PieChartResumo
+                  infos={dadosPie.infos} 
+                  />    
             </View>
             
         </ScrollView>
@@ -357,3 +353,5 @@ const styles = StyleSheet.create({
         color: 'white',
     },
 })
+
+

@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import ModalEscolheCarteira from '../components/ModalEscolheCarteira';
+import ModalEscolheCarteira from '../components/Login/ModalEscolheCarteira';
 
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras, pegarInfosCarteiras } from '../store/actions/actions-dados-usuario'

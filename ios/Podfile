@@ -15,6 +15,7 @@ target 'first_react_native_app' do
   pod 'RNCharts', :path => '../node_modules/react-native-charts-wrapper'
 
 
+
   target 'first_react_native_appTests' do
     inherit! :complete
     # Pods for testing

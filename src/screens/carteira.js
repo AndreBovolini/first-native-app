@@ -7,23 +7,46 @@ import {
 } from 'react-native';
 
 import globalStyles from '../styles/globalStyles';
-import Cards from '../components/ComponentsCarteira/Cards/cards.js'
-import OutroPie from '../components/ComponentsCarteira/GraficoPie/PieChart';
+import Cards from '../components/Carteira/Cards/cards'
+import PieCarteira from '../components/Carteira/GraficoPie/PieChart';
+import Seletor from '../components/Carteira/Seletor'
+
+import { resposta2 } from '../data/dataTeste';
 
 import {
   dataHomeBox,
-  AtivosCarteira
 } from '../data/data';
 
-const Carteira = ({navigation}) => {
+
+import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
+import { dataPieChart } from '../components/Carteira/GraficoPie/dataPieChart';
+
+import { connect } from 'react-redux';
+
+const Carteira = (props) => {
+  const [arrayAtivos, setArrayAtivos] = useState([]);
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [selecionadoPie, setSelecionadoPie] = useState({});
-  const [arrayAtivos, setArrayAtivos] = useState([])
   const [scrollViewHeight, setScrollViewHeight] = useState(1183)
-  const [arrayShow, setArrayShow] = useState([])
   const [cores, setCores] = useState(globalStyles.chartColors.pieChartColors);
+  const [teste,setTeste]=useState({
+    teste:false
+  }
+)
+const [dadosChart, setDadosChart] = useState({})
+const [showAtivos, setShowAtivos ] = useState(true)
+
+
 
   useEffect(() => {
+    if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== []) {
+      const keysAtivos = Object.keys(showAtivos ? resposta2.grafico0 : resposta2.grafico1)
+    const AtivosCarteira = keysAtivos.map((el,i) => {
+      return {
+        value: parseFloat(showAtivos ? resposta2.grafico0[el] : resposta2.grafico1[el]),
+        label: el,
+      }
+    })
     let ativos = []
     AtivosCarteira.forEach((el, i) => {
       ativos.push({
@@ -36,7 +59,15 @@ const Carteira = ({navigation}) => {
       });
     });
     setArrayAtivos(ativos);
-  }, []);
+
+    const infos = dataPieChart(showAtivos ? resposta2.grafico0 : resposta2.grafico1)
+    setDadosChart(infos)
+    }
+  }, [showAtivos, props.isLoadingDadosHomePage, props.responseDadosHomePage]);
+
+  function handleChangeSelector() {
+    setShowAtivos(!showAtivos)
+  }
 
   useEffect(() => {
     let showCount = 0
@@ -54,9 +85,6 @@ const Carteira = ({navigation}) => {
   }, [arrayAtivos])
   
   function handleClick(tipoAtivo) {
-        // const newArray = [...arrayShow];
-        // newArray[index]= !arrayShow[index]
-        // setArrayShow(newArray);
         let newArray = [...arrayAtivos];
         newArray = newArray.map((el, id) => {
           if (el.ativo === tipoAtivo) {
@@ -83,8 +111,6 @@ const Carteira = ({navigation}) => {
         newArray = newArray.filter(ativo => ativo.ativo !== selectName)
         newArray.unshift(filtrado[0])
         setArrayAtivos(newArray);
-        // ativos.splice(ativos.indexOf(selectName, 1))
-        // ativos.unshift(selectName)
       }catch{
 
       }
@@ -92,14 +118,18 @@ const Carteira = ({navigation}) => {
     }
 };
 
+
+  
       return (
         <ScrollView contentContainerStyle={[styles.container, { height: scrollViewHeight}]}>
         <Text style={styles.title}>Carteira</Text>
+        <Seletor handleChangeSelector={handleChangeSelector}/>
             <View style={styles.chartContainer}>
-                <OutroPie handleSelect={handleSelectPie} 
-                selectedEntry={selectedEntry}
-                valorCentro={selecionadoPie.data ? selecionadoPie.data.label :  ''}
-                />      
+              { dadosChart.infos ?
+                <PieCarteira
+                infos={dadosChart.infos}
+                handleSelectPie={handleSelectPie}
+                />    : null}  
             </View>
             <View style={styles.containerCards}>
               {arrayAtivos.map((el, i) => {
@@ -118,7 +148,12 @@ const Carteira = ({navigation}) => {
     
 }
 
-export default Carteira;
+const mapStateToProps = state => ({
+  isLoadingDadosHomePage: state.dadosHomePage.loading,
+  responseDadosHomePage: state.dadosHomePage.response,
+});
+
+export default connect(mapStateToProps)(Carteira);
 
 const styles = StyleSheet.create({
       container: {
