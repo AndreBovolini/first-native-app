@@ -19,8 +19,8 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
 
    const greenBlue = 'rgb(26, 192, 151)';
    const petrel = 'rgb(59, 115, 135)';
-   const random = 'rgb(98, 85, 153)';
-   const random2 = 'rgb(75, 40, 128)';
+   const random = 'rgb(98, 90, 153)';
+   const random2 = 'rgb(75, 50, 128)';
    const colors = [random, greenBlue, petrel]
 
    const alteraDataPTParaEN = data => {
@@ -61,14 +61,14 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
       break;
       case '3m':
         filteredData = respostaDados.filter(threeMonthPeriod);
-        granularity = 25
+        granularity = 15
       break;
       case '2021':
         filteredData = respostaDados.filter(thisYear);
-        granularity = 50
+        granularity = 30
       break;
       case '12m':
-        granularity = 50
+        granularity = 55
         filteredData = respostaDados.filter(oneYearPeriod);
         break;
       case 'Tudo':
@@ -88,18 +88,59 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
    console.log(keysAtivos)
    let values = []
    let linelabes = []
+   let formatedValues = []
+
+   let maior = 0
+   filteredData.forEach((el,i) => {
+    if (parseFloat(el.PL) > maior) {
+          maior = parseFloat(el.PL);
+    }else{
+       maior = maior
+    }
+})
+  let indice = 0
+  let number = 0
+  let symbol = 0
+  if(maior > 10**9) {
+    indice = 10**9
+    number = '#.##'
+    symbol = " B"
+  }else if(maior > 10**6 && maior < 10**9){
+    indice = 10**6
+    number = '#.##'
+    symbol = " M"
+  }else if(maior > 10**3 && maior < 10**6){
+    indice = 10**3
+    number = '##'
+    symbol = " K"
+  }
+  
+  console.log('aqui ' + maior+ 'indice ' + indice)
+  console.log(number + ' ' + symbol)
+
+  
+  
     if (filteredData !== []) {
      values = keysAtivos.map((ativo,i) => {
       const valores = filteredData.map((el,i) => {
+
+        if(ativo !== 'PL') {
         return {
           y: parseFloat(el[ativo]),
           x: parseFloat(i),
           marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
           + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
-          // + `${parseFloat(el.PL) < 10**6 ?
-          //   ' PL: R$ ' + parseFloat(parseFloat(el.PL, 2)/(10**3)).toFixed(0) + ' K'
-          // : ' PL: R$ ' + parseFloat(parseFloat(el.PL, 2)/(10**6)).toFixed(1) + ' M'}`,
+          
         }
+        }else{
+          return  ({
+            y: (parseFloat(el.PL, 3))/indice, 
+            x: parseFloat(i),
+            marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
+            + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
+            })
+        }
+        
       })
       
  
@@ -109,12 +150,25 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
       }
     })
     
+    formatedValues = filteredData.map((el,i)=>{
+      if(el[ativosRight] < 10**6) {
+        return  parseFloat(parseFloat(el[ativosRight],2)/(10**3)).toFixed(0) 
+      }
+      else if(el[ativosRight] > 10**6) {
+       return  parseFloat(parseFloat(el[ativosRight], 2)/(10**6)).toFixed(1)
+      }
+    })
+
     linelabes = filteredData.map((el, i) => {
       return el.data
   })
+
+    
   };
+  
 
     const labels = [...linelabes]
+    const formated = [...formatedValues]
     
     const dataSets = values.map((el,i) => {
         return {
@@ -142,7 +196,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
             orientation: "TOP_BOTTOM",
             
         },
-        fillAlpha: 4000
+        fillAlpha: 7000
 
         },
     }
@@ -153,8 +207,11 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
     return ({
         data, 
         labels,
-        granularity
-        
+        granularity,
+        formated,
+        number,
+        symbol
+
     })
 
 }

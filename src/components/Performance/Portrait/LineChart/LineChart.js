@@ -11,7 +11,7 @@ import globalStyles from '../../../../styles/globalStyles';
 
 
 const LineChartRender = props => {
-
+  
   return (
     <View style={{flex: 1}}>
 
@@ -66,7 +66,7 @@ const LineChartRender = props => {
               drawLabels: true,
               drawAxisLine: true,
               textColor: processColor(globalStyles.chartColors.axis),
-              valueFormatter: "R$ ###",
+              valueFormatter: `${props.number}`+`${props.symbol}`,
             },
           }}
           autoScaleMinMaxEnabled={true}

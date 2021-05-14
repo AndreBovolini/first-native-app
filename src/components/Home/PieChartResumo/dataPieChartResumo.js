@@ -18,16 +18,11 @@ export const dataPieChartHome = () => {
           }
   
   })
-    const [chartData, setChartData] = useState(AtivosCarteira);
-    const [soma, setSoma] = useState(0)
-
-    useEffect(() => {
         let soma = 0
         let arrayData =[]
         AtivosCarteira.forEach((el, i) => {
           soma = soma + parseFloat(el.value)
         })
-        setSoma(soma);
         arrayData = AtivosCarteira.map((el, i) => {
           let percent = ((parseFloat(el.value) / soma) *100).toFixed(2)
           return {
@@ -36,8 +31,6 @@ export const dataPieChartHome = () => {
             marker: `${el.label}: ${percent}%`
           }
         })
-        setChartData(arrayData);
-      },[])
     
     return ({
       infos: {
@@ -54,7 +47,7 @@ export const dataPieChartHome = () => {
         },
         data: {
           dataSets: [{
-            values: chartData,
+            values: arrayData,
             label: '',
             config: {
               colors: globalStyles.chartColors.pieChartColors.map(el => {

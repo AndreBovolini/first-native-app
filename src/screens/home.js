@@ -41,6 +41,7 @@ export const Home = ({dadosHomePage, navigation}) => {
   const [] = useState('');
   const [] = useState('');
   const [dadosLineChart, setDadosLineChart] = useState({})
+  const [dadosPie, setDadosPie] = useState({})
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [selecionadoPie, setSelecionadoPie] = useState({})
 
@@ -88,17 +89,6 @@ export const Home = ({dadosHomePage, navigation}) => {
 
     return () => backHandler.remove();
   }, [])
-
-  function handleSelectPie(event) {
-    let entry = event.nativeEvent
-    if (entry == null) {
-      setSelectedEntry(null)
-    } else {
-      setSelectedEntry(JSON.stringify(entry))
-      setSelecionadoPie(entry)
-    }
-};
-
   
   
   setTimeout(() => {setLoading(false)}, 3000)
@@ -130,7 +120,10 @@ export const Home = ({dadosHomePage, navigation}) => {
   }
 
 
-  const dadosPie = dataPieChartHome()
+  useEffect(() => {
+    const infos = dataPieChartHome()
+    setDadosPie(infos)
+  }, [])
 
     return (
       <View>
