@@ -14,6 +14,7 @@ import Seletor from '../components/Carteira/Seletor'
 import { resposta2 } from '../data/dataTeste';
 
 import {
+  AtivosCarteira,
   dataHomeBox,
 } from '../data/data';
 
@@ -35,6 +36,8 @@ const Carteira = (props) => {
 )
 const [dadosChart, setDadosChart] = useState({})
 const [showAtivos, setShowAtivos ] = useState(true)
+const [heightDefault, setHeightDefault] = useState((AtivosCarteira.length-1)*90)
+const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
 
 
 
@@ -48,6 +51,7 @@ const [showAtivos, setShowAtivos ] = useState(true)
       }
     })
     let ativos = []
+
     AtivosCarteira.forEach((el, i) => {
       ativos.push({
         id: i,
@@ -59,14 +63,28 @@ const [showAtivos, setShowAtivos ] = useState(true)
       });
     });
     setArrayAtivos(ativos);
-
+    if(arrayAtivos.length !== 0 ) {
+      setLengthAtivos(arrayAtivos.length)
+    }
+   
+    
     const infos = dataPieChart(showAtivos ? resposta2.grafico0 : resposta2.grafico1)
     setDadosChart(infos)
     }
+    
+    
   }, [showAtivos, props.isLoadingDadosHomePage, props.responseDadosHomePage]);
 
-  function handleChangeSelector() {
-    setShowAtivos(!showAtivos)
+  
+  function handleSelectorAtivos() {
+    console.log(lengthAtivos + ' here' )
+    setShowAtivos(true)
+    setHeightDefault((lengthAtivos-1)*90)
+  }
+  function handleSelectorCustodiante() {
+    console.log(lengthAtivos + ' here' )
+    setShowAtivos(false)
+    setHeightDefault((lengthAtivos-1)*90)
   }
 
   useEffect(() => {
@@ -81,9 +99,9 @@ const [showAtivos, setShowAtivos ] = useState(true)
       }
     })
     const increasedHeight = ((showCount * 93) + (acao * 300));
-    setScrollViewHeight(1183 + increasedHeight)
+    setScrollViewHeight(heightDefault + globalStyles.dimensions.height + increasedHeight)
   }, [arrayAtivos])
-  
+
   function handleClick(tipoAtivo) {
         let newArray = [...arrayAtivos];
         newArray = newArray.map((el, id) => {
@@ -119,11 +137,10 @@ const [showAtivos, setShowAtivos ] = useState(true)
 };
 
 
-  
       return (
         <ScrollView contentContainerStyle={[styles.container, { height: scrollViewHeight}]}>
         <Text style={styles.title}>Carteira</Text>
-        <Seletor handleChangeSelector={handleChangeSelector}/>
+        <Seletor handleSelectorCustodiante={handleSelectorCustodiante} handleSelectorAtivos={handleSelectorAtivos}/>
             <View style={styles.chartContainer}>
               { dadosChart.infos ?
                 <PieCarteira
