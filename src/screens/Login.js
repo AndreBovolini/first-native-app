@@ -31,6 +31,7 @@ const Login = ({route, navigation}) => {
   const [inputUsuario, setInputUsuario] = useState('');
   const [inputSenha, setInputSenha] = useState('');
   const [hideSenha, setHideSenha] = useState(true);
+  const [showCredenciaisErradas, setShowCredenciaisErradas] = useState(false)
 
   useEffect(async () => {
     const { credentials} = route.params;
@@ -42,6 +43,13 @@ const Login = ({route, navigation}) => {
 
   const handleForgotPassword = () => {
     navigation.navigate('ResetPassword');
+  }
+
+  function handleErrologin() {
+    setShowCredenciaisErradas(true)
+    setTimeout(
+      () => {setShowCredenciaisErradas(false)}, 5000
+    )
   }
 
   async function handleLogin() {
@@ -63,7 +71,8 @@ const Login = ({route, navigation}) => {
             }
             )
             .catch(error => {
-              console.log(error)
+              console.log(error);
+              handleErrologin();
             })
             
           }
@@ -144,7 +153,7 @@ const Login = ({route, navigation}) => {
               value={inputUsuario}
               onChangeText={usuario => setInputUsuario(usuario)}
               label={'Usuário:'}
-              style={{width: globalStyles.dimensions.width * 0.67, color:'#000'}}
+              style={{width: globalStyles.dimensions.width * 0.67, height: 40, color:'#000'}}
               keyboardType={'email-address'}
               placeholderTextColor={'#aaa'}
               type={'usuário'}
@@ -160,7 +169,9 @@ const Login = ({route, navigation}) => {
               type={'senha'}
               hidePassword={handleHidePassword}
             />
-            
+            { showCredenciaisErradas ?
+            (<Text style={{color: 'red', fontSize: 16}}>Credencias inválidas</Text>)
+            : null }
           <TouchableOpacity activeOpacity={0.7} onPress={handleLogin}>
             <View style={styles.button}>
               <Text style={styles.buttonText}>Login</Text>

@@ -160,20 +160,6 @@
 		3B73161C33FC4654B89F52F9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				88318635D9314F47AD1C90FB /* AntDesign.ttf */,
-				B4731E2C7AAE4BE09AAFBC8E /* Entypo.ttf */,
-				279F906413764D9C8B4059F1 /* EvilIcons.ttf */,
-				40F8927149A240F793F116BF /* Feather.ttf */,
-				DE8BB750459444E9B0E4404B /* FontAwesome5_Brands.ttf */,
-				D7B7BC25205149D7AA792754 /* FontAwesome5_Regular.ttf */,
-				1725EBA66F5C437893B6A8D9 /* FontAwesome5_Solid.ttf */,
-				E15091024FC447B498200073 /* Fontisto.ttf */,
-				E19D0BEAB39745C0B25CA004 /* Foundation.ttf */,
-				7C9371DC41A5414499D9307E /* MaterialCommunityIcons.ttf */,
-				70625DA5DF0548DBB988C592 /* MaterialIcons.ttf */,
-				EAF7784148BA445B879C85C2 /* Octicons.ttf */,
-				8066327F2B8846B28E87588B /* SimpleLineIcons.ttf */,
-				559583A776C24449B26F8C8A /* Zocial.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -342,20 +328,6 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				E64C246F67ED4B9FAD5AE588 /* AntDesign.ttf in Resources */,
-				3C7A2CF685244E5B84336EF6 /* Entypo.ttf in Resources */,
-				12853DA1B5F3422E82620A14 /* EvilIcons.ttf in Resources */,
-				C19D41891EA546CEA9E38071 /* Feather.ttf in Resources */,
-				24A5EFC34D784939A6AE7233 /* FontAwesome5_Brands.ttf in Resources */,
-				7B07AEC7165541A0B762E5CE /* FontAwesome5_Regular.ttf in Resources */,
-				72275B24B65D41ABA68DBBB0 /* FontAwesome5_Solid.ttf in Resources */,
-				CDB352AAF3F045FFAF8E21C9 /* Fontisto.ttf in Resources */,
-				24140BBA6B884A84A2AD0662 /* Foundation.ttf in Resources */,
-				67F5C93B81D24D8C91BAA4B5 /* MaterialCommunityIcons.ttf in Resources */,
-				55904EEBB534471D86A7E8B4 /* MaterialIcons.ttf in Resources */,
-				AF1D47DE2EA04B5A8F4AF8E9 /* Octicons.ttf in Resources */,
-				CA87F7107F524E3C8F3FC13B /* SimpleLineIcons.ttf in Resources */,
-				13A645B7C4B144659078D917 /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

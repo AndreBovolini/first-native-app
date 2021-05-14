@@ -22,6 +22,7 @@ import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/
 import { dataPieChart } from '../components/Carteira/GraficoPie/dataPieChart';
 
 import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-navigation';
 
 const Carteira = (props) => {
   const [arrayAtivos, setArrayAtivos] = useState([]);
@@ -121,6 +122,7 @@ const [showAtivos, setShowAtivos ] = useState(true)
 
   
       return (
+        <SafeAreaView style={{flex: 1, backgroundColor: globalStyles.colors.backGround}}>
         <ScrollView contentContainerStyle={[styles.container, { height: scrollViewHeight}]}>
         <Text style={styles.title}>Carteira</Text>
         <Seletor handleChangeSelector={handleChangeSelector}/>
@@ -144,6 +146,7 @@ const [showAtivos, setShowAtivos ] = useState(true)
               })}
             </View>
         </ScrollView>
+        </SafeAreaView>
     )
     
 }

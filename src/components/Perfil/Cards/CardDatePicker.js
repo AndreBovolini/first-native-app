@@ -19,7 +19,7 @@ import { bindActionCreators } from 'redux'
 
 
 
-const CardDatePicker = ({ show, handleClick, datas, newDataInicial, newDataFinal}) => {
+const CardDatePicker = (props) => {
   const [showSelectorInicial, setShowSelectorInicial] = useState(false)
   const [showSelectorFinal, setShowSelectorFinal] = useState(false)
 
@@ -31,14 +31,14 @@ const CardDatePicker = ({ show, handleClick, datas, newDataInicial, newDataFinal
     setShowSelectorFinal(true)
   };
 
-  const selectNewDateInicial = (data) => {  
+  const selectNewDateInicial = (data) => {
     setShowSelectorInicial(false);
-    newDataInicial(datas, data);
+    props.newDataInicial(props.datas, data);
   };
 
   const selectNewDateFinal = (data) => {
     setShowSelectorFinal(false);
-    newDataFinal(datas, data);
+    props.newDataFinal(props.datas, data);
   }
 
   
@@ -53,32 +53,32 @@ const CardDatePicker = ({ show, handleClick, datas, newDataInicial, newDataFinal
                   <Text style={styles.title}>Escolha o período</Text>
                 </View>
                 <TouchableOpacity style={styles.right}
-                    onPress={()=> handleClick()}
+                    onPress={()=> props.handleClick()}
                 >
-                    { show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
+                    { props.show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
                     :  <Icon name="chevron-down" size={20} color={globalStyles.colors.fontColor}/>}
                 </TouchableOpacity>
                 </View>
              </View>
-                { show && (
+                { props.show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
                     <View style={styles.blocoExpand}>
                       <TouchableOpacity activeOpacity={0.7} onPress={showDateInicial}>
                             <View style={styles.buttonView}>
-                                <Text style={styles.buttonText}>De: {datas.dataInicial.toLocaleDateString()}</Text>
+                                <Text style={styles.buttonText}>De: {props.datas.dataInicial.toLocaleDateString()}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.7} onPress={showDateFinal}>
                             <View style={styles.buttonView}>
-                                <Text style={styles.buttonText}>Até: {datas.dataFinal.toLocaleDateString()}</Text>
+                                <Text style={styles.buttonText}>Até: {props.datas.dataFinal.toLocaleDateString()}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
                         {showSelectorInicial && (
                             <DateTimePicker
                             testID="dateTimePicker"
-                            value={datas.dataInicial}
+                            value={new Date()}
                             mode={'date'}
                             is24Hour={true}
                             display="default"
@@ -88,7 +88,7 @@ const CardDatePicker = ({ show, handleClick, datas, newDataInicial, newDataFinal
                         {showSelectorFinal && (
                             <DateTimePicker
                             testID="dateTimePicker"
-                            value={datas.dataFinal}
+                            value={props.datas.dataFinal}
                             mode={'date'}
                             is24Hour={true}
                             display="default"
@@ -103,7 +103,9 @@ const CardDatePicker = ({ show, handleClick, datas, newDataInicial, newDataFinal
 }
 
 const mapStateToProps = state => ({
-  datas: state.dates
+  datas: state.dates,
+  dataMaisAntiga: state.dates.dataMaisAntiga,
+  dataMaisRecente: state.dates.dataMaisRecente
 });
 
 const mapDispatchToProps = dispatch => 

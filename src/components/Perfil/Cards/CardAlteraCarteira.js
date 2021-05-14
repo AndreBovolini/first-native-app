@@ -13,7 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 import { connect } from 'react-redux';
-import { alteraCarteira } from '../../../store/actions/actions';
+import { alteraCarteira, alteraDataMaisAntiga, alteraDataMaisRecente } from '../../../store/actions/actions';
 
 
 
@@ -26,6 +26,23 @@ const CardAlteraCarteira = (props) => {
         setCarteiras(props.ResponseCarteirasUsuario)
       }
     }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
+
+    function selectNovaCarteira(carteira) {
+      props.alteraCarteira(carteira)
+      let dataAntiga = '';
+      let dataRecente = '';
+      console.log('á')
+      props.responseInfosCarteiras.forEach(carteira => {
+        console.log('b', carteira["Nome da Carteira"])
+        if (carteira["Nome da Carteira"] === props.stateCarteira.carteira) {
+          console.log('c', carteira["Nome da Carteira"])
+            dataAntiga = carteira["Data da Primeira Operação"]
+            props.alteraDataMaisAntiga(dataAntiga)
+            dataRecente = carteira["Data da Cota mais Recente"]
+            props.alteraDataMaisRecente(dataRecente)
+                }                
+            });
+    }
 
 
 return (
@@ -50,7 +67,7 @@ return (
                     {
                       carteiras.map((el, i) => {
                         return (
-                          <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => props.alteraCarteira(el)} >
+                          <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => selectNovaCarteira(el)} >
                             <View style={styles.buttonView}>
                               <Text style={styles.buttonText}>{el}</Text>
                               <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
@@ -68,11 +85,15 @@ return (
     const mapStateToProps = state => ({
       stateCarteira: state.dates,
       isLoadingCarteirasUsuario: state.dadosCarteiras.loading,
-      ResponseCarteirasUsuario: state.dadosCarteiras.data,
+      ResponseCarteirasUsuario: state.dadosCarteiras.data, 
+      responseInfosCarteiras: state.infosCarteiras.data,
+      isLoadingInfosCarteiras: state.infosCarteiras.loading,
     });
     
     const mapDispatchToProps = dispatch => ({
       alteraCarteira: (carteira) => dispatch(alteraCarteira(carteira)),
+      alteraDataMaisAntiga: (dataMaisAntiga) => dispatch(alteraDataMaisAntiga(dataMaisAntiga)),
+      alteraDataMaisRecente: (dataMaisRecente) => dispatch(alteraDataMaisRecente(dataMaisRecente)),
     })
     
     export default connect(mapStateToProps, mapDispatchToProps)(CardAlteraCarteira);

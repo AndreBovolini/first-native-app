@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import {
   ScrollView,
   StyleSheet,
+  SafeAreaView,
   Text,
   processColor,
   TouchableOpacity,
@@ -32,7 +33,7 @@ import SkeletonHome from '../components/Home/Skeleton/SkeletonHome'
 
 import { connect } from 'react-redux';
 
-export const Home = ({dadosHomePage, navigation}) => {
+export const Home = ({infosCarteiras, dadosHomePage, navigation}) => {
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState (false)
   const [showModal, setShowModal] = useState(false);
@@ -53,8 +54,8 @@ export const Home = ({dadosHomePage, navigation}) => {
   }, [dadosHomePage.isLoading, dadosHomePage.data])
 
   useEffect(() => {
-    console.log(dadosHomePage)
-  }, [dadosHomePage])
+   
+  }, [dadosHomePage, infosCarteiras])
 
 
   useEffect(() => {
@@ -125,8 +126,8 @@ export const Home = ({dadosHomePage, navigation}) => {
     setDadosPie(infos)
   }, [])
 
-    return (
-      <View>
+    return (<View style={{backgroundColor: globalStyles.colors.backGround}}>
+      <SafeAreaView>
         {loading ? <SkeletonHome isLoading={loading}/> :
         (<ScrollView contentContainerStyle={styles.container}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -224,13 +225,15 @@ export const Home = ({dadosHomePage, navigation}) => {
             
         </ScrollView>
         )}
+        </SafeAreaView>
         </View>
     )
 }
 
 
 const mapStateToProps = state => ({
-  dadosHomePage: state.dadosHomePage
+  dadosHomePage: state.dadosHomePage,
+  infosCarteiras: state.infosCarteiras
 });
   
 

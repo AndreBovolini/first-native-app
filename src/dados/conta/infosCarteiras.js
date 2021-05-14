@@ -1,8 +1,9 @@
-import { pathCMD } from '../endpoint/endpoint';
+import {pathCMD} from '../endpoint/endpoint';
 
 async function fetchComAppInfosCarteiras(token) {
-    console.log(token)
-  const apiTeste = 'token=' + token;
+  //const apiURL = encodeURIComponent('Clientes/ComApp/ListaCarteiras002.php?');
+    const apiTeste = 'token=' + token +  '&format=json2';
+    console.log(apiTeste)
   const requestOptions = {
     method: 'POST',
     headers:  {
@@ -13,7 +14,7 @@ async function fetchComAppInfosCarteiras(token) {
             apiTeste,
 
   };
-  const result = await fetch(pathCMD + 'ListaCarteiras001.php', requestOptions);
+  const result = await fetch(pathCMD + 'ListaCarteiras002.php', requestOptions);
   return result.json();
 }
 

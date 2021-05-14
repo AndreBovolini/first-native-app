@@ -47,7 +47,7 @@ const CardAlteraSenha = (props) => {
                             value={senhaAntiga}
                             onChangeText={senha => setSenhaAntiga(senha)}
                             label={'Senha antiga:'}
-                            style={{width: globalStyles.dimensions.width * 0.7, color:'#000'}}
+                            style={{width: globalStyles.dimensions.width * 0.7, height: 40, color:'#000'}}
                             secureTextEntry={true}
                             placeholderTextColor={'#aaa'}
                             
@@ -57,7 +57,7 @@ const CardAlteraSenha = (props) => {
                             value={senhaNova}
                             onChangeText={senha => setSenhaNova(senha)}
                             label={'Senha nova:'}
-                            style={{width: globalStyles.dimensions.width * 0.7, color:'#000'}}
+                            style={{width: globalStyles.dimensions.width * 0.7, height: 40, color:'#000'}}
                             secureTextEntry={true}
                             placeholderTextColor={'#aaa'}
                         />
@@ -66,7 +66,7 @@ const CardAlteraSenha = (props) => {
                             value={senhaNovamente}
                             onChangeText={senha => setSenhaNovamente(senha)}
                             label={'Insira sua senha novamente:'}
-                            style={{width: globalStyles.dimensions.width * 0.7, color:'#000'}}
+                            style={{width: globalStyles.dimensions.width * 0.7, height: 40, color:'#000'}}
                             secureTextEntry={true}
                             placeholderTextColor={'#aaa'}
                         />

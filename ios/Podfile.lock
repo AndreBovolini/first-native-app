@@ -284,7 +284,7 @@ PODS:
     - React
   - RNCPicker (1.15.0):
     - React-Core
-  - RNDateTimePicker (3.4.6):
+  - RNDateTimePicker (3.4.7):
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
@@ -499,7 +499,7 @@ SPEC CHECKSUMS:
   RNCharts: d364ca2085e24edb9ee0390d3fb7209257daa44c
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 5256da29a92406cac439ac6605719e233714a86a
-  RNDateTimePicker: 47e934943a8cc6e6faab372cfd5f8ccd8c1ab338
+  RNDateTimePicker: 8dcfab802edece406f4f4780130974a0e04213b4
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNKeychain: b8e0711b959a19c5b057d1e970d3c83d159b6da5
   RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad

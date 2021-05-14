@@ -1,10 +1,9 @@
 import { processColor } from 'react-native'
 
 
+export const dataLineChartPortrait = (response, periodoSelecionado) => {
 
-export const dataLineChartLandscape = ( response, periodoSelecionado) => {
-
-    const orientation = 'landscape'
+    const orientation = 'portrait'
 
     const keysDatas = Object.keys(response.grafico5.Carteira)
     const respostaDados = keysDatas.map((el,i) => {
@@ -96,11 +95,14 @@ export const dataLineChartLandscape = ( response, periodoSelecionado) => {
           y: parseFloat(el[ativo]),
           x: parseFloat(i),
           marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
-          + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
+          + ' CDI: ' + parseFloat(el.CDI, 3) + '%' + ' PL: ' + parseFloat(el.PL, 3) + '%',
+          // + `${parseFloat(el.PL) < 10**6 ?
+          //   ' PL: R$ ' + parseFloat(parseFloat(el.PL, 2)/(10**3)).toFixed(0) + ' K'
+          // : ' PL: R$ ' + parseFloat(parseFloat(el.PL, 2)/(10**6)).toFixed(1) + ' M'}`,
         }
       })
       
-      console.log('BBBB' + valores[0])
+ 
       return {
         label: ativo,
         dataset: valores
@@ -110,7 +112,6 @@ export const dataLineChartLandscape = ( response, periodoSelecionado) => {
     linelabes = filteredData.map((el, i) => {
       return el.data
   })
-  console.log('AAAA'+ values[0][0])
   };
 
     const labels = [...linelabes]
@@ -153,6 +154,7 @@ export const dataLineChartLandscape = ( response, periodoSelecionado) => {
         data, 
         labels,
         granularity
+        
     })
 
 }

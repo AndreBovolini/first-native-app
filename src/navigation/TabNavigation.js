@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, SafeAreaView, Platform } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -33,7 +33,6 @@ const TabNavigation = () => {
         })
     }, [])
     return (
-            
             <Tab.Navigator 
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
@@ -81,7 +80,7 @@ const TabNavigation = () => {
                         backgroundColor: '#272727',
                         borderTopEndRadius: 19,
                         borderTopStartRadius: 19,
-                        height:55,
+                        height: Platform.OS === 'ios' ? 85 : 55,
                         borderTopWidth: 0,
                         position: 'absolute'
                     }

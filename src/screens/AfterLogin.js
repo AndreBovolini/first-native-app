@@ -9,17 +9,17 @@ import ModalEscolheCarteira from '../components/Login/ModalEscolheCarteira';
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras, pegarInfosCarteiras } from '../store/actions/actions-dados-usuario'
 import { pegarDadosHomePage } from '../store/actions/action-dados-home';
-import { alteraCarteira } from '../store/actions/actions'
+import { alteraCarteira, alteraDataMaisAntiga, alteraDataMaisRecente, newDataFinal, newDataInicial } from '../store/actions/actions'
 
 
-const AfterLogin = ({pegarDadosHomePage, ResponseInfosCarteiras, isLoadingCarteirasUsuario, navigation, stateCarteira, alteraCarteira, pegarCarteirasUsuario, ResponseCarteirasUsuario, pegarInfosCarteiras}) => {
+const AfterLogin = (props) => {
     const [showModal, setShowModal] = useState(false)
 
 
     useEffect(async () => {
         let token = await AsyncStorage.getItem('token')
-        pegarCarteirasUsuario(token)
-        pegarInfosCarteiras(token)
+        props.pegarCarteirasUsuario(token)
+        props.pegarInfosCarteiras(token)
         setShowModal(true)
     },[])
 
@@ -34,21 +34,40 @@ const AfterLogin = ({pegarDadosHomePage, ResponseInfosCarteiras, isLoadingCartei
         //         setShowModal(true)
         //     }
         // }
-    },[isLoadingCarteirasUsuario]);
+    },[props.isLoadingCarteirasUsuario]);
+
+    useEffect(() => {
+        if (props.stateCarteira.carteira !== '' && props.responseInfosCarteiras !== []) {
+            let dataAntiga = '';
+            let dataRecente = '';
+            console.log('á')
+            props.responseInfosCarteiras.forEach(carteira => {
+                console.log('b', carteira["Nome da Carteira"])
+                if (carteira["Nome da Carteira"] === props.stateCarteira.carteira) {
+                    console.log('c', carteira["Nome da Carteira"])
+                    dataAntiga = carteira["Data da Primeira Operação"]
+                    props.alteraDataMaisAntiga(dataAntiga)
+                    dataRecente = carteira["Data da Cota mais Recente"]
+                    props.alteraDataMaisRecente(dataRecente)
+                }                
+            });
+            console.log(dataAntiga, dataRecente)
+        }
+    }, [props.responseInfosCarteiras, props.stateCarteira.carteira])
 
     useEffect(async () => {
-        if (stateCarteira.carteira !== '') {
+        if (props.stateCarteira.carteira !== '' && props.stateCarteira.dataMaisAntiga !== '') {
             setShowModal(false)
             let token = await AsyncStorage.getItem('token')
-            navigation.navigate('Home');
-            pegarDadosHomePage(token)
+            props.navigation.navigate('Home');
+            props.pegarDadosHomePage(token)
         }
-    }, [stateCarteira.carteira])
+    }, [props.stateCarteira.carteira, props.stateCarteira.dataMaisAntiga])
 
 
     useEffect(() => {
         //console.log(ResponseInfosCarteiras)
-    }, [ResponseInfosCarteiras])
+    }, [props.responseInfosCarteiras])
  
     return (
         <View style={styles.container}>
@@ -62,11 +81,16 @@ const mapStateToProps = state => ({
     stateCarteira: state.dates,
     isLoadingCarteirasUsuario: state.dadosCarteiras.loading,
     ResponseCarteirasUsuario: state.dadosCarteiras.data,
-    ResponseInfosCarteiras: state.infosCarteiras,
+    responseInfosCarteiras: state.infosCarteiras.data,
+    isLoadingInfosCarteiras: state.infosCarteiras.loading,
   });
   
 const mapDispatchToProps = ( dispatch )=> ({
+    newDataInicial: (data) => dispatch(newDataInicial(data)),
+    newDataFinal: (data) => dispatch(newDataFinal(data)),
     alteraCarteira: (carteira) => dispatch(alteraCarteira(carteira)),
+    alteraDataMaisAntiga: (dataMaisAntiga) => dispatch(alteraDataMaisAntiga(dataMaisAntiga)),
+    alteraDataMaisRecente: (dataMaisRecente) => dispatch(alteraDataMaisRecente(dataMaisRecente)),
     pegarCarteirasUsuario: (token) => dispatch(pegarDadosCarteiras(token)),
     pegarInfosCarteiras: (token) => dispatch(pegarInfosCarteiras(token)),
     pegarDadosHomePage: (token) => dispatch(pegarDadosHomePage(token))

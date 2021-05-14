@@ -26,78 +26,16 @@ import {
 import { resposta2 } from '../data/dataTeste'
 import LineChartLandscape from '../components/Performance/Landscape/LineChart/LineChartLandscape';
 
+import { dataLineChartPortrait} from '../components/Performance/Portrait/LineChart/dataLineChartPortrait'
+import { dataLineChartLandscape} from '../components/Performance/Landscape/LineChart/dataLineChartLandscape'
 
+import {connect } from 'react-redux'
 
-
-const Performance = ({navigation}) => {
+const Performance = (props) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
   const [inputValue, setInputValue] = useState('');
   const [inputMarker, setInputMarker] = useState('');
-  const [values1, setValues1] = useState([
-    {
-      y: 650,
-      x: 0,
-      marker: 'BDS: 650 pts',
-    },
-    {
-      y: 770,
-      x: 1,
-      marker: 'BDS: 770 pts',
-    },
-    {
-      y: 760,
-      x: 2,
-      marker: 'BDS: 760 pts',
-    },
-    {
-      y: 740,
-      x: 3,
-      marker: 'BDS: 740 pts',
-    },
-    {
-      y: 760,
-      x: 4,
-      marker: 'BDS: 760 pts',
-    },
-    {
-      y: 650,
-      x: 5,
-      marker: 'BDS: 650 pts',
-    },
-  ]);
-  const [values2, setValues2] = useState([
-    {
-      y: 350,
-      x: 0,
-      marker: 'Vitality: 350 pts',
-    },
-    {
-      y: 470,
-      x: 1,
-      marker: 'Vitality: 470 pts',
-    },
-    {
-      y: 500,
-      x: 2,
-      marker: 'Vitality: 460 pts',
-    },
-    {
-      y: 600,
-      x: 3,
-      marker: 'Vitality: 440 pts',
-    },
-    {
-      y: 700,
-      x: 4,
-      marker: 'Vitality: 460 pts',
-    },
-    {
-      y: 350,
-      x: 5,
-      marker: 'Vitality: 350 pts',
-    },
-  ]);
   const [values, setValues] = useState([])
   const [dependencyRight, setDependencyRight] = useState([])
   const [labels, setLabels] = useState([]);
@@ -107,6 +45,8 @@ const Performance = ({navigation}) => {
   const [indiceAno, setIndiceAno] = useState(0);
   const [orientation, setOrientation] = useState('portrait')
   const [scrollPosition, setScrollPosition] = useState(0)
+  const [dadosLineChartPortrait, setDadosLineChartPortrait] = useState({})
+  const [dadosLineChartLandscape, setDadosLineChartLandscape] = useState({})
 
   useEffect(() => {
     Dimensions.addEventListener('change', ({ window: { width, height}}) => {
@@ -178,32 +118,9 @@ const Performance = ({navigation}) => {
   useEffect(() => {
 
     let filteredData = [];
-    
-    // switch (periodoSelecionado) {
-    //   case '1m':
-    //     filteredData = resposta1.resposta['tab-p1'].linha.filter(oneMonthPeriod);
-    //     setGranularity(7)
-    //   break;
-    //   case '3m':
-    //     filteredData = resposta1.resposta['tab-p1'].linha.filter(threeMonthPeriod);
-    //     setGranularity(25)
-    //   break;
-    //   case '2021':
-    //     filteredData = resposta1.resposta['tab-p1'].linha.filter(thisYear);
-    //     setGranularity(40)
-    //   break;
-    //   case '12m':
-    //     setGranularity(50)
-    //     filteredData = resposta1.resposta['tab-p1'].linha.filter(oneYearPeriod);
-    //     break;
-    //   case 'Tudo':
-    //     filteredData = resposta1.resposta['tab-p1'].linha;
-    //     setGranularity(50)
-    //   break;
-    // };
     switch (periodoSelecionado) {
       case '1m':
-        filteredData =respostaDados.filter(oneMonthPeriod);
+        filteredData = respostaDados.filter(oneMonthPeriod);
         setGranularity(7)
       break;
       case '3m':
@@ -220,14 +137,19 @@ const Performance = ({navigation}) => {
         break;
       case 'Tudo':
         filteredData = respostaDados;
-        setGranularity(50)
+        setGranularity(150)
       break;
     };
 
-    // const keysAtivos = Object.keys(resposta2.grafico5)
+    let keysAtivos = Object.keys(resposta2.grafico5)
     const ativosRight = ['PL']
     setDependencyRight(ativosRight)
-    const keysAtivos = ['Carteira', 'CDI']
+
+    ativosRight.forEach((el)=> {
+      keysAtivos.splice(keysAtivos.indexOf(el), 1);
+      keysAtivos.unshift(el)
+   })
+    // const keysAtivos = ['PL','Carteira', 'CDI']
 
     if (filteredData !== []) {
     let values = keysAtivos.map((ativo,i) => {
@@ -235,18 +157,20 @@ const Performance = ({navigation}) => {
         return {
           y: parseFloat(el[ativo]),
           x: parseFloat(i),
-          marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
+          marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
+          + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
       }
       })
-      console.log(typeof(ativo))
       return {
         label: ativo,
         dataset: valores
       }
     })
+
     const linelabes = filteredData.map((el, i) => {
       return el.data
   })
+
     setValues(values)
     setLabels(linelabes)
   };
@@ -259,18 +183,10 @@ const Performance = ({navigation}) => {
   const greenBlue = 'rgb(26, 192, 151)';
   const petrel = 'rgb(59, 115, 135)';
   const random = 'rgb(98, 85, 153)';
-  const colors = [greenBlue, petrel, random]
-  function handleSelectLine(event) {
-    let entry = event.nativeEvent;
-    if (entry == null) {
-      setSelectedEvent(null);
-      setSelecionadoLine({});
-    } else {
-      setSelectedEvent(JSON.stringify(entry));
-      setSelecionadoLine(entry);
-    }
+  const random2 = 'rgb(75, 40, 128)';
+  const colors = [random, greenBlue, petrel]
 
-  }
+  
 
    const dataSets = values.map((el,i) => {
      return {
@@ -287,6 +203,19 @@ const Performance = ({navigation}) => {
         highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
         color: processColor(colors[i]),
         valueTextSize: 15,
+        axisDependency: (dependencyRight.includes(el.label) ?
+          'RIGHT' : 'LEFT' ),
+        drawFilled: (dependencyRight.includes(el.label) ?
+          true : false ),
+        fillGradient: {
+          colors: [processColor(random), processColor(random2)],
+          positions:[0, 0.5],
+          angle: 90,
+          orientation: "TOP_BOTTOM",
+          
+        },
+        fillAlpha: 4000
+
       },
     }
    })
@@ -294,45 +223,21 @@ const Performance = ({navigation}) => {
    const data = {
      dataSets
    }
-  // const data = {
+  
+
+  useEffect(() => {
     
-  //   dataSets: [
-  //     {
-  //       values: values1,
-  //       label: 'Carteira',
-  //       config: {
-  //         mode: 'CUBIC_BEZIER',
-  //         drawValues: false,
-  //         lineWidth: 2,
-  //         drawCircles: false,
-  //         circleColor: processColor(greenBlue),
-  //         drawCircleHole: false,
-  //         circleRadius: 5,
-  //         highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
-  //         color: processColor(greenBlue),
+    if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== []) {
+      console.log('AAA')
+    const dadosLineChartPortrait = dataLineChartPortrait(props.responseDadosHomePage,periodoSelecionado);
+      
+    setDadosLineChartPortrait(dadosLineChartPortrait)
 
-  //         valueTextSize: 15,
-  //       },
-  //     },
+    const dadosLineChartLandscape = dataLineChartLandscape(props.responseDadosHomePage,periodoSelecionado);
 
-  //     {
-  //       values: values2,
-  //       label: 'CDI',
-  //       config: {
-  //         mode: 'CUBIC_BEZIER',
-  //         drawValues: false,
-  //         lineWidth: 2,
-  //         drawCircles: false,
-  //         circleColor: processColor(petrel),
-  //         drawCircleHole: false,
-  //         circleRadius: 5,
-  //         highlightColor: processColor(orientation === 'portrait' ? 'transparent' : 'red'),
-  //         color: processColor(petrel),
-  //         valueTextSize: 15,
-  //       },
-  //     },
-  //   ],
-  // };
+    setDadosLineChartLandscape(dadosLineChartLandscape);
+    }
+  }, [periodoSelecionado, props.isLoadingDadosHomePage, props.responseDadosHomePage])
 
   if (orientation === 'landscape') {
     if (scrollPosition > 390) {
@@ -361,18 +266,16 @@ const Performance = ({navigation}) => {
     return (
       <PerformanceLandscape>
         <LineChartLandscape
-        handleSelect={handleSelectLine}
-        selectedEvent={selectedEvent}
-        selecionado={selecionadoLine.data ? selecionadoLine.data.marker : null}
-        data={data}
-        labels={labels}
-        granularity={granularity}
+        data={dadosLineChartLandscape.data}
+        labels={dadosLineChartLandscape.labels}
+        granularity={dadosLineChartLandscape.granularity}
         />
       </PerformanceLandscape>
     )
   }
 
     return (
+        <SafeAreaView style={{flex: 1, backgroundColor: globalStyles.colors.backGround}}>
         <ScrollView contentContainerStyle={styles.container} onMomentumScrollEnd={(event) => handleScroll(event)}>
             <Text style={styles.title}>{'Performance'}</Text>
             <View style={styles.containerSelector}>
@@ -382,15 +285,14 @@ const Performance = ({navigation}) => {
                 )
             })}
             </View>
-            <View style={styles.chartContainer}>
+            <View style={styles.chartContainer }>
+                {!props.isLoadingDadosHomePage && dadosLineChartPortrait !== {} ?
                 <LineChartRender
-                handleSelect={handleSelectLine}
-                selectedEvent={selectedEvent}
-                selecionado={selecionadoLine.data ? selecionadoLine.data.marker : null}
-                data={data}
-                labels={labels}
-                granularity={granularity}
-                />
+                data={dadosLineChartPortrait.data}
+                labels={dadosLineChartPortrait.labels}
+                granularity={dadosLineChartPortrait.granularity}
+                /> :
+                null}
             </View>
             <View style={styles.containerSelectorTable}>
       {anos.map((el, i) => {
@@ -417,10 +319,16 @@ const Performance = ({navigation}) => {
         </ScrollView>
       </View>
       </View>
-        </ScrollView>
+      </ScrollView>
+      </SafeAreaView>
     )
 }
-export default Performance;
+const mapStateToProps = state => ({
+  isLoadingDadosHomePage: state.dadosHomePage.loading,
+  responseDadosHomePage: state.dadosHomePage.data
+})
+
+export default connect(mapStateToProps)(Performance);
 
 const styles = StyleSheet.create({
     container: {
