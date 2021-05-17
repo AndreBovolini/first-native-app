@@ -3,7 +3,7 @@ import { processColor } from 'react-native'
 import { resposta2 } from '../../../data/dataTeste'
 
 export const dataLineChartHome = (response) => {
-    console.log(response)
+    // console.log(response)
     const keysDatas = Object.keys(response.Carteira)
     const respostaDados = keysDatas.map((el,i) => {
       return {
@@ -14,7 +14,7 @@ export const dataLineChartHome = (response) => {
       baseline: '0'
       }
     })
-    console.log(respostaDados)
+    // console.log(respostaDados)
 
     const greenBlue = 'rgb(26, 182, 151)';
     const valores1 = respostaDados.map((el, i) => {

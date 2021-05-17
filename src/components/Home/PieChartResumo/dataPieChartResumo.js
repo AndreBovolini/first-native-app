@@ -14,7 +14,7 @@ export const dataPieChartHome = () => {
     const AtivosCarteira = keysAtivos.map((el,i) => {
       return {
       value: parseFloat(resposta2.grafico1[el]),
-      label: el,
+      label: (el === 'nd' ? 'Outros' : el) ,
           }
   
   })

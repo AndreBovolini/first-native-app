@@ -47,11 +47,12 @@ const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
     const AtivosCarteira = keysAtivos.map((el,i) => {
       return {
         value: parseFloat(showAtivos ? resposta2.grafico0[el] : resposta2.grafico1[el]),
-        label: el,
+        label: (el === 'nd' ? 'Outros' : el) ,
       }
     })
     let ativos = []
 
+    
     AtivosCarteira.forEach((el, i) => {
       ativos.push({
         id: i,
@@ -62,8 +63,9 @@ const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
         show: false,
       });
     });
+
     setArrayAtivos(ativos);
-    
+    console.log(arrayAtivos)
     if(arrayAtivos.length !== 0 ) {
       setLengthAtivos(arrayAtivos.length)
     }else{

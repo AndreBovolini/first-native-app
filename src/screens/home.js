@@ -52,6 +52,7 @@ export const Home = ({dadosHomePage, navigation}) => {
       const dadosLineChart = dataLineChartHome(dadosHomePage.data.grafico5);
       // console.log(dadosHomePage.data)
     setDadosLineChart(dadosLineChart)
+    setLoading(dadosHomePage.loading)
     }
   },[dadosHomePage.loading, dadosHomePage.data])
 
@@ -90,8 +91,6 @@ export const Home = ({dadosHomePage, navigation}) => {
     return () => backHandler.remove();
   }, [])
   
-  
-  setTimeout(() => {setLoading(false)}, 3000)
 
   const handleOpenModal = () => {
     setShowModal(true)
@@ -240,7 +239,7 @@ export default connect(mapStateToProps)(Home);
 
 const styles = StyleSheet.create({
     container: {
-        height: 1080,
+        height: 1105,
         width: globalStyles.dimensions.width,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',

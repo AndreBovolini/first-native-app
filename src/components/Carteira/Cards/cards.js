@@ -39,8 +39,10 @@ const Cards = ({id, title,value, show, handleClick, cor, data}) => {
                   <View style={[styles.blocoExpandCor, {backgroundColor: cor}]}>
                     <View style={styles.blocoExpand}>
                       <View style={styles.expandLeft}>
+                        {data ? 
                         <Text style={styles.text}>data: {data}</Text>
-                        <Text style={styles.text}>valor: {valor}</Text>
+                        : null}
+                        <Text style={styles.text}>Valor: {valor}</Text>
                         { title === 'Ações' ?
                           <View style={styles.chartContainer} >
                             <TabChart title={title}/>
