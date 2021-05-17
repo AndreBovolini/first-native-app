@@ -87,20 +87,59 @@ export const dataLineChartLandscape = ( response, periodoSelecionado) => {
       keysAtivos.unshift(el)
    })
    console.log(keysAtivos)
-   let values = []
-   let linelabes = []
+   
+
+   let maior = 0
+   filteredData.forEach((el,i) => {
+    if (parseFloat(el.PL) > maior) {
+          maior = parseFloat(el.PL);
+    }else{
+       maior = maior
+    }
+})
+
+  let indice = 0
+  let number = 0
+  let symbol = 0
+
+  if(maior > 10**9) {
+    indice = 10**9
+    number = '#.##'
+    symbol = " B"
+  }else if(maior > 10**6 && maior < 10**9){
+    indice = 10**6
+    number = '#.##'
+    symbol = " M"
+  }else if(maior > 10**3 && maior < 10**6){
+    indice = 10**3
+    number = '##'
+    symbol = " K"
+  }
+
+  let values = []
+  let linelabes = []
+
     if (filteredData !== []) {
      values = keysAtivos.map((ativo,i) => {
       const valores = filteredData.map((el,i) => {
-        return {
-          y: parseFloat(el[ativo]),
-          x: parseFloat(i),
-          marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
-          + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
-        }
+        if(ativo !== 'PL') {
+          return {
+            y: parseFloat(el[ativo]),
+            x: parseFloat(i),
+            marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
+            + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
+            
+          }
+          }else{
+            return  ({
+              y: (parseFloat(el.PL, 3))/indice, 
+              x: parseFloat(i),
+              marker: 'PL: ' + ((parseFloat(el.PL, 3))/indice).toFixed(2) + symbol,
+              })
+          }
       })
       
-      console.log('BBBB' + valores[0])
+      
       return {
         label: ativo,
         dataset: valores
@@ -110,7 +149,7 @@ export const dataLineChartLandscape = ( response, periodoSelecionado) => {
     linelabes = filteredData.map((el, i) => {
       return el.data
   })
-  console.log('AAAA'+ values[0][0])
+  
   };
 
     const labels = [...linelabes]
@@ -152,7 +191,9 @@ export const dataLineChartLandscape = ( response, periodoSelecionado) => {
     return ({
         data, 
         labels,
-        granularity
+        granularity,
+        number,
+        symbol
     })
 
 }

@@ -10,10 +10,10 @@ import globalStyles from '../../../styles/globalStyles';
 
 export const dataPieChartHome = () => {
 
-    const keysAtivos = Object.keys(resposta2.grafico1)
+    const keysAtivos = Object.keys(resposta2.grafico0)
     const AtivosCarteira = keysAtivos.map((el,i) => {
       return {
-      value: parseFloat(resposta2.grafico1[el]),
+      value: parseFloat(resposta2.grafico0[el]),
       label: el,
           }
   

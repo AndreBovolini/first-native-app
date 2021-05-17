@@ -21,6 +21,7 @@ export function alteraCarteira(carteira) {
   }
 }
 
+
 export function alteraDataMaisAntiga(dataMaisAntiga) {
   return {
     type: 'ASYNC_SET_DATA_MAIS_ANTIGA',

@@ -22,6 +22,7 @@ import { bindActionCreators } from 'redux'
 const CardDatePicker = (props) => {
   const [showSelectorInicial, setShowSelectorInicial] = useState(false)
   const [showSelectorFinal, setShowSelectorFinal] = useState(false)
+  const [errorData, setErrorData] = useState(false)
 
   const showDateInicial = () => {
     setShowSelectorInicial(true)
@@ -32,13 +33,30 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateInicial = (data) => {
+   if (data.nativeEvent.timestamp.getTime() > props.dataMaisAntiga) {
     setShowSelectorInicial(false);
-    props.newDataInicial(props.datas, data);
+    props.newDataInicial(data.nativeEvent.timestamp.getTime());
+   } else {
+    setShowSelectorInicial(false);
+    setErrorData(true)
+    setTimeout(() => {
+      setErrorData(false)
+    }, 10*1000)
+   }
   };
 
   const selectNewDateFinal = (data) => {
-    setShowSelectorFinal(false);
-    props.newDataFinal(props.datas, data);
+    if (data.nativeEvent.timestamp.getTime() < props.dataMaisRecente) {
+      setShowSelectorFinal(false);
+    props.newDataFinal(data.nativeEvent.timestamp.getTime());
+    }
+    else {
+      setShowSelectorFinal(false);
+      setErrorData(true)
+      setTimeout(() => {
+        setErrorData(false)
+      }, 10*1000)
+     }
   }
 
   
@@ -62,23 +80,25 @@ const CardDatePicker = (props) => {
              </View>
                 { props.show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
+                    <View style={{flexDirection: 'column'}}>
                     <View style={styles.blocoExpand}>
+                      
                       <TouchableOpacity activeOpacity={0.7} onPress={showDateInicial}>
                             <View style={styles.buttonView}>
-                                <Text style={styles.buttonText}>De: {props.datas.dataInicial.toLocaleDateString()}</Text>
+                                <Text style={styles.buttonText}>De: {(new Date(props.datas.dataInicial)).toLocaleDateString()}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.7} onPress={showDateFinal}>
                             <View style={styles.buttonView}>
-                                <Text style={styles.buttonText}>Até: {props.datas.dataFinal.toLocaleDateString()}</Text>
+                                <Text style={styles.buttonText}>Até: {(new Date(props.datas.dataFinal)).toLocaleDateString()}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
                         {showSelectorInicial && (
                             <DateTimePicker
                             testID="dateTimePicker"
-                            value={new Date()}
+                            value={new Date(props.datas.dataInicial)}
                             mode={'date'}
                             is24Hour={true}
                             display="default"
@@ -88,15 +108,22 @@ const CardDatePicker = (props) => {
                         {showSelectorFinal && (
                             <DateTimePicker
                             testID="dateTimePicker"
-                            value={props.datas.dataFinal}
+                            value={new Date(props.datas.dataFinal)}
                             mode={'date'}
                             is24Hour={true}
                             display="default"
                             onChange={selectNewDateFinal}
                             />
                         )}
+                        
+                       </View> 
+                       {
+                          errorData ? (<Text style={{fontSize: 15, color: 'red'}}>Selecione uma data válida</Text>) : null
+                        }
                     </View>
+                    
                   </View>
+                  
                 )}
         </View>
     )

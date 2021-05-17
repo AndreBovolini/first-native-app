@@ -1,9 +1,9 @@
 const INITIAL_STATE = {
-    dataInicial: new Date('2017-08-03'),
-    dataFinal: new Date(),
+    dataInicial: 0,
+    dataFinal: 0,
     carteira: '',
-    dataMaisAntiga: '',
-    dataMaisRecente: '',
+    dataMaisAntiga: 0,
+    dataMaisRecente: 0,
 }
 
 export default function dates(state= INITIAL_STATE, action) {
@@ -11,19 +11,19 @@ export default function dates(state= INITIAL_STATE, action) {
        case 'SET_DATA_INICIAL':
                     return {
                         ...state,
-                        dataInicial: action.data.nativeEvent.timestamp
+                        dataInicial: action.data
                     };
                     break;
        case 'SET_DATA_FINAL':
                 return {
                     ...state,
-                    dataFinal: action.data.nativeEvent.timestamp
+                    dataFinal: action.data
                 };
                 break;
         case 'SET_CARTEIRA':
                 return {
                     ...state,
-                    carteira: action.carteira
+                    carteira: action.carteira 
                 }
                 break;
         case 'SET_DATA_MAIS_ANTIGA':

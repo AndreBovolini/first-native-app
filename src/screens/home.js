@@ -33,7 +33,7 @@ import SkeletonHome from '../components/Home/Skeleton/SkeletonHome'
 
 import { connect } from 'react-redux';
 
-export const Home = ({infosCarteiras, dadosHomePage, navigation}) => {
+export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira}) => {
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState (false)
   const [showModal, setShowModal] = useState(false);
@@ -54,8 +54,8 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation}) => {
   }, [dadosHomePage.isLoading, dadosHomePage.data])
 
   useEffect(() => {
-   
-  }, [dadosHomePage, infosCarteiras])
+    console.log(stateCarteira)
+  }, [stateCarteira])
 
 
   useEffect(() => {
@@ -232,6 +232,7 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation}) => {
 
 
 const mapStateToProps = state => ({
+  stateCarteira: state.dates,
   dadosHomePage: state.dadosHomePage,
   infosCarteiras: state.infosCarteiras
 });

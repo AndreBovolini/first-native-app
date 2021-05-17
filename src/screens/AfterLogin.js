@@ -40,15 +40,23 @@ const AfterLogin = (props) => {
         if (props.stateCarteira.carteira !== '' && props.responseInfosCarteiras !== []) {
             let dataAntiga = '';
             let dataRecente = '';
-            console.log('á')
+
             props.responseInfosCarteiras.forEach(carteira => {
-                console.log('b', carteira["Nome da Carteira"])
                 if (carteira["Nome da Carteira"] === props.stateCarteira.carteira) {
-                    console.log('c', carteira["Nome da Carteira"])
                     dataAntiga = carteira["Data da Primeira Operação"]
-                    props.alteraDataMaisAntiga(dataAntiga)
+                    const diaA = dataAntiga.substr(0,2);
+                    const mesA = dataAntiga.substr(3,2)
+                    const anoA = dataAntiga.substr(6,4)
+                    let timestamp = new Date(`${anoA}-${mesA}-${diaA}`).getTime()
+                    props.alteraDataMaisAntiga(timestamp)
+                    props.newDataInicial(timestamp)
                     dataRecente = carteira["Data da Cota mais Recente"]
-                    props.alteraDataMaisRecente(dataRecente)
+                    const diaR = dataRecente.substr(0,2);
+                    const mesR = dataRecente.substr(3,2)
+                    const anoR = dataRecente.substr(6,4)
+                    let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
+                    props.alteraDataMaisRecente(timestampR)
+                    props.newDataFinal(timestampR)
                 }                
             });
             console.log(dataAntiga, dataRecente)

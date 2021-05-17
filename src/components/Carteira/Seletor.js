@@ -15,12 +15,12 @@ const Seletor = props => {
 
 
   const handleAtivos = () => {
-    props.handleChangeSelector()
+    props.handleSelectorAtivos()
     setAtivo(true)
     setCustodiante(false)
   }
   const handleCustodiante = () => {
-    props.handleChangeSelector()
+    props.handleSelectorCustodiante()
     setCustodiante(true)
     setAtivo(false)
    

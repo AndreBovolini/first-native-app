@@ -3,7 +3,6 @@ import {pathCMD} from '../endpoint/endpoint';
 async function fetchComAppInfosCarteiras(token) {
   //const apiURL = encodeURIComponent('Clientes/ComApp/ListaCarteiras002.php?');
     const apiTeste = 'token=' + token +  '&format=json2';
-    console.log(apiTeste)
   const requestOptions = {
     method: 'POST',
     headers:  {

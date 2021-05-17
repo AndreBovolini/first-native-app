@@ -31,11 +31,8 @@ const CardAlteraCarteira = (props) => {
       props.alteraCarteira(carteira)
       let dataAntiga = '';
       let dataRecente = '';
-      console.log('á')
       props.responseInfosCarteiras.forEach(carteira => {
-        console.log('b', carteira["Nome da Carteira"])
         if (carteira["Nome da Carteira"] === props.stateCarteira.carteira) {
-          console.log('c', carteira["Nome da Carteira"])
             dataAntiga = carteira["Data da Primeira Operação"]
             props.alteraDataMaisAntiga(dataAntiga)
             dataRecente = carteira["Data da Cota mais Recente"]

@@ -166,11 +166,9 @@ const Performance = (props) => {
         dataset: valores
       }
     })
-
     const linelabes = filteredData.map((el, i) => {
       return el.data
   })
-
     setValues(values)
     setLabels(linelabes)
   };
@@ -182,7 +180,7 @@ const Performance = (props) => {
 
   const greenBlue = 'rgb(26, 192, 151)';
   const petrel = 'rgb(59, 115, 135)';
-  const random = 'rgb(98, 85, 153)';
+  const random = 'rgb(100, 99, 153)';
   const random2 = 'rgb(75, 40, 128)';
   const colors = [random, greenBlue, petrel]
 
@@ -269,6 +267,8 @@ const Performance = (props) => {
         data={dadosLineChartLandscape.data}
         labels={dadosLineChartLandscape.labels}
         granularity={dadosLineChartLandscape.granularity}
+        number={dadosLineChartLandscape.number}
+        symbol={dadosLineChartLandscape.symbol}
         />
       </PerformanceLandscape>
     )
@@ -291,6 +291,9 @@ const Performance = (props) => {
                 data={dadosLineChartPortrait.data}
                 labels={dadosLineChartPortrait.labels}
                 granularity={dadosLineChartPortrait.granularity}
+                formated={dadosLineChartPortrait.formated}
+                number={dadosLineChartPortrait.number}
+                symbol={dadosLineChartPortrait.symbol}
                 /> :
                 null}
             </View>

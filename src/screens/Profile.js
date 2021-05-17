@@ -31,18 +31,18 @@ const Profile = ({navigation}) => {
     const [showAlteraSenha, setShowAlteraSenha] = useState(false);
     const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
-    const [height, setHeight] = useState(620);
+    const [height, setHeight] = useState(630);
 
     useEffect(() => {
         let increment = 0;
         if (showDatePicker) {
-            increment = increment + 80
+            increment = increment + 90
         }
         if(showAlteraSenha) {
             increment = increment + 320
         }
         if(showAlteraCarteira){
-            increment += 80
+            increment += 100
         }
 
         setHeight(620 + increment);

@@ -1,7 +1,6 @@
 import { pathCMD } from '../endpoint/endpoint';
 
 async function fetchComAppCarteiras(token) {
-    console.log(token)
   const apiTeste = 'token=' + token;
   const requestOptions = {
     method: 'POST',
