@@ -226,7 +226,7 @@ const Performance = (props) => {
   useEffect(() => {
     
     if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== []) {
-      console.log('AAA')
+      
     const dadosLineChartPortrait = dataLineChartPortrait(props.responseDadosHomePage,periodoSelecionado);
       
     setDadosLineChartPortrait(dadosLineChartPortrait)

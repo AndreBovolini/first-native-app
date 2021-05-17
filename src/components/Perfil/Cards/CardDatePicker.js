@@ -34,6 +34,7 @@ const CardDatePicker = ({ show, handleClick, datas, newDataInicial, newDataFinal
   const selectNewDateInicial = (data) => {  
     setShowSelectorInicial(false);
     newDataInicial(datas, data);
+    console.log(data.nativeEvent.timestamp.getTime())
   };
 
   const selectNewDateFinal = (data) => {

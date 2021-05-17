@@ -119,7 +119,6 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
   console.log(number + ' ' + symbol)
 
   
-  
     if (filteredData !== []) {
      values = keysAtivos.map((ativo,i) => {
       const valores = filteredData.map((el,i) => {

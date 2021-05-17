@@ -21,9 +21,9 @@ import Filtro from '../components/Home/FiltroHome';
 import Benchmarks from '../components/Home/Benchmarks';
 
 import {
+  dados,
     dataHomeBox,
-    resposta1,
-    AtivosCarteira
+
 } from '../data/data';
 
 import { dataLineChartHome } from '../components/Home/LineChartResumo/dataLineChartResumo';
@@ -45,17 +45,17 @@ export const Home = ({dadosHomePage, navigation}) => {
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [selecionadoPie, setSelecionadoPie] = useState({})
 
-  useEffect(() => {
-    //if (!dadosHomePage.isLoading && dadosHomePage.data !== []) {
-    const dadosLineChart = dataLineChartHome();
-
-    setDadosLineChart(dadosLineChart);
-  }, [dadosHomePage.isLoading, dadosHomePage.data])
 
   useEffect(() => {
-    console.log(dadosHomePage)
-  }, [dadosHomePage])
+    
+    if (!dadosHomePage.loading && dadosHomePage.data.grafico5) {
+      const dadosLineChart = dataLineChartHome(dadosHomePage.data.grafico5);
+      // console.log(dadosHomePage.data)
+    setDadosLineChart(dadosLineChart)
+    }
+  },[dadosHomePage.loading, dadosHomePage.data])
 
+ 
 
   useEffect(() => {
     const backAction = () => {
@@ -205,10 +205,12 @@ export const Home = ({dadosHomePage, navigation}) => {
               </TouchableOpacity>
             </View>
             <View style={styles.lineChartContainer}>
+              {!dadosHomePage.loading && dadosHomePage.data !== [] ?
                 <LineChartResumo
                 data={dadosLineChart.data}
                 label={dadosLineChart.labels}
-                />
+                />:
+                null}
             </View>
             <View style={styles.titleNavigationContainer}>
               <Text style={styles.titleNavigation}>Carteira</Text>
@@ -230,7 +232,7 @@ export const Home = ({dadosHomePage, navigation}) => {
 
 
 const mapStateToProps = state => ({
-  dadosHomePage: state.dadosHomePage
+  dadosHomePage: state.dadosHomePage,
 });
   
 

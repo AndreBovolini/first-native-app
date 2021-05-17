@@ -63,10 +63,12 @@ const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
       });
     });
     setArrayAtivos(ativos);
+    
     if(arrayAtivos.length !== 0 ) {
       setLengthAtivos(arrayAtivos.length)
+    }else{
+      setLengthAtivos(AtivosCarteira.length)
     }
-   
     
     const infos = dataPieChart(showAtivos ? resposta2.grafico0 : resposta2.grafico1)
     setDadosChart(infos)
