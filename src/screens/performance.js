@@ -14,7 +14,7 @@ import globalStyles from '../styles/globalStyles';
 
 import LineChartRender from '../components/Performance/Portrait/LineChart/LineChart';
 import SelectPeriod from '../components/Performance/SeletorPeriodos/SelectPeriod';
-import TableRow from '../components/Performance/Portrait/TableRow/TableRow';
+
 import PerformanceLandscape, { PerformanceTableLandscape } from './performanceLandscape';
 
 import {
@@ -30,6 +30,8 @@ import { dataLineChartPortrait} from '../components/Performance/Portrait/LineCha
 import { dataLineChartLandscape} from '../components/Performance/Landscape/LineChart/dataLineChartLandscape'
 
 import {connect } from 'react-redux'
+import TableRow from '../components/Performance/Portrait/Table/TableRow';
+import Table from '../components/Performance/Portrait/Table/Table';
 
 const Performance = (props) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -226,16 +228,13 @@ const Performance = (props) => {
   useEffect(() => {
     
     if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== []) {
-      console.log('AAA')
-    const dadosLineChartPortrait = dataLineChartPortrait(props.responseDadosHomePage,periodoSelecionado);
-      
-    setDadosLineChartPortrait(dadosLineChartPortrait)
-
-    const dadosLineChartLandscape = dataLineChartLandscape(props.responseDadosHomePage,periodoSelecionado);
-
-    setDadosLineChartLandscape(dadosLineChartLandscape);
+      const dadosLineChartPortrait = dataLineChartPortrait(props.responseDadosHomePage,periodoSelecionado);
+      setDadosLineChartPortrait(dadosLineChartPortrait)
+      const dadosLineChartLandscape = dataLineChartLandscape(props.responseDadosHomePage,periodoSelecionado);
+      setDadosLineChartLandscape(dadosLineChartLandscape);
     }
   }, [periodoSelecionado, props.isLoadingDadosHomePage, props.responseDadosHomePage])
+
 
   if (orientation === 'landscape') {
     if (scrollPosition > 390) {
@@ -305,23 +304,7 @@ const Performance = (props) => {
       })}
         
       </View>
-      <View style={{height: 500, borderRadius: 20,  width: globalStyles.dimensions.width *0.9}}>
-      <View style={styles.containerTable} >
-        <View style={styles.containerHeader}>
-        <Text style={styles.textoHeader}>Período</Text>
-          <Text style={styles.textoHeader}>Carteira</Text>
-          <Text style={styles.textoHeader}>IPCADP</Text>
-          <Text style={styles.textoHeader}>%IPCADP</Text>
-        </View>
-        <ScrollView nestedScrollEnabled = {true}>
-        {dados[indiceAno].response.map((el, i) => {
-            return (
-                <TableRow key={i} index={i} col1={meses[i]} col2={el.carteira} col3={el.IPCADP} col4={el.IPCADPP}/>
-            )
-        })}
-        </ScrollView>
-      </View>
-      </View>
+        <Table indiceAno={indiceAno}/>
       </ScrollView>
       </SafeAreaView>
     )

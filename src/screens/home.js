@@ -22,9 +22,9 @@ import Filtro from '../components/Home/FiltroHome';
 import Benchmarks from '../components/Home/Benchmarks';
 
 import {
+  dados,
     dataHomeBox,
-    resposta1,
-    AtivosCarteira
+
 } from '../data/data';
 
 import { dataLineChartHome } from '../components/Home/LineChartResumo/dataLineChartResumo';
@@ -32,6 +32,7 @@ import { dataPieChartHome } from '../components/Home/PieChartResumo/dataPieChart
 import SkeletonHome from '../components/Home/Skeleton/SkeletonHome'
 
 import { connect } from 'react-redux';
+import BarChartHome from '../components/Home/BarChart';
 
 export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira}) => {
   const [percent, setPercent] = useState(true)
@@ -46,17 +47,20 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [selecionadoPie, setSelecionadoPie] = useState({})
 
-  useEffect(() => {
-    //if (!dadosHomePage.isLoading && dadosHomePage.data !== []) {
-    const dadosLineChart = dataLineChartHome();
-
-    setDadosLineChart(dadosLineChart);
-  }, [dadosHomePage.isLoading, dadosHomePage.data])
 
   useEffect(() => {
-    console.log(stateCarteira)
-  }, [stateCarteira])
+    
+    if (!dadosHomePage.loading && dadosHomePage.data.grafico5) {
+      const dadosLineChart = dataLineChartHome(dadosHomePage.data.grafico5);
+      // console.log(dadosHomePage.data)
+    setDadosLineChart(dadosLineChart)
+    const infos = dataPieChartHome(dadosHomePage.data)
+    setDadosPie(infos)
+    setLoading(dadosHomePage.loading)
+    }
+  },[dadosHomePage.loading, dadosHomePage.data])
 
+ 
 
   useEffect(() => {
     const backAction = () => {
@@ -91,8 +95,6 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
     return () => backHandler.remove();
   }, [])
   
-  
-  setTimeout(() => {setLoading(false)}, 3000)
 
   const handleOpenModal = () => {
     setShowModal(true)
@@ -122,12 +124,11 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
 
 
   useEffect(() => {
-    const infos = dataPieChartHome()
-    setDadosPie(infos)
+    
   }, [])
 
     return (<View style={{backgroundColor: globalStyles.colors.backGround}}>
-      <SafeAreaView>
+      <SafeAreaView >
         {loading ? <SkeletonHome isLoading={loading}/> :
         (<ScrollView contentContainerStyle={styles.container}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -198,6 +199,16 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
                   <Icon name="sort-down" size={25} color='#FFF' style={{marginTop:-3}}/>
                   </View>
                 </TouchableOpacity>
+
+              <View style={styles.titleNavigationContainer}>
+              <Text style={styles.titleNavigation}>Barras</Text>
+              <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Performance')}>
+               <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor}/>
+              </TouchableOpacity>
+            </View>
+        <View style={styles.barChartContainer}>
+          <BarChartHome />
+        </View>
              
             <View style={styles.titleNavigationContainer}>
               <Text style={styles.titleNavigation}>Performance</Text>
@@ -206,10 +217,12 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
               </TouchableOpacity>
             </View>
             <View style={styles.lineChartContainer}>
+              {!dadosHomePage.loading && dadosHomePage.data !== [] ?
                 <LineChartResumo
                 data={dadosLineChart.data}
                 label={dadosLineChart.labels}
-                />
+                />:
+                null}
             </View>
             <View style={styles.titleNavigationContainer}>
               <Text style={styles.titleNavigation}>Carteira</Text>
@@ -242,7 +255,7 @@ export default connect(mapStateToProps)(Home);
 
 const styles = StyleSheet.create({
     container: {
-        height: 1080,
+        height: 1105,
         width: globalStyles.dimensions.width,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',
@@ -345,6 +358,11 @@ const styles = StyleSheet.create({
       lineChartContainer: {
         width: globalStyles.dimensions.width,
         height: 230,
+        marginTop: 20, 
+      },
+      barChartContainer: {
+        width: globalStyles.dimensions.width,
+        height: 300,
         marginTop: 20, 
       },
       label: {

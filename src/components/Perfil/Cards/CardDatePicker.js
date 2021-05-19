@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  TouchableOpacity,Platform
 } from 'react-native';
 
 import globalStyles from '../../../styles/globalStyles';
@@ -33,9 +33,10 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateInicial = (data) => {
-   if (data.nativeEvent.timestamp.getTime() > props.dataMaisAntiga) {
+    console.warn(data)
+   if (data.getTime() > props.dataMaisAntiga) {
     setShowSelectorInicial(false);
-    props.newDataInicial(data.nativeEvent.timestamp.getTime());
+    props.newDataInicial(data.getTime());
    } else {
     setShowSelectorInicial(false);
     setErrorData(true)
@@ -46,9 +47,10 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateFinal = (data) => {
-    if (data.nativeEvent.timestamp.getTime() < props.dataMaisRecente) {
+    console.warn(data)
+    if (data.getTime() < props.dataMaisRecente) {
       setShowSelectorFinal(false);
-    props.newDataFinal(data.nativeEvent.timestamp.getTime());
+    props.newDataFinal(data.getTime());
     }
     else {
       setShowSelectorFinal(false);
@@ -89,37 +91,31 @@ const CardDatePicker = (props) => {
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
+                        {showSelectorInicial ? (
+                            <DateTimePicker
+                            value={new Date(props.datas.dataInicial)}
+                            mode={'date'}
+                            onChange={(_,data) => selectNewDateInicial(data)}
+                            />
+                        ) : null}
                         <TouchableOpacity activeOpacity={0.7} onPress={showDateFinal}>
                             <View style={styles.buttonView}>
                                 <Text style={styles.buttonText}>Até: {(new Date(props.datas.dataFinal)).toLocaleDateString()}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
-                        {showSelectorInicial && (
+                        {showSelectorFinal ?  (
                             <DateTimePicker
-                            testID="dateTimePicker"
-                            value={new Date(props.datas.dataInicial)}
-                            mode={'date'}
-                            is24Hour={true}
-                            display="default"
-                            onChange={selectNewDateInicial}
-                            />
-                        )}
-                        {showSelectorFinal && (
-                            <DateTimePicker
-                            testID="dateTimePicker"
                             value={new Date(props.datas.dataFinal)}
                             mode={'date'}
-                            is24Hour={true}
-                            display="default"
-                            onChange={selectNewDateFinal}
+                            onChange={(_,data) => selectNewDateFinal(data)}
                             />
-                        )}
-                        
+                        ) : null}
                        </View> 
                        {
                           errorData ? (<Text style={{fontSize: 15, color: 'red'}}>Selecione uma data válida</Text>) : null
                         }
+                        
                     </View>
                     
                   </View>
@@ -176,12 +172,11 @@ const styles = StyleSheet.create({
       },
       blocoExpand: {
         backgroundColor: globalStyles.colors.firstLayer,
-        alignItems: 'center',
-        flexDirection: 'row',
+        flexDirection: 'column',
         width: globalStyles.dimensions.width / 1.15,
-        justifyContent: 'space-evenly',
         marginTop: -10,
         marginBottom: 0,
+        paddingLeft: 70,
         padding: 5,
         paddingBottom: 20,
         borderBottomEndRadius: 10,

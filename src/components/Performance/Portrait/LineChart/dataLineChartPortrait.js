@@ -115,7 +115,6 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
   }
   
   
-  
     if (filteredData !== []) {
      values = keysAtivos.map((ativo,i) => {
       const valores = filteredData.map((el,i) => {

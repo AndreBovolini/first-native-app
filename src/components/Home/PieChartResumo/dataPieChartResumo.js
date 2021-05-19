@@ -4,17 +4,15 @@ import {
 } from 'react-native';
 
 
-import { AtivosCarteira } from '../../../data/data';
-import { resposta2 } from '../../../data/dataTeste'
 import globalStyles from '../../../styles/globalStyles';
 
-export const dataPieChartHome = () => {
+export const dataPieChartHome = (response) => {
 
-    const keysAtivos = Object.keys(resposta2.grafico0)
+    const keysAtivos = Object.keys(response.grafico0)
     const AtivosCarteira = keysAtivos.map((el,i) => {
       return {
-      value: parseFloat(resposta2.grafico0[el]),
-      label: el,
+      value: parseFloat(response.grafico0[el]),
+      label: (el === 'nd' ? 'Outros' : el) ,
           }
   
   })
@@ -31,6 +29,8 @@ export const dataPieChartHome = () => {
             marker: `${el.label}: ${percent}%`
           }
         })
+
+        console.arrayData
     
     return ({
       infos: {

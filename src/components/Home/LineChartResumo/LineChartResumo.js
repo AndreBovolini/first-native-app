@@ -67,8 +67,8 @@ const LineChartResumo = props => {
           }}
           autoScaleMinMaxEnabled={true}
           animation={{
-            durationX: 0,
-            durationY: 1500,
+            durationX: 3200,
+            durationY: 0,
             easingY: 'EaseInOutQuart',
           }}
           drawGridBackground={false}

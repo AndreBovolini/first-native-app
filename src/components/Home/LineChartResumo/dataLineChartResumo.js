@@ -1,26 +1,37 @@
 import { processColor } from 'react-native'
 
-import { resposta1 } from '../../../data/data'
+import { resposta2 } from '../../../data/dataTeste'
 
-export const dataLineChartHome = () => {
-
+export const dataLineChartHome = (response) => {
+    // console.log(response)
+    const keysDatas = Object.keys(response.Carteira)
+    const respostaDados = keysDatas.map((el,i) => {
+      return {
+      data: el,
+      Carteira: response.Carteira[el] ? response.Carteira[el] : 0,
+      CDI: response.CDI[el] ? response.CDI[el] : 0,
+      PL: response.PL[el] ? response.PL[el] : 0,
+      baseline: '0'
+      }
+    })
+    // console.log(respostaDados)
 
     const greenBlue = 'rgb(26, 182, 151)';
-    const valores1 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
+    const valores1 = respostaDados.map((el, i) => {
         return {
-            y: parseFloat(el.ibov),
+            y: parseFloat(el.Carteira),
             x: parseFloat(i),
-            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%',
+            marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%',
         }
     });
-    const valores2 = resposta1.resposta["tab-p1"].linha.map((el, i) => {
+    const valores2 = respostaDados.map((el, i) => {
         return {
-            y: parseFloat(el.baseLine),
+            y: parseFloat(el.baseline),
             x: parseFloat(i),
-            marker: 'Carteira: ' + parseFloat(el.ibov, 3) + '%',
+            marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%',
         }
     });
-    const linelabes = resposta1.resposta["tab-p1"].linha.map((el) => {
+    const linelabes = respostaDados.map((el) => {
         return el.data
     })
     return ({
