@@ -5,12 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
   Image
 } from 'react-native';
-
-import CustomInput from '../components/CustomInput';
 
 import globalStyles from '../styles/globalStyles';
 import profile from '../../assets/images/profile.png';
@@ -18,8 +14,7 @@ import profile from '../../assets/images/profile.png';
 import CardAlteraSenha from '../components/Perfil/Cards/CardAlterarSenha';
 import CardDatePicker from  '../components/Perfil/Cards/CardDatePicker';
 import CardAlteraCarteira from '../components/Perfil/Cards/CardAlteraCarteira'
-
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import CardCarousel from '../components/Performance/Portrait/CardCarousel';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { Provider } from 'react-redux';
@@ -44,7 +39,7 @@ const Profile = ({navigation}) => {
             increment += 100
         }
 
-        setHeight(620 + increment);
+        setHeight(700 + increment);
     }, [showAlteraSenha, showDatePicker])
 
     const handleCardSenha = () => {
@@ -68,10 +63,11 @@ const Profile = ({navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: globalStyles.colors.backGround}}>
     <ScrollView contentContainerStyle={[styles.container, {height: height}]}>
-        <View style={styles.containerInfos}>
+    <CardCarousel/>
+        {/* <View style={styles.containerInfos}>
             <Image source={profile} style={styles.profileImage}/>
             <Text style={styles.textUser}>Olá, Usuário</Text>
-        </View>
+        </View> */}
         {/* <Text>Período de Análise:</Text>
         <View style={styles.containerDatas}>
         <Ionicons name={'calendar'} size={20} color={globalStyles.colors.fontColor} />
@@ -84,6 +80,7 @@ const Profile = ({navigation}) => {
                 <Text style={styles.textData}>{dataFinal.toLocaleDateString()}</Text> 
             </View>
         </View> */}
+        
         <View>
               <Provider store={store}>
               <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
@@ -98,6 +95,7 @@ const Profile = ({navigation}) => {
               <Text style={styles.buttonText}>Logout</Text>
             </View>
           </TouchableOpacity>
+          
     </ScrollView>
     </View>
   );

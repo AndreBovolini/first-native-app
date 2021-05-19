@@ -8,6 +8,7 @@ import {
   View,
   BackHandler,
   Alert,
+  Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -19,6 +20,7 @@ import LineChartResumo from '../components/Home/LineChartResumo/LineChartResumo'
 import PieChartResumo from '../components/Home/PieChartResumo/PieChartResumo';
 import Filtro from '../components/Home/FiltroHome';
 import Benchmarks from '../components/Home/Benchmarks';
+import CardCarousel from '../components/Performance/Portrait/CardCarousel'
 
 import {
   dados,
@@ -50,13 +52,12 @@ export const Home = ({dadosHomePage, navigation}) => {
     
     if (!dadosHomePage.loading && dadosHomePage.data.grafico5) {
       const dadosLineChart = dataLineChartHome(dadosHomePage.data.grafico5);
-      // console.log(dadosHomePage.data)
+     
     setDadosLineChart(dadosLineChart)
     setLoading(dadosHomePage.loading)
     }
   },[dadosHomePage.loading, dadosHomePage.data])
 
- 
 
   useEffect(() => {
     const backAction = () => {
@@ -82,7 +83,7 @@ export const Home = ({dadosHomePage, navigation}) => {
       ]);
       return true;
     };
-
+    console.log('aquiii' + parseInt(Platform.Version, 10))
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
@@ -117,7 +118,6 @@ export const Home = ({dadosHomePage, navigation}) => {
     setShowBench(false)
 
   }
-
 
   useEffect(() => {
     const infos = dataPieChartHome()
@@ -196,12 +196,16 @@ export const Home = ({dadosHomePage, navigation}) => {
                   <Icon name="sort-down" size={25} color='#FFF' style={{marginTop:-3}}/>
                   </View>
                 </TouchableOpacity>
-             
+            
+            <View style={styles.titleNavigationContainer}>
+              <CardCarousel/>
+            </View>
             <View style={styles.titleNavigationContainer}>
               <Text style={styles.titleNavigation}>Performance</Text>
               <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Performance')}>
                <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor}/>
               </TouchableOpacity>
+             
             </View>
             <View style={styles.lineChartContainer}>
               {!dadosHomePage.loading && dadosHomePage.data !== [] ?
@@ -212,6 +216,7 @@ export const Home = ({dadosHomePage, navigation}) => {
                 null}
             </View>
             <View style={styles.titleNavigationContainer}>
+            
               <Text style={styles.titleNavigation}>Carteira</Text>
               <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Carteira')}>
                <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor}/>
@@ -222,6 +227,7 @@ export const Home = ({dadosHomePage, navigation}) => {
                   infos={dadosPie.infos} 
                   />    
             </View>
+            
             
         </ScrollView>
         )}

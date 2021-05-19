@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, SafeAreaView } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,6 +18,7 @@ import { StackRouter } from 'react-navigation';
 
 import { Provider } from 'react-redux';
 import store from '../store/index';
+import { getDeviceId } from 'react-native-device-info';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -32,6 +33,9 @@ const TabNavigation = () => {
           }
         })
     }, [])
+    let deviceId = getDeviceId().split("").filter(n => (Number(n) || n == 0 || n == ',')).join("")
+    deviceId = parseFloat((deviceId).replace(",", "."),2);
+    console.log(deviceId)
     return (
             
             <Tab.Navigator 
@@ -81,7 +85,10 @@ const TabNavigation = () => {
                         backgroundColor: '#272727',
                         borderTopEndRadius: 19,
                         borderTopStartRadius: 19,
-                        height:55,
+                        height: Platform.OS === 'ios' ? 
+                            (deviceId < 10.6 ?
+                                55 : 85) 
+                            : 55,
                         borderTopWidth: 0,
                         position: 'absolute'
                     }
@@ -116,9 +123,11 @@ const AuthNavigator = () => {
 
 const Navigator = () => {
     return (
-        <NavigationContainer>
-            <AuthNavigator />
-        </NavigationContainer>
+        
+            <NavigationContainer>
+                <AuthNavigator />
+            </NavigationContainer>
+        
     );
 };
 export default Navigator
