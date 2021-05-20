@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  TouchableOpacity,Platform
 } from 'react-native';
 
 import globalStyles from '../../../styles/globalStyles';
@@ -19,9 +19,10 @@ import { bindActionCreators } from 'redux'
 
 
 
-const CardDatePicker = ({ show, handleClick, datas, newDataInicial, newDataFinal}) => {
+const CardDatePicker = (props) => {
   const [showSelectorInicial, setShowSelectorInicial] = useState(false)
   const [showSelectorFinal, setShowSelectorFinal] = useState(false)
+  const [errorData, setErrorData] = useState(false)
 
   const showDateInicial = () => {
     setShowSelectorInicial(true)
@@ -31,15 +32,33 @@ const CardDatePicker = ({ show, handleClick, datas, newDataInicial, newDataFinal
     setShowSelectorFinal(true)
   };
 
-  const selectNewDateInicial = (data) => {  
+  const selectNewDateInicial = (data) => {
+    console.warn(data)
+   if (data.getTime() > props.dataMaisAntiga) {
     setShowSelectorInicial(false);
-    newDataInicial(datas, data);
-    console.log(data.nativeEvent.timestamp.getTime())
+    props.newDataInicial(data.getTime());
+   } else {
+    setShowSelectorInicial(false);
+    setErrorData(true)
+    setTimeout(() => {
+      setErrorData(false)
+    }, 10*1000)
+   }
   };
 
   const selectNewDateFinal = (data) => {
-    setShowSelectorFinal(false);
-    newDataFinal(datas, data);
+    console.warn(data)
+    if (data.getTime() < props.dataMaisRecente) {
+      setShowSelectorFinal(false);
+    props.newDataFinal(data.getTime());
+    }
+    else {
+      setShowSelectorFinal(false);
+      setErrorData(true)
+      setTimeout(() => {
+        setErrorData(false)
+      }, 10*1000)
+     }
   }
 
   
@@ -54,57 +73,62 @@ const CardDatePicker = ({ show, handleClick, datas, newDataInicial, newDataFinal
                   <Text style={styles.title}>Escolha o período</Text>
                 </View>
                 <TouchableOpacity style={styles.right}
-                    onPress={()=> handleClick()}
+                    onPress={()=> props.handleClick()}
                 >
-                    { show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
+                    { props.show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
                     :  <Icon name="chevron-down" size={20} color={globalStyles.colors.fontColor}/>}
                 </TouchableOpacity>
                 </View>
              </View>
-                { show && (
+                { props.show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
+                    <View style={{flexDirection: 'column'}}>
                     <View style={styles.blocoExpand}>
+                      
                       <TouchableOpacity activeOpacity={0.7} onPress={showDateInicial}>
                             <View style={styles.buttonView}>
-                                <Text style={styles.buttonText}>De: {datas.dataInicial.toLocaleDateString()}</Text>
+                                <Text style={styles.buttonText}>De: {(new Date(props.datas.dataInicial)).toLocaleDateString()}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
+                        {showSelectorInicial ? (
+                            <DateTimePicker
+                            value={new Date(props.datas.dataInicial)}
+                            mode={'date'}
+                            onChange={(_,data) => selectNewDateInicial(data)}
+                            />
+                        ) : null}
                         <TouchableOpacity activeOpacity={0.7} onPress={showDateFinal}>
                             <View style={styles.buttonView}>
-                                <Text style={styles.buttonText}>Até: {datas.dataFinal.toLocaleDateString()}</Text>
+                                <Text style={styles.buttonText}>Até: {(new Date(props.datas.dataFinal)).toLocaleDateString()}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
-                        {showSelectorInicial && (
+                        {showSelectorFinal ?  (
                             <DateTimePicker
-                            testID="dateTimePicker"
-                            value={datas.dataInicial}
+                            value={new Date(props.datas.dataFinal)}
                             mode={'date'}
-                            is24Hour={true}
-                            display="default"
-                            onChange={selectNewDateInicial}
+                            onChange={(_,data) => selectNewDateFinal(data)}
                             />
-                        )}
-                        {showSelectorFinal && (
-                            <DateTimePicker
-                            testID="dateTimePicker"
-                            value={datas.dataFinal}
-                            mode={'date'}
-                            is24Hour={true}
-                            display="default"
-                            onChange={selectNewDateFinal}
-                            />
-                        )}
+                        ) : null}
+                       </View> 
+                       {
+                          errorData ? (<Text style={{fontSize: 15, color: 'red'}}>Selecione uma data válida</Text>) : null
+                        }
+                        
                     </View>
+                    
                   </View>
+                  
                 )}
         </View>
     )
 }
 
 const mapStateToProps = state => ({
-  datas: state.dates
+  datas: state.dates,
+  dataMaisAntiga: state.dates.dataMaisAntiga,
+  dataMaisRecente: state.dates.dataMaisRecente
 });
 
 const mapDispatchToProps = dispatch => 
@@ -148,12 +172,11 @@ const styles = StyleSheet.create({
       },
       blocoExpand: {
         backgroundColor: globalStyles.colors.firstLayer,
-        alignItems: 'center',
-        flexDirection: 'row',
+        flexDirection: 'column',
         width: globalStyles.dimensions.width / 1.15,
-        justifyContent: 'space-evenly',
         marginTop: -10,
         marginBottom: 0,
+        paddingLeft: 70,
         padding: 5,
         paddingBottom: 20,
         borderBottomEndRadius: 10,

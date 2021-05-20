@@ -3,6 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
+  SafeAreaView,
   ScrollView,
   TouchableOpacity,
   Image
@@ -17,7 +18,7 @@ import CardAlteraCarteira from '../components/Perfil/Cards/CardAlteraCarteira'
 import CardCarousel from '../components/Performance/Portrait/CardCarousel';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { Provider } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import store from '../store/index';
 
 
@@ -61,7 +62,7 @@ const Profile = ({navigation}) => {
     }
 
   return (
-    <View style={{flex: 1, backgroundColor: globalStyles.colors.backGround}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: globalStyles.colors.backGround}}>
     <ScrollView contentContainerStyle={[styles.container, {height: height}]}>
     <CardCarousel/>
         {/* <View style={styles.containerInfos}>
@@ -97,9 +98,11 @@ const Profile = ({navigation}) => {
           </TouchableOpacity>
           
     </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
+
+
 
 export default Profile;
 

@@ -43,7 +43,7 @@ const Cards = ({id, title,value, show, handleClick, cor, data}) => {
                         <Text style={styles.text}>data: {data}</Text>
                         : null}
                         <Text style={styles.text}>Valor: {valor}</Text>
-                        { title === 'Ações' ?
+                        { title === 'Ações/ETFs' ?
                           <View style={styles.chartContainer} >
                             <TabChart title={title}/>
                           </View>

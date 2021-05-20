@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import {
   ScrollView,
   StyleSheet,
+  SafeAreaView,
   Text,
   processColor,
   TouchableOpacity,
@@ -33,8 +34,9 @@ import { dataPieChartHome } from '../components/Home/PieChartResumo/dataPieChart
 import SkeletonHome from '../components/Home/Skeleton/SkeletonHome'
 
 import { connect } from 'react-redux';
+import BarChartHome from '../components/Home/BarChart';
 
-export const Home = ({dadosHomePage, navigation}) => {
+export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira}) => {
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState (false)
   const [showModal, setShowModal] = useState(false);
@@ -54,6 +56,8 @@ export const Home = ({dadosHomePage, navigation}) => {
       const dadosLineChart = dataLineChartHome(dadosHomePage.data.grafico5);
      
     setDadosLineChart(dadosLineChart)
+    const infos = dataPieChartHome(dadosHomePage.data)
+    setDadosPie(infos)
     setLoading(dadosHomePage.loading)
     }
   },[dadosHomePage.loading, dadosHomePage.data])
@@ -120,12 +124,11 @@ export const Home = ({dadosHomePage, navigation}) => {
   }
 
   useEffect(() => {
-    const infos = dataPieChartHome()
-    setDadosPie(infos)
+    
   }, [])
 
-    return (
-      <View>
+    return (<View style={{backgroundColor: globalStyles.colors.backGround}}>
+      <SafeAreaView >
         {loading ? <SkeletonHome isLoading={loading}/> :
         (<ScrollView contentContainerStyle={styles.container}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -231,13 +234,16 @@ export const Home = ({dadosHomePage, navigation}) => {
             
         </ScrollView>
         )}
+        </SafeAreaView>
         </View>
     )
 }
 
 
 const mapStateToProps = state => ({
+  stateCarteira: state.dates,
   dadosHomePage: state.dadosHomePage,
+  infosCarteiras: state.infosCarteiras
 });
   
 
@@ -245,7 +251,7 @@ export default connect(mapStateToProps)(Home);
 
 const styles = StyleSheet.create({
     container: {
-        height: 1105,
+        height: 1500,
         width: globalStyles.dimensions.width,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',
@@ -348,6 +354,11 @@ const styles = StyleSheet.create({
       lineChartContainer: {
         width: globalStyles.dimensions.width,
         height: 230,
+        marginTop: 20, 
+      },
+      barChartContainer: {
+        width: globalStyles.dimensions.width,
+        height: 300,
         marginTop: 20, 
       },
       label: {

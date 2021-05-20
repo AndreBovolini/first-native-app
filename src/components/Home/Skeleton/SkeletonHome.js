@@ -77,7 +77,19 @@ export default function Placehoder(props) {
             layout={[
               { key: 'title', 
               width:styles.benchmarkSwitch.width, 
-              height: styles.benchmarkSwitch.height },
+              height: styles.benchmarkSwitch.height,
+              borderRadius: styles.benchmarkSwitch.borderRadius },
+            ]}
+      />
+        <SkeletonContent 
+            containerStyle={styles.carousel}
+            boneColor="#121212"
+            highlightColor="#333333"
+            isLoading={props.isLoading} 
+            layout={[
+              { key: 'Carousel', 
+              width:styles.carousel.width, 
+              height: styles.carousel.height },
             ]}
       />
         <SkeletonContent 
@@ -141,7 +153,7 @@ export default function Placehoder(props) {
 
     const styles = StyleSheet.create({
       container: {
-          height: 1020,
+          height: 1500,
           width: globalStyles.dimensions.width,
           backgroundColor: globalStyles.colors.backGround,
           justifyContent: 'flex-start',
@@ -151,20 +163,28 @@ export default function Placehoder(props) {
           width: 150, 
           alignSelf: 'flex-start',
           marginVertical: 10, 
-          marginLeft: 10,
-          height: 40
+          marginLeft: 30,
+          height: 50
       },
       percentSwitch: {
-        width: 80, 
+        width: 90, 
         alignSelf: 'flex-start',
-        marginLeft: 5,
-        height: 35
+        marginLeft: 10,
+        marginTop: 10,
+        height: 40
     },
     benchmarkSwitch: {
       width: 150, 
       alignSelf: 'center',
       marginLeft: 5,
-      height: 30
+      height: 38,
+      borderRadius: 12
+    },
+    carousel: {
+      width: globalStyles.dimensions.width*0.90, 
+      alignSelf: 'center',
+      height: 330,
+      marginTop: 10
     },
       valueBoxContainer: {
           flex:1,

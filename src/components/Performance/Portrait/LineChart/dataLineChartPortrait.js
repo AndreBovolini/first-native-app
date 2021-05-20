@@ -85,7 +85,6 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
       keysAtivos.splice(keysAtivos.indexOf(el), 1);
       keysAtivos.unshift(el)
    })
-   console.log(keysAtivos)
    let values = []
    let linelabes = []
    let formatedValues = []
@@ -115,9 +114,6 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
     symbol = " K"
   }
   
-  console.log('aqui ' + maior+ 'indice ' + indice)
-  console.log(number + ' ' + symbol)
-
   
     if (filteredData !== []) {
      values = keysAtivos.map((ativo,i) => {
@@ -135,8 +131,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
           return  ({
             y: (parseFloat(el.PL, 3))/indice, 
             x: parseFloat(i),
-            marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
-            + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
+            marker: 'PL: ' + ((parseFloat(el.PL, 3))/indice).toFixed(2) + symbol,
             })
         }
         
@@ -195,7 +190,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
             orientation: "TOP_BOTTOM",
             
         },
-        fillAlpha: 7000
+        fillAlpha: 150
 
         },
     }

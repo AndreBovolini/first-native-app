@@ -27,7 +27,6 @@ export function* asyncPegarDadosCarteiras(action){
 }
 
 export function* asyncPegarInfosCarteiras(action){
-    console.log('ccccc', action)
     try {
       let response = yield call(fetchComAppInfosCarteiras, action.token);
       console.log(response)

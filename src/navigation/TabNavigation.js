@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Dimensions, SafeAreaView, Platform } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,6 +18,7 @@ import { StackRouter } from 'react-navigation';
 
 import { Provider } from 'react-redux';
 import store from '../store/index';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { getDeviceId } from 'react-native-device-info';
 
 const Stack = createStackNavigator();
@@ -37,7 +38,7 @@ const TabNavigation = () => {
     deviceId = parseFloat((deviceId).replace(",", "."),2);
     console.log(deviceId)
     return (
-            
+        <SafeAreaProvider>
             <Tab.Navigator 
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
@@ -77,6 +78,7 @@ const TabNavigation = () => {
                 
                 tabBarOptions={{
                     activeTintColor: globalStyles.colors.fontColor,
+                    safeAreaInset: { bottom: 0, top: 0 },
                     inactiveTintColor: '#000',
                     labelStyle: { fontSize: 15},
                     showLabel: true,
@@ -90,25 +92,23 @@ const TabNavigation = () => {
                                 55 : 85) 
                             : 55,
                         borderTopWidth: 0,
-                        position: 'absolute'
+                        position: 'absolute',
                     }
                 }} initialRouteName="Home"
             >
-                
                 
                 <Tab.Screen name="Performance" component={Performance} options={{ tabBarVisible: landscapeShow}}/>
                 <Tab.Screen name="Home" component={Home} />
                 <Tab.Screen name="Carteira" component={Carteira} />
                 <Tab.Screen name="Perfil" component={Profile} />
-
             </Tab.Navigator>
-    
-
+            </SafeAreaProvider>
 )
 }
 
 const AuthNavigator = () => {
     return (
+        <SafeAreaProvider>
         <Provider store={store}>
             <Stack.Navigator screenOptions={{ headerShown: false }}> 
                 <Stack.Screen name="AuthOrApp" component={AuthorApp} />
@@ -118,6 +118,7 @@ const AuthNavigator = () => {
                 <Stack.Screen name="ResetPassword" component={ResetPassword}/>
             </Stack.Navigator>
         </Provider>
+        </SafeAreaProvider>
     );
 };
 

@@ -134,8 +134,7 @@ export const dataLineChartLandscape = ( response, periodoSelecionado) => {
             return  ({
               y: (parseFloat(el.PL, 3))/indice, 
               x: parseFloat(i),
-              marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
-              + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
+              marker: 'PL: ' + ((parseFloat(el.PL, 3))/indice).toFixed(2) + symbol,
               })
           }
       })
@@ -181,7 +180,7 @@ export const dataLineChartLandscape = ( response, periodoSelecionado) => {
             orientation: "TOP_BOTTOM",
             
         },
-        fillAlpha: 4000
+        fillAlpha: 150
 
         },
     }

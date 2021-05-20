@@ -1,17 +1,15 @@
 import { put, call } from 'redux-saga/effects';
 
-export function newDataInicial(datas, data) {
+export function newDataInicial(data) {
     return {
       type: 'ASYNC_SET_DATA_INICIAL',
-      datas,
       data
     }
 };
 
-export function newDataFinal(datas, data) {
+export function newDataFinal(data) {
     return {
         type: 'ASYNC_SET_DATA_FINAL',
-        datas,
         data
       }
 };
@@ -22,6 +20,7 @@ export function alteraCarteira(carteira) {
     carteira
   }
 }
+
 
 export function alteraDataMaisAntiga(dataMaisAntiga) {
   return {
@@ -51,7 +50,6 @@ export function* asyncSetDataInicial(action) {
  const response = yield call(apiGet, action.data)
  yield put({
      type: 'SET_DATA_INICIAL',
-      datas: action.datas,
       data: response,
  }); 
 }
@@ -60,7 +58,6 @@ export function* asyncSetDataFinal(action) {
   const response = yield call(apiGet, action.data)
   yield put({
       type: 'SET_DATA_FINAL',
-       datas: action.datas,
        data: response,
   });
 }
