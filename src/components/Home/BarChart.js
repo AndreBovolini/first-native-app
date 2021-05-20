@@ -56,6 +56,7 @@ const BarChartHome = () => {
           }
         },
         xAxis: {
+          enabled: false,
             axisLineColor: processColor('black'),
         position: 'BOTTOM',
           valueFormatter: ['1990'],
@@ -70,13 +71,12 @@ const BarChartHome = () => {
         },
         yAxis: {
             left: {
-                axisLineColor: processColor('black'),
-                axisLineWidth: 0,
-                enabled: true,
-                axisLineColor: processColor('black'),
-                drawGridLines: false,
-                axisMinimum: -40,
-                zeroLine: {
+              drawLabels: false,
+              drawAxisLine: false,
+              drawGridLines: false,
+              enabled: true,
+              axisMinimum: -40,
+              zeroLine: {
                     enabled: true,
                     lineWidth: 1,
                     lineColor: processColor('#FFF')
