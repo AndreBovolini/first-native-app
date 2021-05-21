@@ -22,6 +22,7 @@ import PieChartResumo from '../components/Home/PieChartResumo/PieChartResumo';
 import Filtro from '../components/Home/FiltroHome';
 import Benchmarks from '../components/Home/Benchmarks';
 import CardCarousel from '../components/Performance/Portrait/CardCarousel'
+import TableRow from '../components/Home/TableRow'
 
 import {
   dados,
@@ -38,6 +39,7 @@ import BarChartHome from '../components/Home/BarChart';
 
 export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira}) => {
   const [percent, setPercent] = useState(true)
+  const [index, setIndex] = useState(0)
   const [currency, setCurrency] = useState (false)
   const [showModal, setShowModal] = useState(false);
   const [showBench, setShowBench] = useState(false);
@@ -49,6 +51,23 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [selecionadoPie, setSelecionadoPie] = useState({})
 
+  const dadosTable = [
+    {
+      label: 'Carteira',
+      value: "0.94 %",
+      color: '#48A192'
+    },
+    {
+      label: 'CDI',
+      value: "0.21 %",
+      color: '#5456A2'
+    },
+    {
+      label: 'IBOV',
+      value: "1.94 %",
+      color: '#7FAADB',
+    },
+  ]
 
   useEffect(() => {
     
@@ -87,7 +106,7 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
       ]);
       return true;
     };
-    console.log('aquiii' + parseInt(Platform.Version, 10))
+    
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
@@ -123,10 +142,11 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
 
   }
 
-  useEffect(() => {
-    
-  }, [])
+  const handleGetIndex = (index) => {
+    setIndex(index)
+  }
 
+  // console.log('INDICE ' + index)
     return (<View style={{backgroundColor: globalStyles.colors.backGround}}>
       <SafeAreaView >
         {loading ? <SkeletonHome isLoading={loading}/> :
@@ -201,14 +221,14 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
                 </TouchableOpacity>
             
             <View style={styles.titleNavigationContainer}>
-              <CardCarousel/>
+              <CardCarousel handleGetIndex={handleGetIndex}/>
             </View>
+            <TableRow data={dadosTable} />
             <View style={styles.titleNavigationContainer}>
               <Text style={styles.titleNavigation}>Performance</Text>
               <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Performance')}>
                <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor}/>
               </TouchableOpacity>
-             
             </View>
             <View style={styles.lineChartContainer}>
               {!dadosHomePage.loading && dadosHomePage.data !== [] ?

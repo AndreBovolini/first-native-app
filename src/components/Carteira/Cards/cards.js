@@ -25,7 +25,10 @@ const Cards = ({id, title,value, show, handleClick, cor, data}) => {
              <View style={styles.bloco}>
                <View style={styles.leftSide}>
                   <Icon name="circle" size={10} color={cor}/>
+                  {!show ?
                   <Text style={styles.title}>{title}</Text>
+                  : 
+                  <Text style={styles.title}>Bonjour</Text>}
                 </View>
                 <TouchableOpacity style={styles.right}
                     onPress={()=> handleClick(title)}

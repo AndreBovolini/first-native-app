@@ -8,7 +8,6 @@ import BarChart from '../../Home/BarChart'
 import Carousel, { Pagination }from 'react-native-snap-carousel';
 
 const CardCarousel = (props) => {
-    const [activeSlide, SetActiveSlide] = useState(0)
     const [carouselItems, setCarouselItems] = useState(
         [
             {
@@ -25,8 +24,15 @@ const CardCarousel = (props) => {
             },
         ]
     )
+    const [activeSlide, SetActiveSlide] = useState(Math.trunc((carouselItems.length)/2))
 
-    const renderItem = ({item}) => {
+    
+
+    const updateIndex = (index) => {
+        SetActiveSlide(index)
+        props.handleGetIndex(index)
+    }
+    const renderItem = ({item, index}) => {
         return (
             <View style={{
                 backgroundColor: '#000',
@@ -48,6 +54,8 @@ const CardCarousel = (props) => {
             <Pagination
               dotsLength={carouselItems.length}
               activeDotIndex={activeSlide}
+              activeAnimationType={'decay'}
+              
               containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.75)'}}
               dotStyle={{
                   width: 10,
@@ -57,10 +65,14 @@ const CardCarousel = (props) => {
                   backgroundColor: 'rgba(255, 255, 255, 0.92)'
               }}
               inactiveDotStyle={{
-                //
+                  width: 10,
+                  height: 10,
+                  backgroundColor: 'transparent',
+                  borderWidth: 1,
+                  borderColor: '#FFF'
               }}
               inactiveDotOpacity={0.4}
-              inactiveDotScale={0.6}
+              inactiveDotScale={1}
             />
         );
     }
@@ -68,13 +80,14 @@ const CardCarousel = (props) => {
       
         <View style={{ flex: 1, justifyContent: 'center', }}>
             <Carousel
+            firstItem ={activeSlide}
             layout={'default'}
             // ref={ref => carousel = ref}
             data={carouselItems}
             renderItem={renderItem}
             sliderWidth={globalStyles.dimensions.width}
             itemWidth={globalStyles.dimensions.width}
-            onSnapToItem={(index) => SetActiveSlide(index)}
+            onSnapToItem={(index) => updateIndex(index)}
             />
             {pagination()}
         </View>
