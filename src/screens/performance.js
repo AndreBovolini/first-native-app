@@ -18,9 +18,7 @@ import SelectPeriod from '../components/Performance/SeletorPeriodos/SelectPeriod
 import PerformanceLandscape, { PerformanceTableLandscape } from './performanceLandscape';
 
 import {
-    dataHomeBox,
     dados,
-    resposta1
 } from '../data/data';
 
 import { resposta2 } from '../data/dataTeste'
@@ -151,7 +149,7 @@ const Performance = (props) => {
       keysAtivos.splice(keysAtivos.indexOf(el), 1);
       keysAtivos.unshift(el)
    })
-    // const keysAtivos = ['PL','Carteira', 'CDI']
+    
 
     if (filteredData !== []) {
     let values = keysAtivos.map((ativo,i) => {

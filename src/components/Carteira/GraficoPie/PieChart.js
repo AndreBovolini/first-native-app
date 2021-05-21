@@ -52,7 +52,7 @@ return (
             transparentCircleRadius={40}
             transparentCircleColor={processColor(globalStyles.chartColors.pieChartHole)}
             maxAngle={360}
-            onSelect={event => handleSelectPie(event)}
+            onSelect={event => handleSelectPie(even}
           />
         </View>
       </View>

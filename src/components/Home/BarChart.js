@@ -11,7 +11,27 @@ import {
 
   import globalStyles from '../../styles/globalStyles'
 
-const BarChartHome = () => {
+const BarChartHome = (props) => {
+
+  const indices = ['carteira', 'ibov', 'cdi']
+  const cores = ['#48A192', '#5456A2', '#7FAADB']
+
+  let numeros = indices.map((indice, el) => {
+    return props.data[indice]
+  })
+
+  let lowest = Math.min(...numeros)
+
+  const dataSets = indices.map((indice, i) => {
+    return {
+            values: [props.data[indice]],
+            label: indice,
+            config: {
+              drawValues: false,
+              colors: [processColor(cores[i])],
+            }
+    }
+  })
 
     infos = {
         legend: {
@@ -24,28 +44,7 @@ const BarChartHome = () => {
           wordWrapEnabled: true
         },
         data: {
-          dataSets: [{
-            values: [-30],
-            label: 'Company A',
-            config: {
-              drawValues: false,
-              colors: [processColor('red')],
-            }
-          }, {
-            values: [40],
-            label: 'Company B',
-            config: {
-              drawValues: false,
-              colors: [processColor('blue')],
-            }
-          }, {
-            values: [50],
-            label: 'Company C',
-            config: {
-              drawValues: false,
-              colors: [processColor('green')],
-            }
-          }],
+          dataSets: dataSets,
           config: {
             barWidth: 0.1,
             group: {
@@ -75,11 +74,11 @@ const BarChartHome = () => {
               drawAxisLine: false,
               drawGridLines: false,
               enabled: true,
-              axisMinimum: -40,
+              axisMinimum: lowest < 0 ? lowest : 0,
               zeroLine: {
                     enabled: true,
-                    lineWidth: 1,
-                    lineColor: processColor('#FFF')
+                    lineWidth: 0.7,
+                    lineColor: processColor('white')
                     }
               },
               right: {
@@ -118,10 +117,13 @@ export default BarChartHome;
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#F5FCFF'
+      backgroundColor: '#F5FCFF',
+      
+      
     },
     chart: {
-      height: 300,
-      width: globalStyles.dimensions.width * 0.95
+      height: 250,
+      width: globalStyles.dimensions.width * 0.90,
+      alignSelf: 'center'
     }
   });

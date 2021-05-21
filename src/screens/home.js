@@ -9,6 +9,7 @@ import {
   View,
   BackHandler,
   Alert,
+  Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -20,6 +21,7 @@ import LineChartResumo from '../components/Home/LineChartResumo/LineChartResumo'
 import PieChartResumo from '../components/Home/PieChartResumo/PieChartResumo';
 import Filtro from '../components/Home/FiltroHome';
 import Benchmarks from '../components/Home/Benchmarks';
+import CardCarousel from '../components/Performance/Portrait/CardCarousel'
 
 import {
   dados,
@@ -45,14 +47,27 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
   const [dadosLineChart, setDadosLineChart] = useState({})
   const [dadosPie, setDadosPie] = useState({})
   const [selectedEntry, setSelectedEntry] = useState(null);
-  const [selecionadoPie, setSelecionadoPie] = useState({})
+  const [selecionadoPie, setSelecionadoPie] = useState({});
+  const [graficoCarrossel, setGraficoCarrossel] = useState(2)
+  const [tipoCarrossel, setTipoCarrossel] = useState('ativo')
+
+  useState(() => {
+    switch(graficoCarrossel) {
+      case 0,2,3 :
+        setTipoCarrossel('ativo')
+        break;
+      case 3,4 :
+        setTipoCarrossel('periodo')
+        break;
+    }
+  }, [graficoCarrossel])
 
 
   useEffect(() => {
     
     if (!dadosHomePage.loading && dadosHomePage.data.grafico5) {
       const dadosLineChart = dataLineChartHome(dadosHomePage.data.grafico5);
-      // console.log(dadosHomePage.data)
+     
     setDadosLineChart(dadosLineChart)
     const infos = dataPieChartHome(dadosHomePage.data)
     setDadosPie(infos)
@@ -60,7 +75,6 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
     }
   },[dadosHomePage.loading, dadosHomePage.data])
 
- 
 
   useEffect(() => {
     const backAction = () => {
@@ -86,7 +100,7 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
       ]);
       return true;
     };
-
+    console.log('aquiii' + parseInt(Platform.Version, 10))
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
@@ -121,7 +135,6 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
     setShowBench(false)
 
   }
-
 
   useEffect(() => {
     
@@ -199,22 +212,23 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
                   <Icon name="sort-down" size={25} color='#FFF' style={{marginTop:-3}}/>
                   </View>
                 </TouchableOpacity>
-
-              <View style={styles.titleNavigationContainer}>
-              <Text style={styles.titleNavigation}>Barras</Text>
-              <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Performance')}>
-               <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor}/>
-              </TouchableOpacity>
+            
+            <View style={styles.titleNavigationContainer}>
+              <CardCarousel/>
+              {
+                tipoCarrossel === 'ativo' ? (
+                  <Text style={{fontSize:20, color:'#FFF', marginRight: 10,}}>Ativo</Text>
+                ) : (
+                  <Text style={{fontSize:20, color:'#FFF', marginRight: 10,}}>Período</Text>
+                )
+              }
             </View>
-        <View style={styles.barChartContainer}>
-          <BarChartHome />
-        </View>
-             
             <View style={styles.titleNavigationContainer}>
               <Text style={styles.titleNavigation}>Performance</Text>
               <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Performance')}>
                <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor}/>
               </TouchableOpacity>
+             
             </View>
             <View style={styles.lineChartContainer}>
               {!dadosHomePage.loading && dadosHomePage.data !== [] ?
@@ -225,6 +239,7 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
                 null}
             </View>
             <View style={styles.titleNavigationContainer}>
+            
               <Text style={styles.titleNavigation}>Carteira</Text>
               <TouchableOpacity style={{marginTop: 15, marginLeft: 15}} onPress={() => navigation.navigate('Carteira')}>
                <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor}/>
@@ -235,6 +250,7 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
                   infos={dadosPie.infos} 
                   />    
             </View>
+            
             
         </ScrollView>
         )}
@@ -255,7 +271,7 @@ export default connect(mapStateToProps)(Home);
 
 const styles = StyleSheet.create({
     container: {
-        height: 1105,
+        height: 1500,
         width: globalStyles.dimensions.width,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'flex-start',

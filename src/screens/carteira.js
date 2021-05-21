@@ -15,7 +15,6 @@ import { resposta2 } from '../data/dataTeste';
 
 import {
   AtivosCarteira,
-  dataHomeBox,
 } from '../data/data';
 
 
