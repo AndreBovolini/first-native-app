@@ -57,7 +57,8 @@ const Login = ({route, navigation}) => {
       if (inputUsuario !== '') {
           if (inputSenha !== '') {
             comdadoLogin(inputUsuario, inputSenha).then( async (response) => {
-              console.log(response)
+              
+              console.log('aaaa')
               await AsyncStorage.setItem('token', response['access_token'].toString())
               await AsyncStorage.setItem('expiration', response['expires_in'].toString())
               navigation.navigate('AfterLogin');
@@ -110,6 +111,7 @@ const Login = ({route, navigation}) => {
             
               let dateLogin = new Date().getTime() + (1000*60*100);
               await AsyncStorage.setItem('token', dateLogin.toString())
+              
               navigation.navigate('AfterLogin');
             } else {
             }

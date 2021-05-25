@@ -2,6 +2,7 @@ import { put, call } from 'redux-saga/effects';
 
 import fetchComAppCarteiras from '../../dados/conta/Carteiras';
 import fetchComAppInfosCarteiras from '../../dados/conta/infosCarteiras';
+import fetchComAppDatasCarteiras from '../../dados/conta/datasCarteiras'
 
 
 export const pegarDadosCarteiras = (token) => ({
@@ -14,6 +15,15 @@ export const pegarInfosCarteiras = (token) => ({
     token
 });
 
+export const pegarDatasCarteiras = (token, nomeCarteira) => ({
+    type: 'GET_DATAS_CARTEIRAS',
+    dados: {
+      token,
+      nomeCarteira
+    }
+  
+});
+
 
 //-------------------------------------------------
 
@@ -23,6 +33,18 @@ export function* asyncPegarDadosCarteiras(action){
       yield put({ type: 'SUCCESS_GET_DADOS_CARTEIRAS',  data: response});
     } catch (err) {
       yield put({ type: 'FAILURE_GET_DADOS_CARTEIRAS' });
+    }  
+}
+
+export function* asyncPegarDatasCarteiras(action){
+  console.log('CCCCCCCCCCC' + action.dados.nomeCarteira)
+    try {
+      let response = yield call(fetchComAppDatasCarteiras, action.dados);
+      console.log(response)
+      yield put({ type: 'SUCCESS_GET_DATAS_CARTEIRAS',  data: response});
+    } catch (err) {
+        console.log(err)
+      yield put({ type: 'FAILURE_GET_DATAS_CARTEIRAS' });
     }  
 }
 

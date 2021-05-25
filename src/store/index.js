@@ -15,6 +15,7 @@ const store = createStore(combineReducers({
     dadosHomePage: homePage.dadosHomePage,
     dadosCarteiras: dadosUsuario.dadosCarteiras,
     infosCarteiras: dadosUsuario.infosCarteiras,
+    datasCarteiras: dadosUsuario.datasCarteiras
 }),
     applyMiddleware(sagaMiddleware),
 );

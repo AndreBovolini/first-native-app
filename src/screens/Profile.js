@@ -64,11 +64,11 @@ const Profile = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: globalStyles.colors.backGround}}>
     <ScrollView contentContainerStyle={[styles.container, {height: height}]}>
-    <CardCarousel/>
-        {/* <View style={styles.containerInfos}>
+    
+        <View style={styles.containerInfos}>
             <Image source={profile} style={styles.profileImage}/>
             <Text style={styles.textUser}>Olá, Usuário</Text>
-        </View> */}
+        </View> 
         {/* <Text>Período de Análise:</Text>
         <View style={styles.containerDatas}>
         <Ionicons name={'calendar'} size={20} color={globalStyles.colors.fontColor} />

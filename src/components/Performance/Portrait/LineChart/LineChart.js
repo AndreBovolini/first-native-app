@@ -50,6 +50,7 @@ const LineChartRender = props => {
             textSize: 12,
             textColor: processColor(globalStyles.chartColors.axis),
             valueFormatter: props.labels,
+            labelRotationAngle: -45
           }}
           yAxis={{
             left: {

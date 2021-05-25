@@ -181,7 +181,10 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
 
     linelabes = filteredData.map((el, i) => {
       return el.data
+
+    
   })
+  
 
     
   };
@@ -190,9 +193,12 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
     const labels = linelabes.map((el)=> {
       return transformaClasseAtivo(SiglaMes(), el.slice(3,5)) + '/' + '20' + el.slice(8,10)
     })
-
+    const label = linelabes.map((el)=> {
+      return  `${el.slice(0,2) + '/' + el.slice(3,5) + '/' + '20' + el.slice(8,10)}`
+    })
+    console.log('here ' + label)
     const formated = [...formatedValues]
-    console.log(labels)
+    // console.log(labels)
     const dataSets = values.map((el,i) => {
         return {
         values: el.dataset,

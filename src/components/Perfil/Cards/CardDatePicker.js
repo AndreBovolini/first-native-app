@@ -47,7 +47,7 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateFinal = (data) => {
-    console.warn(data)
+    console.warn('dataaaaa' + data)
     if (data.getTime() < props.dataMaisRecente) {
       setShowSelectorFinal(false);
     props.newDataFinal(data.getTime());
@@ -63,7 +63,7 @@ const CardDatePicker = (props) => {
 
   
 
-
+  console.log('props ' + props.datas.dataInicial)
     return (
         <View>
         <View style={[styles.blocoCor, {backgroundColor: '#2A0DB8'}]}>
@@ -87,7 +87,7 @@ const CardDatePicker = (props) => {
                       
                       <TouchableOpacity activeOpacity={0.7} onPress={showDateInicial}>
                             <View style={styles.buttonView}>
-                                <Text style={styles.buttonText}>De: {(new Date(props.datas.dataInicial)).toLocaleDateString()}</Text>
+                                <Text style={styles.buttonText}>De: {(new Date(props.datas.dataInicial)).toLocaleDateString('pt-br', {timeZone: 'UTC'})}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
@@ -96,11 +96,12 @@ const CardDatePicker = (props) => {
                             value={new Date(props.datas.dataInicial)}
                             mode={'date'}
                             onChange={(_,data) => selectNewDateInicial(data)}
+                            timeZoneOffsetInSeconds={0}
                             />
                         ) : null}
                         <TouchableOpacity activeOpacity={0.7} onPress={showDateFinal}>
                             <View style={styles.buttonView}>
-                                <Text style={styles.buttonText}>Até: {(new Date(props.datas.dataFinal)).toLocaleDateString()}</Text>
+                                <Text style={styles.buttonText}>Até: {(new Date(props.datas.dataFinal)).toLocaleDateString('pt-br',{timeZone: 'UTC'})}</Text>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </View>
                         </TouchableOpacity>
