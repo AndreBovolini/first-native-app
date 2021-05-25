@@ -123,7 +123,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
         return {
           y: parseFloat(el[ativo]),
           x: parseFloat(i),
-          marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
+          marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '% /n' 
           + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
           
         }

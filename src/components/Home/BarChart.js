@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     AppRegistry,
     StyleSheet,
@@ -8,10 +8,13 @@ import {
   } from 'react-native';
   
   import {BarChart} from 'react-native-charts-wrapper';
+import { ThemeContext } from 'styled-components';
 
   import globalStyles from '../../styles/globalStyles'
 
 const BarChartHome = (props) => {
+
+  const StyledTheme = useContext(ThemeContext)
 
   const indices = ['carteira', 'ibov', 'cdi']
   const cores = ['#48A192', '#5456A2', '#7FAADB']
@@ -78,7 +81,7 @@ const BarChartHome = (props) => {
               zeroLine: {
                     enabled: true,
                     lineWidth: 0.7,
-                    lineColor: processColor('white')
+                    lineColor: processColor(StyledTheme.colors.invertedBackground)
                     }
               },
               right: {

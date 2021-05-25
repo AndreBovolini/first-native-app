@@ -24,7 +24,7 @@ import { useRoute } from '@react-navigation/native';
 
 import comdadoLogin from '../dados/conta/Login';
 
-import { Container } from './Login/styles';
+import { ButtonView, Container } from './Login/styles';
 
 
 const Login = ({route, navigation}) => {
@@ -147,7 +147,7 @@ const Login = ({route, navigation}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
-      <View style={styles.container}>
+      <Container>
             <CustomInput
               placeholder={'Usuario'}
               value={inputUsuario}
@@ -173,16 +173,16 @@ const Login = ({route, navigation}) => {
             (<Text style={{color: 'red', fontSize: 16}}>Credencias inválidas</Text>)
             : null }
           <TouchableOpacity activeOpacity={0.7} onPress={handleLogin}>
-            <View style={styles.button}>
+            <ButtonView>
               <Text style={styles.buttonText}>Login</Text>
-            </View>
+            </ButtonView>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.7} onPress={handleForgotPassword}>
             <Text style={styles.passwordReset}>Esqueceu a senha?</Text>
           </TouchableOpacity>
           <FingerPrint pressHandler={pressHandler}/>
           <View style={{flex: 1}}/>
-        </View>
+        </Container>
     </KeyboardAvoidingView>
   );
 };

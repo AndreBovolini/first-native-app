@@ -20,6 +20,9 @@ import { Provider } from 'react-redux';
 import store from '../store/index';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { getDeviceId } from 'react-native-device-info';
+import { ThemeProvider } from 'styled-components';
+import darkTheme from '../styles/themes/darkTheme';
+import lightTheme from '../styles/themes/lightTheme';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -38,6 +41,7 @@ const TabNavigation = () => {
     deviceId = parseFloat((deviceId).replace(",", "."),2);
     console.log(deviceId)
     return (
+        <ThemeProvider theme={lightTheme}>
         <SafeAreaProvider>
             <Tab.Navigator 
                 screenOptions={({ route }) => ({
@@ -103,6 +107,7 @@ const TabNavigation = () => {
                 <Tab.Screen name="Perfil" component={Profile} />
             </Tab.Navigator>
             </SafeAreaProvider>
+            </ThemeProvider>
 )
 }
 
