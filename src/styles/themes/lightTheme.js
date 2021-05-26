@@ -2,8 +2,11 @@ export default {
     colors: {
         background: '#FFF',
         firstLayer: '#ced4da',
+        secondLayer: '#252525',
         fontColor: '#000',
         invertedBackground: '#000',
+        tableText: '#000',
+        tableColor: '#CCCCCC',
     },
     chartColors: {
         background: '#FFF',

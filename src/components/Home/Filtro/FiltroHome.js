@@ -8,9 +8,10 @@ import {
 } from 'react-native';
 
 import Modal from 'react-native-modal';
-import globalStyles from '../../styles/globalStyles';
-import CardAlteraCarteira from '../../components/Perfil/Cards/CardAlteraCarteira'
-import CardDatePicker from  '../../components/Perfil/Cards/CardDatePicker';
+import globalStyles from '../../../styles/globalStyles';
+import CardAlteraCarteira from '../../../components/Perfil/Cards/CardAlteraCarteira'
+import CardDatePicker from  '../../../components/Perfil/Cards/CardDatePicker';
+import { Container, ModalCustom, Button, ButtonText } from './styles';
 const handleCardCarteira = () => {
     setShowAlteraCarteira(!showAlteraCarteira);
   };
@@ -39,7 +40,7 @@ const Filtro = props => {
   
     return (
       
-    <View style={styles.container}>
+    <Container>
       
       <Modal isVisible={props.visible} 
         hasbackdrop={true} 
@@ -58,8 +59,8 @@ const Filtro = props => {
         useNativeDriverForBackdrop>
 
         
-        <View
-          style={[styles.modal, {backgroundColor:'#252525', height: props.height, width: props.width}]}>
+        <ModalCustom
+          style={{height: props.height, width: props.width}}>
           <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
           <CardDatePicker
                show={showDatePicker}
@@ -69,45 +70,15 @@ const Filtro = props => {
                handleAlteraDataFinal={handleAlteraDataFinal} 
                handleAlteraDataInicial={handleAlteraDataInicial} />
           <TouchableOpacity activeOpacity={0.7} onPress={props.buttonAction}>
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>Salvar</Text>
-            </View>
+            <Button>
+              <ButtonText>Salvar</ButtonText>
+            </Button>
           </TouchableOpacity>
-        </View>
+        </ModalCustom>
       </Modal>
       
-    </View>
+    </Container>
   );
 };
 
 export default Filtro;
-
-const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        
-    },
-    modal: {
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10,
-        paddingBottom: 10,
-        paddingRight: 5,
-        
-    },
-    button: {
-      marginTop:20,
-      height: 50,
-      width: globalStyles.dimensions.width * 0.4,
-      backgroundColor: '#1A0873',
-      borderRadius: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    buttonText: {
-      color: globalStyles.colors.fontColor,
-      fontSize: 20,
-    },
-});

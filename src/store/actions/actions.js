@@ -36,6 +36,13 @@ export function alteraDataMaisRecente(dataMaisRecente) {
   }
 }
 
+export function alteraViewMode(mode) {
+  return {
+    type: 'ASYNC_SET_VIEW_MODE',
+    mode
+  }
+}
+
 
 function apiGet(data) {
   return new Promise((resolve, reject) => {
@@ -80,5 +87,12 @@ export function* asyncAlteraDataMaisRecente(action) {
   yield put({
     type: 'SET_DATA_MAIS_RECENTE',
     dataMaisRecente: action.dataMaisRecente
+  })
+}
+
+export function* asyncAlteraViewMode(action) {
+  yield put({
+    type: 'SET_VIEW_MODE',
+    mode: action.mode
   })
 }
