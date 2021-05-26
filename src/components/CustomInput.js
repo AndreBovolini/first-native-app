@@ -1,14 +1,15 @@
-import React from 'react';
+import React  from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import globalStyles from '../styles/globalStyles';
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const CustomInput = (props) => {
+
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.label}>{props.label}</Text>
+        <Text style={props.labelColor}>{props.label}</Text>
       </View>
       <View style={styles.containerInput}>
         <TextInput {...props} />

@@ -1,8 +1,12 @@
+
 import { processColor } from 'react-native'
+
 
 import { resposta2 } from '../../../data/dataTeste'
 
-export const dataLineChartHome = (response) => {
+export const dataLineChartHome = (response, color) => {
+
+
     // console.log(response)
     const keysDatas = Object.keys(response.Carteira)
     const respostaDados = keysDatas.map((el,i) => {
@@ -72,7 +76,7 @@ export const dataLineChartHome = (response) => {
                   drawCircleHole: false,
                   circleRadius: 5,
                   highlightColor: processColor('transparent'),
-                  color: processColor('white'),
+                  color: processColor(color),
                   valueTextSize: 15,
                 },
               },

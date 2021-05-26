@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -8,71 +8,14 @@ import {
 } from 'react-native';
 
 import {PieChart} from 'react-native-charts-wrapper';
+import { ThemeContext } from 'styled-components';
 
 import { AtivosCarteira } from '../../../data/data';
 import globalStyles from '../../../styles/globalStyles';
 
 const PieChartResumo = (props) => {
-  // const [chartData, setChartData] = useState(AtivosCarteira);
-  // const [soma, setSoma] = useState(0)
-
-  // useEffect(() => {
-  //   let soma = 0
-  //   let arrayData =[]
-  //   AtivosCarteira.forEach((el, i) => {
-  //     soma = soma + parseFloat(el.value)
-  //   })
-  //   setSoma(soma);
-  //   arrayData = AtivosCarteira.map((el, i) => {
-  //     let percent = ((parseFloat(el.value) / soma) *100).toFixed(2)
-  //     return {
-  //       value: el.value,
-  //       label: el.label,
-  //       marker: `${el.label}: ${percent}%`
-  //     }
-  //   })
-  //   setChartData(arrayData);
-  // },[])
-  
-  //   const infos = {
-  //       legend: {
-  //         enabled: true,
-  //         textSize: 15,
-  //         textColor: processColor(globalStyles.chartColors.legendColor),
-  //         form: 'CIRCLE',
-  
-  //         horizontalAlignment: "CENTER",
-  //         verticalAlignment: "BOTTOM",
-  //         orientation: "HORIZONTAL",
-  //         wordWrapEnabled: true
-  //       },
-  //       data: {
-  //         dataSets: [{
-  //           values: chartData,
-  //           label: '',
-  //           config: {
-  //             colors: globalStyles.chartColors.pieChartColors.map(el => {
-  //               return processColor(el)
-  //             }),
-  //             valueTextSize: 0,
-  //             valueTextColor: processColor('black'),
-  //             sliceSpace: 5,
-  //             selectionShift: 13,
-  //             valueFormatter: "#.#'%'",
-  //             valueLineColor: processColor('WHITE'),
-  //             valueLinePart1Length: 0.5
-  //           }
-  //         }],
-  //       },
-  //       highlights: [{x:2}],
-  //       description: {
-  //         text: '',
-  //         textSize: 15,
-  //         textColor: processColor('darkgray'),
-  
-  //       }
-  //     };
-
+ 
+  const StyledTheme = useContext(ThemeContext)
 
 return (
     <View style={{flex: 1}}>
@@ -84,14 +27,14 @@ return (
           <PieChart
             style={styles.chart}
             logEnabled={true}
-            chartBackgroundColor={processColor(globalStyles.colors.backGround)}
+            chartBackgroundColor={processColor(StyledTheme.colors.background)}
             chartDescription={props.infos.description}
             data={props.infos.data}
             legend={props.infos.legend}
             marker={{
               enabled: true,
-              markerColor: processColor(globalStyles.chartColors.tooltip),
-              textColor: processColor(globalStyles.chartColors.tooltipText),
+              markerColor: processColor(StyledTheme.chartColors.tooltip),
+              textColor: processColor(StyledTheme.chartColors.tooltipText),
               textSize: 23,
             }}
             highlights={props.infos.highlights}
@@ -104,12 +47,12 @@ return (
             rotationEnabled={true}
             rotationAngle={45}
             usePercentValues={true}
-            styledCenterText={{text: 'Carteira', color: processColor(globalStyles.chartColors.centerText), fontFamily: 'HelveticaNeue-Medium', size: 30}}
+            styledCenterText={{text: 'Carteira', color: processColor(StyledTheme.chartColors.centerText), fontFamily: 'HelveticaNeue-Medium', size: 30}}
             centerTextRadiusPercent={90}
             holeRadius={60}
-            holeColor={processColor(globalStyles.chartColors.pieChartHole)}
+            holeColor={processColor(StyledTheme.chartColors.pieChartHole)}
             transparentCircleRadius={40}
-            transparentCircleColor={processColor(globalStyles.chartColors.pieChartHole)}
+            transparentCircleColor={processColor(StyledTheme.chartColors.pieChartHole)}
             maxAngle={360}
           />
         </View>

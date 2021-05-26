@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -12,9 +12,18 @@ import {
 import globalStyles from '../styles/globalStyles';
 import profile from '../../assets/images/profile.png';
 
-import CardAlteraSenha from '../components/Perfil/Cards/CardAlterarSenha';
-import CardDatePicker from  '../components/Perfil/Cards/CardDatePicker';
-import CardAlteraCarteira from '../components/Perfil/Cards/CardAlteraCarteira'
+import { ThemeContext } from 'styled-components/native';
+
+import {
+  SafeArea,
+  ContainerInfos,
+  TextUser,
+
+} from '../screens/Profile/style'
+
+import CardAlteraSenha from '../components/Perfil/Cards/CardAlteraSenha/CardAlterarSenha';
+import CardDatePicker from  '../components/Perfil/Cards/CardDatePicker/CardDatePicker';
+import CardAlteraCarteira from '../components/Perfil/Cards/CardAlteraCarteira/CardAlteraCarteira'
 import CardCarousel from '../components/Performance/Portrait/CardCarousel';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -27,6 +36,8 @@ const Profile = ({navigation}) => {
     const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [height, setHeight] = useState(630);
+
+    const StyledTheme = useContext(ThemeContext)
 
     useEffect(() => {
         let increment = 0;
@@ -62,13 +73,14 @@ const Profile = ({navigation}) => {
     }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: globalStyles.colors.backGround}}>
-    <ScrollView contentContainerStyle={[styles.container, {height: height}]}>
+    <SafeArea>
+    <ScrollView contentContainerStyle={{height: height, width: globalStyles.dimensions.width,
+      backgroundColor: StyledTheme.colors.background, justifyContent: 'flex-start', alignItems: 'center',}}>
     
-        <View style={styles.containerInfos}>
+        <ContainerInfos>
             <Image source={profile} style={styles.profileImage}/>
-            <Text style={styles.textUser}>Olá, Usuário</Text>
-        </View> 
+            <TextUser> Olá, Usuário </TextUser>
+        </ContainerInfos> 
         {/* <Text>Período de Análise:</Text>
         <View style={styles.containerDatas}>
         <Ionicons name={'calendar'} size={20} color={globalStyles.colors.fontColor} />
@@ -81,7 +93,6 @@ const Profile = ({navigation}) => {
                 <Text style={styles.textData}>{dataFinal.toLocaleDateString()}</Text> 
             </View>
         </View> */}
-        
         <View>
               <Provider store={store}>
               <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
@@ -97,8 +108,8 @@ const Profile = ({navigation}) => {
             </View>
           </TouchableOpacity>
           
-    </ScrollView>
-    </SafeAreaView>
+      </ScrollView>
+    </SafeArea>
   );
 };
 

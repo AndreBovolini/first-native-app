@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,21 +6,32 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import globalStyles from '../../../styles/globalStyles';
+import globalStyles from '../../../../styles/globalStyles';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 import { connect } from 'react-redux';
-import { alteraCarteira, alteraDataMaisAntiga, alteraDataMaisRecente } from '../../../store/actions/actions';
+import { alteraCarteira, alteraDataMaisAntiga, alteraDataMaisRecente } from '../../../../store/actions/actions';
 
+import { ThemeContext } from 'styled-components/native';
 
-
+import {
+  Bloco,
+  LeftSide,
+  Title,
+  RightButton,
+  BlocoExpand,
+  TextCard,
+  ButtonText,
+  ButtonView
+} from './style'
 const CardAlteraCarteira = (props) => {
     const [carteiras, setCarteiras] = useState(['Carteira 1', 'Carteira 2', 'Carteira 3'])
  
-
+    const StyledTheme = useContext(ThemeContext)
+    
     useEffect(() => {
       if (!props.isLoadingCarteirasUsuario && props.ResponseCarteirasUsuario !== []) {
         setCarteiras(props.ResponseCarteirasUsuario)
@@ -45,35 +56,34 @@ const CardAlteraCarteira = (props) => {
 return (
     <View>
         <View style={[styles.blocoCor, {backgroundColor: '#2A0DB8'}]}>
-         <View style={styles.bloco}>
-           <View style={styles.leftSide}>
-              <Icon name="circle" size={10} color={'#FFF'}/>
-              <Text style={styles.title}>{`Carteira Atual: ${ props.stateCarteira.carteira }`}</Text>
-            </View>
-            <TouchableOpacity style={styles.right}
-                onPress={()=> props.handleClick()}
+         <Bloco>
+           <LeftSide>
+              <Icon name="circle" size={10} color={'#2A0DB8'}/>
+              <Title>{`Carteira Atual: ${ props.stateCarteira.carteira }`}</Title>
+            </LeftSide>
+            <RightButton onPress={()=> props.handleClick()}
             >
-                { props.show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
-                :  <Icon name="chevron-down" size={20} color={globalStyles.colors.fontColor}/>}
-            </TouchableOpacity>
-            </View>
+                { props.show ?   <Icon name="chevron-up" size={20} color={StyledTheme.colors.fontColor}/>
+                :  <Icon name="chevron-down" size={20} color={StyledTheme.colors.fontColor}/>}
+            </RightButton>
+            </Bloco>
          </View>
          { props.show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
-                    <View style={styles.blocoExpand}>
+                    <BlocoExpand>
                     {
                       carteiras.map((el, i) => {
                         return (
                           <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => selectNovaCarteira(el)} >
-                            <View style={styles.buttonView}>
-                              <Text style={styles.buttonText}>{el}</Text>
-                              <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />
-                            </View>
+                            <ButtonView>
+                              <ButtonText>{el}</ButtonText>
+                              <Ionicons name={'wallet'} size={18} color={'#FFF'} />
+                            </ButtonView>
                       </TouchableOpacity>
                         )
                       })
                     }
-                    </View>
+                    </BlocoExpand>
                   </View>
                 )}
     </View>

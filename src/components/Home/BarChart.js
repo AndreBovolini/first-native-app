@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     AppRegistry,
     StyleSheet,
@@ -8,10 +8,33 @@ import {
   } from 'react-native';
   
   import {BarChart} from 'react-native-charts-wrapper';
+import { ThemeContext } from 'styled-components';
 
   import globalStyles from '../../styles/globalStyles'
 
-const BarChartHome = () => {
+const BarChartHome = (props) => {
+
+  const StyledTheme = useContext(ThemeContext)
+
+  const indices = ['carteira', 'ibov', 'cdi']
+  const cores = ['#48A192', '#5456A2', '#7FAADB']
+
+  let numeros = indices.map((indice, el) => {
+    return props.data[indice]
+  })
+
+  let lowest = Math.min(...numeros)
+
+  const dataSets = indices.map((indice, i) => {
+    return {
+            values: [props.data[indice]],
+            label: indice,
+            config: {
+              drawValues: false,
+              colors: [processColor(cores[i])],
+            }
+    }
+  })
 
     infos = {
         legend: {
@@ -24,28 +47,7 @@ const BarChartHome = () => {
           wordWrapEnabled: true
         },
         data: {
-          dataSets: [{
-            values: [-30],
-            label: 'Company A',
-            config: {
-              drawValues: false,
-              colors: [processColor('#48A192')],
-            }
-          }, {
-            values: [40],
-            label: 'Company B',
-            config: {
-              drawValues: false,
-              colors: [processColor('#5456A2')],
-            }
-          }, {
-            values: [50],
-            label: 'Company C',
-            config: {
-              drawValues: false,
-              colors: [processColor('#7FAADB')],
-            }
-          }],
+          dataSets: dataSets,
           config: {
             barWidth: 0.1,
             group: {
@@ -57,8 +59,8 @@ const BarChartHome = () => {
         },
         xAxis: {
           enabled: false,
-          axisLineColor: processColor('black'),
-          position: 'BOTTOM',
+            axisLineColor: processColor('black'),
+        position: 'BOTTOM',
           valueFormatter: ['1990'],
           drawLabels: false,
           granularityEnabled: true,
@@ -71,16 +73,15 @@ const BarChartHome = () => {
         },
         yAxis: {
             left: {
-                axisLineColor: processColor('white'),
-                textColor: processColor('white'),
-                axisLineWidth: 0,
-                enabled: true,
-                drawGridLines: false,
-                axisMinimum: -35,
-                zeroLine: {
+              drawLabels: false,
+              drawAxisLine: false,
+              drawGridLines: false,
+              enabled: true,
+              axisMinimum: lowest < 0 ? lowest : 0,
+              zeroLine: {
                     enabled: true,
                     lineWidth: 0.7,
-                    lineColor: processColor('white')
+                    lineColor: processColor(StyledTheme.colors.invertedBackground)
                     }
               },
               right: {

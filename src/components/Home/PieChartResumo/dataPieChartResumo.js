@@ -6,7 +6,7 @@ import {
 
 import globalStyles from '../../../styles/globalStyles';
 
-export const dataPieChartHome = (response) => {
+export const dataPieChartHome = (response, color) => {
 
     const keysAtivos = Object.keys(response.grafico0)
     const AtivosCarteira = keysAtivos.map((el,i) => {
@@ -37,7 +37,7 @@ export const dataPieChartHome = (response) => {
         legend: {
           enabled: true,
           textSize: 15,
-          textColor: processColor(globalStyles.chartColors.legendColor),
+          textColor: processColor(color),
           form: 'CIRCLE',
   
           horizontalAlignment: "CENTER",
@@ -63,7 +63,6 @@ export const dataPieChartHome = (response) => {
             }
           }],
         },
-        highlights: [{x:2}],
         description: {
           text: '',
           textSize: 15,

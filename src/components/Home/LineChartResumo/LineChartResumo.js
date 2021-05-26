@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,19 +6,24 @@ import {
 } from 'react-native';
 
 import {LineChart} from 'react-native-charts-wrapper';
+import { ThemeContext } from 'styled-components';
 import globalStyles from '../../../styles/globalStyles';
+
+import { Container } from './styles'
 
 
 
 const LineChartResumo = props => {
 
+  const StyledTheme = useContext(ThemeContext)
+
 
   return (
     <View style={{flex: 1}}>
 
-      <View style={styles.container}>
+      <Container>
         <LineChart
-          style={styles.chart}
+          style={{flex: 1}}
           data={props.data}
           chartDescription={{text: ''}}
           legend={{
@@ -84,20 +89,9 @@ const LineChartResumo = props => {
           dragDecelerationFrictionCoef={0.99}
           keepPositionOnRotation={false}
         />
-      </View>
+      </Container>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: globalStyles.colors.backGround,
-    padding: 20,
-  },
-  chart: {
-    flex: 1,
-  },
-});
 
 export default LineChartResumo;
