@@ -4,10 +4,18 @@ import {View, Text, StyleSheet} from 'react-native';
 const TableRow = (props) => {
   return (
       <View style={(props.index % 2) === 0 || props.index === 0 ? styles.containerRow : [styles.containerRow, {backgroundColor: '#252525'}]}>
-        <Text style={styles.textoTable}>{props.col1}</Text>
-        <Text style={styles.textoTable}>{props.col2}</Text>
-        <Text style={styles.textoTable}>{props.col3}</Text>
-        <Text style={styles.textoTable}>{props.col4}</Text>
+        <View style={styles.bloco}>
+          <Text style={styles.textoTable}>{props.col1}</Text>
+        </View>
+        <View style={styles.bloco}> 
+          <Text style={styles.textoTable}>{props.col2}</Text>
+        </View>
+        <View style={styles.bloco}>
+          <Text style={styles.textoTable}>{props.col3}</Text>
+        </View>
+        <View style={styles.bloco}>
+          <Text style={styles.textoTable}>{props.col4}</Text>
+        </View>
       </View>
   );
 };
@@ -28,4 +36,9 @@ const styles = StyleSheet.create({
         fontWeight: '300',
         color: '#f3f3f3',
       },
+      bloco: {
+        alignItems: 'center',
+        alignSelf: 'center',
+        width: 60
+      }
 });

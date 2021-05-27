@@ -82,23 +82,23 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
     switch (periodoSelecionado) {
       case '1m':
         filteredData = respostaDados.filter(oneMonthPeriod);
-        granularity = 7
+        granularity = 1
       break;
       case '3m':
         filteredData = respostaDados.filter(threeMonthPeriod);
-        granularity = 15
+        granularity = 1
       break;
       case '2021':
         filteredData = respostaDados.filter(thisYear);
-        granularity = 30
+        granularity = 1
       break;
       case '12m':
-        granularity = 50
+        granularity = 1
         filteredData = respostaDados.filter(oneYearPeriod);
         break;
       case 'Tudo':
         filteredData = respostaDados;
-        granularity = 140
+        granularity = 1
       break;
     };
     
@@ -115,6 +115,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
    let formatedValues = []
 
    let maior = 0
+   console.log(filteredData)
    filteredData.forEach((el,i) => {
     if (parseFloat(el.PL) > maior) {
           maior = parseFloat(el.PL);
@@ -148,9 +149,9 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
         return {
           y: parseFloat(el[ativo]),
           x: parseFloat(i),
-          marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
-          + '\n'+  ' CDI: ' + parseFloat(el.CDI, 3) + '%'  
-          + '\n' + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
+          marker: 'Data: ' + el["data"] 
+          + '\n' + 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
+          + '\n' +  ' CDI: ' + parseFloat(el.CDI, 3) + '%' 
           
         }
         }else{
@@ -190,15 +191,36 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
   };
   
 
-    const labels = linelabes.map((el)=> {
+    
+  console.log(linelabes)
+    const label = [...linelabes].reverse()
+    let reverseArray = label.map((el) => {
       return transformaClasseAtivo(SiglaMes(), el.slice(3,5)) + '/' + '20' + el.slice(8,10)
     })
-    const label = linelabes.map((el)=> {
-      return  `${el.slice(0,2) + '/' + el.slice(3,5) + '/' + '20' + el.slice(8,10)}`
+    let meuArray = []
+    reverseArray.forEach((el) => {
+      if(meuArray === []) {
+        meuArray.push(el)  
+      }else if(meuArray.find(element => element === el)) {
+        meuArray.push("")         
+      }else{
+        meuArray.push(el)
+    }
     })
-    console.log('here ' + label)
+    meuArray = meuArray.reverse()
+    console.log(meuArray, meuArray.length)
+
+    
+    // const labels = linelabes.map((el)=> {
+    //   return transformaClasseAtivo(SiglaMes(), el.slice(3,5)) + '/' + '20' + el.slice(8,10)
+    // })
+
+    // const labels = [...linelabes]
+    const labels = [...meuArray]
+
+    // console.log('here ' + label)
     const formated = [...formatedValues]
-    // console.log(labels)
+    console.log(labels, labels.length)
     const dataSets = values.map((el,i) => {
         return {
         values: el.dataset,
