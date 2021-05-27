@@ -23,6 +23,31 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
    const random2 = 'rgb(75, 50, 128)';
    const colors = [random, greenBlue, petrel]
 
+   const SiglaMes = () => ({
+    '01': 'Jan',
+    '02': 'Fev',
+    '03': 'Mar',
+    '04': 'Abr',
+    '05': 'Mai',
+    '06': 'Jun',
+    '07': 'Jul',
+    '08': 'Ago',
+    '09': 'Set',
+    '10': 'Out',
+    '11': 'Nov',
+    '12': 'Dez',
+  });
+
+   const transformaClasseAtivo = (classe, tipoAtivo) => {
+    let classAtivo = '';
+    if (classe) {
+      for (const [key, value] of Object.entries(classe)) {
+        tipoAtivo === key ? (classAtivo = value) : null;
+      }
+    }
+    return classAtivo;
+  };
+
    const alteraDataPTParaEN = data => {
     data = data.split('/');
     data = data[2] + '-' + data[1] + '-' + data[0];
@@ -68,12 +93,12 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
         granularity = 30
       break;
       case '12m':
-        granularity = 55
+        granularity = 50
         filteredData = respostaDados.filter(oneYearPeriod);
         break;
       case 'Tudo':
         filteredData = respostaDados;
-        granularity = 150
+        granularity = 140
       break;
     };
     
@@ -116,15 +141,16 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
   
   
     if (filteredData !== []) {
-     values = keysAtivos.map((ativo,i) => {
+     values = keysAtivos.map((ativo,i) => { 
       const valores = filteredData.map((el,i) => {
-
+      
         if(ativo !== 'PL') {
         return {
           y: parseFloat(el[ativo]),
           x: parseFloat(i),
-          marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '% /n' 
-          + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
+          marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
+          + '\n'+  ' CDI: ' + parseFloat(el.CDI, 3) + '%'  
+          + '\n' + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
           
         }
         }else{
@@ -155,15 +181,24 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
 
     linelabes = filteredData.map((el, i) => {
       return el.data
+
+    
   })
+  
 
     
   };
   
 
-    const labels = [...linelabes]
+    const labels = linelabes.map((el)=> {
+      return transformaClasseAtivo(SiglaMes(), el.slice(3,5)) + '/' + '20' + el.slice(8,10)
+    })
+    const label = linelabes.map((el)=> {
+      return  `${el.slice(0,2) + '/' + el.slice(3,5) + '/' + '20' + el.slice(8,10)}`
+    })
+    console.log('here ' + label)
     const formated = [...formatedValues]
-    
+    // console.log(labels)
     const dataSets = values.map((el,i) => {
         return {
         values: el.dataset,

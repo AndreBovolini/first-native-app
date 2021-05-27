@@ -7,7 +7,7 @@ import {
 //import { resposta2 } from '../../../data/dataTeste'
 import globalStyles from '../../../styles/globalStyles';
 
-export const dataPieChart = (resposta) => {
+export const dataPieChart = (resposta, color) => {
 
     const keysAtivos = Object.keys(resposta)
     const AtivosCarteira = keysAtivos.map((el,i) => {
@@ -36,7 +36,7 @@ export const dataPieChart = (resposta) => {
         legend: {
           enabled: true,
           textSize: 15,
-          textColor: processColor(globalStyles.chartColors.legendColor),
+          textColor: processColor(color),
           form: 'CIRCLE',
   
           horizontalAlignment: "CENTER",

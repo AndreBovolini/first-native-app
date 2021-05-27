@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,11 +6,21 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import globalStyles from '../../../styles/globalStyles';
+import globalStyles from '../../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CustomInput from '../../CustomInput';
+import CustomInput from '../../../CustomInput';
 
+import { ThemeContext } from 'styled-components/native';
 
+import {
+  Bloco,
+  LeftSide,
+  Title,
+  RightButton,
+  BlocoExpand,
+  ButtonText,
+  ButtonView
+} from './style'
 
 const CardAlteraSenha = (props) => {
     const [senhaAntiga, setSenhaAntiga] = useState('');
@@ -22,34 +32,35 @@ const CardAlteraSenha = (props) => {
       setHideSenha(!hideSenha)
     }
 
+    const StyledTheme = useContext(ThemeContext)
 
     return (
         <View>
         <View style={[styles.blocoCor, {backgroundColor: '#2A0DB8'}]}>
-             <View style={styles.bloco}>
-               <View style={styles.leftSide}>
-                  <Icon name="circle" size={10} color={'#FFF'}/>
-                  <Text style={styles.title}>Altere sua senha</Text>
-                </View>
-                <TouchableOpacity style={styles.right}
-                    onPress={()=> props.handleClick()}
+             <Bloco>
+               <LeftSide>
+                  <Icon name="circle" size={10} color={'#2A0DB8'}/>
+                  <Title>Altere sua senha</Title>
+                </LeftSide>
+                <RightButton onPress={()=> props.handleClick()}
                 >
-                    { props.show ?   <Icon name="chevron-up" size={20} color={globalStyles.colors.fontColor}/>
-                    :  <Icon name="chevron-down" size={20} color={globalStyles.colors.fontColor}/>}
-                </TouchableOpacity>
-                </View>
+                    { props.show ?   <Icon name="chevron-up" size={20} color={StyledTheme.colors.fontColor}/>
+                    :  <Icon name="chevron-down" size={20} color={StyledTheme.colors.fontColor}/>}
+                </RightButton>
+                </Bloco>
              </View>
                 { props.show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
-                    <View style={styles.blocoExpand}>
+                    <BlocoExpand>
                         <CustomInput
                             placeholder={'Senha antiga'}
                             value={senhaAntiga}
                             onChangeText={senha => setSenhaAntiga(senha)}
                             label={'Senha antiga:'}
+                            labelColor={StyledTheme.colors.fontColor}
                             style={{width: globalStyles.dimensions.width * 0.7, height: 40, color:'#000'}}
                             secureTextEntry={true}
-                            placeholderTextColor={'#aaa'}
+                            placeholderTextColor={'#808080'}
                             
                         />
                         <CustomInput
@@ -57,25 +68,27 @@ const CardAlteraSenha = (props) => {
                             value={senhaNova}
                             onChangeText={senha => setSenhaNova(senha)}
                             label={'Senha nova:'}
+                            labelColor={StyledTheme.colors.fontColor}
                             style={{width: globalStyles.dimensions.width * 0.7, height: 40, color:'#000'}}
                             secureTextEntry={true}
-                            placeholderTextColor={'#aaa'}
+                            placeholderTextColor={'#808080'}
                         />
                         <CustomInput
                             placeholder={'Senha nova'}
                             value={senhaNovamente}
                             onChangeText={senha => setSenhaNovamente(senha)}
                             label={'Insira sua senha novamente:'}
+                            labelColor={StyledTheme.colors.fontColor}
                             style={{width: globalStyles.dimensions.width * 0.7, height: 40, color:'#000'}}
                             secureTextEntry={true}
-                            placeholderTextColor={'#aaa'}
+                            placeholderTextColor={'#808080'}
                         />
                         <TouchableOpacity activeOpacity={0.7}>
-                            <View style={styles.button}>
-                                <Text style={styles.buttonText}>Alterar senha</Text>
-                            </View>
+                            <ButtonView>
+                                <ButtonText>Alterar senha</ButtonText>
+                            </ButtonView>
                         </TouchableOpacity>
-                    </View>
+                    </BlocoExpand>
                   </View>
                 )}
         </View>
@@ -85,21 +98,6 @@ const CardAlteraSenha = (props) => {
 export default CardAlteraSenha;
 
 const styles = StyleSheet.create({
-      text: {
-        color: globalStyles.colors.fontColor,
-        fontSize: 20,
-        margin: 8
-      },
-      bloco: {
-        flexDirection: 'row',  
-        backgroundColor: globalStyles.colors.firstLayer,
-        alignItems: 'center',
-        padding: 5,
-        height: 70,
-        borderRadius: 10,
-        width: globalStyles.dimensions.width / 1.15,
-        justifyContent: 'space-between'
-      },
       blocoCor: {
         flexDirection: 'row',  
         alignItems: 'center',
@@ -111,25 +109,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
       
       },
-      right: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        paddingHorizontal: 20
-
-      },
-      blocoExpand: {
-        backgroundColor: globalStyles.colors.firstLayer,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: -10,
-        marginBottom: 0,
-        padding: 5,
-        paddingBottom: 10,
-        borderBottomEndRadius: 10,
-        borderBottomStartRadius: 10,
-        width: globalStyles.dimensions.width / 1.15,
-      },
       blocoExpandCor: {
         flexDirection: 'row',
         backgroundColor: globalStyles.colors.firstLayer,
@@ -140,40 +119,5 @@ const styles = StyleSheet.create({
         padding: 5,
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10
-      },
-      leftSide: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding:5,
-      },
-      title: {
-        color: globalStyles.colors.fontColor,
-        fontSize: 23,
-        alignSelf: 'flex-start',
-        marginLeft: 10,
-        marginVertical: 5,
-    },
-      value: {
-          color: globalStyles.colors.fontColor,
-          fontSize: 25,
-      },
-      expandLeft:{
-        justifyContent: 'space-between'
-    },
-      expandRigh:{
-        justifyContent: 'space-around'
-    },
-    button: {
-        height: 50,
-        width: globalStyles.dimensions.width * 0.6,
-        backgroundColor: '#1A0873',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-      },
-      buttonText: {
-        color: globalStyles.colors.fontColor,
-        fontSize: 20,
-      },
+      }
     })

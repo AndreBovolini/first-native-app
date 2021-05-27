@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import {PieChart} from 'react-native-charts-wrapper';
+import { ThemeContext } from 'styled-components';
 
 import { AcoesCarteira } from '../../../../data/data';
 import globalStyles from '../../../../styles/globalStyles';
@@ -13,6 +14,8 @@ import globalStyles from '../../../../styles/globalStyles';
 const TabChart = (props) => {
   const [chartData, setChartData] = useState(AcoesCarteira);
   const [soma, setSoma] = useState(0)
+
+  const StyledTheme = useContext(ThemeContext)
 
   useEffect(() => {
     let soma = 0
@@ -89,8 +92,8 @@ return (
             legend={infos.legend}
             marker={{
               enabled: true,
-              markerColor: processColor(globalStyles.chartColors.tooltip),
-              textColor: processColor(globalStyles.chartColors.tooltipText),
+              markerColor: processColor(StyledTheme.chartColors.tooltip),
+              textColor: processColor(StyledTheme.chartColors.tooltipText),
               textSize: 23,
             }}
             highlights={infos.highlights}
@@ -104,12 +107,12 @@ return (
             rotationEnabled={true}
             rotationAngle={45}
             usePercentValues={true}
-            styledCenterText={{text: props.title, color: processColor(globalStyles.chartColors.centerText), fontFamily: 'HelveticaNeue-Medium', size: 30}}
+            styledCenterText={{text: props.title, color: processColor(StyledTheme.chartColors.centerText), fontFamily: 'HelveticaNeue-Medium', size: 30}}
             centerTextRadiusPercent={90}
             holeRadius={60}
             holeColor={processColor('transparent')}
             transparentCircleRadius={40}
-            transparentCircleColor={processColor(globalStyles.chartColors.pieChartHole)}
+            transparentCircleColor={processColor(StyledTheme.chartColors.pieChartHole)}
             maxAngle={360}
             onSelect={(event) => console.log(event.nativeEvent)}
           />

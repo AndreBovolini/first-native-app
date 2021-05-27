@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -12,21 +12,34 @@ import {
 import globalStyles from '../styles/globalStyles';
 import profile from '../../assets/images/profile.png';
 
-import CardAlteraSenha from '../components/Perfil/Cards/CardAlterarSenha';
-import CardDatePicker from  '../components/Perfil/Cards/CardDatePicker';
-import CardAlteraCarteira from '../components/Perfil/Cards/CardAlteraCarteira'
+import { ThemeContext } from 'styled-components/native';
+
+import {
+  SafeArea,
+  ContainerInfos,
+  TextUser,
+
+} from '../screens/Profile/style'
+
+import CardAlteraSenha from '../components/Perfil/Cards/CardAlteraSenha/CardAlterarSenha';
+import CardDatePicker from  '../components/Perfil/Cards/CardDatePicker/CardDatePicker';
+import CardAlteraCarteira from '../components/Perfil/Cards/CardAlteraCarteira/CardAlteraCarteira'
 import CardCarousel from '../components/Performance/Portrait/CardCarousel';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { connect, Provider } from 'react-redux';
 import store from '../store/index';
 
+import { alteraViewMode } from '../store/actions/actions'
 
-const Profile = ({navigation}) => {
+
+const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
     const [showAlteraSenha, setShowAlteraSenha] = useState(false);
     const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [height, setHeight] = useState(630);
+
+    const StyledTheme = useContext(ThemeContext)
 
     useEffect(() => {
         let increment = 0;
@@ -61,13 +74,25 @@ const Profile = ({navigation}) => {
         })
     }
 
+    const handleAlteraMode = () => {
+      if (stateCarteira.mode === 'dark') {
+        alteraViewMode('light')
+        AsyncStorage.setItem('mode', 'light')
+      } else {
+        alteraViewMode('dark')
+        AsyncStorage.setItem('mode', 'dark')
+      }
+    }
+
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: globalStyles.colors.backGround}}>
-    <ScrollView contentContainerStyle={[styles.container, {height: height}]}>
-         <View style={styles.containerInfos}>
+    <SafeArea>
+    <ScrollView contentContainerStyle={{height: height, width: globalStyles.dimensions.width,
+      backgroundColor: StyledTheme.colors.background, justifyContent: 'flex-start', alignItems: 'center',}}>
+    
+        <ContainerInfos>
             <Image source={profile} style={styles.profileImage}/>
-            <Text style={styles.textUser}>Olá, Usuário</Text>
-        </View> 
+            <TextUser> Olá, Usuário </TextUser>
+        </ContainerInfos> 
         {/* <Text>Período de Análise:</Text>
         <View style={styles.containerDatas}>
         <Ionicons name={'calendar'} size={20} color={globalStyles.colors.fontColor} />
@@ -80,7 +105,6 @@ const Profile = ({navigation}) => {
                 <Text style={styles.textData}>{dataFinal.toLocaleDateString()}</Text> 
             </View>
         </View> */}
-        
         <View>
               <Provider store={store}>
               <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
@@ -95,15 +119,30 @@ const Profile = ({navigation}) => {
               <Text style={styles.buttonText}>Logout</Text>
             </View>
           </TouchableOpacity>
+        <TouchableOpacity onPress={handleAlteraMode}>
+          <View style={[styles.buttonDarkMode, {backgroundColor: StyledTheme.colors.invertedBackground}]}>
+            <Text style={{fontSize: 15, color: StyledTheme.colors.background}}>
+              {stateCarteira.mode === 'dark' ? 'LightMode' : 'DarkMode'}
+            </Text>
+          </View>
+        </TouchableOpacity>
           
-    </ScrollView>
-    </SafeAreaView>
+      </ScrollView>
+    </SafeArea>
   );
 };
 
 
+const mapStateToProps = state => ({
+  stateCarteira: state.dates,
+});
 
-export default Profile;
+const mapDispatchToProps = ( dispatch )=> ({
+  alteraViewMode: (mode) => dispatch(alteraViewMode(mode))
+}) 
+  
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 const styles = StyleSheet.create({
   container: {
@@ -162,6 +201,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonDarkMode: {
+    height: 50,
+    width: globalStyles.dimensions.width * 0.4,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
   },
   buttonText: {
     color: globalStyles.colors.fontColor,

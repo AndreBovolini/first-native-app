@@ -7,6 +7,8 @@ export default {
         invertedBackground: '#000',
         tableText: '#000',
         tableColor: '#CCCCCC',
+        skeletonBackground: '#E1E9EE',
+        skeletonHighlight: '#F2F8FC'
     },
     chartColors: {
         background: '#FFF',

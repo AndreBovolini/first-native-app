@@ -16,7 +16,7 @@ import ResetPassword from  '../screens/ResetPassword';
 import globalStyles from '../styles/globalStyles';
 import { StackRouter } from 'react-navigation';
 
-import { Provider } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import store from '../store/index';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { getDeviceId } from 'react-native-device-info';
@@ -41,8 +41,8 @@ const TabNavigation = () => {
     deviceId = parseFloat((deviceId).replace(",", "."),2);
     console.log(deviceId)
     return (
-        <ThemeProvider theme={lightTheme}>
-        <SafeAreaProvider>
+        
+        <Provider store={store}>
             <Tab.Navigator 
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
@@ -106,15 +106,14 @@ const TabNavigation = () => {
                 <Tab.Screen name="Carteira" component={Carteira} />
                 <Tab.Screen name="Perfil" component={Profile} />
             </Tab.Navigator>
-            </SafeAreaProvider>
-            </ThemeProvider>
+            </Provider>
+
 )
 }
 
 const AuthNavigator = () => {
     return (
         <SafeAreaProvider>
-        <Provider store={store}>
             <Stack.Navigator screenOptions={{ headerShown: false }}> 
                 <Stack.Screen name="AuthOrApp" component={AuthorApp} />
                 <Stack.Screen name="Login" component={Login} />
@@ -122,18 +121,22 @@ const AuthNavigator = () => {
                 <Stack.Screen name="Home" component={TabNavigation} />
                 <Stack.Screen name="ResetPassword" component={ResetPassword}/>
             </Stack.Navigator>
-        </Provider>
         </SafeAreaProvider>
     );
 };
 
-const Navigator = () => {
+const Navigator = ({stateCarteira}) => {
     return (
-        
+        <ThemeProvider theme={stateCarteira.mode === 'dark' ? darkTheme : lightTheme}>
             <NavigationContainer>
                 <AuthNavigator />
             </NavigationContainer>
-        
+        </ThemeProvider>
     );
 };
-export default Navigator
+
+const mapStateToProps = state => ({
+    stateCarteira: state.dates,
+  });
+
+export default connect(mapStateToProps)(Navigator);

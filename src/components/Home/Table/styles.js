@@ -18,7 +18,7 @@ export const Wrapper = styled.View`
     align-items: center;
     padding: 5px;
     height: 30px;
-    width: ${globalStyles.dimensions.width / 1.15};
+    width: ${globalStyles.dimensions.width / 1.15}px;
     border-bottom-width: 1px;
     border-color: ${props => props.theme.colors.firstLayer};
 `;

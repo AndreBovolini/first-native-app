@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 
 import globalStyles from '../styles/globalStyles';
-import Cards from '../components/Carteira/Cards/cards'
+import Cards from '../components/Carteira/Cards/CardsCarteira/cards'
 import PieCarteira from '../components/Carteira/GraficoPie/PieChart';
-import Seletor from '../components/Carteira/Seletor'
+import Seletor from '../components/Carteira/Seletor/Seletor'
 
 import { resposta2 } from '../data/dataTeste';
 
@@ -23,6 +23,14 @@ import { dataPieChart } from '../components/Carteira/GraficoPie/dataPieChart';
 
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import { ThemeContext } from 'styled-components/native';
+
+import {
+  Title,
+  ChartContainer,
+  ContainerCards
+} from '../screens/Carteira/style'
+
 
 const Carteira = (props) => {
   const [arrayAtivos, setArrayAtivos] = useState([]);
@@ -39,7 +47,7 @@ const [showAtivos, setShowAtivos ] = useState(true)
 const [heightDefault, setHeightDefault] = useState((AtivosCarteira.length-1)*90)
 const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
 
-
+const StyledTheme = useContext(ThemeContext)
 
   useEffect(() => {
     if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== []) {
@@ -72,12 +80,19 @@ const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
       setLengthAtivos(AtivosCarteira.length)
     }
     
-    const infos = dataPieChart(showAtivos ? resposta2.grafico0 : resposta2.grafico1)
-    setDadosChart(infos)
+   let infos = ''
+    if(showAtivos){
+      infos = dataPieChart(resposta2.grafico0,StyledTheme.colors.invertedBackground)
+    }else{
+      infos = dataPieChart(resposta2.grafico1,StyledTheme.colors.invertedBackground )
+    }
+    // const infos = dataPieChart(showAtivos ? (resposta2.grafico0, StyledTheme.colors.invertedBackground)
+    //   : (resposta2.grafico1, StyledTheme.colors.invertedBackground))
+   setDadosChart(infos)
     }
     
     
-  }, [showAtivos, props.isLoadingDadosHomePage, props.responseDadosHomePage]);
+  }, [showAtivos, props.isLoadingDadosHomePage, props.responseDadosHomePage, StyledTheme]);
 
   
   function handleSelectorAtivos() {
@@ -142,18 +157,18 @@ const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
 
 
       return (
-        <SafeAreaView style={{flex: 1, backgroundColor: globalStyles.colors.backGround}}>
-        <ScrollView contentContainerStyle={[styles.container, { height: scrollViewHeight}]}>
-        <Text style={styles.title}>Carteira</Text>
+        <SafeAreaView style={{flex: 1, backgroundColor: StyledTheme.colors.background}}>
+        <ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', width: globalStyles.dimensions.width, height: scrollViewHeight, backgroundColor: StyledTheme.colors.background}}>
+        <Title>Carteira</Title>
         <Seletor handleSelectorCustodiante={handleSelectorCustodiante} handleSelectorAtivos={handleSelectorAtivos}/>
-            <View style={styles.chartContainer}>
+            <ChartContainer>
               { dadosChart.infos ?
                 <PieCarteira
                 infos={dadosChart.infos}
                 handleSelectPie={handleSelectPie}
                 />    : null}  
-            </View>
-            <View style={styles.containerCards}>
+            </ChartContainer>
+            <ContainerCards>
               {arrayAtivos.map((el, i) => {
                 return <Cards id={i} 
                               title={el.ativo} 
@@ -164,7 +179,7 @@ const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
                               show={el.show}
                               cor={el.cor}/>;
               })}
-            </View>
+            </ContainerCards>
         </ScrollView>
         </SafeAreaView>
     )
@@ -177,34 +192,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(Carteira);
-
-const styles = StyleSheet.create({
-      container: {
-        width: globalStyles.dimensions.width,
-        backgroundColor: globalStyles.colors.backGround,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-      },
-      title: {
-        color: globalStyles.colors.fontColor,
-        fontSize: 40,
-        fontWeight: '300',
-        alignSelf: 'flex-start',
-        marginVertical: 10, 
-        marginLeft: 10,
-    },
-      text: {
-        color: globalStyles.colors.fontColor,
-        fontSize: 24,
-      },
-    containerCards: {
-      flex:1,
-      alignItems: 'center',
-    },
-    chartContainer: {
-      width: globalStyles.dimensions.width,
-      height: 382,
-      marginTop: 20
-    },
-    
-})

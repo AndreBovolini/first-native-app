@@ -66,15 +66,15 @@ export const dataLineChartLandscape = ( response, periodoSelecionado) => {
       break;
       case '2021':
         filteredData = respostaDados.filter(thisYear);
-        granularity = 50
+        granularity = 10
       break;
       case '12m':
-        granularity = 50
+        granularity = 40
         filteredData = respostaDados.filter(oneYearPeriod);
         break;
       case 'Tudo':
         filteredData = respostaDados;
-        granularity = 150
+        granularity = 100
       break;
     };
     

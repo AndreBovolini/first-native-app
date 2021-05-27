@@ -1,16 +1,19 @@
-import React from 'react';
+import React  from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import globalStyles from '../styles/globalStyles';
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
+import { Container, ContainerInput, Label} from './CustomInput/styles'
+
 const CustomInput = (props) => {
+
   return (
-    <View style={styles.container}>
+    <Container>
       <View>
-        <Text style={styles.label}>{props.label}</Text>
+        <Text style={props.labelColor}>{props.label}</Text>
       </View>
-      <View style={styles.containerInput}>
+      <ContainerInput>
         <TextInput {...props} />
         {props.type === 'senha' && props.secureTextEntry ?
         <TouchableOpacity onPress={props.hidePassword}>
@@ -20,24 +23,10 @@ const CustomInput = (props) => {
         <TouchableOpacity onPress={props.hidePassword}>
         <Ionicons name="eye" size={20} color='#000' style={{marginTop: 15, marginRight: 10, }}/>
         </TouchableOpacity>: null}
-      </View>
-    </View>
+      </ContainerInput>
+    </Container>
   );
 };
 
 export default CustomInput;
 
-const styles = StyleSheet.create({
-    container:{
-        height: 80,
-    },
-    label: {
-        color: globalStyles.colors.fontColor,
-    },
-    containerInput: {
-      flexDirection: 'row',
-      // width: globalStyles.dimensions.width * 0.7,
-        backgroundColor: '#FFF',
-        borderRadius: 10,
-    }
-})
