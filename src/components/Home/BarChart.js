@@ -38,13 +38,13 @@ const BarChartHome = (props) => {
 
     infos = {
         legend: {
-          enabled: false,
-          textSize: 14,
-          form: "SQUARE",
-          formSize: 14,
-          xEntrySpace: 10,
-          yEntrySpace: 5,
-          wordWrapEnabled: true
+          enabled: true,
+          textSize: 10,
+          form: "CIRCLE",
+          formSize: 10,
+          horizontalAlignment: "CENTER",
+          verticalAlignment: "BOTTOM",
+          orientation: "HORIZONTAL",
         },
         data: {
           dataSets: dataSets,
@@ -59,8 +59,8 @@ const BarChartHome = (props) => {
         },
         xAxis: {
           enabled: false,
-            axisLineColor: processColor('black'),
-        position: 'BOTTOM',
+          axisLineColor: processColor('black'),
+          position: 'BOTTOM',
           valueFormatter: ['1990'],
           drawLabels: false,
           granularityEnabled: true,
@@ -108,7 +108,8 @@ const BarChartHome = (props) => {
             gridBackgroundColor={processColor('#ffffff')}
             drawBarShadow={false}
             pinchZoom={false}
-          doubleTapToZoomEnabled={false}
+            extraOffsets={{"bottom":10}}
+            doubleTapToZoomEnabled={false}
             drawValueAboveBar={true}
             drawHighlightArrow={true}
           />

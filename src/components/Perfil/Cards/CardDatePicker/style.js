@@ -12,7 +12,7 @@ export const BlocoCor = styled.View`
     width: ${globalStyles.dimensions.width / 1.15}px;
     justify-content: space-between;
 `
-export const Bloco = styled.View`
+export const Bloco = styled.TouchableOpacity`
     flex-direction: row;
     background-color: ${props => props.theme.colors.firstLayer};
     align-items: center;
@@ -34,7 +34,7 @@ export const Title = styled.Text`
     margin-left: 10px;
     margin-vertical: 5px
 `
-export const RightButton = styled.TouchableOpacity`
+export const RightButton = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import {
   View,
@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras } from '../../store/actions/actions-dados-usuario'
 import { alteraCarteira } from '../../store/actions/actions'
-import carteira from '../../screens/carteira';
+import { ThemeContext } from 'styled-components';
 
 const ModalEscolheCarteira = (props) => {
   const [carteiras, setCarteiras] = useState([])
@@ -24,6 +24,7 @@ const ModalEscolheCarteira = (props) => {
   const [nomeCarteira, setNomeCarteira] = useState('')
   const [isPadrao, setIsPadrao] = useState(false)
 
+  const StyledTheme = useContext(ThemeContext)
   
   useEffect(() => {
     let height = 200 + (carteiras.length * 40);
@@ -33,6 +34,7 @@ const ModalEscolheCarteira = (props) => {
   useEffect(() => {
     if (!props.isLoadingCarteirasUsuario && props.ResponseCarteirasUsuario !== []) {
       setCarteiras(props.ResponseCarteirasUsuario)
+    
       
     }
   }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
@@ -47,28 +49,6 @@ const ModalEscolheCarteira = (props) => {
     props.alteraCarteira(carteira)
   }
   
-
-  // const allCarteiras = [...props.ResponseCarteirasUsuario]
- 
-  // let carteirasFiltered = []
-  // useEffect(() => {
-  //   allCarteiras.filter((el) => {
-  //     if(nomeCarteira){
-  //       if((el.toLowerCase()).includes(nomeCarteira.toLowerCase())){
-  //         // carteirasFiltered = []
-  //         carteirasFiltered.push(el)
-  //       }
-  //       setCarteiras(carteirasFiltered)
-  //     }
-  //     else if(!nomeCarteira || el.includes(nomeCarteira) === false){
-  //       console.log('here ' + carteiras)
-  //       console.log('all ' + allCarteiras)
-  //       setCarteiras(allCarteiras)
-  //       console.log('after ' + carteiras)
-  //     }
-      
-  //   })
-  // },[nomeCarteira])
   return (
     <View style={styles.container}>
       <Modal isVisible={props.visible}>
@@ -80,7 +60,7 @@ const ModalEscolheCarteira = (props) => {
               value={nomeCarteira}
               onChangeText={carteira => setNomeCarteira(carteira)}
               label={''}
-              style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: globalStyles.colors.backGround}}
+              style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: StyledTheme.colors.background}}
               // keyboardType={'email-address'}
               placeholderTextColor={'#808080'}
               type={'usuário'}

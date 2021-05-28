@@ -53,7 +53,7 @@ const CardCarousel = (props) => {
         return (
             <View style={{
                 backgroundColor: StyledTheme.colors.background,
-                height: 300,
+                height: 325,
                 padding: 10,
                 marginTop: 20,
                 marginRight: 35,

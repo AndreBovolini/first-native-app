@@ -78,23 +78,26 @@ const AfterLogin = (props) => {
             let dataAntiga = '';
             let dataRecente = '';
                 dataAntiga = props.responseDatasCarteiras["data_mais_antiga"]
-                console.log('xxxxxxxxxxxxxxx' + dataAntiga)
-                const diaA = dataAntiga.substr(0,2);
-                const mesA = dataAntiga.substr(3,2)
-                const anoA = dataAntiga.substr(6,4)
-                console.log(diaA,mesA,anoA)
-                let timestamp = new Date(`${anoA}-${mesA}-${diaA}`).getTime()
-                console.log(timestamp)
-                props.alteraDataMaisAntiga(timestamp)
-                props.newDataInicial(timestamp)
-                dataRecente = props.responseDatasCarteiras["data_mais_recente"]
-                const diaR = dataRecente.substr(0,2);
-                const mesR = dataRecente.substr(3,2)
-                const anoR = dataRecente.substr(6,4)
-                console.log(diaR,mesR,anoR)
-                let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
-                props.alteraDataMaisRecente(timestampR)
-                props.newDataFinal(timestampR)
+                if(dataAntiga){
+                    console.log('xxxxxxxxxxxxxxx' + dataAntiga)
+                    const diaA = dataAntiga.substr(0,2);
+                    const mesA = dataAntiga.substr(3,2)
+                    const anoA = dataAntiga.substr(6,4)
+                    console.log(diaA,mesA,anoA)
+                    let timestamp = new Date(`${anoA}-${mesA}-${diaA}`).getTime()
+                    console.log(timestamp)
+                    props.alteraDataMaisAntiga(timestamp)
+                    props.newDataInicial(timestamp)
+                    dataRecente = props.responseDatasCarteiras["data_mais_recente"]
+                    const diaR = dataRecente.substr(0,2);
+                    const mesR = dataRecente.substr(3,2)
+                    const anoR = dataRecente.substr(6,4)
+                    console.log(diaR,mesR,anoR)
+                    let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
+                    props.alteraDataMaisRecente(timestampR)
+                    props.newDataFinal(timestampR)
+                }
+                
                 
 
         }

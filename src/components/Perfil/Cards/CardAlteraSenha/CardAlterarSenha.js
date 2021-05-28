@@ -37,12 +37,12 @@ const CardAlteraSenha = (props) => {
     return (
         <View>
         <View style={[styles.blocoCor, {backgroundColor: '#2A0DB8'}]}>
-             <Bloco>
+             <Bloco onPress={()=> props.handleClick()} activeOpacity={1}> 
                <LeftSide>
                   <Icon name="circle" size={10} color={'#2A0DB8'}/>
                   <Title>Altere sua senha</Title>
                 </LeftSide>
-                <RightButton onPress={()=> props.handleClick()}
+                <RightButton
                 >
                     { props.show ?   <Icon name="chevron-up" size={20} color={StyledTheme.colors.fontColor}/>
                     :  <Icon name="chevron-down" size={20} color={StyledTheme.colors.fontColor}/>}
