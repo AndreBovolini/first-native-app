@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions, SafeAreaView, Platform } from 'react-native';
+import { StyleSheet, View, Dimensions, SafeAreaView, Platform, StatusBar } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -129,7 +129,9 @@ const Navigator = ({stateCarteira}) => {
     return (
         <ThemeProvider theme={stateCarteira.mode === 'dark' ? darkTheme : lightTheme}>
             <NavigationContainer>
+            <StatusBar barStyle={stateCarteira.mode === 'dark' ? "light-content" : 'dark-content' }/>
                 <AuthNavigator />
+
             </NavigationContainer>
         </ThemeProvider>
     );

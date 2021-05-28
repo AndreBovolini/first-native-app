@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -10,12 +10,17 @@ import {
 
 import CustomInput from '../components/CustomInput';
 import CustomModal from '../components/ResetPassoword/Modal';
+
 import Icon from 'react-native-vector-icons/FontAwesome'
+
 import globalStyles from '../styles/globalStyles';
+import { ThemeContext } from 'styled-components';
 
 const ResetPassword = ({navigation}) => {
   const [inputEmail, setInputEmail] = useState('');
   const [showModal, setShowModal] = useState(false);
+
+  const StyledTheme = useContext(ThemeContext)
 
   const handleReturnToLogin = () => {
     navigation.navigate('Login');
@@ -34,7 +39,11 @@ const ResetPassword = ({navigation}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
+        
       <View style={styles.container}>
+      <TouchableOpacity style={{alignSelf: 'flex-start'}} onPress={handleReturnToLogin}>
+        <Icon name="chevron-left" size={20} color={StyledTheme.colors.fontColor}/>
+      </TouchableOpacity>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
         <CustomModal visible={showModal} height={200} width={globalStyles.dimensions.width *0.9} buttonAction={handleCloseModal}/>
         </View>
@@ -43,7 +52,7 @@ const ResetPassword = ({navigation}) => {
               value={inputEmail}
               onChangeText={email => setInputEmail(email)}
               label={'E-mail:'}
-              style={{width: globalStyles.dimensions.width * 0.7, color:'#000'}}
+              style={{width: globalStyles.dimensions.width * 0.7,height: 40, color:'#000'}}
               keyboardType={'email-address'}
               placeholderTextColor={'#aaa'}
             />

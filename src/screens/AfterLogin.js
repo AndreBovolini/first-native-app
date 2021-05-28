@@ -20,8 +20,13 @@ const AfterLogin = (props) => {
         let token = await AsyncStorage.getItem('token')  
         props.pegarCarteirasUsuario(token)
         props.pegarInfosCarteiras(token)
-       
-        setShowModal(true)
+
+        const carteiraDefault = await AsyncStorage.getItem('Carteira');
+        if (carteiraDefault) {
+            props.alteraCarteira(carteiraDefault)
+        } else {
+            setShowModal(true)
+        }
     },[])
 
     useEffect(async() => {
@@ -78,7 +83,7 @@ const AfterLogin = (props) => {
             let dataAntiga = '';
             let dataRecente = '';
                 dataAntiga = props.responseDatasCarteiras["data_mais_antiga"]
-                if(dataAntiga){
+                if (dataAntiga) {
                     console.log('xxxxxxxxxxxxxxx' + dataAntiga)
                     const diaA = dataAntiga.substr(0,2);
                     const mesA = dataAntiga.substr(3,2)
@@ -97,7 +102,6 @@ const AfterLogin = (props) => {
                     props.alteraDataMaisRecente(timestampR)
                     props.newDataFinal(timestampR)
                 }
-                
                 
 
         }

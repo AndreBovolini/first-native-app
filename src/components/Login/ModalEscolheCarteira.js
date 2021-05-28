@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import {
   View,
@@ -16,37 +16,59 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras } from '../../store/actions/actions-dados-usuario'
 import { alteraCarteira } from '../../store/actions/actions'
+
 import { ThemeContext } from 'styled-components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ModalEscolheCarteira = (props) => {
   const [carteiras, setCarteiras] = useState([])
-  const [modalHeight, setModalHeight] = useState(200)
-  const [nomeCarteira, setNomeCarteira] = useState('')
+  const [todasCarteiras, setTodasCarteiras] = useState([])
+  const [modalHeight, setModalHeight] = useState(400)
+  const [inputCarteira, setInputCarteira] = useState('')
   const [isPadrao, setIsPadrao] = useState(false)
 
   const StyledTheme = useContext(ThemeContext)
-  
-  useEffect(() => {
-    let height = 200 + (carteiras.length * 40);
-    setModalHeight(height);
-  }, [carteiras])
+
+  let inicio = []
+
+  // useEffect(() => {
+  //   let height = 200 + (carteiras.length * 40);
+  //   setModalHeight(height);
+  // }, [])
 
   useEffect(() => {
     if (!props.isLoadingCarteirasUsuario && props.ResponseCarteirasUsuario !== []) {
-      setCarteiras(props.ResponseCarteirasUsuario)
-    
-      
+      setCarteiras(props.ResponseCarteirasUsuario);
+      setTodasCarteiras(props.ResponseCarteirasUsuario)
     }
   }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
 
   function onSelectCarteira(carteira) {
-    setNomeCarteira(carteira)
+    setInputCarteira(carteira)
   }
   const handleSalvarPadrao = () => {
     setIsPadrao(!isPadrao)
   }
-  const handleSendInfo = (carteira) => {
+  
+  async function handleSendInfo(carteira) {
+    if (isPadrao) {
+      await AsyncStorage.setItem('Carteira', carteira);
+    }
     props.alteraCarteira(carteira)
+  }
+
+  function handleChangeText(carteira) {
+    setInputCarteira(carteira);
+    if (carteira !== '') {
+      let cartFiltro = [...todasCarteiras];
+      let filtradas = cartFiltro.filter(
+        carteiras => carteiras.includes(carteira.toLowerCase())
+      )
+      setCarteiras(filtradas)
+    } else {
+      filtradas = [...todasCarteiras]
+      setCarteiras(filtradas)
+    }
   }
   
   return (
@@ -57,15 +79,15 @@ const ModalEscolheCarteira = (props) => {
             <View style={{flexDirection: 'row'}}>
             <CustomInput
               placeholder={'Selecione uma Carteira'}
-              value={nomeCarteira}
-              onChangeText={carteira => setNomeCarteira(carteira)}
+              value={inputCarteira}
+              onChangeText={carteira => handleChangeText(carteira)}
               label={''}
-              style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: StyledTheme.colors.background}}
+              style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: StyledTheme.colors.backgroundColor}}
               // keyboardType={'email-address'}
               placeholderTextColor={'#808080'}
               type={'usuário'}
             />
-            <TouchableOpacity onPress={() => handleSendInfo(nomeCarteira)} style={{backgroundColor: '#2A0DB8', height: 40, width: 40, borderRadius: 10, marginTop: 19, marginLeft: 10}}>
+            <TouchableOpacity onPress={() => handleSendInfo(inputCarteira)} style={{backgroundColor: '#2A0DB8', height: 40, width: 40, borderRadius: 10, marginTop: 19, marginLeft: 10}}>
               <Text style={{fontSize: 18, color: '#FFF', fontWeight: 'bold', alignSelf:'center', justifyContent: 'center', marginTop: 7}}>
                 OK
               </Text>
@@ -81,7 +103,7 @@ const ModalEscolheCarteira = (props) => {
               </TouchableOpacity>
               <Text style={styles.titleText}>Salvar como padrão</Text>
             </View>
-            
+            <ScrollView>
             {
               carteiras.map((el, i) => {
                 return (
@@ -94,7 +116,7 @@ const ModalEscolheCarteira = (props) => {
                 )
               })
             }
-            
+            </ScrollView>
         </View>
       </Modal>
     </View>

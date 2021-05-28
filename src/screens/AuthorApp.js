@@ -15,11 +15,12 @@ const AuthOrApp = (props) => {
     useEffect(async() => {
         const userToken = await AsyncStorage.getItem('token');
         const mode = await AsyncStorage.getItem('mode');
-        let token = parseInt(userToken);
-        let date = new Date().getTime();
-
-        if (token) {
+        let token = userToken
+        let credentials = await Keychain.getGenericPassword();
+        console.warn(token)
+        if (token === 1 ) {
         if (token < date) {
+            console.warn('eita')
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {
                 props.navigation.navigate('Login', {
@@ -33,7 +34,7 @@ const AuthOrApp = (props) => {
         } else {
             let dateLogin = new Date().getTime() + (1000*60*5);
             AsyncStorage.setItem('token', dateLogin.toString())
-            props.navigation.navigate('Home')
+            props.navigation.navigate('AfterLogin')
         }
         } else {
             let credentials = await Keychain.getGenericPassword();

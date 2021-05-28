@@ -40,11 +40,12 @@ const BarChartHome = (props) => {
         legend: {
           enabled: true,
           textSize: 10,
+          textColor: processColor(StyledTheme.colors.fontColor),
           form: "CIRCLE",
-          formSize: 10,
           horizontalAlignment: "CENTER",
           verticalAlignment: "BOTTOM",
           orientation: "HORIZONTAL",
+          formSize: 10,
         },
         data: {
           dataSets: dataSets,
