@@ -55,7 +55,7 @@ const Filtro = props => {
         style={{
           justifyContent: 'flex-start',
           alignItems: 'center',
-          marginTop: 1
+          marginTop: 15
       }}
         useNativeDriverForBackdrop>
 

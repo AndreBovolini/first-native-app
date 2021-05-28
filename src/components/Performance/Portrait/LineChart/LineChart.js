@@ -43,7 +43,8 @@ const LineChartRender = props => {
           }}
           xAxis={{
             enabled: true,
-            granularity: props.granularity,
+            granularityEnabled: true,
+            granularity: 1,
             drawLabels: true,
             position: 'BOTTOM',
             drawAxisLine: true,
@@ -53,7 +54,11 @@ const LineChartRender = props => {
             textSize: 12,
             textColor: processColor(StyledTheme.chartColors.axis),
             valueFormatter: props.labels,
-            labelRotationAngle: -45
+            // valueFormatter: "",
+            labelRotationAngle: -90,
+            labelCount: 50,
+            // labelCountForce: true,
+            
           }}
           yAxis={{
             left: {

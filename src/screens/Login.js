@@ -37,6 +37,7 @@ const Login = ({route, navigation}) => {
   const StyledTheme = useContext(ThemeContext)
 
   useEffect(async () => {
+    await AsyncStorage.removeItem('Carteira')
     const { credentials} = route.params;
         if (credentials) {
             pressHandler()
@@ -56,24 +57,24 @@ const Login = ({route, navigation}) => {
   }
 
   async function handleLogin() {
-    await AsyncStorage.removeItem('Carteira')
+   //await AsyncStorage.removeItem('Carteira')
       if (inputUsuario !== '') {
           if (inputSenha !== '') {
             comdadoLogin(inputUsuario, inputSenha).then( async (response) => {
-              
-              console.log('aaaa')
+            
               await AsyncStorage.setItem('token', response['access_token'].toString())
               await AsyncStorage.setItem('expiration', response['expires_in'].toString())
               setInputSenha('');
               setInputUsuario('')
+
+              try{
+                await Keychain.setGenericPassword(
+                  inputUsuario,
+                  inputSenha
+                )
+              } catch (error) {
+              }
               navigation.navigate('AfterLogin');
-              // try{
-              //   await Keychain.setGenericPassword(
-              //     inputUsuario,
-              //     inputSenha
-              //   )
-              // } catch (error) {
-              // }
             }
             )
             .catch(error => {
@@ -113,12 +114,26 @@ const Login = ({route, navigation}) => {
       
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {
+              console.warn(credentials)
+              comdadoLogin(credentials.username, credentials.password).then( async (response) => {
             
-              let dateLogin = new Date().getTime() + (1000*60*100);
-              await AsyncStorage.setItem('token', dateLogin.toString())
-              setInputSenha('');
-              setInputUsuario('')
-              navigation.navigate('AfterLogin');
+                await AsyncStorage.setItem('token', response['access_token'].toString())
+                await AsyncStorage.setItem('expiration', response['expires_in'].toString())
+  
+                try{
+                  await Keychain.setGenericPassword(
+                    inputUsuario,
+                    inputSenha
+                  )
+                } catch (error) {
+                }
+                navigation.navigate('AfterLogin');
+              }
+              )
+              .catch(error => {
+                console.log(error);
+                handleErrologin();
+              })
             } else {
             }
           } catch (error) {

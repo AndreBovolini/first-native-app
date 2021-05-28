@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 
 import Modal from 'react-native-modal';
-
+import CustomInput from '../CustomInput'
 import globalStyles from '../../styles/globalStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras } from '../../store/actions/actions-dados-usuario'
 import { alteraCarteira } from '../../store/actions/actions'
-import CustomInput from '../CustomInput';
+
 import { ThemeContext } from 'styled-components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -25,6 +25,7 @@ const ModalEscolheCarteira = (props) => {
   const [todasCarteiras, setTodasCarteiras] = useState([])
   const [modalHeight, setModalHeight] = useState(400)
   const [inputCarteira, setInputCarteira] = useState('')
+  const [isPadrao, setIsPadrao] = useState(false)
 
   const StyledTheme = useContext(ThemeContext)
 
@@ -42,17 +43,26 @@ const ModalEscolheCarteira = (props) => {
     }
   }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
 
-  async function onSelectCarteira(carteira) {
-    await AsyncStorage.setItem('Carteira', carteira);
+  function onSelectCarteira(carteira) {
+    setInputCarteira(carteira)
+  }
+  const handleSalvarPadrao = () => {
+    setIsPadrao(!isPadrao)
+  }
+  
+  async function handleSendInfo(carteira) {
+    if (isPadrao) {
+      await AsyncStorage.setItem('Carteira', carteira);
+    }
     props.alteraCarteira(carteira)
   }
 
   function handleChangeText(carteira) {
-    setInputCarteira(carteira);ee
+    setInputCarteira(carteira);
     if (carteira !== '') {
       let cartFiltro = [...todasCarteiras];
       let filtradas = cartFiltro.filter(
-        carteiras => carteiras.substring(0, carteira.length).toLowerCase() === carteira.toLowerCase()
+        carteiras => carteiras.includes(carteira.toLowerCase())
       )
       setCarteiras(filtradas)
     } else {
@@ -61,22 +71,60 @@ const ModalEscolheCarteira = (props) => {
     }
   }
   
+
+  // const allCarteiras = [...props.ResponseCarteirasUsuario]
+ 
+  // let carteirasFiltered = []
+  // useEffect(() => {
+  //   allCarteiras.filter((el) => {
+  //     if(nomeCarteira){
+  //       if((el.toLowerCase()).includes(nomeCarteira.toLowerCase())){
+  //         // carteirasFiltered = []
+  //         carteirasFiltered.push(el)
+  //       }
+  //       setCarteiras(carteirasFiltered)
+  //     }
+  //     else if(!nomeCarteira || el.includes(nomeCarteira) === false){
+  //       console.log('here ' + carteiras)
+  //       console.log('all ' + allCarteiras)
+  //       setCarteiras(allCarteiras)
+  //       console.log('after ' + carteiras)
+  //     }
+      
+  //   })
+  // },[nomeCarteira])
   return (
     <View style={styles.container}>
       <Modal isVisible={props.visible}>
         <View
           style={[styles.modal, { height: modalHeight}]}>
-          <Text style={styles.titleText}>Escolha uma carteira padrão:</Text>
-          <CustomInput
-              placeholder={'Carteira'}
+            <View style={{flexDirection: 'row'}}>
+            <CustomInput
+              placeholder={'Selecione uma Carteira'}
               value={inputCarteira}
               onChangeText={carteira => handleChangeText(carteira)}
-              label={'Carteira:'}
-              style={{width: globalStyles.dimensions.width * 0.67, height: 40, color: StyledTheme.colors.background}}
-              keyboardType={'email-address'}
-              placeholderTextColor={'#aaa'}
-              type={'carteiradddd'}
+              label={''}
+              style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: StyledTheme.colors.backgroundColor}}
+              // keyboardType={'email-address'}
+              placeholderTextColor={'#808080'}
+              type={'usuário'}
             />
+            <TouchableOpacity onPress={() => handleSendInfo(inputCarteira)} style={{backgroundColor: '#2A0DB8', height: 40, width: 40, borderRadius: 10, marginTop: 19, marginLeft: 10}}>
+              <Text style={{fontSize: 18, color: '#FFF', fontWeight: 'bold', alignSelf:'center', justifyContent: 'center', marginTop: 7}}>
+                OK
+              </Text>
+            </TouchableOpacity>
+            </View>
+            <View style={{flexDirection: 'row', marginTop: -10, marginLeft: -40}}>
+              <TouchableOpacity onPress={handleSalvarPadrao}>
+                {isPadrao? 
+                <Ionicons name="checkbox" size={25} color={'#FFF'}/>
+                :
+                <Ionicons name="square-outline" size={25} color={'#FFF'}/>
+                }
+              </TouchableOpacity>
+              <Text style={styles.titleText}>Salvar como padrão</Text>
+            </View>
             <ScrollView>
             {
               carteiras.map((el, i) => {
@@ -125,9 +173,10 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     titleText: {
-       marginHorizontal: 20, 
-       marginVertical: 20, 
-       fontSize: 25, 
+       marginHorizontal: 10, 
+       marginVertical: 5, 
+       marginTop: 0,
+       fontSize: 18, 
        color: globalStyles.colors.fontColor, 
        textAlign: 'center'
     },
