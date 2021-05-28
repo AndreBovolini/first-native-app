@@ -5,42 +5,103 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 
 import Modal from 'react-native-modal';
-
+import CustomInput from '../CustomInput'
 import globalStyles from '../../styles/globalStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras } from '../../store/actions/actions-dados-usuario'
 import { alteraCarteira } from '../../store/actions/actions'
+import carteira from '../../screens/carteira';
 
 const ModalEscolheCarteira = (props) => {
   const [carteiras, setCarteiras] = useState([])
   const [modalHeight, setModalHeight] = useState(200)
+  const [nomeCarteira, setNomeCarteira] = useState('')
+  const [isPadrao, setIsPadrao] = useState(false)
 
+  
   useEffect(() => {
     let height = 200 + (carteiras.length * 40);
     setModalHeight(height);
-  }, [])
+  }, [carteiras])
 
   useEffect(() => {
     if (!props.isLoadingCarteirasUsuario && props.ResponseCarteirasUsuario !== []) {
       setCarteiras(props.ResponseCarteirasUsuario)
+      
     }
   }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
 
   function onSelectCarteira(carteira) {
+    setNomeCarteira(carteira)
+  }
+  const handleSalvarPadrao = () => {
+    setIsPadrao(!isPadrao)
+  }
+  const handleSendInfo = (carteira) => {
     props.alteraCarteira(carteira)
   }
   
+
+  // const allCarteiras = [...props.ResponseCarteirasUsuario]
+ 
+  // let carteirasFiltered = []
+  // useEffect(() => {
+  //   allCarteiras.filter((el) => {
+  //     if(nomeCarteira){
+  //       if((el.toLowerCase()).includes(nomeCarteira.toLowerCase())){
+  //         // carteirasFiltered = []
+  //         carteirasFiltered.push(el)
+  //       }
+  //       setCarteiras(carteirasFiltered)
+  //     }
+  //     else if(!nomeCarteira || el.includes(nomeCarteira) === false){
+  //       console.log('here ' + carteiras)
+  //       console.log('all ' + allCarteiras)
+  //       setCarteiras(allCarteiras)
+  //       console.log('after ' + carteiras)
+  //     }
+      
+  //   })
+  // },[nomeCarteira])
   return (
     <View style={styles.container}>
       <Modal isVisible={props.visible}>
         <View
           style={[styles.modal, { height: modalHeight}]}>
-          <Text style={styles.titleText}>Escolha uma carteira padrão:</Text>
+            <View style={{flexDirection: 'row'}}>
+            <CustomInput
+              placeholder={'Selecione uma Carteira'}
+              value={nomeCarteira}
+              onChangeText={carteira => setNomeCarteira(carteira)}
+              label={''}
+              style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: globalStyles.colors.backGround}}
+              // keyboardType={'email-address'}
+              placeholderTextColor={'#808080'}
+              type={'usuário'}
+            />
+            <TouchableOpacity onPress={() => handleSendInfo(nomeCarteira)} style={{backgroundColor: '#2A0DB8', height: 40, width: 40, borderRadius: 10, marginTop: 19, marginLeft: 10}}>
+              <Text style={{fontSize: 18, color: '#FFF', fontWeight: 'bold', alignSelf:'center', justifyContent: 'center', marginTop: 7}}>
+                OK
+              </Text>
+            </TouchableOpacity>
+            </View>
+            <View style={{flexDirection: 'row', marginTop: -10, marginLeft: -40}}>
+              <TouchableOpacity onPress={handleSalvarPadrao}>
+                {isPadrao? 
+                <Ionicons name="checkbox" size={25} color={'#FFF'}/>
+                :
+                <Ionicons name="square-outline" size={25} color={'#FFF'}/>
+                }
+              </TouchableOpacity>
+              <Text style={styles.titleText}>Salvar como padrão</Text>
+            </View>
+            
             {
               carteiras.map((el, i) => {
                 return (
@@ -53,6 +114,7 @@ const ModalEscolheCarteira = (props) => {
                 )
               })
             }
+            
         </View>
       </Modal>
     </View>
@@ -87,9 +149,10 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     titleText: {
-       marginHorizontal: 20, 
-       marginVertical: 20, 
-       fontSize: 25, 
+       marginHorizontal: 10, 
+       marginVertical: 5, 
+       marginTop: 0,
+       fontSize: 18, 
        color: globalStyles.colors.fontColor, 
        textAlign: 'center'
     },

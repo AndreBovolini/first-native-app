@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -24,7 +24,8 @@ import { useRoute } from '@react-navigation/native';
 
 import comdadoLogin from '../dados/conta/Login';
 
-import { ButtonView, Container } from './Login/styles';
+import { Container, TextCustom, ButtonView, ButtonText, PasswordReset } from './Login/styles';
+import { ThemeContext } from 'styled-components';
 
 
 const Login = ({route, navigation}) => {
@@ -32,6 +33,8 @@ const Login = ({route, navigation}) => {
   const [inputSenha, setInputSenha] = useState('');
   const [hideSenha, setHideSenha] = useState(true);
   const [showCredenciaisErradas, setShowCredenciaisErradas] = useState(false)
+
+  const StyledTheme = useContext(ThemeContext)
 
   useEffect(async () => {
     const { credentials} = route.params;
@@ -61,6 +64,8 @@ const Login = ({route, navigation}) => {
               console.log('aaaa')
               await AsyncStorage.setItem('token', response['access_token'].toString())
               await AsyncStorage.setItem('expiration', response['expires_in'].toString())
+              setInputSenha('');
+              setInputUsuario('')
               navigation.navigate('AfterLogin');
               // try{
               //   await Keychain.setGenericPassword(
@@ -111,7 +116,8 @@ const Login = ({route, navigation}) => {
             
               let dateLogin = new Date().getTime() + (1000*60*100);
               await AsyncStorage.setItem('token', dateLogin.toString())
-              
+              setInputSenha('');
+              setInputUsuario('')
               navigation.navigate('AfterLogin');
             } else {
             }
@@ -155,7 +161,7 @@ const Login = ({route, navigation}) => {
               value={inputUsuario}
               onChangeText={usuario => setInputUsuario(usuario)}
               label={'Usuário:'}
-              style={{width: globalStyles.dimensions.width * 0.67, height: 40, color:'#000'}}
+              style={{width: globalStyles.dimensions.width * 0.67, height: 40, color: StyledTheme.colors.background}}
               keyboardType={'email-address'}
               placeholderTextColor={'#aaa'}
               type={'usuário'}
@@ -165,7 +171,7 @@ const Login = ({route, navigation}) => {
               value={inputSenha}
               onChangeText={senha => setInputSenha(senha)}
               label={'Senha:'}
-              style={{width: globalStyles.dimensions.width * 0.6, color:'#000'}}
+              style={{width: globalStyles.dimensions.width * 0.6, color: StyledTheme.colors.background}}
               secureTextEntry={hideSenha}
               placeholderTextColor={'#aaa'}
               type={'senha'}
@@ -176,14 +182,15 @@ const Login = ({route, navigation}) => {
             : null }
           <TouchableOpacity activeOpacity={0.7} onPress={handleLogin}>
             <ButtonView>
-              <Text style={styles.buttonText}>Login</Text>
+              <ButtonText>Login</ButtonText>
             </ButtonView>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.7} onPress={handleForgotPassword}>
-            <Text style={styles.passwordReset}>Esqueceu a senha?</Text>
+            <PasswordReset>Esqueceu a senha?</PasswordReset>
           </TouchableOpacity>
           <FingerPrint pressHandler={pressHandler}/>
           <View style={{flex: 1}}/>
+          <ButtonText style={{paddingBottom: 20}}>0.1.0</ButtonText>
         </Container>
     </KeyboardAvoidingView>
   );

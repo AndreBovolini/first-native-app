@@ -44,7 +44,6 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateInicial = (data) => {
-    console.warn(data)
    if (data.getTime() > props.dataMaisAntiga) {
     setShowSelectorInicial(false);
     props.newDataInicial(data.getTime());
@@ -58,7 +57,6 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateFinal = (data) => {
-    console.warn('dataaaaa' + data)
     if (data.getTime() < props.dataMaisRecente) {
       setShowSelectorFinal(false);
     props.newDataFinal(data.getTime());
@@ -94,7 +92,7 @@ const CardDatePicker = (props) => {
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
                     <View style={{flexDirection: 'column'}}>
                     <BlocoExpand>
-                      <TouchableOpacity activeOpacity={0.7} onPress={showDateInicial}>
+                      <TouchableOpacity activeOpacity={0.7} onPress={showDateInicial} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
                             <ButtonView>
                                 <ButtonText>De: {(new Date(props.datas.dataInicial)).toLocaleDateString('pt-br', {timeZone: 'UTC'})}</ButtonText>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
@@ -105,10 +103,10 @@ const CardDatePicker = (props) => {
                             value={new Date(props.datas.dataInicial)}
                             mode={'date'}
                             onChange={(_,data) => selectNewDateInicial(data)}
-                            
+                            style={{marginLeft: globalStyles.dimensions.width * 0.2}}
                             />
                         ) : null}
-                        <TouchableOpacity activeOpacity={0.7} onPress={showDateFinal}>
+                        <TouchableOpacity activeOpacity={0.7} onPress={showDateFinal} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
                             <ButtonView>
                                 <ButtonText>Até: {(new Date(props.datas.dataFinal)).toLocaleDateString('pt-br',{timeZone: 'UTC'})}</ButtonText>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
@@ -119,6 +117,7 @@ const CardDatePicker = (props) => {
                             value={new Date(props.datas.dataFinal)}
                             mode={'date'}
                             onChange={(_,data) => selectNewDateFinal(data)}
+                            style={{marginLeft: globalStyles.dimensions.width * 0.2}}
                             />
                         ) : null}
                        </BlocoExpand> 

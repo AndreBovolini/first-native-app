@@ -4,6 +4,7 @@ const INITIAL_STATE = {
     carteira: '',
     dataMaisAntiga: 0,
     dataMaisRecente: 0,
+    mode: 'dark'
 }
 
 export default function dates(state= INITIAL_STATE, action) {
@@ -37,6 +38,12 @@ export default function dates(state= INITIAL_STATE, action) {
                     ...state,
                     dataMaisRecente: action.dataMaisRecente
                 }
+                break;
+        case 'SET_VIEW_MODE':
+                return {
+                    ...state,
+                    mode: action.mode
+                }   
                 break;
         default:
             return state

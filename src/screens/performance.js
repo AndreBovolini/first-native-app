@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -31,6 +31,9 @@ import {connect } from 'react-redux'
 import TableRow from '../components/Performance/Portrait/Table/TableRow';
 import Table from '../components/Performance/Portrait/Table/Table';
 
+import { ContainerHeader, Title, ContainerTableLandscape, ContainerTable, ChartContainer, ContainerSelector, TextoHeader, ContainerSelectorTable } from './Performance/styles'
+import { ThemeContext } from 'styled-components';
+
 const Performance = (props) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
@@ -47,6 +50,8 @@ const Performance = (props) => {
   const [scrollPosition, setScrollPosition] = useState(0)
   const [dadosLineChartPortrait, setDadosLineChartPortrait] = useState({})
   const [dadosLineChartLandscape, setDadosLineChartLandscape] = useState({})
+
+  const StyledTheme = useContext(ThemeContext)
 
   useEffect(() => {
     Dimensions.addEventListener('change', ({ window: { width, height}}) => {
@@ -239,13 +244,13 @@ const Performance = (props) => {
       return (
         <PerformanceTableLandscape>
           <View style={{height: globalStyles.dimensions.width *0.9, borderRadius: 20,  width: globalStyles.dimensions.height * 0.9}}>
-          <View style={styles.containerTableLandscape} >
-            <View style={styles.containerHeader}>
-            <Text style={styles.textoHeader}>Período</Text>
-              <Text style={styles.textoHeader}>Carteira</Text>
-              <Text style={styles.textoHeader}>IPCADP</Text>
-              <Text style={styles.textoHeader}>%IPCADP</Text>
-            </View>
+          <ContainerTableLandscape>
+            <ContainerHeader>
+            <TextoHeader>Período</TextoHeader>
+              <TextoHeader>Carteira</TextoHeader>
+              <TextoHeader>IPCADP</TextoHeader>
+              <TextoHeader>%IPCADP</TextoHeader>
+            </ContainerHeader>
             <ScrollView nestedScrollEnabled = {true}>
             {dados[indiceAno].response.map((el, i) => {
                 return (
@@ -253,7 +258,7 @@ const Performance = (props) => {
                 )
             })}
             </ScrollView>
-          </View>
+          </ContainerTableLandscape>
           </View>
         </PerformanceTableLandscape>
       )
@@ -272,17 +277,23 @@ const Performance = (props) => {
   }
 
     return (
-        <SafeAreaView style={{flex: 1, backgroundColor: globalStyles.colors.backGround}}>
-        <ScrollView contentContainerStyle={styles.container} onMomentumScrollEnd={(event) => handleScroll(event)}>
-            <Text style={styles.title}>{'Performance'}</Text>
-            <View style={styles.containerSelector}>
+        <SafeAreaView style={{flex: 1, backgroundColor: StyledTheme.colors.background}}>
+        <ScrollView 
+        contentContainerStyle={{height: 1180,
+        backgroundColor: StyledTheme.colors.background,
+        justifyContent: 'flex-start',
+        alignItems: 'center'}} 
+        onMomentumScrollEnd={(event) => handleScroll(event)}
+        >
+            <Title>{'Performance'}</Title>
+            <ContainerSelector>
             {periodos.map((el, i) => {
                 return (
                   <SelectPeriod ano={el} key={i} selecionado={periodoSelecionado} handleSelecionado={handleSelecionaPeriodo}/>
                 )
             })}
-            </View>
-            <View style={styles.chartContainer }>
+            </ContainerSelector>
+            <ChartContainer>
                 {!props.isLoadingDadosHomePage && dadosLineChartPortrait !== {} ?
                 <LineChartRender
                 data={dadosLineChartPortrait.data}
@@ -293,15 +304,15 @@ const Performance = (props) => {
                 symbol={dadosLineChartPortrait.symbol}
                 /> :
                 null}
-            </View>
-            <View style={styles.containerSelectorTable}>
+            </ChartContainer>
+            <ContainerSelectorTable>
       {anos.map((el, i) => {
           return (
             <SelectPeriod ano={el} key={i} selecionado={anoSelecionado} handleSelecionado={handleSelecionaAno}/>
           )
       })}
         
-      </View>
+          </ContainerSelectorTable>
         <Table indiceAno={indiceAno}/>
       </ScrollView>
       </SafeAreaView>
@@ -315,80 +326,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(Performance);
 
 const styles = StyleSheet.create({
-    container: {
-        height: 1180,
-        backgroundColor: globalStyles.colors.backGround,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    title: {
-        color: globalStyles.colors.fontColor,
-        fontSize: 40,
-        fontWeight: '300',
-        alignSelf: 'flex-start',
-        marginVertical: 10, 
-        marginLeft: 10,
-    },
-    chartContainer: {
-        width: globalStyles.dimensions.width,
-        height: 430,
-    },
-    label: {
-        alignItems: 'center',
-        backgroundColor: 'black',
-        flex: 0.5
-    },
-    labelText: {
-        fontSize: 40,
-        color: 'white',
-    },
-    containerSelector: {
-        height: 30,
-        width: (globalStyles.dimensions.width *4)/5,
-        marginRight: 30,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-      alignItems: 'center',
-    },
-    containerTable: {
-      width: globalStyles.dimensions.width *0.90,
-      height: 500,
-      marginVertical: 5,
-      marginHorizontal: 0,
-      backgroundColor: '#161616',
-      borderRadius: 20,
-    },
-    containerTableLandscape: {
-      width: globalStyles.dimensions.height * 0.9,
-      height: globalStyles.dimensions.width * 0.9,
-      marginVertical: 10,
-      marginHorizontal: globalStyles.dimensions.height * 0.05,
-      backgroundColor: '#161616',
-      borderRadius: 20,
-    },
-    containerHeader: {
-      flexDirection: 'row',
-      height: 35,
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      backgroundColor: '#C4C4C4',
-      marginTop: 10,
-      marginHorizontal: 10,
-      borderRadius: 5,
-    },
-    textoHeader: {
-      fontSize: 20,
-      fontWeight: '700',
-      color: '#161616',
-    },
-    containerSelectorTable: {
-      height: 50,
-       width: globalStyles.dimensions.width *0.9,
-      backgroundColor: '#161616',
-      marginTop: 10,
-      borderRadius: 10,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-    alignItems: 'center',
-    },
 })

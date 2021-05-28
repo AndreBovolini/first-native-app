@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import { ThemeContext } from 'styled-components';
+
+
+import { ContainerRow, TextoTable } from './styles';
 
 const TableRow = (props) => {
+
+  const StyledTheme = useContext(ThemeContext)
+
   return (
       <View style={(props.index % 2) === 0 || props.index === 0 ? styles.containerRow : [styles.containerRow, {backgroundColor: '#252525'}]}>
         <View style={styles.bloco}>

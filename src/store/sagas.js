@@ -14,5 +14,6 @@ export default function* root() {
     yield takeLatest('GET_DADOS_HOME_PAGE_APP', homePage.asyncPegarDadosHomePage);
     yield takeLatest('GET_DADOS_CARTEIRAS', dadosUsuario.asyncPegarDadosCarteiras);
     yield takeLatest('GET_INFOS_CARTEIRAS', dadosUsuario.asyncPegarInfosCarteiras);
+    yield takeLatest('ASYNC_SET_VIEW_MODE', datas.asyncAlteraViewMode);
     yield takeLatest('GET_DATAS_CARTEIRAS', dadosUsuario.asyncPegarDatasCarteiras)
 };  

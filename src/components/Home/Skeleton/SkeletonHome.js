@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Text, 
   StyleSheet,
   ScrollView,
@@ -6,15 +6,18 @@ import {Text,
 } from 'react-native'
 
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import { ThemeContext } from 'styled-components';
 import globalStyles from '../../../styles/globalStyles';
 
 export default function Placehoder(props) {
+
+  const StyledTheme = useContext(ThemeContext)
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={[styles.container, {backgroundColor: StyledTheme.colors.background}]}>
         <SkeletonContent 
             containerStyle={styles.title}
-            boneColor="#121212"
-            highlightColor="#333333"
+            boneColor={StyledTheme.colors.skeletonBackground}
+            highlightColor={StyledTheme.colors.skeletonHighlight}
             isLoading={props.isLoading} 
             layout={[
               { key: 'title', 
@@ -24,8 +27,8 @@ export default function Placehoder(props) {
       />
       <SkeletonContent 
             containerStyle={styles.percentSwitch}
-            boneColor="#121212"
-            highlightColor="#333333"
+            boneColor={StyledTheme.colors.skeletonBackground}
+            highlightColor={StyledTheme.colors.skeletonHighlight}
             isLoading={props.isLoading} 
             layout={[
               { key: 'title', 
@@ -35,8 +38,8 @@ export default function Placehoder(props) {
       />
         <SkeletonContent 
           containerStyle={{ flexDirection: 'row', margin: 2}}
-          boneColor="#121212"
-          highlightColor="#333333"
+          boneColor={StyledTheme.colors.skeletonBackground}
+          highlightColor={StyledTheme.colors.skeletonHighlight}
           isLoading={props.isLoading}
           layout={[
               { key: 'box1', 
@@ -53,8 +56,8 @@ export default function Placehoder(props) {
         />
         <SkeletonContent 
           containerStyle={{ flexDirection: 'row', margin: 2, marginTop: -5}}
-          boneColor="#121212"
-          highlightColor="#333333"
+          boneColor={StyledTheme.colors.skeletonBackground}
+          highlightColor={StyledTheme.colors.skeletonHighlight}
           isLoading={props.isLoading}
           layout={[
               { key: 'box3', 
@@ -71,8 +74,8 @@ export default function Placehoder(props) {
         />
         <SkeletonContent 
             containerStyle={styles.benchmarkSwitch}
-            boneColor="#121212"
-            highlightColor="#333333"
+            boneColor={StyledTheme.colors.skeletonBackground}
+            highlightColor={StyledTheme.colors.skeletonHighlight}
             isLoading={props.isLoading} 
             layout={[
               { key: 'title', 
@@ -83,8 +86,8 @@ export default function Placehoder(props) {
       />
         <SkeletonContent 
             containerStyle={styles.carousel}
-            boneColor="#121212"
-            highlightColor="#333333"
+            boneColor={StyledTheme.colors.skeletonBackground}
+            highlightColor={StyledTheme.colors.skeletonHighlight}
             isLoading={props.isLoading} 
             layout={[
               { key: 'Carousel', 
@@ -94,8 +97,8 @@ export default function Placehoder(props) {
       />
         <SkeletonContent 
             containerStyle={styles.title}
-            boneColor="#121212"
-            highlightColor="#333333"
+            boneColor={StyledTheme.colors.skeletonBackground}
+            highlightColor={StyledTheme.colors.skeletonHighlight}
             isLoading={props.isLoading} 
             layout={[
               { key: 'Performance', 
@@ -107,8 +110,8 @@ export default function Placehoder(props) {
       />
         <SkeletonContent 
           containerStyle={{ flexDirection: 'row'}}
-          boneColor="#121212"
-          highlightColor="#333333"
+          boneColor={StyledTheme.colors.skeletonBackground}
+          highlightColor={StyledTheme.colors.skeletonHighlight}
           isLoading={props.isLoading}
           layout={[
               { key: 'ChartLine', 
@@ -121,8 +124,8 @@ export default function Placehoder(props) {
         />
         <SkeletonContent 
             containerStyle={styles.title}
-            boneColor="#121212"
-            highlightColor="#333333"
+            boneColor={StyledTheme.colors.skeletonBackground}
+            highlightColor={StyledTheme.colors.skeletonHighlight}
             isLoading={props.isLoading} 
             layout={[
               { key: 'Carteira', 
@@ -133,8 +136,8 @@ export default function Placehoder(props) {
       />
       <SkeletonContent 
           containerStyle={{ flexDirection: 'row'}}
-          boneColor="#121212"
-          highlightColor="#333333"
+          boneColor={StyledTheme.colors.skeletonBackground}
+          highlightColor={StyledTheme.colors.skeletonHighlight}
           isLoading={props.isLoading}
           layout={[
               { key: 'ChartPie', 
@@ -155,7 +158,7 @@ export default function Placehoder(props) {
       container: {
           height: 1500,
           width: globalStyles.dimensions.width,
-          backgroundColor: globalStyles.colors.backGround,
+          
           justifyContent: 'flex-start',
           alignItems: 'center',
       },

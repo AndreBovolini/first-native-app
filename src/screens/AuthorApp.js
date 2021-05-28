@@ -6,11 +6,15 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Keychain from 'react-native-keychain';
 import { useEffect } from 'react';
+import { connect } from 'react-redux';
+
+import { alteraViewMode } from '../store/actions/actions'
 
 const AuthOrApp = (props) => {
 
     useEffect(async() => {
         const userToken = await AsyncStorage.getItem('token');
+        const mode = await AsyncStorage.getItem('mode');
         let token = parseInt(userToken);
         let date = new Date().getTime();
 
@@ -43,6 +47,12 @@ const AuthOrApp = (props) => {
                 })
             }
         }
+
+        if (mode === 'light') {
+            props.alteraViewMode('light')
+        } else {
+            props.alteraViewMode('dark')
+        }
     },[]);
 
     return (
@@ -51,8 +61,16 @@ const AuthOrApp = (props) => {
         </View>
     )
 }
-
-export default AuthOrApp;
+const mapStateToProps = state => ({
+    stateCarteira: state.dates,
+  });
+  
+  const mapDispatchToProps = ( dispatch )=> ({
+    alteraViewMode: (mode) => dispatch(alteraViewMode(mode))
+  }) 
+    
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(AuthOrApp);
 
 const styles = StyleSheet.create({
     container: {

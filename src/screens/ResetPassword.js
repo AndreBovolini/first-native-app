@@ -10,7 +10,7 @@ import {
 
 import CustomInput from '../components/CustomInput';
 import CustomModal from '../components/ResetPassoword/Modal';
-
+import Icon from 'react-native-vector-icons/FontAwesome'
 import globalStyles from '../styles/globalStyles';
 
 const ResetPassword = ({navigation}) => {

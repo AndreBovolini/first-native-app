@@ -30,8 +30,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { connect, Provider } from 'react-redux';
 import store from '../store/index';
 
+import { alteraViewMode } from '../store/actions/actions'
 
-const Profile = ({navigation}) => {
+
+const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
     const [showAlteraSenha, setShowAlteraSenha] = useState(false);
     const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -72,6 +74,16 @@ const Profile = ({navigation}) => {
         })
     }
 
+    const handleAlteraMode = () => {
+      if (stateCarteira.mode === 'dark') {
+        alteraViewMode('light')
+        AsyncStorage.setItem('mode', 'light')
+      } else {
+        alteraViewMode('dark')
+        AsyncStorage.setItem('mode', 'dark')
+      }
+    }
+
   return (
     <SafeArea>
     <ScrollView contentContainerStyle={{height: height, width: globalStyles.dimensions.width,
@@ -107,6 +119,13 @@ const Profile = ({navigation}) => {
               <Text style={styles.buttonText}>Logout</Text>
             </View>
           </TouchableOpacity>
+        <TouchableOpacity onPress={handleAlteraMode}>
+          <View style={[styles.buttonDarkMode, {backgroundColor: StyledTheme.colors.invertedBackground}]}>
+            <Text style={{fontSize: 15, color: StyledTheme.colors.background}}>
+              {stateCarteira.mode === 'dark' ? 'LightMode' : 'DarkMode'}
+            </Text>
+          </View>
+        </TouchableOpacity>
           
       </ScrollView>
     </SafeArea>
@@ -114,8 +133,16 @@ const Profile = ({navigation}) => {
 };
 
 
+const mapStateToProps = state => ({
+  stateCarteira: state.dates,
+});
 
-export default Profile;
+const mapDispatchToProps = ( dispatch )=> ({
+  alteraViewMode: (mode) => dispatch(alteraViewMode(mode))
+}) 
+  
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 const styles = StyleSheet.create({
   container: {
@@ -174,6 +201,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonDarkMode: {
+    height: 50,
+    width: globalStyles.dimensions.width * 0.4,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
   },
   buttonText: {
     color: globalStyles.colors.fontColor,

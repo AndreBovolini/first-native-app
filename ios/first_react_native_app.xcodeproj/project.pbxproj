@@ -46,6 +46,7 @@
 		AA5C0CD24B750053139CFF0E /* Pods-first_react_native_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-first_react_native_app.release.xcconfig"; path = "Target Support Files/Pods-first_react_native_app/Pods-first_react_native_app.release.xcconfig"; sourceTree = "<group>"; };
 		B771796ADBDC5B14F423FB8C /* libPods-first_react_native_app.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-first_react_native_app.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F66D0D28265ED27E00B51968 /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Foundation.ttf; sourceTree = "<group>"; };
 		F69D8D9A264C21A700BC0F5B /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		F69D8D9B264C230400BC0F5B /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		F69D8D9C264C230400BC0F5B /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -185,6 +186,7 @@
 		F6A04BE62645C17B00EAB7E5 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				F66D0D28265ED27E00B51968 /* Foundation.ttf */,
 				F69D8DAB264C234700BC0F5B /* Ionicons.ttf */,
 				F69D8DA6264C230400BC0F5B /* AntDesign.ttf */,
 				F69D8DA9264C230400BC0F5B /* Entypo.ttf */,
@@ -509,20 +511,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6YY5QR8TT3;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = LMSBFG5D9U;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = first_react_native_app/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = comdinheiro.first.version.app.teste.flight;
 				PRODUCT_NAME = first_react_native_app;
 				SWIFT_OBJC_BRIDGING_HEADER = "first_react_native_app-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -537,19 +541,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6YY5QR8TT3;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = LMSBFG5D9U;
 				INFOPLIST_FILE = first_react_native_app/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = comdinheiro.first.version.app.teste.flight;
 				PRODUCT_NAME = first_react_native_app;
 				SWIFT_OBJC_BRIDGING_HEADER = "first_react_native_app-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

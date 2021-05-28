@@ -17,9 +17,7 @@ const AfterLogin = (props) => {
 
 
     useEffect(async () => {
-        let token = await AsyncStorage.getItem('token')
-        
-        
+        let token = await AsyncStorage.getItem('token')  
         props.pegarCarteirasUsuario(token)
         props.pegarInfosCarteiras(token)
        

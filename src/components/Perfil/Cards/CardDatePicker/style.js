@@ -53,8 +53,7 @@ export const BlocoExpandCor = styled.View`
 `;
 export const BlocoExpand = styled.View`
     background-color: ${props => props.theme.colors.firstLayer};
-    align-items: center;
-    flex-direction: row;
+    flex-direction: column;
     margin-top: -10px;
     margin-bottom: 0px;
     padding: 5px;

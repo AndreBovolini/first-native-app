@@ -19,7 +19,7 @@ import globalStyles from '../styles/globalStyles';
 
 import LineChartResumo from '../components/Home/LineChartResumo/LineChartResumo';
 import PieChartResumo from '../components/Home/PieChartResumo/PieChartResumo';
-import Filtro from '../components/Home/FiltroHome';
+import Filtro from '../components/Home/Filtro/FiltroHome';
 import Benchmarks from '../components/Home/Benchmarks';
 import CardCarousel from '../components/Performance/Portrait/CardCarousel'
 import TableRow from '../components/Home/Table/TableRow'
@@ -308,7 +308,7 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
               </LeftCard>
               <View>
                 <RightCard onPress={handleOpenModal}>
-                  <Icon name="bars" size={25} color={StyledTheme.colors.firstLayer}/>
+                  <Icon name="bars" size={25} color={StyledTheme.colors.invertedBackground}/>
                 </RightCard>
               </View>
             </TitleContainer>
