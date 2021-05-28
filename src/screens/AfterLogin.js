@@ -20,6 +20,12 @@ const AfterLogin = (props) => {
         let token = await AsyncStorage.getItem('token')  
         props.pegarCarteirasUsuario(token)
         props.pegarInfosCarteiras(token)
+
+        const carteiraDefault = await AsyncStorage.getItem('Carteira');
+        console.warn(carteiraDefault)
+        if (carteiraDefault) {
+            props.alteraCarteira(carteiraDefault)
+        }
        
         setShowModal(true)
     },[])

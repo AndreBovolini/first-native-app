@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 
 import Modal from 'react-native-modal';
@@ -15,24 +16,49 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras } from '../../store/actions/actions-dados-usuario'
 import { alteraCarteira } from '../../store/actions/actions'
+import CustomInput from '../CustomInput';
+import { ThemeContext } from 'styled-components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ModalEscolheCarteira = (props) => {
   const [carteiras, setCarteiras] = useState([])
-  const [modalHeight, setModalHeight] = useState(200)
+  const [todasCarteiras, setTodasCarteiras] = useState([])
+  const [modalHeight, setModalHeight] = useState(400)
+  const [inputCarteira, setInputCarteira] = useState('')
 
-  useEffect(() => {
-    let height = 200 + (carteiras.length * 40);
-    setModalHeight(height);
-  }, [])
+  const StyledTheme = useContext(ThemeContext)
+
+  let inicio = []
+
+  // useEffect(() => {
+  //   let height = 200 + (carteiras.length * 40);
+  //   setModalHeight(height);
+  // }, [])
 
   useEffect(() => {
     if (!props.isLoadingCarteirasUsuario && props.ResponseCarteirasUsuario !== []) {
-      setCarteiras(props.ResponseCarteirasUsuario)
+      setCarteiras(props.ResponseCarteirasUsuario);
+      setTodasCarteiras(props.ResponseCarteirasUsuario)
     }
   }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
 
-  function onSelectCarteira(carteira) {
+  async function onSelectCarteira(carteira) {
+    await AsyncStorage.setItem('Carteira', carteira);
     props.alteraCarteira(carteira)
+  }
+
+  function handleChangeText(carteira) {
+    setInputCarteira(carteira);ee
+    if (carteira !== '') {
+      let cartFiltro = [...todasCarteiras];
+      let filtradas = cartFiltro.filter(
+        carteiras => carteiras.substring(0, carteira.length).toLowerCase() === carteira.toLowerCase()
+      )
+      setCarteiras(filtradas)
+    } else {
+      filtradas = [...todasCarteiras]
+      setCarteiras(filtradas)
+    }
   }
   
   return (
@@ -41,6 +67,17 @@ const ModalEscolheCarteira = (props) => {
         <View
           style={[styles.modal, { height: modalHeight}]}>
           <Text style={styles.titleText}>Escolha uma carteira padrão:</Text>
+          <CustomInput
+              placeholder={'Carteira'}
+              value={inputCarteira}
+              onChangeText={carteira => handleChangeText(carteira)}
+              label={'Carteira:'}
+              style={{width: globalStyles.dimensions.width * 0.67, height: 40, color: StyledTheme.colors.background}}
+              keyboardType={'email-address'}
+              placeholderTextColor={'#aaa'}
+              type={'carteiradddd'}
+            />
+            <ScrollView>
             {
               carteiras.map((el, i) => {
                 return (
@@ -53,6 +90,7 @@ const ModalEscolheCarteira = (props) => {
                 )
               })
             }
+            </ScrollView>
         </View>
       </Modal>
     </View>

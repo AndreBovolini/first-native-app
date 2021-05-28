@@ -38,13 +38,13 @@ const BarChartHome = (props) => {
 
     infos = {
         legend: {
-          enabled: false,
-          textSize: 14,
-          form: "SQUARE",
-          formSize: 14,
-          xEntrySpace: 10,
-          yEntrySpace: 5,
-          wordWrapEnabled: true
+          enabled: true,
+          textSize: 10,
+          form: "CIRCLE",
+          horizontalAlignment: "CENTER",
+          verticalAlignment: "BOTTOM",
+          orientation: "HORIZONTAL",
+          formSize: 10,
         },
         data: {
           dataSets: dataSets,

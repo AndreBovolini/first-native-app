@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Platform
 } from 'react-native';
 
 import Modal from 'react-native-modal';
@@ -60,7 +61,7 @@ const Filtro = props => {
 
         
         <ModalCustom
-          style={{height: props.height, width: props.width}}>
+          style={{height: props.height, width: props.width, marginTop: Platform.OS === 'ios' ? 30 : 0}}>
           <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
           <CardDatePicker
                show={showDatePicker}
