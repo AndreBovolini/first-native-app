@@ -66,14 +66,12 @@ const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
       
        OneSignal.setNotificationOpenedHandler(notification => {
          console.log("OneSignal: notification opened:", notification);
+         navigation.navigate('Home')
        });
 
     },[])
 
-    const onOpened = (result) => {
-      console.log('Mensagem: ', result.notification.payload.body)
-      console.log('Result: ', result)
-    }
+  
 
     useEffect(() => {
         let increment = 0;
