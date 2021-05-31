@@ -38,6 +38,8 @@ import { connect } from 'react-redux';
 import BarChartHome from '../components/Home/BarChart';
 import { Container, LargeContainer, LeftCard, RightCard, TitleContainer, Title, CurrencyPress, Currency, ButtonView, ValueBoxContainer, ValueBoxContainerRow, Percent, PercentPress, BenchmarksButton, TitleNavigationContainer, TitleNavigation, ChartContainer, LineChartContainer } from './Home/style';
 import { ThemeContext } from 'styled-components/native';
+import { CommonActions } from '@react-navigation/native';
+import RNExitApp from 'react-native-exit-app';
 
 export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira}) => {
   const [percent, setPercent] = useState(true)
@@ -213,6 +215,52 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
           ]
 }
 
+
+useEffect(
+  () => {
+  if (Platform.OS === 'ios')  {
+    navigation.addListener('beforeRemove', (e) => {
+      console.log(e.data.action.payload)
+      // Prevent default behavior of leaving the screen
+      if (e.data.action.payload.name === 'Login') {
+        navigation.dispatch(e.data.action);
+      } else {
+      e.preventDefault();
+
+      // Prompt the user before leaving the screen
+      Alert.alert(
+        'Você deseja sair do app?',
+        'You have unsaved changes. Are you sure to discard them and leave the screen?',
+        [
+          { text: "Manter", style: 'cancel', onPress: () => {} },
+          { text: "Logout", style: 'cancel', onPress: () => {
+            AsyncStorage.removeItem('token');
+            navigation.dispatch(
+              CommonActions.navigate({
+                name: 'Login',
+                params: {
+                  credentials: false,
+                },
+              })
+            );
+        } },
+          {
+            text: 'Sair',
+            style: 'destructive',
+            // If the user confirmed, then we dispatch the action we blocked earlier
+            // This will continue the action that had triggered the removal of the screen
+            onPress: () => RNExitApp.exitApp(),
+          },
+        ]
+      )
+      }
+    })
+  }
+}
+  ,
+
+  []
+);
   const StyledTheme = useContext(ThemeContext)
 
   useEffect(() => {
@@ -259,7 +307,7 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
     );
 
     return () => backHandler.remove();
-  }, [])
+  }, [navigation])
   
 
   const handleOpenModal = () => {
