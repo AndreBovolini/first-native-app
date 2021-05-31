@@ -120,13 +120,6 @@ const Login = ({route, navigation}) => {
                 await AsyncStorage.setItem('token', response['access_token'].toString())
                 await AsyncStorage.setItem('expiration', response['expires_in'].toString())
   
-                try{
-                  await Keychain.setGenericPassword(
-                    inputUsuario,
-                    inputSenha
-                  )
-                } catch (error) {
-                }
                 navigation.navigate('AfterLogin');
               }
               )
