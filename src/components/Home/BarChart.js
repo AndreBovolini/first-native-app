@@ -113,6 +113,8 @@ const BarChartHome = (props) => {
             doubleTapToZoomEnabled={false}
             drawValueAboveBar={true}
             drawHighlightArrow={true}
+            chartDescription={{ text: '' }}
+            
           />
     )
 };

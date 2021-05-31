@@ -6,7 +6,8 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 
 import globalStyles from '../styles/globalStyles';
@@ -32,6 +33,7 @@ import store from '../store/index';
 
 import { alteraViewMode } from '../store/actions/actions'
 
+import OneSignal from 'react-native-onesignal';
 
 const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
     const [showAlteraSenha, setShowAlteraSenha] = useState(false);
@@ -40,6 +42,38 @@ const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
     const [height, setHeight] = useState(630);
 
     const StyledTheme = useContext(ThemeContext)
+
+    useEffect(()=> {
+      OneSignal.setAppId('9c34a82a-2fc6-4d7a-bb50-10512cbba842')
+      OneSignal.promptForPushNotificationsWithUserResponse(response => {
+        console.log("Prompt response:", response);
+      });
+
+      OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+        console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+        let notification = notificationReceivedEvent.getNotification();
+        console.log("notification: ", notification);
+        const data = notification.additionalData
+        console.log("additionalData: ", data);
+        const button1 = {
+           text: "Cancel",
+           onPress: () => { notificationReceivedEvent.complete(); },
+           style: "cancel"
+        };
+        const button2 = { text: "Complete", onPress: () => { notificationReceivedEvent.complete(notification); }};
+        Alert.alert("Complete notification?", "Test", [ button1, button2], { cancelable: true });
+       });
+      
+       OneSignal.setNotificationOpenedHandler(notification => {
+         console.log("OneSignal: notification opened:", notification);
+       });
+
+    },[])
+
+    const onOpened = (result) => {
+      console.log('Mensagem: ', result.notification.payload.body)
+      console.log('Result: ', result)
+    }
 
     useEffect(() => {
         let increment = 0;
@@ -93,18 +127,6 @@ const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
             <Image source={profile} style={styles.profileImage}/>
             <TextUser> Olá, Usuário </TextUser>
         </ContainerInfos> 
-        {/* <Text>Período de Análise:</Text>
-        <View style={styles.containerDatas}>
-        <Ionicons name={'calendar'} size={20} color={globalStyles.colors.fontColor} />
-            <View>
-                <Text style={styles.textLabelData}>Data inicial:</Text>
-                <Text style={styles.textData}>{dataInicial.toLocaleDateString()}</Text>
-            </View>
-            <View>
-                <Text style={styles.textLabelData}>Data Final:</Text>
-                <Text style={styles.textData}>{dataFinal.toLocaleDateString()}</Text> 
-            </View>
-        </View> */}
         <View>
               <Provider store={store}>
               <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
