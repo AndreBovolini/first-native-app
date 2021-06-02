@@ -34,6 +34,7 @@ import Table from '../components/Performance/Portrait/Table/Table';
 import { ContainerHeader, Title, ContainerTableLandscape, ContainerTable, ChartContainer, ContainerSelector, TextoHeader, ContainerSelectorTable } from './Performance/styles'
 import { ThemeContext } from 'styled-components';
 
+import LineChartKit from '../components/Performance/Portrait/LineChart/LineChartKit'
 const Performance = (props) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
@@ -305,6 +306,9 @@ const Performance = (props) => {
                 /> :
                 null}
             </ChartContainer>
+            <View>
+              <LineChartKit/>
+            </View>
             <ContainerSelectorTable>
       {anos.map((el, i) => {
           return (

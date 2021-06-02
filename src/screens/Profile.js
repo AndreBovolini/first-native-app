@@ -50,6 +50,7 @@ const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
       });
 
       OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+        // o que executar antes de abrir a notificação
         console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
         let notification = notificationReceivedEvent.getNotification();
         console.log("notification: ", notification);
@@ -65,8 +66,9 @@ const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
        });
       
        OneSignal.setNotificationOpenedHandler(notification => {
+         // o que executar quando abrir a notificação
          console.log("OneSignal: notification opened:", notification);
-         navigation.navigate('Home')
+         
        });
 
     },[])
