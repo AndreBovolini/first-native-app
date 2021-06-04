@@ -14,7 +14,7 @@ export const ModalCustom = styled.View`
     border-bottom-left-radius: 10px;
     padding-bottom: 10px;
     padding-right: 5px;
-    background-color: ${props => props.theme.colors.tableColor};
+    background-color: ${props => props.theme.colors.background};
 `;
 
 export const Button = styled.View`
