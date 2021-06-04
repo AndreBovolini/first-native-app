@@ -306,9 +306,9 @@ const Performance = (props) => {
                 /> :
                 null}
             </ChartContainer>
-            <View>
+            {/* <View>
               <LineChartKit/>
-            </View>
+            </View> */}
             <ContainerSelectorTable>
       {anos.map((el, i) => {
           return (

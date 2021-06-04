@@ -58,6 +58,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   const [graficoCarrossel, setGraficoCarrossel] = useState(3)
   const [tipoCarrossel, setTipoCarrossel] = useState('ativo')
   const [accepted, setAccepted] = useState('')
+  const [teste, setTeste] = useState('')
 
   const dadosTable = {
     table1: [
@@ -220,7 +221,12 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
 
   useEffect(() => {
     OneSignal.setAppId('9c34a82a-2fc6-4d7a-bb50-10512cbba842')
-    OneSignal.sendTag("user_type", accepted)
+    // OneSignal.sendTag("user_type", accepted)
+    OneSignal.sendTags({
+      "user_teste":teste,
+      "user_type":accepted,
+      
+    })
     OneSignal.promptForPushNotificationsWithUserResponse(response => {
       console.log("Prompt response:", response);
     });
@@ -247,7 +253,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
 
     });
 
-  }, [accepted])
+  }, [accepted, teste])
 
   useEffect(
     () => {
@@ -378,9 +384,11 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   const handleAccept = (state) => {
     if (accepted === '') {
       setAccepted(state)
+      setTeste('accepted')
       console.warn('Recebimento ativado')
     } else {
       setAccepted(state)
+      setTeste('')
       console.warn('Recebimento desativado')
     }
 
