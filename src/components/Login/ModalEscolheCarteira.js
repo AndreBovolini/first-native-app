@@ -43,9 +43,7 @@ const ModalEscolheCarteira = (props) => {
     }
   }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
 
-  function onSelectCarteira(carteira) {
-    setInputCarteira(carteira)
-  }
+  
   const handleSalvarPadrao = () => {
     setIsPadrao(!isPadrao)
   }
@@ -76,24 +74,7 @@ const ModalEscolheCarteira = (props) => {
       <Modal isVisible={props.visible}>
         <View
           style={[styles.modal, { height: modalHeight}]}>
-            <View style={{flexDirection: 'row'}}>
-            <CustomInput
-              placeholder={'Selecione uma Carteira'}
-              value={inputCarteira}
-              onChangeText={carteira => handleChangeText(carteira)}
-              label={''}
-              style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: StyledTheme.colors.backgroundColor}}
-              // keyboardType={'email-address'}
-              placeholderTextColor={'#808080'}
-              type={'usuário'}
-            />
-            <TouchableOpacity onPress={() => handleSendInfo(inputCarteira)} style={{backgroundColor: '#2A0DB8', height: 40, width: 40, borderRadius: 10, marginTop: 19, marginLeft: 10}}>
-              <Text style={{fontSize: 18, color: '#FFF', fontWeight: 'bold', alignSelf:'center', justifyContent: 'center', marginTop: 7}}>
-                OK
-              </Text>
-            </TouchableOpacity>
-            </View>
-            <View style={{flexDirection: 'row', marginTop: -10, marginLeft: -40}}>
+            <View style={{flexDirection: 'row', marginTop: 10, marginLeft: -40}}>
               <TouchableOpacity onPress={handleSalvarPadrao}>
                 {isPadrao? 
                 <Ionicons name="checkbox" size={25} color={'#FFF'}/>
@@ -103,11 +84,24 @@ const ModalEscolheCarteira = (props) => {
               </TouchableOpacity>
               <Text style={styles.titleText}>Salvar como padrão</Text>
             </View>
+            <View style={{flexDirection: 'row'}}>
+            <CustomInput
+              placeholder={'Selecione uma Carteira'}
+              value={inputCarteira}
+              onChangeText={carteira => handleChangeText(carteira)}
+              label={''}
+              style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: '#FFF'}}
+              // keyboardType={'email-address'}
+              placeholderTextColor={'#808080'}
+              type={'usuário'}
+            />
+            </View>
+            
             <ScrollView>
             {
               carteiras.map((el, i) => {
                 return (
-                  <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => onSelectCarteira(el)}>
+                  <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => handleSendInfo(el)}>
                     <View style={styles.buttonView}>
                         <Text style={styles.buttonText}>{el}</Text>
                         <Ionicons name={'wallet'} size={18} color={globalStyles.colors.fontColor} />

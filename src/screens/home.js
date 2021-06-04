@@ -12,6 +12,7 @@ import {
   Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import ValueBox from '../components/Home/ValueBox/valueBox';
@@ -41,20 +42,20 @@ import { ThemeContext } from 'styled-components/native';
 import { CommonActions } from '@react-navigation/native';
 import RNExitApp from 'react-native-exit-app';
 
+import OneSignal from 'react-native-onesignal';
+
 export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira}) => {
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState (false)
   const [showModal, setShowModal] = useState(false);
   const [showBench, setShowBench] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [] = useState('');
-  const [] = useState('');
   const [dadosLineChart, setDadosLineChart] = useState({})
   const [dadosPie, setDadosPie] = useState({})
-  const [selectedEntry, setSelectedEntry] = useState(null);
-  const [selecionadoPie, setSelecionadoPie] = useState({});
   const [graficoCarrossel, setGraficoCarrossel] = useState(3)
-  const [tipoCarrossel, setTipoCarrossel] = useState('ativo')
+  const [tipoCarrossel, setTipoCarrossel] = useState('ativo');
+  const [accepted, setAccepted] = useState(false)
+  const [acceptedProgrammed, setAcceptedProgrammed] = useState(false)
 
   const dadosTable = {
             table1: [
@@ -215,6 +216,48 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
           ]
 }
 
+useEffect(()=> {
+  OneSignal.setAppId('9c34a82a-2fc6-4d7a-bb50-10512cbba842');
+  OneSignal.sendTags({
+    "user_teste": acceptedProgrammed ? 'accepted' : null,
+    "user_type": accepted ? 'acceptedNotify' : null,
+  })
+  OneSignal.setLocationShared(false);
+  OneSignal.promptForPushNotificationsWithUserResponse(response => {
+    console.log("Prompt response:", response);
+  });
+
+  OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+    console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+    let notification = notificationReceivedEvent.getNotification();
+    console.log("notification: ", notification);
+    const data = notification.additionalData
+    console.log("additionalData: ", data);
+    const button1 = {
+       text: "Cancel",
+       onPress: () => { notificationReceivedEvent.complete(); },
+       style: "cancel"
+    };
+    const button2 = { text: "Complete", onPress: () => { notificationReceivedEvent.complete(notification); }};
+    Alert.alert("Complete notification?", "Test", [ button1, button2], { cancelable: true });
+   });
+  
+   OneSignal.setNotificationOpenedHandler(notification => {
+     console.log("OneSignal: notification opened:", notification);
+     navigation.navigate('Home')
+   });
+
+},[acceptedProgrammed, accepted])
+
+
+useEffect(async () => {
+  let acceptPush = await AsyncStorage.getItem('Push');
+  let acceptPushProgrammed = await AsyncStorage.getItem('PushProgramada');
+  console.warn(acceptPush, acceptPushProgrammed)
+  setAccepted( acceptPush === 'true' ? true :  false);
+  setAcceptedProgrammed( acceptPushProgrammed === 'true' ? true :  false);
+}, [])
+
 
 useEffect(
   () => {
@@ -340,6 +383,21 @@ useEffect(
     setGraficoCarrossel(index+1)
   }
 
+  async function handleAccept() {
+    console.warn(accepted)
+    await AsyncStorage.setItem('Push', ( !accepted ? 'true' : 'false'))
+    setAccepted(!accepted) 
+    if (accepted === true) {
+      setAcceptedProgrammed(false)
+      await AsyncStorage.setItem('PushProgramada', ('false'))
+    }
+    }	
+
+  async function handleAcceptProgrammed() {
+    await AsyncStorage.setItem('PushProgramada', ( !acceptedProgrammed ? 'true' : 'false'))
+    setAcceptedProgrammed(!acceptedProgrammed)
+  }
+
   // console.log('INDICE ' + index)
     return (
     <LargeContainer>
@@ -348,7 +406,14 @@ useEffect(
         (<ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', height: 1650, width: globalStyles.dimensions.width,
         backgroundColor: StyledTheme.colors.background}}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Filtro visible={showModal} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseModal}/>
+            <Filtro visible={showModal} 
+            accepted={accepted}
+            acceptedProgrammed={acceptedProgrammed}
+            handleAcceptProgrammed={handleAcceptProgrammed} 
+            handleAccept={handleAccept} minHeight={250} 
+            width={globalStyles.dimensions.width} buttonAction={handleCloseModal} 
+            
+            />
             </View>
             <TitleContainer>
               <LeftCard>

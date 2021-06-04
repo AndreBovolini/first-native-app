@@ -28,6 +28,6 @@ export const Button = styled.View`
 `;
 
 export const ButtonText = styled.Text`
-  color: ${props => props.theme.colors.tableColor};
+  color: #FFF;
   font-size: 20px;
 `;

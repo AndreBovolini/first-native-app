@@ -14,12 +14,16 @@ target 'first_react_native_app' do
 
   pod 'RNCharts', :path => '../node_modules/react-native-charts-wrapper'
 
+  pod 'OneSignal', '>= 3.0.0', '< 4.0'
+
 
 
   target 'first_react_native_appTests' do
     inherit! :complete
     # Pods for testing
   end
+
+ 
 
   # Enables Flipper.
   #
@@ -31,3 +35,8 @@ target 'first_react_native_app' do
   #   react_native_post_install(installer)
   # end
 end
+
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignal', '>= 3.0', '< 4.0'
+end
+

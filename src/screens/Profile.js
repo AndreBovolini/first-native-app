@@ -43,33 +43,33 @@ const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
 
     const StyledTheme = useContext(ThemeContext)
 
-    useEffect(()=> {
-      OneSignal.setAppId('9c34a82a-2fc6-4d7a-bb50-10512cbba842')
-      OneSignal.promptForPushNotificationsWithUserResponse(response => {
-        console.log("Prompt response:", response);
-      });
+    // useEffect(()=> {
+    //   OneSignal.setAppId('9c34a82a-2fc6-4d7a-bb50-10512cbba842')
+    //   OneSignal.promptForPushNotificationsWithUserResponse(response => {
+    //     console.log("Prompt response:", response);
+    //   });
 
-      OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
-        console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
-        let notification = notificationReceivedEvent.getNotification();
-        console.log("notification: ", notification);
-        const data = notification.additionalData
-        console.log("additionalData: ", data);
-        const button1 = {
-           text: "Cancel",
-           onPress: () => { notificationReceivedEvent.complete(); },
-           style: "cancel"
-        };
-        const button2 = { text: "Complete", onPress: () => { notificationReceivedEvent.complete(notification); }};
-        Alert.alert("Complete notification?", "Test", [ button1, button2], { cancelable: true });
-       });
+    //   OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+    //     console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+    //     let notification = notificationReceivedEvent.getNotification();
+    //     console.log("notification: ", notification);
+    //     const data = notification.additionalData
+    //     console.log("additionalData: ", data);
+    //     const button1 = {
+    //        text: "Cancel",
+    //        onPress: () => { notificationReceivedEvent.complete(); },
+    //        style: "cancel"
+    //     };
+    //     const button2 = { text: "Complete", onPress: () => { notificationReceivedEvent.complete(notification); }};
+    //     Alert.alert("Complete notification?", "Test", [ button1, button2], { cancelable: true });
+    //    });
       
-       OneSignal.setNotificationOpenedHandler(notification => {
-         console.log("OneSignal: notification opened:", notification);
-         navigation.navigate('Home')
-       });
+    //    OneSignal.setNotificationOpenedHandler(notification => {
+    //      console.log("OneSignal: notification opened:", notification);
+    //      navigation.navigate('Home')
+    //    });
 
-    },[])
+    // },[])
 
   
 

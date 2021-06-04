@@ -56,14 +56,16 @@ const Login = ({route, navigation}) => {
     )
   }
 
-  async function handleLogin() {
+  async function handleLogin() { 
    //await AsyncStorage.removeItem('Carteira')
       if (inputUsuario !== '') {
           if (inputSenha !== '') {
             comdadoLogin(inputUsuario, inputSenha).then( async (response) => {
-            
+               if (response.allowed.includes('COMAPP001')) {
+              let fixedDate = new Date(response.expires_in.replace('-', '/').replace('-', '/') + ' -0300');
               await AsyncStorage.setItem('token', response['access_token'].toString())
-              await AsyncStorage.setItem('expiration', response['expires_in'].toString())
+              await AsyncStorage.setItem('expiration', fixedDate.getTime().toString())
+              await AsyncStorage.setItem('token_type', response['token_type'])
               setInputSenha('');
               setInputUsuario('')
 
@@ -75,6 +77,10 @@ const Login = ({route, navigation}) => {
               } catch (error) {
               }
               navigation.navigate('AfterLogin');
+            } else {
+              handleErrologin();
+            }
+            
             }
             )
             .catch(error => {
@@ -114,13 +120,19 @@ const Login = ({route, navigation}) => {
       
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {
-              console.warn(credentials)
+              //console.warn(credentials)
               comdadoLogin(credentials.username, credentials.password).then( async (response) => {
             
-                await AsyncStorage.setItem('token', response['access_token'].toString())
-                await AsyncStorage.setItem('expiration', response['expires_in'].toString())
-  
-                navigation.navigate('AfterLogin');
+                if (response.allowed.includes('COMAPP001')) {
+                  let fixedDate = new Date(response.expires_in.replace('-', '/').replace('-', '/') + ' -0300');
+                  await AsyncStorage.setItem('token', response['access_token'].toString())
+                  await AsyncStorage.setItem('expiration', fixedDate.getTime().toString())
+                  await AsyncStorage.setItem('token_type', response['token_type'])
+    
+                  navigation.navigate('AfterLogin');
+                } else {
+                  handleErrologin();
+                }
               }
               )
               .catch(error => {
