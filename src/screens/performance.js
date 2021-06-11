@@ -321,6 +321,7 @@ const Performance = (props) => {
               labels={dadosLineChartLand.labels}
               ativos={dadosLineChartLand.keysAtivos}
               periodo={periodoSelecionado}
+              
             />
             : null}
       </PerformanceLandscape>
@@ -365,6 +366,7 @@ const Performance = (props) => {
               labels={dadosLineChart.labels}
               ativos={dadosLineChart.keysAtivos}
               periodo={periodoSelecionado}
+              labelTool={dadosLineChart.labelTool}
             />
             : 
             null}

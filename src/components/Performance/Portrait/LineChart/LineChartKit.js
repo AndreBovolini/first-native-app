@@ -97,8 +97,18 @@ const LineChartKit = props => {
         ,
         tooltip: {
             trigger: "axis",
-            backgroundColor: 'rgba(50,50,50,0.9)'
-            
+            backgroundColor: 'rgba(50,50,50,0.9)',
+            // formatter: '{a}: {b} %'
+            // formatter: '{a0}: {c0} <br /> {a1}: {c1}'
+            formatter: function (params) {
+                return  (
+                    'Data: ' + params[0].name + '<br />' +
+                    `<span style="height: 25px; width: 25px; background-color: ${params[0].color}; border-radius: 50%; display: inline-block;"></span>` +
+                     params[0].seriesName + ': ' + params[0].value +' %' + '<br />' 
+                    +
+                    params[1].seriesName + ': ' + params[1].value + ' %'
+                    )
+            }
         },
         legend: {
             data: props.ativos,
@@ -151,7 +161,7 @@ const LineChartKit = props => {
     return (
         <SafeAreaView 
                 style={{ height: 370, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
-               >
+               key={Math.random()}>
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
 
             <ECharts

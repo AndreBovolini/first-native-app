@@ -97,7 +97,10 @@ export const dataLineChart = (response, periodoSelecionado) => {
         values = keysAtivos.map((ativo, i) => {
             const valores = filteredData.map((el, i) => {
                 if (ativo !== 'PL') {
-                    return el[ativo]
+                    return {
+                        name: el.data,
+                        value: el[ativo]
+                    }
                 }
             })
             return {
@@ -110,7 +113,9 @@ export const dataLineChart = (response, periodoSelecionado) => {
             return el.data
         })
     }
-
+    
+    const labelTool = [...linelabes]
+    console.log('tool',labelTool)
     const label = [...linelabes].reverse()
     let reverseArray = label.map((el) => {
         return transformaClasseAtivo(SiglaMes(), el.slice(3, 5)) + '/' + '20' + el.slice(8, 10)
@@ -128,7 +133,7 @@ export const dataLineChart = (response, periodoSelecionado) => {
     meuArray = meuArray.reverse()
 
     const labels = [...meuArray]
-
+    console.log('aaaa',values[0].dataset)
     const dataSets = values.map((el, i) => {
         return {
             symbol: 'none',
@@ -142,6 +147,7 @@ export const dataLineChart = (response, periodoSelecionado) => {
     return ({
         dataSets,
         labels,
-        keysAtivos
+        keysAtivos,
+        labelTool
     })
 }
