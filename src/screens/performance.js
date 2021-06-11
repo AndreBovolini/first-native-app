@@ -18,16 +18,18 @@ import SelectPeriod from '../components/Performance/SeletorPeriodos/SelectPeriod
 import PerformanceLandscape, { PerformanceTableLandscape } from './performanceLandscape';
 
 import {
-    dados,
+  dados,
 } from '../data/data';
 
 import { resposta2 } from '../data/dataTeste'
 import LineChartLandscape from '../components/Performance/Landscape/LineChart/LineChartLandscape';
 
-import { dataLineChartPortrait} from '../components/Performance/Portrait/LineChart/dataLineChartPortrait'
-import { dataLineChartLandscape} from '../components/Performance/Landscape/LineChart/dataLineChartLandscape'
+import { dataLineChartPortrait } from '../components/Performance/Portrait/LineChart/dataLineChartPortrait'
+import { dataLineChartLandscape } from '../components/Performance/Landscape/LineChart/dataLineChartLandscape'
+import { dataLineChart } from '../components/Performance/Portrait/LineChart/dataLineChart'
+import { dataLineChartLand } from '../components/Performance/Landscape/LineChart/dataLineChartLand'
 
-import {connect } from 'react-redux'
+import { connect } from 'react-redux'
 import TableRow from '../components/Performance/Portrait/Table/TableRow';
 import Table from '../components/Performance/Portrait/Table/Table';
 
@@ -35,6 +37,10 @@ import { ContainerHeader, Title, ContainerTableLandscape, ContainerTable, ChartC
 import { ThemeContext } from 'styled-components';
 
 import LineChartKit from '../components/Performance/Portrait/LineChart/LineChartKit'
+import Orientation, {
+  useDeviceOrientationChange
+} from 'react-native-orientation-locker';
+import LineChartLand from '../components/Performance/Landscape/LineChart/LineChartLand';
 const Performance = (props) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
@@ -45,36 +51,64 @@ const Performance = (props) => {
   const [labels, setLabels] = useState([]);
   const [granularity, setGranularity] = useState(50)
   const [anoSelecionado, setAnoSelecionado] = useState('2021');
-  const [periodoSelecionado, setPeriodoSelecionado] = useState('Tudo');
+  const [periodoSelecionado, setPeriodoSelecionado] = useState('2021');
   const [indiceAno, setIndiceAno] = useState(0);
   const [orientation, setOrientation] = useState('portrait')
   const [scrollPosition, setScrollPosition] = useState(0)
   const [dadosLineChartPortrait, setDadosLineChartPortrait] = useState({})
   const [dadosLineChartLandscape, setDadosLineChartLandscape] = useState({})
+  const [dadosLineChart, setDadosLineChart] = useState({})
+  const [dadosLineChartLand, setDadosLineChartLand] = useState({})
+  const [orientacao, setOrientacao] = useState('portrait')
 
-  const StyledTheme = useContext(ThemeContext)
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
+
+  console.log('wid ', windowWidth, 'hei ', windowHeight)
+
+  console.log(orientacao, 'ici')
+  useDeviceOrientationChange((o) => {
+    setOrientacao(o)
+    console.log('uipa ', orientacao)
+  });
 
   useEffect(() => {
-    Dimensions.addEventListener('change', ({ window: { width, height}}) => {
-      if (width < height) {
-        setOrientation('portrait')
-        setScrollPosition(0)
-      } else {
-        setOrientation('landscape')
-      }
-    })
-  }, [])
-
-    function handleSelecionaAno(ano) {
-        setAnoSelecionado(ano);
-        let indice = anos.indexOf(ano);
-        setIndiceAno(indice);
+    if (orientacao.toLowerCase().includes('portrait')) {
+      setOrientation('portrait')
+      setScrollPosition(0)
+    } else {
+      setOrientation('landscape')
     }
+  }, [orientacao])
 
-    function handleSelecionaPeriodo(periodo) {
-      setSelectedEvent(null);
-      setSelecionadoLine({});
-      setPeriodoSelecionado(periodo)
+
+  const StyledTheme = useContext(ThemeContext)
+  console.log('orientation ', orientation)
+
+  // useEffect(() => {
+  //   console.log('AAAAAAAAAAAAAAAAA')
+  //   Dimensions.addEventListener('change', ({ window: { width, height } }) => {
+  //     console.log('wid ', width, 'height', height)
+  //     if (width < height) {
+  //       console.log('HELLLLLLLLLLLLLLLO')
+  //       setOrientation('portrait')
+  //       setScrollPosition(0)
+  //     } else {
+  //       setOrientation('landscape')
+  //     }
+  //   })
+  // }, [])
+
+  function handleSelecionaAno(ano) {
+    setAnoSelecionado(ano);
+    let indice = anos.indexOf(ano);
+    setIndiceAno(indice);
+  }
+
+  function handleSelecionaPeriodo(periodo) {
+    setSelectedEvent(null);
+    setSelecionadoLine({});
+    setPeriodoSelecionado(periodo)
   }
 
   function handleScroll(event) {
@@ -89,37 +123,37 @@ const Performance = (props) => {
 
   function oneMonthPeriod(value) {
     let date = Date.parse(alteraDataPTParaEN(value.data));
-    let dataAtual = new Date().getTime() - (1000*60*60*24*31);
+    let dataAtual = new Date().getTime() - (1000 * 60 * 60 * 24 * 31);
     return date >= dataAtual
   }
 
   function threeMonthPeriod(value) {
     let date = Date.parse(alteraDataPTParaEN(value.data));
-    let dataAtual = new Date().getTime() - (1000*60*60*24*92);
+    let dataAtual = new Date().getTime() - (1000 * 60 * 60 * 24 * 92);
     return date >= dataAtual
   }
 
   function oneYearPeriod(value) {
     let date = Date.parse(alteraDataPTParaEN(value.data));
-    let dataAtual = new Date().getTime() - (1000*60*60*24*365);
+    let dataAtual = new Date().getTime() - (1000 * 60 * 60 * 24 * 365);
     return date >= dataAtual
   }
 
   function thisYear(value) {
-    let year =  value.data.slice(-4);
+    let year = value.data.slice(-4);
     return year === periodoSelecionado
   }
 
-    const keysDatas = Object.keys(resposta2.grafico5.Carteira)
-    const respostaDados = keysDatas.map((el,i) => {
-      return {
+  const keysDatas = Object.keys(resposta2.grafico5.Carteira)
+  const respostaDados = keysDatas.map((el, i) => {
+    return {
       data: el,
       Carteira: resposta2.grafico5.Carteira[el] ? resposta2.grafico5.Carteira[el] : 0,
       CDI: resposta2.grafico5.CDI[el] ? resposta2.grafico5.CDI[el] : 0,
       PL: resposta2.grafico5.PL[el] ? resposta2.grafico5.PL[el] : 0,
       baseline: '0'
-       }
-   })
+    }
+  })
 
   useEffect(() => {
 
@@ -128,15 +162,15 @@ const Performance = (props) => {
       case '1m':
         filteredData = respostaDados.filter(oneMonthPeriod);
         setGranularity(7)
-      break;
+        break;
       case '3m':
         filteredData = respostaDados.filter(threeMonthPeriod);
         setGranularity(25)
-      break;
+        break;
       case '2021':
         filteredData = respostaDados.filter(thisYear);
         setGranularity(40)
-      break;
+        break;
       case '12m':
         setGranularity(50)
         filteredData = respostaDados.filter(oneYearPeriod);
@@ -144,40 +178,40 @@ const Performance = (props) => {
       case 'Tudo':
         filteredData = respostaDados;
         setGranularity(150)
-      break;
+        break;
     };
 
     let keysAtivos = Object.keys(resposta2.grafico5)
     const ativosRight = ['PL']
     setDependencyRight(ativosRight)
 
-    ativosRight.forEach((el)=> {
+    ativosRight.forEach((el) => {
       keysAtivos.splice(keysAtivos.indexOf(el), 1);
       keysAtivos.unshift(el)
-   })
-    
+    })
+
 
     if (filteredData !== []) {
-    let values = keysAtivos.map((ativo,i) => {
-      const valores = filteredData.map((el,i) => {
+      let values = keysAtivos.map((ativo, i) => {
+        const valores = filteredData.map((el, i) => {
+          return {
+            y: parseFloat(el[ativo]),
+            x: parseFloat(i),
+            marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%'
+              + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
+          }
+        })
         return {
-          y: parseFloat(el[ativo]),
-          x: parseFloat(i),
-          marker: 'Carteira: ' + parseFloat(el.Carteira, 3) + '%' 
-          + ' CDI: ' + parseFloat(el.CDI, 3) + '%',
-      }
+          label: ativo,
+          dataset: valores
+        }
       })
-      return {
-        label: ativo,
-        dataset: valores
-      }
-    })
-    const linelabes = filteredData.map((el, i) => {
-      return el.data
-  })
-    setValues(values)
-    setLabels(linelabes)
-  };
+      const linelabes = filteredData.map((el, i) => {
+        return el.data
+      })
+      setValues(values)
+      setLabels(linelabes)
+    };
   }, [periodoSelecionado])
 
   const periodos = ['1m', '3m', '12m', '2021', 'Tudo'];
@@ -190,10 +224,10 @@ const Performance = (props) => {
   const random2 = 'rgb(75, 40, 128)';
   const colors = [random, greenBlue, petrel]
 
-  
 
-   const dataSets = values.map((el,i) => {
-     return {
+
+  const dataSets = values.map((el, i) => {
+    return {
       values: el.dataset,
       label: el.label,
       config: {
@@ -208,119 +242,145 @@ const Performance = (props) => {
         color: processColor(colors[i]),
         valueTextSize: 15,
         axisDependency: (dependencyRight.includes(el.label) ?
-          'RIGHT' : 'LEFT' ),
+          'RIGHT' : 'LEFT'),
         drawFilled: (dependencyRight.includes(el.label) ?
-          true : false ),
+          true : false),
         fillGradient: {
           colors: [processColor(random), processColor(random2)],
-          positions:[0, 0.5],
+          positions: [0, 0.5],
           angle: 90,
           orientation: "TOP_BOTTOM",
-          
+
         },
         fillAlpha: 4000
 
       },
     }
-   })
+  })
 
-   const data = {
-     dataSets
-   }
-  
+  const data = {
+    dataSets
+  }
+
 
   useEffect(() => {
-    
+
     if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== []) {
-      const dadosLineChartPortrait = dataLineChartPortrait(props.responseDadosHomePage,periodoSelecionado);
+      const dadosLineChartPortrait = dataLineChartPortrait(props.responseDadosHomePage, periodoSelecionado);
       setDadosLineChartPortrait(dadosLineChartPortrait)
-      const dadosLineChartLandscape = dataLineChartLandscape(props.responseDadosHomePage,periodoSelecionado);
+      const dadosLineChartLandscape = dataLineChartLandscape(props.responseDadosHomePage, periodoSelecionado);
       setDadosLineChartLandscape(dadosLineChartLandscape);
+      const dadosLineChart = dataLineChart(props.responseDadosHomePage, periodoSelecionado);
+      setDadosLineChart(dadosLineChart)
+      const dadosLineChartLand = dataLineChartLand(props.responseDadosHomePage, periodoSelecionado)
+      setDadosLineChartLand(dadosLineChartLand)
     }
   }, [periodoSelecionado, props.isLoadingDadosHomePage, props.responseDadosHomePage])
 
+  console.log('linechart ', dadosLineChart)
+  console.log('datasets ', dadosLineChart.dataSets)
+  
 
   if (orientation === 'landscape') {
     if (scrollPosition > 390) {
       return (
         <PerformanceTableLandscape>
-          <View style={{height: globalStyles.dimensions.width *0.9, borderRadius: 20,  width: globalStyles.dimensions.height * 0.9}}>
-          <ContainerTableLandscape>
-            <ContainerHeader>
-            <TextoHeader>Período</TextoHeader>
-              <TextoHeader>Carteira</TextoHeader>
-              <TextoHeader>IPCADP</TextoHeader>
-              <TextoHeader>%IPCADP</TextoHeader>
-            </ContainerHeader>
-            <ScrollView nestedScrollEnabled = {true}>
-            {dados[indiceAno].response.map((el, i) => {
-                return (
-                    <TableRow key={i} index={i} col1={meses[i]} col2={el.carteira} col3={el.IPCADP} col4={el.IPCADPP}/>
-                )
-            })}
-            </ScrollView>
-          </ContainerTableLandscape>
+          <View style={{ height: globalStyles.dimensions.width * 0.9, borderRadius: 20, width: globalStyles.dimensions.height * 0.9 }}>
+            <ContainerTableLandscape>
+              <ContainerHeader>
+                <TextoHeader>Período</TextoHeader>
+                <TextoHeader>Carteira</TextoHeader>
+                <TextoHeader>IPCADP</TextoHeader>
+                <TextoHeader>%IPCADP</TextoHeader>
+              </ContainerHeader>
+              <ScrollView nestedScrollEnabled={true}>
+                {dados[indiceAno].response.map((el, i) => {
+                  return (
+                    <TableRow key={i} index={i} col1={meses[i]} col2={el.carteira} col3={el.IPCADP} col4={el.IPCADPP} />
+                  )
+                })}
+              </ScrollView>
+            </ContainerTableLandscape>
           </View>
         </PerformanceTableLandscape>
       )
     }
     return (
       <PerformanceLandscape>
-        <LineChartLandscape
-        data={dadosLineChartLandscape.data}
-        labels={dadosLineChartLandscape.labels}
-        granularity={dadosLineChartLandscape.granularity}
-        number={dadosLineChartLandscape.number}
-        symbol={dadosLineChartLandscape.symbol}
-        />
+        {/* <LineChartLandscape
+          data={dadosLineChartLandscape.data}
+          labels={dadosLineChartLandscape.labels}
+          granularity={dadosLineChartLandscape.granularity}
+          number={dadosLineChartLandscape.number}
+          symbol={dadosLineChartLandscape.symbol}
+        /> */}
+        {!props.isLoadingDadosHomePage && Object.keys(dadosLineChartLand).length !== 0 ?
+            
+            <LineChartLand
+              data={dadosLineChartLand.dataSets}
+              labels={dadosLineChartLand.labels}
+              ativos={dadosLineChartLand.keysAtivos}
+              periodo={periodoSelecionado}
+            />
+            : null}
       </PerformanceLandscape>
     )
   }
 
-    return (
-        <SafeAreaView style={{flex: 1, backgroundColor: StyledTheme.colors.background}}>
-        <ScrollView 
-        contentContainerStyle={{height: 1180,
-        backgroundColor: StyledTheme.colors.background,
-        justifyContent: 'flex-start',
-        alignItems: 'center'}} 
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: StyledTheme.colors.background }}>
+      <ScrollView
+        contentContainerStyle={{
+          height: 1180,
+          backgroundColor: StyledTheme.colors.background,
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
         onMomentumScrollEnd={(event) => handleScroll(event)}
-        >
-            <Title>{'Performance'}</Title>
-            <ContainerSelector>
-            {periodos.map((el, i) => {
-                return (
-                  <SelectPeriod ano={el} key={i} selecionado={periodoSelecionado} handleSelecionado={handleSelecionaPeriodo}/>
-                )
-            })}
-            </ContainerSelector>
-            <ChartContainer>
-                {!props.isLoadingDadosHomePage && dadosLineChartPortrait !== {} ?
-                <LineChartRender
-                data={dadosLineChartPortrait.data}
-                labels={dadosLineChartPortrait.labels}
-                granularity={dadosLineChartPortrait.granularity}
-                formated={dadosLineChartPortrait.formated}
-                number={dadosLineChartPortrait.number}
-                symbol={dadosLineChartPortrait.symbol}
-                /> :
-                null}
-            </ChartContainer>
-            {/* <View>
-              <LineChartKit/>
-            </View> */}
-            <ContainerSelectorTable>
-      {anos.map((el, i) => {
-          return (
-            <SelectPeriod ano={el} key={i} selecionado={anoSelecionado} handleSelecionado={handleSelecionaAno}/>
-          )
-      })}
-        
-          </ContainerSelectorTable>
-        <Table indiceAno={indiceAno}/>
+      >
+        <Title>{'Performance'}</Title>
+        <ContainerSelector>
+          {periodos.map((el, i) => {
+            return (
+              <SelectPeriod ano={el} key={i} selecionado={periodoSelecionado} handleSelecionado={handleSelecionaPeriodo} />
+            )
+          })}
+        </ContainerSelector>
+        {/* <ChartContainer>
+          {!props.isLoadingDadosHomePage && dadosLineChartPortrait !== {} ?
+            <LineChartRender
+              data={dadosLineChartPortrait.data}
+              labels={dadosLineChartPortrait.labels}
+              granularity={dadosLineChartPortrait.granularity}
+              formated={dadosLineChartPortrait.formated}
+              number={dadosLineChartPortrait.number}
+              symbol={dadosLineChartPortrait.symbol}
+            /> :
+            null}
+        </ChartContainer> */}
+        <View>
+          {!props.isLoadingDadosHomePage && Object.keys(dadosLineChart).length !== 0?
+            <LineChartKit
+              data={dadosLineChart.dataSets}
+              labels={dadosLineChart.labels}
+              ativos={dadosLineChart.keysAtivos}
+              periodo={periodoSelecionado}
+            />
+            : 
+            null}
+        </View>
+        <ContainerSelectorTable>
+          {anos.map((el, i) => {
+            return (
+              <SelectPeriod ano={el} key={i} selecionado={anoSelecionado} handleSelecionado={handleSelecionaAno} />
+            )
+          })}
+
+        </ContainerSelectorTable>
+        <Table indiceAno={indiceAno} />
       </ScrollView>
-      </SafeAreaView>
-    )
+    </SafeAreaView>
+  )
 }
 const mapStateToProps = state => ({
   isLoadingDadosHomePage: state.dadosHomePage.loading,

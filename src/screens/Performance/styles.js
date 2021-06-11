@@ -65,7 +65,7 @@ export const ContainerSelectorTable = styled.View`
     height: 50px;
     width: ${globalStyles.dimensions.width *0.9}px;
     background-color: ${props => props.theme.colors.firstLayer};
-    margin-top: 10px;
+    margin-top: 20px;
     border-radius: 10px;
     flex-direction: row;
     justify-content: space-around;

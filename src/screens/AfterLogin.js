@@ -17,6 +17,8 @@ const AfterLogin = (props) => {
 
 
     useEffect(async () => {
+        props.pegarDadosHomePage('bananas')
+        return props.navigation.navigate('Home')
         let token = await AsyncStorage.getItem('token')  
         props.pegarCarteirasUsuario(token)
         props.pegarInfosCarteiras(token)

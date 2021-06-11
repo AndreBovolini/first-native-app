@@ -19,6 +19,7 @@ import ValueBox from '../components/Home/ValueBox/valueBox';
 import globalStyles from '../styles/globalStyles';
 
 import LineChartResumo from '../components/Home/LineChartResumo/LineChartResumo';
+import LineChartRes from '../components/Home/LineChartResumo/LineChartRes'
 import PieChartResumo from '../components/Home/PieChartResumo/PieChartResumo';
 import Filtro from '../components/Home/Filtro/FiltroHome';
 import Benchmarks from '../components/Home/Benchmarks';
@@ -33,6 +34,7 @@ import {
 
 import { dataLineChartHome } from '../components/Home/LineChartResumo/dataLineChartResumo';
 import { dataPieChartHome } from '../components/Home/PieChartResumo/dataPieChartResumo';
+import { dataLineChartRes } from '../components/Home/LineChartResumo/dataLineChartRes'
 import SkeletonHome from '../components/Home/Skeleton/SkeletonHome'
 
 import { connect } from 'react-redux';
@@ -43,22 +45,20 @@ import { CommonActions } from '@react-navigation/native';
 import RNExitApp from 'react-native-exit-app';
 import OneSignal from 'react-native-onesignal';
 
+
 export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira }) => {
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState(false)
   const [showModal, setShowModal] = useState(false);
   const [showBench, setShowBench] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [] = useState('');
-  const [] = useState('');
   const [dadosLineChart, setDadosLineChart] = useState({})
   const [dadosPie, setDadosPie] = useState({})
-  const [selectedEntry, setSelectedEntry] = useState(null);
-  const [selecionadoPie, setSelecionadoPie] = useState({});
   const [graficoCarrossel, setGraficoCarrossel] = useState(3)
-  const [tipoCarrossel, setTipoCarrossel] = useState('ativo')
-  const [accepted, setAccepted] = useState('')
-  const [teste, setTeste] = useState('')
+  const [tipoCarrossel, setTipoCarrossel] = useState('ativo');
+  const [accepted, setAccepted] = useState(false)
+  const [acceptedProgrammed, setAcceptedProgrammed] = useState(false)
+  const [dadosLineChartRes, setDadosLineChartRes] = useState({})
 
   const dadosTable = {
     table1: [
@@ -220,19 +220,17 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   }
 
   useEffect(() => {
-    OneSignal.setAppId('9c34a82a-2fc6-4d7a-bb50-10512cbba842')
-    // OneSignal.sendTag("user_type", accepted)
+    OneSignal.setAppId('9c34a82a-2fc6-4d7a-bb50-10512cbba842');
     OneSignal.sendTags({
-      "user_teste":teste,
-      "user_type":accepted,
-      
+      "user_teste": acceptedProgrammed ? 'accepted' : null,
+      "user_type": accepted ? 'acceptedNotify' : null,
     })
+    OneSignal.setLocationShared(false);
     OneSignal.promptForPushNotificationsWithUserResponse(response => {
       console.log("Prompt response:", response);
     });
 
     OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
-      // o que executar antes de abrir a notificação
       console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
       let notification = notificationReceivedEvent.getNotification();
       console.log("notification: ", notification);
@@ -248,12 +246,21 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
     });
 
     OneSignal.setNotificationOpenedHandler(notification => {
-      // o que executar quando abrir a notificação
       console.log("OneSignal: notification opened:", notification);
-
+      navigation.navigate('Home')
     });
 
-  }, [accepted, teste])
+  }, [acceptedProgrammed, accepted])
+
+
+  useEffect(async () => {
+    let acceptPush = await AsyncStorage.getItem('Push');
+    let acceptPushProgrammed = await AsyncStorage.getItem('PushProgramada');
+    console.warn(acceptPush, acceptPushProgrammed)
+    setAccepted(acceptPush === 'true' ? true : false);
+    setAcceptedProgrammed(acceptPushProgrammed === 'true' ? true : false);
+  }, [])
+
 
   useEffect(
     () => {
@@ -305,17 +312,18 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   const StyledTheme = useContext(ThemeContext)
 
   useEffect(() => {
-
     if (!dadosHomePage.loading && dadosHomePage.data.grafico5) {
       const dadosLineChart = dataLineChartHome(dadosHomePage.data.grafico5, StyledTheme.colors.invertedBackground);
-
       setDadosLineChart(dadosLineChart)
       const infos = dataPieChartHome(dadosHomePage.data, StyledTheme.colors.invertedBackground)
       setDadosPie(infos)
       setLoading(dadosHomePage.loading)
+      const dadosLineChartRes = dataLineChartRes(dadosHomePage.data)
+      setDadosLineChartRes(dadosLineChartRes)
     }
   }, [dadosHomePage.loading, dadosHomePage.data, StyledTheme])
 
+  console.log('AAAA ', dadosLineChartRes)
 
   useEffect(() => {
     const backAction = () => {
@@ -381,29 +389,39 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
     setGraficoCarrossel(index + 1)
   }
 
-  const handleAccept = (state) => {
-    if (accepted === '') {
-      setAccepted(state)
-      setTeste('accepted')
-      console.warn('Recebimento ativado')
-    } else {
-      setAccepted(state)
-      setTeste('')
-      console.warn('Recebimento desativado')
+  async function handleAccept() {
+    console.warn(accepted)
+    await AsyncStorage.setItem('Push', (!accepted ? 'true' : 'false'))
+    setAccepted(!accepted)
+    if (accepted === true) {
+      setAcceptedProgrammed(false)
+      await AsyncStorage.setItem('PushProgramada', ('false'))
     }
-
   }
+
+  async function handleAcceptProgrammed() {
+    await AsyncStorage.setItem('PushProgramada', (!acceptedProgrammed ? 'true' : 'false'))
+    setAcceptedProgrammed(!acceptedProgrammed)
+  }
+
   // console.log('INDICE ' + index)
   return (
     <LargeContainer>
       <SafeAreaView >
         {loading ? <SkeletonHome isLoading={loading} /> :
           (<ScrollView contentContainerStyle={{
-            justifyContent: 'flex-start', alignItems: 'center', height: 1720, width: globalStyles.dimensions.width,
+            justifyContent: 'flex-start', alignItems: 'center', height: 1650, width: globalStyles.dimensions.width,
             backgroundColor: StyledTheme.colors.background
           }}>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Filtro visible={showModal} accepted={accepted} handleAccept={handleAccept} minHeight={250} width={globalStyles.dimensions.width} buttonAction={handleCloseModal} />
+              <Filtro visible={showModal}
+                accepted={accepted}
+                acceptedProgrammed={acceptedProgrammed}
+                handleAcceptProgrammed={handleAcceptProgrammed}
+                handleAccept={handleAccept} minHeight={250}
+                width={globalStyles.dimensions.width} buttonAction={handleCloseModal}
+
+              />
             </View>
             <TitleContainer>
               <LeftCard>
@@ -415,7 +433,6 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
                 </RightCard>
               </View>
             </TitleContainer>
-
             <ButtonView>
               <RightCard onPress={handleCurrency} activeOpacity={1} pressDuration={0.5}>
                 {
@@ -485,8 +502,8 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
 
             <RightCard style={{ marginTop: -3 }} onPress={handleOpenBench}>
               <BenchmarksButton>
-                <Text style={{ fontSize: 20, color: '#FFF', marginRight: 10, }}>Benchmarks</Text>
-                <Icon name="sort-down" size={25} color='#FFF' style={{ marginTop: -3 }} />
+                <Text style={{ fontSize: 20, color: StyledTheme.colors.fontColor, marginRight: 10, }}>Benchmarks</Text>
+                <Icon name="sort-down" size={25} color={StyledTheme.colors.fontColor} style={{ marginTop: -3 }} />
               </BenchmarksButton>
             </RightCard>
 
@@ -494,7 +511,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
               <CardCarousel handleGetIndex={handleGetIndex} />
 
             </TitleNavigationContainer>
-            { tipoCarrossel &&
+            {tipoCarrossel &&
               <TableRow data={dadosTable['table' + graficoCarrossel]} graficoCarrossel={graficoCarrossel} />}
             <TitleNavigationContainer>
               <TitleNavigation>Performance</TitleNavigation>
@@ -503,13 +520,32 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
               </TouchableOpacity>
             </TitleNavigationContainer>
             <LineChartContainer>
-              {!dadosHomePage.loading && dadosHomePage.data !== [] ?
+            {!dadosHomePage.loading && Object.keys(dadosLineChartRes).length !== 0?
+                <LineChartRes
+                  data={dadosLineChartRes.dataSets}
+                  labels={dadosLineChartRes.labels}
+                  ativos={dadosLineChartRes.keysAtivos}
+                  
+                />
+                : null}
+              {/* {!dadosHomePage.loading && dadosHomePage.data !== [] ?
                 <LineChartResumo
                   data={dadosLineChart.data}
                   label={dadosLineChart.labels}
                 /> :
-                null}
+                null} */}
             </LineChartContainer>
+            {/* <View>
+              {!dadosHomePage.loading && Object.keys(dadosLineChartRes).length !== 0?
+                <LineChartRes
+                  data={dadosLineChartRes.dataSets}
+                  labels={dadosLineChartRes.labels}
+                  ativos={dadosLineChartRes.keysAtivos}
+                  
+                />
+                : null}
+            </View> */}
+
             <TitleNavigationContainer>
 
               <TitleNavigation>Carteira</TitleNavigation>
@@ -540,5 +576,3 @@ const mapStateToProps = state => ({
 
 
 export default connect(mapStateToProps)(Home);
-
-

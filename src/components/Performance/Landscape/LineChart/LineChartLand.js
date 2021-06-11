@@ -1,62 +1,61 @@
-import React, { useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import { StyleSheet, SafeAreaView, Button } from "react-native";
 import { ECharts } from "react-native-echarts-wrapper";
 import globalStyles from "../../../../styles/globalStyles";
 import { ThemeContext } from 'styled-components/native';
 
-const LineChartKit = props => {
+const LineChartLand = props => {
     const StyledTheme = useContext(ThemeContext)
-    console.log('dataa ', props.data)
-    console.log('labels ', props.labels)
-    console.log('keys ', props.ativos)
+    console.log('Data ', props.data)
+    console.log('Labels ', props.labels)
+    console.log('Keys ', props.ativos)
 
     onRef = ref => {
         if (ref) {
-             chart = ref;
+            chart = ref;
         }
     };
-
     const colors = ['rgb(26, 192, 151)','rgb(75, 50, 128)']
     option = {
         color: colors,
         grid: {
             left: '2%',
-            right: '3%',
-            bottom: '3%',
+            right: '2%',
+            bottom: '5%',
             containLabel: true,
         },
         xAxis: {
             type: "category",
-            // max: props.labels.length,
+            max: props.labels.length,
             data: props.labels,
             splitLine: {
                 show: false
-             },
+            },
             axisTick: {
                 show: false,
                 alignWithLabel: true,
-                interval: props.periodo ===  'Tudo' ? 20 : 5,
+                interval: 5,
             },
             axisLabel: {
-                interval: props.periodo ===  'Tudo' ? 7 : 0,
-                rotate: 50,
+                interval: 0,
+                rotate: 45,
                 fontFamily: 'HelveticaNeue-Medium',
                 fontWeight: 'bold',
-                margin: 10
             },
             axisLine: {
                 onZero: true,
                 lineStyle: {
                     color: StyledTheme.colors.fontColor
                 }
-            }
+            },
             
+
         },
         yAxis: {
             type: "value",
             splitLine: {
                 show: false
-             },
+            },
             axisLabel: {
                 formatter: '{value} %',
                 fontFamily: 'HelveticaNeue-Medium',
@@ -79,7 +78,7 @@ const LineChartKit = props => {
         //             12.8, 12.81],
         //         type: "line",
         //         smooth: true,
-                
+
         //     },
         //     {
         //         symbol: 'none',
@@ -95,21 +94,43 @@ const LineChartKit = props => {
         //     }
         // ]
         ,
+        dataZoom: [
+            {
+                type: 'slider',
+                show: false,
+                
+            },
+            {
+                type: 'inside',
+            },
+        ],
         tooltip: {
             trigger: "axis",
+            axisPointer: {
+                type: 'cross'
+            },
             backgroundColor: 'rgba(50,50,50,0.9)'
-            
+        },
+        axisPointer: {
+            label: {
+                backgroundColor: StyledTheme.chartColors.tooltip,
+                color: StyledTheme.chartColors.tooltipText,
+            }
         },
         legend: {
             data: props.ativos,
-            textStyle:{
+            textStyle: {
                 fontSize: 18,
                 color: StyledTheme.colors.fontColor
             },
-            bottom: '-15',
+            lineStyle: {
+                width: 0
+            },
+            icon: 'circle',
+
             padding: 10
-            
-        
+
+
         }
 
 
@@ -126,18 +147,18 @@ const LineChartKit = props => {
         });
     `;
 
-    
+
 
     onData = param => {
         const obj = JSON.parse(param);
 
         if (obj.type === "event_clicked") {
             alert(`you tapped the chart series: ${obj.data}`);
-        
+
         }
     };
 
-    
+
 
     onButtonClearPressed = () => {
         chart.clear();
@@ -147,26 +168,26 @@ const LineChartKit = props => {
     useEffect(() => {
         chart.setBackgroundColor(StyledTheme.colors.background)
         chart.setOption(option)
-    },[StyledTheme, option])
+    }, [StyledTheme, option])
     return (
-        <SafeAreaView 
-                style={{ height: 370, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
-               >
+        <SafeAreaView
+            style={{ flex: 1, height: globalStyles.dimensions.width * 0.9, backgroundColor: StyledTheme.colors.background, padding: 2 }}
+        >
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
 
             <ECharts
-               
+
                 ref={onRef}
                 option={option}
                 additionalCode={additionalCode}
                 onData={onData}
                 onLoadEnd={() => {
-                    chart.setBackgroundColor('StyledTheme.colors.background');
-                     
+                    chart.setBackgroundColor(StyledTheme.colors.background);
+
                 }}
             />
         </SafeAreaView>
     );
 }
 
-export default LineChartKit;
+export default LineChartLand;

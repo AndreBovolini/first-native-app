@@ -1,10 +1,10 @@
 import React, { useContext, useEffect} from "react";
 import { StyleSheet, SafeAreaView, Button } from "react-native";
 import { ECharts } from "react-native-echarts-wrapper";
-import globalStyles from "../../../../styles/globalStyles";
+import globalStyles from "../../../styles/globalStyles";
 import { ThemeContext } from 'styled-components/native';
 
-const LineChartKit = props => {
+const LineChartRes = props => {
     const StyledTheme = useContext(ThemeContext)
     console.log('dataa ', props.data)
     console.log('labels ', props.labels)
@@ -15,14 +15,14 @@ const LineChartKit = props => {
              chart = ref;
         }
     };
-
-    const colors = ['rgb(26, 192, 151)','rgb(75, 50, 128)']
+    const colors = 'rgb(26, 182, 151)'
     option = {
         color: colors,
         grid: {
-            left: '2%',
+            left: '0%',
             right: '3%',
             bottom: '3%',
+            top: '10%',
             containLabel: true,
         },
         xAxis: {
@@ -35,10 +35,10 @@ const LineChartKit = props => {
             axisTick: {
                 show: false,
                 alignWithLabel: true,
-                interval: props.periodo ===  'Tudo' ? 20 : 5,
+                // interval: props.periodo ===  'Tudo' ? 20 : 5,
             },
             axisLabel: {
-                interval: props.periodo ===  'Tudo' ? 7 : 0,
+                show: false,
                 rotate: 50,
                 fontFamily: 'HelveticaNeue-Medium',
                 fontWeight: 'bold',
@@ -47,12 +47,14 @@ const LineChartKit = props => {
             axisLine: {
                 onZero: true,
                 lineStyle: {
-                    color: StyledTheme.colors.fontColor
+                    color: StyledTheme.colors.fontColor,
+                    type: 'dashed'
                 }
             }
             
         },
         yAxis: {
+            show:false,
             type: "value",
             splitLine: {
                 show: false
@@ -96,17 +98,22 @@ const LineChartKit = props => {
         // ]
         ,
         tooltip: {
-            trigger: "axis",
+            show: true,
+            trigger: 'axis',
+            axisPointer: {
+                type: 'line',
+            },
             backgroundColor: 'rgba(50,50,50,0.9)'
             
         },
         legend: {
+            show: false,
             data: props.ativos,
             textStyle:{
                 fontSize: 18,
                 color: StyledTheme.colors.fontColor
             },
-            bottom: '-15',
+            bottom: '-20',
             padding: 10
             
         
@@ -150,7 +157,7 @@ const LineChartKit = props => {
     },[StyledTheme, option])
     return (
         <SafeAreaView 
-                style={{ height: 370, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
+                style={{ height: 220, width: globalStyles.dimensions.width * 0.95, backgroundColor:StyledTheme.colors.background}} 
                >
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
 
@@ -169,4 +176,4 @@ const LineChartKit = props => {
     );
 }
 
-export default LineChartKit;
+export default LineChartRes;

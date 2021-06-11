@@ -1,7 +1,6 @@
-//Pega o token a partir do username e password já existentes
 import endPoint from '../endpoint/endpoint';
 
-async function comdadoLogin(apiUsername, apiPassword) {
+async function comdadoAntigoLogin(apiUsername, apiPassword) {
   const apiTeste = 'username=' + apiUsername + '&password=' + apiPassword;
   const requestOptions = {
     method: 'POST',
@@ -13,8 +12,8 @@ async function comdadoLogin(apiUsername, apiPassword) {
             apiTeste,
 
   };
-  const result = await fetch(endPoint + 'code=get_jwt', requestOptions);
+  const result = await fetch(endPoint + 'code=get_token', requestOptions);
   return result.json();
 }
 
-export default comdadoLogin;
+export default comdadoAntigoLogin;

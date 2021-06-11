@@ -1,18 +1,21 @@
-import { pathCMD } from '../endpoint/endpoint';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import endPoint from '../endpoint/endpoint';
 
-async function fetchComAppCarteiras(token) {
-  const apiTeste = 'token=' + token;
+
+async function fetchComAppCarteiras(token_antigo) {
+  let token = await AsyncStorage.getItem('token')
+  let tokenType = await AsyncStorage.getItem('token_type')
+  
+
   const requestOptions = {
-    method: 'POST',
+    method: 'GET',
     headers:  {
-      'Content-Type':'application/x-www-form-urlencoded',
-      'Accept':'/',
+      'Authorization': tokenType + ' ' + token,
     },
-    body:
-            apiTeste,
+    redirect: 'follow',
 
   };
-  const result = await fetch(pathCMD + 'ListaCarteiras001.php', requestOptions);
+  const result = await fetch(endPoint+ 'code=ComApp001&service=ListaCarteiras001', requestOptions);
   return result.json();
 }
 

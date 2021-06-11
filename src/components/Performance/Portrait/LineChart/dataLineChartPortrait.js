@@ -16,6 +16,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
        }
    })
 
+    
 
    const greenBlue = 'rgb(26, 192, 151)';
    const petrel = 'rgb(59, 115, 135)';
@@ -103,6 +104,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
     };
     
 
+
     let keysAtivos = Object.keys(response.grafico5)
     const ativosRight = ['PL']
 
@@ -110,9 +112,12 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
       keysAtivos.splice(keysAtivos.indexOf(el), 1);
       keysAtivos.unshift(el)
    })
+
+  console.log('AQUI ', keysAtivos)
    let values = []
    let linelabes = []
    let formatedValues = []
+   let dadosCart = []
 
    let maior = 0
    console.log(filteredData)
@@ -140,7 +145,14 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
     symbol = " K"
   }
   
-  
+
+    const cartdados = filteredData.map((el,i) => {
+      return parseFloat(el['CDI'])
+    })
+
+    console.log('ici', cartdados)
+ 
+
     if (filteredData !== []) {
      values = keysAtivos.map((ativo,i) => { 
       const valores = filteredData.map((el,i) => {
@@ -252,9 +264,11 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
         },
     }
     })
+    
     const data = {
         dataSets
     }
+    
     return ({
         data, 
         labels,

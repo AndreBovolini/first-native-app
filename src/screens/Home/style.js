@@ -112,6 +112,6 @@ export const ChartContainer = styled.View`
 export const LineChartContainer = styled.View`
       width: ${globalStyles.dimensions.width}px;
       height: 230px;
-      margin-top: 20px; 
+      margin-top: -5px; 
 `;
 
