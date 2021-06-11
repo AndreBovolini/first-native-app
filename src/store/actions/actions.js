@@ -1,18 +1,27 @@
 import { put, call } from 'redux-saga/effects';
+import { pegarDadosHomePage } from './action-dados-home'
 
-export function newDataInicial(data) {
-    return {
-      type: 'ASYNC_SET_DATA_INICIAL',
-      data
-    }
-};
+// export function newDataInicial(data) {
+//     return {
+//       type: 'ASYNC_SET_DATA_INICIAL',
+//       data
+//     }
+// };
 
-export function newDataFinal(data) {
-    return {
-        type: 'ASYNC_SET_DATA_FINAL',
-        data
-      }
-};
+// export function newDataFinal(data) {
+//     return {
+//         type: 'ASYNC_SET_DATA_FINAL',
+//         data
+//       }
+// };
+
+export function newData(dataInicial, dataFinal) {
+  return {
+    type: 'ASYNC_SET_DATA',
+    dataInicial,
+    dataFinal
+  }
+}
 
 export function alteraCarteira(carteira) {
   return {
@@ -22,16 +31,24 @@ export function alteraCarteira(carteira) {
 }
 
 
-export function alteraDataMaisAntiga(dataMaisAntiga) {
-  return {
-    type: 'ASYNC_SET_DATA_MAIS_ANTIGA',
-    dataMaisAntiga
-  }
-}
+// export function alteraDataMaisAntiga(dataMaisAntiga) {
+//   return {
+//     type: 'ASYNC_SET_DATA_MAIS_ANTIGA',
+//     dataMaisAntiga
+//   }
+// }
 
-export function alteraDataMaisRecente(dataMaisRecente) {
+// export function alteraDataMaisRecente(dataMaisRecente) {
+//   return {
+//     type: 'ASYNC_SET_DATA_MAIS_RECENTE',
+//     dataMaisRecente
+//   }
+// }
+
+export function alteraDataLimite(dataMaisAntiga, dataMaisRecente) {
   return {
-    type: 'ASYNC_SET_DATA_MAIS_RECENTE',
+    type: 'ASYNC_SET_DATA_LIMITE',
+    dataMaisAntiga,
     dataMaisRecente
   }
 }
@@ -53,20 +70,29 @@ function apiGet(data) {
 };
 
 
-export function* asyncSetDataInicial(action) {
- const response = yield call(apiGet, action.data)
- yield put({
-     type: 'SET_DATA_INICIAL',
-      data: response,
- }); 
-}
+// export function* asyncSetDataInicial(action) {
+//  const response = yield call(apiGet, action.data)
+//  yield put({
+//      type: 'SET_DATA_INICIAL',
+//       data: response,
+//  }); 
+// }
 
-export function* asyncSetDataFinal(action) {
-  const response = yield call(apiGet, action.data)
+// export function* asyncSetDataFinal(action) {
+//   const response = yield call(apiGet, action.data)
+//   yield put({
+//       type: 'SET_DATA_FINAL',
+//        data: response,
+//   });
+// }
+
+export function* asyncSetDatas(action) {
   yield put({
-      type: 'SET_DATA_FINAL',
-       data: response,
-  });
+    type: 'SET_DATA',
+    dataInicial: action.dataInicial,
+    dataFinal: action.dataFinal
+  })
+  yield put(pegarDadosHomePage())
 }
 
 export function* asyncAlteraCarteira(action) {
@@ -76,16 +102,24 @@ export function* asyncAlteraCarteira(action) {
   })
 }
 
-export function* asyncAlteraDataMaisAntiga(action) {
-  yield put({
-    type: 'SET_DATA_MAIS_ANTIGA',
-    dataMaisAntiga: action.dataMaisAntiga
-  })
-}
+// export function* asyncAlteraDataMaisAntiga(action) {
+//   yield put({
+//     type: 'SET_DATA_MAIS_ANTIGA',
+//     dataMaisAntiga: action.dataMaisAntiga
+//   })
+// }
 
-export function* asyncAlteraDataMaisRecente(action) {
+// export function* asyncAlteraDataMaisRecente(action) {
+//   yield put({
+//     type: 'SET_DATA_MAIS_RECENTE',
+//     dataMaisRecente: action.dataMaisRecente
+//   })
+// }
+
+export function* asyncAlteraDataLimite(action) {
   yield put({
-    type: 'SET_DATA_MAIS_RECENTE',
+    type: 'SET_DATA_LIMITE',
+    dataMaisAntiga: action.dataMaisAntiga,
     dataMaisRecente: action.dataMaisRecente
   })
 }

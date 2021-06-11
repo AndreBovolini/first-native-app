@@ -9,7 +9,7 @@ import ModalEscolheCarteira from '../components/Login/ModalEscolheCarteira';
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras, pegarDatasCarteiras, pegarInfosCarteiras } from '../store/actions/actions-dados-usuario'
 import { pegarDadosHomePage } from '../store/actions/action-dados-home';
-import { alteraCarteira, alteraDataMaisAntiga, alteraDataMaisRecente, newDataFinal, newDataInicial } from '../store/actions/actions'
+import { alteraCarteira, alteraDataLimite, newData } from '../store/actions/actions'
 
 
 const AfterLogin = (props) => {
@@ -17,8 +17,8 @@ const AfterLogin = (props) => {
 
 
     useEffect(async () => {
-        props.pegarDadosHomePage('bananas')
-        return props.navigation.navigate('Home')
+        props.pegarDadosHomePage('banana')
+        return props.navigation.navigate('Home');
         let token = await AsyncStorage.getItem('token')  
         props.pegarCarteirasUsuario(token)
         props.pegarInfosCarteiras(token)
@@ -81,32 +81,32 @@ const AfterLogin = (props) => {
     },[props.stateCarteira.carteira])
 
     useEffect(() => {
-        if (props.stateCarteira.carteira !== '' && props.responseDatasCarteiras !== []) {
-            let dataAntiga = '';
-            let dataRecente = '';
-                dataAntiga = props.responseDatasCarteiras["data_mais_antiga"]
-                if (dataAntiga) {
-                    console.log('xxxxxxxxxxxxxxx' + dataAntiga)
-                    const diaA = dataAntiga.substr(0,2);
-                    const mesA = dataAntiga.substr(3,2)
-                    const anoA = dataAntiga.substr(6,4)
-                    console.log(diaA,mesA,anoA)
-                    let timestamp = new Date(`${anoA}-${mesA}-${diaA}`).getTime()
-                    console.log(timestamp)
-                    props.alteraDataMaisAntiga(timestamp)
-                    props.newDataInicial(timestamp)
-                    dataRecente = props.responseDatasCarteiras["data_mais_recente"]
-                    const diaR = dataRecente.substr(0,2);
-                    const mesR = dataRecente.substr(3,2)
-                    const anoR = dataRecente.substr(6,4)
-                    console.log(diaR,mesR,anoR)
-                    let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
-                    props.alteraDataMaisRecente(timestampR)
-                    props.newDataFinal(timestampR)
-                }
+        // if (props.stateCarteira.carteira !== '' && props.responseDatasCarteiras !== []) {
+        //     let dataAntiga = '';
+        //     let dataRecente = '';
+        //         dataAntiga = props.responseDatasCarteiras["data_mais_antiga"]
+        //         if (dataAntiga) {
+        //             console.log('xxxxxxxxxxxxxxx' + dataAntiga)
+        //             const diaA = dataAntiga.substr(0,2);
+        //             const mesA = dataAntiga.substr(3,2)
+        //             const anoA = dataAntiga.substr(6,4)
+        //             console.log(diaA,mesA,anoA)
+        //             let timestamp = new Date(`${anoA}-${mesA}-${diaA}`).getTime()
+        //             console.log(timestamp)
+        //             props.alteraDataMaisAntiga(timestamp)
+        //             props.newDataInicial(timestamp)
+        //             dataRecente = props.responseDatasCarteiras["data_mais_recente"]
+        //             const diaR = dataRecente.substr(0,2);
+        //             const mesR = dataRecente.substr(3,2)
+        //             const anoR = dataRecente.substr(6,4)
+        //             console.log(diaR,mesR,anoR)
+        //             let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
+        //             props.alteraDataMaisRecente(timestampR)
+        //             props.newDataFinal(timestampR)
+        //         }
                 
 
-        }
+        // }
     }, [props.responseDatasCarteiras])
 
 
@@ -115,7 +115,7 @@ const AfterLogin = (props) => {
             setShowModal(false)
             let token = await AsyncStorage.getItem('token')
             props.navigation.navigate('Home');
-            props.pegarDadosHomePage(token)
+            //props.pegarDadosHomePage(token)
         }
     }, [props.stateCarteira.carteira, props.stateCarteira.dataMaisAntiga])
 
@@ -144,11 +144,9 @@ const mapStateToProps = state => ({
   });
   
 const mapDispatchToProps = ( dispatch )=> ({
-    newDataInicial: (data) => dispatch(newDataInicial(data)),
-    newDataFinal: (data) => dispatch(newDataFinal(data)),
+    newData: (dataInicial, dataFinal) => dispatch(newData(dataInicial, dataFinal)),
     alteraCarteira: (carteira) => dispatch(alteraCarteira(carteira)),
-    alteraDataMaisAntiga: (dataMaisAntiga) => dispatch(alteraDataMaisAntiga(dataMaisAntiga)),
-    alteraDataMaisRecente: (dataMaisRecente) => dispatch(alteraDataMaisRecente(dataMaisRecente)),
+    alteraDataLimite: (dataMaisAntiga, dataMaisRecente) => dispatch(alteraDataLimite(dataMaisAntiga, dataMaisRecente)),
     pegarCarteirasUsuario: (token) => dispatch(pegarDadosCarteiras(token)),
     pegarInfosCarteiras: (token) => dispatch(pegarInfosCarteiras(token)),
     pegarDadosHomePage: (token) => dispatch(pegarDadosHomePage(token)),

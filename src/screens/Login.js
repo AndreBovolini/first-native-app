@@ -210,7 +210,7 @@ const Login = ({route, navigation}) => {
           </TouchableOpacity>
           <FingerPrint pressHandler={pressHandler}/>
           <View style={{flex: 1}}/>
-          <ButtonText style={{paddingBottom: 20}}>0.1.0</ButtonText>
+          <ButtonText style={{paddingBottom: 20}}>0.1.1</ButtonText>
         </Container>
     </KeyboardAvoidingView>
   );

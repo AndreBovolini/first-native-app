@@ -45,6 +45,8 @@ import { CommonActions } from '@react-navigation/native';
 import RNExitApp from 'react-native-exit-app';
 import OneSignal from 'react-native-onesignal';
 
+import { newDataPieChartHome } from '../components/Home/NewPieChartResumo/dataNewPieChartResumo';
+import { NewPieChartResumo } from '../components/Home/NewPieChartResumo';
 
 export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira }) => {
   const [percent, setPercent] = useState(true)
@@ -54,11 +56,14 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   const [loading, setLoading] = useState(true);
   const [dadosLineChart, setDadosLineChart] = useState({})
   const [dadosPie, setDadosPie] = useState({})
+  const [dadosNewPie, setDadosNewPie] = useState([])
   const [graficoCarrossel, setGraficoCarrossel] = useState(3)
   const [tipoCarrossel, setTipoCarrossel] = useState('ativo');
   const [accepted, setAccepted] = useState(false)
   const [acceptedProgrammed, setAcceptedProgrammed] = useState(false)
   const [dadosLineChartRes, setDadosLineChartRes] = useState({})
+
+  const StyledTheme = useContext(ThemeContext)
 
   const dadosTable = {
     table1: [
@@ -256,7 +261,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   useEffect(async () => {
     let acceptPush = await AsyncStorage.getItem('Push');
     let acceptPushProgrammed = await AsyncStorage.getItem('PushProgramada');
-    console.warn(acceptPush, acceptPushProgrammed)
+    //console.warn(acceptPush, acceptPushProgrammed)
     setAccepted(acceptPush === 'true' ? true : false);
     setAcceptedProgrammed(acceptPushProgrammed === 'true' ? true : false);
   }, [])
@@ -264,62 +269,62 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
 
   useEffect(
     () => {
-      if (Platform.OS === 'ios') {
-        navigation.addListener('beforeRemove', (e) => {
-          console.log(e.data.action.payload)
-          // Prevent default behavior of leaving the screen
-          if (e.data.action.payload.name === 'Login') {
-            navigation.dispatch(e.data.action);
-          } else {
-            e.preventDefault();
-
-            // Prompt the user before leaving the screen
-            Alert.alert(
-              'Você deseja sair do app?',
-              'You have unsaved changes. Are you sure to discard them and leave the screen?',
-              [
-                { text: "Manter", style: 'cancel', onPress: () => { } },
-                {
-                  text: "Logout", style: 'cancel', onPress: () => {
-                    AsyncStorage.removeItem('token');
-                    navigation.dispatch(
-                      CommonActions.navigate({
-                        name: 'Login',
-                        params: {
-                          credentials: false,
-                        },
-                      })
-                    );
-                  }
-                },
-                {
-                  text: 'Sair',
-                  style: 'destructive',
-                  // If the user confirmed, then we dispatch the action we blocked earlier
-                  // This will continue the action that had triggered the removal of the screen
-                  onPress: () => RNExitApp.exitApp(),
-                },
-              ]
-            )
-          }
-        })
-      }
+    if (Platform.OS === 'ios')  {
+      navigation.addListener('beforeRemove', (e) => {
+        console.log(e.data.action.payload)
+        // Prevent default behavior of leaving the screen
+        if (e.data.action.payload.name === 'Login') {
+          navigation.dispatch(e.data.action);
+        } else {
+        e.preventDefault();
+  
+        // Prompt the user before leaving the screen
+        Alert.alert(
+          'Você deseja sair do app?',
+          'You have unsaved changes. Are you sure to discard them and leave the screen?',
+          [
+            { text: "Manter", style: 'cancel', onPress: () => {} },
+            { text: "Logout", style: 'cancel', onPress: () => {
+              AsyncStorage.removeItem('token');
+              navigation.dispatch(
+                CommonActions.navigate({
+                  name: 'Login',
+                  params: {
+                    credentials: false,
+                  },
+                })
+              );
+          } },
+            {
+              text: 'Sair',
+              style: 'destructive',
+              // If the user confirmed, then we dispatch the action we blocked earlier
+              // This will continue the action that had triggered the removal of the screen
+              onPress: () => RNExitApp.exitApp(),
+            },
+          ]
+        )
+        }
+      })
     }
+  }
     ,
-
+  
     []
   );
-  const StyledTheme = useContext(ThemeContext)
 
   useEffect(() => {
     if (!dadosHomePage.loading && dadosHomePage.data.grafico5) {
       const dadosLineChart = dataLineChartHome(dadosHomePage.data.grafico5, StyledTheme.colors.invertedBackground);
       setDadosLineChart(dadosLineChart)
       const infos = dataPieChartHome(dadosHomePage.data, StyledTheme.colors.invertedBackground)
+      const optionEcharts = newDataPieChartHome(dadosHomePage.data, StyledTheme)
+      console.log(optionEcharts)
       setDadosPie(infos)
-      setLoading(dadosHomePage.loading)
+      setDadosNewPie(optionEcharts)
       const dadosLineChartRes = dataLineChartRes(dadosHomePage.data)
       setDadosLineChartRes(dadosLineChartRes)
+      setLoading(dadosHomePage.loading)
     }
   }, [dadosHomePage.loading, dadosHomePage.data, StyledTheme])
 
@@ -390,7 +395,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   }
 
   async function handleAccept() {
-    console.warn(accepted)
+    //(accepted)
     await AsyncStorage.setItem('Push', (!accepted ? 'true' : 'false'))
     setAccepted(!accepted)
     if (accepted === true) {
@@ -408,20 +413,21 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   return (
     <LargeContainer>
       <SafeAreaView >
-        {loading ? <SkeletonHome isLoading={loading} /> :
+        <Filtro visible={showModal}
+          accepted={accepted}
+          acceptedProgrammed={acceptedProgrammed}
+          handleAcceptProgrammed={handleAcceptProgrammed}
+          handleAccept={handleAccept} minHeight={250}
+          width={globalStyles.dimensions.width} buttonAction={handleCloseModal}
+
+        />
+        {dadosHomePage.loading ? <SkeletonHome isLoading={dadosHomePage.loading} /> :
           (<ScrollView contentContainerStyle={{
-            justifyContent: 'flex-start', alignItems: 'center', height: 1650, width: globalStyles.dimensions.width,
+            justifyContent: 'flex-start', alignItems: 'center', height: 1730, width: globalStyles.dimensions.width,
             backgroundColor: StyledTheme.colors.background
           }}>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Filtro visible={showModal}
-                accepted={accepted}
-                acceptedProgrammed={acceptedProgrammed}
-                handleAcceptProgrammed={handleAcceptProgrammed}
-                handleAccept={handleAccept} minHeight={250}
-                width={globalStyles.dimensions.width} buttonAction={handleCloseModal}
 
-              />
             </View>
             <TitleContainer>
               <LeftCard>
@@ -502,12 +508,12 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
 
             <RightCard style={{ marginTop: -3 }} onPress={handleOpenBench}>
               <BenchmarksButton>
-                <Text style={{ fontSize: 20, color: StyledTheme.colors.fontColor, marginRight: 10, }}>Benchmarks</Text>
-                <Icon name="sort-down" size={25} color={StyledTheme.colors.fontColor} style={{ marginTop: -3 }} />
+                <Text style={{ fontSize: 20, color: '#FFF', marginRight: 10, }}>Benchmarks</Text>
+                <Icon name="sort-down" size={25} color='#FFF' style={{ marginTop: -3 }} />
               </BenchmarksButton>
             </RightCard>
 
-            <TitleNavigationContainer>
+            <TitleNavigationContainer style={{ marginTop: -10 }}>
               <CardCarousel handleGetIndex={handleGetIndex} />
 
             </TitleNavigationContainer>
@@ -520,12 +526,12 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
               </TouchableOpacity>
             </TitleNavigationContainer>
             <LineChartContainer>
-            {!dadosHomePage.loading && Object.keys(dadosLineChartRes).length !== 0?
+              {!dadosHomePage.loading && Object.keys(dadosLineChartRes).length !== 0 ?
                 <LineChartRes
                   data={dadosLineChartRes.dataSets}
                   labels={dadosLineChartRes.labels}
                   ativos={dadosLineChartRes.keysAtivos}
-                  
+
                 />
                 : null}
               {/* {!dadosHomePage.loading && dadosHomePage.data !== [] ?
@@ -553,10 +559,18 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
                 <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor} />
               </TouchableOpacity>
             </TitleNavigationContainer>
+            {/*
             <ChartContainer>
               <PieChartResumo
                 infos={dadosPie.infos}
               />
+            </ChartContainer>
+            */}
+
+            <ChartContainer key={dadosNewPie + Math.random()}>
+              {dadosNewPie !== {} ?
+                <NewPieChartResumo data={dadosNewPie} />
+                : null}
             </ChartContainer>
 
 

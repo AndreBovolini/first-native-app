@@ -98,7 +98,7 @@ const ModalEscolheCarteira = (props) => {
             </View>
             
             <ScrollView>
-            {
+            { carteiras[0] ?
               carteiras.map((el, i) => {
                 return (
                   <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => handleSendInfo(el)}>
@@ -109,7 +109,7 @@ const ModalEscolheCarteira = (props) => {
                   </TouchableOpacity>
                 )
               })
-            }
+            : null}
             </ScrollView>
         </View>
       </Modal>

@@ -105,8 +105,8 @@ export const TitleNavigation = styled.Text`
 
 export const ChartContainer = styled.View`
       width: ${globalStyles.dimensions.width}px;
-      height: 393px;
-      margin-top: 20px; 
+      height: 433px;
+      margin-top: 0px; 
 `;
 
 export const LineChartContainer = styled.View`

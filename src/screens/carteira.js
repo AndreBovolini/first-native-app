@@ -30,6 +30,8 @@ import {
   ChartContainer,
   ContainerCards
 } from '../screens/Carteira/style'
+import { newDataPieChart } from '../components/Carteira/NewGraficoPie/newDataPieChart';
+import { NewPieChart } from '../components/Carteira/NewGraficoPie';
 
 
 const Carteira = (props) => {
@@ -43,6 +45,7 @@ const Carteira = (props) => {
   }
 )
 const [dadosChart, setDadosChart] = useState({})
+const [newDadosChart, setNewDadosChart] = useState([])
 const [showAtivos, setShowAtivos ] = useState(true)
 const [heightDefault, setHeightDefault] = useState((AtivosCarteira.length-1)*90)
 const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
@@ -73,7 +76,6 @@ const StyledTheme = useContext(ThemeContext)
     });
 
     setArrayAtivos(ativos);
-    console.log(arrayAtivos)
     if(arrayAtivos.length !== 0 ) {
       setLengthAtivos(arrayAtivos.length)
     }else{
@@ -81,14 +83,19 @@ const StyledTheme = useContext(ThemeContext)
     }
     
    let infos = ''
+   let dadosChartNew = '';
     if(showAtivos){
       infos = dataPieChart(resposta2.grafico0,StyledTheme.colors.invertedBackground)
+      dadosChartNew = newDataPieChart(resposta2.grafico0, StyledTheme)
     }else{
       infos = dataPieChart(resposta2.grafico1,StyledTheme.colors.invertedBackground )
+      dadosChartNew = newDataPieChart(resposta2.grafico1, StyledTheme)
     }
     // const infos = dataPieChart(showAtivos ? (resposta2.grafico0, StyledTheme.colors.invertedBackground)
     //   : (resposta2.grafico1, StyledTheme.colors.invertedBackground))
-   setDadosChart(infos)
+    if (newDadosChart != dadosChartNew ) {
+   setNewDadosChart(dadosChartNew)
+    }
     }
     
     
@@ -96,12 +103,10 @@ const StyledTheme = useContext(ThemeContext)
 
   
   function handleSelectorAtivos() {
-    console.log(lengthAtivos + ' here' )
     setShowAtivos(true)
     setHeightDefault((lengthAtivos-1)*90)
   }
   function handleSelectorCustodiante() {
-    console.log(lengthAtivos + ' here' )
     setShowAtivos(false)
     setHeightDefault((lengthAtivos-1)*90)
   }
@@ -133,15 +138,8 @@ const StyledTheme = useContext(ThemeContext)
     }
 
   function handleSelectPie(event) { 
-    let entry = event.nativeEvent
-    if (entry == null) {
-      setSelectedEntry(null)
-      
-    } else {
-      setSelectedEntry(JSON.stringify(entry))
-      setSelecionadoPie(entry)
       try{
-        let selectName = event.nativeEvent.data.label
+        let selectName = event.data.label
         let filtrado = arrayAtivos.filter(ativo => ativo.ativo === selectName)
         filtrado[0].show = true;
         let newArray = [...arrayAtivos];
@@ -151,8 +149,6 @@ const StyledTheme = useContext(ThemeContext)
       }catch{
 
       }
-      
-    }
 };
 
 
@@ -162,11 +158,17 @@ const StyledTheme = useContext(ThemeContext)
         <Title>Carteira</Title>
         <Seletor handleSelectorCustodiante={handleSelectorCustodiante} handleSelectorAtivos={handleSelectorAtivos}/>
             <ChartContainer>
+              {/*
               { dadosChart.infos ?
                 <PieCarteira
                 infos={dadosChart.infos}
                 handleSelectPie={handleSelectPie}
-                />    : null}  
+              />    : null}  */}
+              { newDadosChart !== {} ? 
+                <NewPieChart data={newDadosChart}
+                handleSelectPie={handleSelectPie}
+                />
+              : null}
             </ChartContainer>
             <ContainerCards>
               {arrayAtivos.map((el, i) => {

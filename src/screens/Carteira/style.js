@@ -14,7 +14,7 @@ export const Title = styled.Text`
 
 export const ChartContainer = styled.View`
     width: ${globalStyles.dimensions.width}px;
-    height: 382px;
+    height: 432px;
     margin-top: 20px;
 `
 export const ContainerCards = styled.View`

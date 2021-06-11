@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 import { connect } from 'react-redux';
-import { alteraCarteira, alteraDataMaisAntiga, alteraDataMaisRecente } from '../../../../store/actions/actions';
+import { alteraCarteira, alteraDataLimite } from '../../../../store/actions/actions';
 
 import { ThemeContext } from 'styled-components/native';
 
@@ -41,16 +41,16 @@ const CardAlteraCarteira = (props) => {
 
   function selectNovaCarteira(carteira) {
     props.alteraCarteira(carteira)
-    let dataAntiga = '';
-    let dataRecente = '';
-    props.responseInfosCarteiras.forEach(carteira => {
-      if (carteira["Nome da Carteira"] === props.stateCarteira.carteira) {
-        dataAntiga = carteira["Data da Primeira Operação"]
-        props.alteraDataMaisAntiga(dataAntiga)
-        dataRecente = carteira["Data da Cota mais Recente"]
-        props.alteraDataMaisRecente(dataRecente)
-      }
-    });
+    // let dataAntiga = '';
+    // let dataRecente = '';
+    // props.responseInfosCarteiras.forEach(carteira => {
+    //   if (carteira["Nome da Carteira"] === props.stateCarteira.carteira) {
+    //     dataAntiga = carteira["Data da Primeira Operação"]
+    //     props.alteraDataMaisAntiga(dataAntiga)
+    //     dataRecente = carteira["Data da Cota mais Recente"]
+    //     props.alteraDataMaisRecente(dataRecente)
+    //   }
+    // });
   }
 
 
@@ -103,8 +103,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   alteraCarteira: (carteira) => dispatch(alteraCarteira(carteira)),
-  alteraDataMaisAntiga: (dataMaisAntiga) => dispatch(alteraDataMaisAntiga(dataMaisAntiga)),
-  alteraDataMaisRecente: (dataMaisRecente) => dispatch(alteraDataMaisRecente(dataMaisRecente)),
+  alteraDataLimite: (dataMaisAntiga, dataMaisRecente) => dispatch(alteraDataLimite(dataMaisAntiga, dataMaisRecente)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardAlteraCarteira);

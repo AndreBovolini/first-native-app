@@ -7,6 +7,7 @@ import BarChart from '../../Home/BarChart'
 
 import Carousel, { Pagination }from 'react-native-snap-carousel';
 import styled, { ThemeContext } from 'styled-components';
+import NewBarChartHome from '../../Home/NewBarChart';
 
 const CardCarousel = (props) => {
 
@@ -53,11 +54,13 @@ const CardCarousel = (props) => {
         return (
             <View style={{
                 backgroundColor: StyledTheme.colors.background,
-                height: 325,
+                height: 350,
                 padding: 10,
                 marginTop: 20,
                 marginRight: 35,
-                marginBottom: -50 }}>
+                marginBottom: -50 }}
+                
+                >
                 {/* <Text style={{fontSize: 20, color:'#000'}}>{item.title}</Text>
                 <Text>{item.text}</Text> */}
                 <BarChart data={item}/> 
