@@ -32,6 +32,8 @@ const CardDatePicker = (props) => {
   const [showSelectorInicial, setShowSelectorInicial] = useState(false)
   const [showSelectorFinal, setShowSelectorFinal] = useState(false)
   const [errorData, setErrorData] = useState(false)
+  const [selectedInitialDate, setSelectedInitialDate] = useState('')
+  const [selectedFinalDate, setSelectedFinalDate] = useState('')
 
   const StyledTheme = useContext(ThemeContext)
 
@@ -46,7 +48,8 @@ const CardDatePicker = (props) => {
   const selectNewDateInicial = (data) => {
    if (data.getTime() > props.dataMaisAntiga) {
     setShowSelectorInicial(false);
-    props.newDataInicial(data.getTime());
+    //props.newDataInicial(data.getTime());
+    setSelectedInitialDate(data.getTime())
    } else {
     setShowSelectorInicial(false);
     setErrorData(true)
@@ -59,7 +62,8 @@ const CardDatePicker = (props) => {
   const selectNewDateFinal = (data) => {
     if (data.getTime() < props.dataMaisRecente) {
       setShowSelectorFinal(false);
-    props.newDataFinal(data.getTime());
+    //props.newDataFinal(data.getTime());
+    setSelectedFinalDate(data.getTime())
     }
     else {
       setShowSelectorFinal(false);
@@ -70,11 +74,17 @@ const CardDatePicker = (props) => {
      }
   }
 
+  const saveNewDates = () => {
+    const initialDate = selectedInitialDate !== '' ? selectedInitialDate : props.datas.dataInicial
+    const finalDate = selectedFinalDate !== '' ? selectedFinalDate : props.datas.dataFinal
+    props.newData(initialDate, finalDate);
+  }
+
   
 
   console.log('props ' + props.datas.dataInicial)
     return (
-        <View>
+        <View style={props.dadosHomePage.loading ? {backgroundColor: 'rgba(0, 0, 0, 0.5)'} : null}>
         <View style={[styles.blocoCor, {backgroundColor: '#2A0DB8'}]}>
              <Bloco onPress={()=> props.handleClick()} activeOpacity={1}>
                <LeftSide>
@@ -94,7 +104,11 @@ const CardDatePicker = (props) => {
                     <BlocoExpand>
                       <TouchableOpacity activeOpacity={0.7} onPress={showDateInicial} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
                             <ButtonView>
-                                <ButtonText>De: {(new Date(props.datas.dataInicial)).toLocaleDateString('pt-br', {timeZone: 'UTC'})}</ButtonText>
+                                <ButtonText>De: { selectedInitialDate === '' ?
+                                 (new Date(props.datas.dataInicial)).toLocaleDateString('pt-br', {timeZone: 'UTC'})
+                                : (new Date(selectedInitialDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'})
+                                }
+                                 </ButtonText>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </ButtonView>
                         </TouchableOpacity>
@@ -108,7 +122,11 @@ const CardDatePicker = (props) => {
                         ) : null}
                         <TouchableOpacity activeOpacity={0.7} onPress={showDateFinal} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
                             <ButtonView>
-                                <ButtonText>Até: {(new Date(props.datas.dataFinal)).toLocaleDateString('pt-br',{timeZone: 'UTC'})}</ButtonText>
+                                <ButtonText>Até: { selectedFinalDate === '' ?
+                                (new Date(props.datas.dataFinal)).toLocaleDateString('pt-br',{timeZone: 'UTC'})
+                                : (new Date(selectedFinalDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'})
+                                }
+                                </ButtonText>
                                 <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                             </ButtonView>
                         </TouchableOpacity>
@@ -120,6 +138,11 @@ const CardDatePicker = (props) => {
                             style={{marginLeft: globalStyles.dimensions.width * 0.2}}
                             />
                         ) : null}
+                        <TouchableOpacity activeOpacity={0.7} onPress={saveNewDates}>
+                          <View style={styles.Button}>
+                            <Text atyle={{color: '#FFF', fontSize: 20,}}>Salvar</Text>
+                          </View>
+                        </TouchableOpacity>
                        </BlocoExpand> 
                        {
                           errorData ? (<Text style={{fontSize: 15, color: 'red'}}>Selecione uma data válida</Text>) : null
@@ -137,7 +160,8 @@ const CardDatePicker = (props) => {
 const mapStateToProps = state => ({
   datas: state.dates,
   dataMaisAntiga: state.dates.dataMaisAntiga,
-  dataMaisRecente: state.dates.dataMaisRecente
+  dataMaisRecente: state.dates.dataMaisRecente,
+  dadosHomePage: state.dadosHomePage,
 });
 
 const mapDispatchToProps = dispatch => 
@@ -168,4 +192,13 @@ const styles = StyleSheet.create({
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10
       },
+      Button :{
+        marginTop: 20,
+        height: 50,
+        width: globalStyles.dimensions.width * 0.4,
+        backgroundColor: '#1A0873',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }
     })

@@ -119,11 +119,7 @@ const Filtro = props => {
                dataFinal={dataFinal}
                handleAlteraDataFinal={handleAlteraDataFinal} 
                handleAlteraDataInicial={handleAlteraDataInicial} />
-          <TouchableOpacity activeOpacity={0.7} onPress={props.buttonAction}>
-            <Button>
-              <ButtonText>Salvar</ButtonText>
-            </Button>
-          </TouchableOpacity>
+          
         </ModalCustom>
       </Modal>
       

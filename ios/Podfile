@@ -14,9 +14,8 @@ target 'first_react_native_app' do
 
   pod 'RNCharts', :path => '../node_modules/react-native-charts-wrapper'
 
-  pod 'OneSignal', '>= 3.0.0', '< 4.0'
 
-
+  
 
   target 'first_react_native_appTests' do
     inherit! :complete

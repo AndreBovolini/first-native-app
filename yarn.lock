@@ -2766,15 +2766,15 @@ escape-html@~1.0.3:
   resolved "https://registry.npmjs.org/escape-html/-/escape-html-1.0.3.tgz"
   integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
 
+escape-string-regexp@2.0.0, escape-string-regexp@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
+  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
+
 escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
-
-escape-string-regexp@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
-  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
 
 escape-string-regexp@^4.0.0:
   version "4.0.0"
@@ -3640,7 +3640,7 @@ interpret@^1.0.0:
   resolved "https://registry.npmjs.org/interpret/-/interpret-1.4.0.tgz"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-invariant@^2.2.2, invariant@^2.2.4:
+invariant@2.2.4, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -5767,6 +5767,11 @@ react-native-device-info@^8.1.3:
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.1.3.tgz#022fc01372632bf80c0a6d201aab53344efc715f"
   integrity sha512-73e3wiGFL8DvIXEd8x4Aq+mO8mZvHARwfYorIEu+X0trLHY92bP5Ict8DJHDjCQ0+HtAvpA4Wda2VoUVN1zh6Q==
 
+react-native-echarts-wrapper@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-echarts-wrapper/-/react-native-echarts-wrapper-2.0.0.tgz#87c539841418ef900bc3e07efa8aae135d231b1d"
+  integrity sha512-1PwWBuzr4lQJxiu1VtK/WNEnmmEJW2Q6uB9WOUCG4Ftua0MNQXKngeT+M1Zxlui4uHIwPGWNX5KXXEkDgO4rSw==
+
 react-native-exit-app@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-exit-app/-/react-native-exit-app-1.1.0.tgz#5ec082152974240e2d6a93f1608efb49a4385f21"
@@ -5812,6 +5817,11 @@ react-native-onesignal@^4.1.1:
   integrity sha512-Rc9LmnT9Hpbz4AxbILnWg8ElbErhftFi+eDW54NoEMi6n5uDodGn5kEQv1nEcP3ET0CmTDNYClB4n8M12X6NgQ==
   dependencies:
     invariant "^2.2.2"
+
+react-native-orientation-locker@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.3.1.tgz#e47cfdd4a7390df6ccdbc748a6eca9e8be953b0d"
+  integrity sha512-BJPe/GvGO8nNdtqQat30CS9H2o+Qt8hv9AMYCxLS5l5k5+BP3FLScU2+GBg2DizDQCOnTtA24o8heI7kwy+rvw==
 
 react-native-reanimated@^1.9.0:
   version "1.13.3"
@@ -5897,6 +5907,14 @@ react-native-vector-icons@^8.1.0:
     lodash.template "^4.5.0"
     prop-types "^15.7.2"
     yargs "^16.1.1"
+
+react-native-webview@^11.6.2:
+  version "11.6.2"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.6.2.tgz#e19b3325d6777caee29d04eb2edf9b70f0b29915"
+  integrity sha512-7e5ltLBgqt1mX0gdTTS2nFPIjfS6y300wqJ4rLWqU71lDO+8ZeayfsF5qo83qxo2Go74CtLnSeWae4pdGwUqYw==
+  dependencies:
+    escape-string-regexp "2.0.0"
+    invariant "2.2.4"
 
 react-native@0.64.0:
   version "0.64.0"

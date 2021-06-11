@@ -44,6 +44,9 @@ import RNExitApp from 'react-native-exit-app';
 
 import OneSignal from 'react-native-onesignal';
 
+import { newDataPieChartHome } from '../components/Home/NewPieChartResumo/dataNewPieChartResumo';
+import { NewPieChartResumo } from '../components/Home/NewPieChartResumo';
+
 export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira}) => {
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState (false)
@@ -52,10 +55,13 @@ export const Home = ({infosCarteiras, dadosHomePage, navigation, stateCarteira})
   const [loading, setLoading] = useState(true);
   const [dadosLineChart, setDadosLineChart] = useState({})
   const [dadosPie, setDadosPie] = useState({})
+  const [dadosNewPie, setDadosNewPie] = useState([])
   const [graficoCarrossel, setGraficoCarrossel] = useState(3)
   const [tipoCarrossel, setTipoCarrossel] = useState('ativo');
   const [accepted, setAccepted] = useState(false)
   const [acceptedProgrammed, setAcceptedProgrammed] = useState(false)
+
+  const StyledTheme = useContext(ThemeContext)
 
   const dadosTable = {
             table1: [
@@ -253,7 +259,7 @@ useEffect(()=> {
 useEffect(async () => {
   let acceptPush = await AsyncStorage.getItem('Push');
   let acceptPushProgrammed = await AsyncStorage.getItem('PushProgramada');
-  console.warn(acceptPush, acceptPushProgrammed)
+  //console.warn(acceptPush, acceptPushProgrammed)
   setAccepted( acceptPush === 'true' ? true :  false);
   setAcceptedProgrammed( acceptPushProgrammed === 'true' ? true :  false);
 }, [])
@@ -304,7 +310,7 @@ useEffect(
 
   []
 );
-  const StyledTheme = useContext(ThemeContext)
+  
 
   useEffect(() => {
     
@@ -313,7 +319,10 @@ useEffect(
      
     setDadosLineChart(dadosLineChart)
     const infos = dataPieChartHome(dadosHomePage.data, StyledTheme.colors.invertedBackground)
+    const optionEcharts = newDataPieChartHome(dadosHomePage.data, StyledTheme)
+    console.log(optionEcharts)
     setDadosPie(infos)
+    setDadosNewPie(optionEcharts)
     setLoading(dadosHomePage.loading)
     }
   },[dadosHomePage.loading, dadosHomePage.data, StyledTheme])
@@ -384,7 +393,7 @@ useEffect(
   }
 
   async function handleAccept() {
-    console.warn(accepted)
+    //(accepted)
     await AsyncStorage.setItem('Push', ( !accepted ? 'true' : 'false'))
     setAccepted(!accepted) 
     if (accepted === true) {
@@ -402,11 +411,7 @@ useEffect(
     return (
     <LargeContainer>
       <SafeAreaView >
-        {loading ? <SkeletonHome isLoading={loading}/> :
-        (<ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', height: 1650, width: globalStyles.dimensions.width,
-        backgroundColor: StyledTheme.colors.background}}>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Filtro visible={showModal} 
+      <Filtro visible={showModal} 
             accepted={accepted}
             acceptedProgrammed={acceptedProgrammed}
             handleAcceptProgrammed={handleAcceptProgrammed} 
@@ -414,6 +419,11 @@ useEffect(
             width={globalStyles.dimensions.width} buttonAction={handleCloseModal} 
             
             />
+        {dadosHomePage.loading ? <SkeletonHome isLoading={dadosHomePage.loading}/> :
+        (<ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', height: 1730, width: globalStyles.dimensions.width,
+        backgroundColor: StyledTheme.colors.background}}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            
             </View>
             <TitleContainer>
               <LeftCard>
@@ -498,7 +508,7 @@ useEffect(
                   </BenchmarksButton>
                 </RightCard>
             
-            <TitleNavigationContainer>
+            <TitleNavigationContainer style={{marginTop: -10}}>
               <CardCarousel handleGetIndex={handleGetIndex}/>
               
             </TitleNavigationContainer>
@@ -525,10 +535,18 @@ useEffect(
                <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor}/>
               </TouchableOpacity>
             </TitleNavigationContainer>
+            {/*
             <ChartContainer>
                 <PieChartResumo
                   infos={dadosPie.infos} 
                   />    
+            </ChartContainer>
+            */}
+
+            <ChartContainer key={dadosNewPie+Math.random()}>
+              { dadosNewPie !== {} ?
+              <NewPieChartResumo data={dadosNewPie}/>
+            :  null}
             </ChartContainer>
             
             
