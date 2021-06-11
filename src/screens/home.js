@@ -419,7 +419,7 @@ useEffect(
             width={globalStyles.dimensions.width} buttonAction={handleCloseModal} 
             
             />
-        {dadosHomePage.loading ? <SkeletonHome isLoading={dadosHomePage.loading}/> :
+        {dadosHomePage.loading || !dadosHomePage.data.grafico5 ? <SkeletonHome isLoading={true}/> :
         (<ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', height: 1730, width: globalStyles.dimensions.width,
         backgroundColor: StyledTheme.colors.background}}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
