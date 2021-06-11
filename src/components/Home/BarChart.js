@@ -39,9 +39,9 @@ const BarChartHome = (props) => {
     infos = {
         legend: {
           enabled: true,
-          textSize: 10,
+          textSize: 14,
           textColor: processColor(StyledTheme.colors.fontColor),
-          form: "CIRCLE",
+          form: "SQUARE",
           horizontalAlignment: "CENTER",
           verticalAlignment: "BOTTOM",
           orientation: "HORIZONTAL",

@@ -90,7 +90,7 @@ const ModalEscolheCarteira = (props) => {
               value={inputCarteira}
               onChangeText={carteira => handleChangeText(carteira)}
               label={''}
-              style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: '#FFF'}}
+              style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: StyledTheme.colors.background}}
               // keyboardType={'email-address'}
               placeholderTextColor={'#808080'}
               type={'usuário'}

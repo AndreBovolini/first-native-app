@@ -26,7 +26,8 @@ const Filtro = props => {
     const [dataFinal, setDataFinal] = useState(new Date());
 
     const StyledTheme = useContext(ThemeContext)
-    
+
+
     const handleCardCarteira = () => {
         setShowAlteraCarteira(!showAlteraCarteira);
       };
