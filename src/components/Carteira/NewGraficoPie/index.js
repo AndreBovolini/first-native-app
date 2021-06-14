@@ -9,7 +9,7 @@ export function NewPieChart(props) {
 
     onRef = ref => {
         if (ref) {
-          this.chart = ref;
+          chart = ref;
         }
       };
 
@@ -33,7 +33,7 @@ export function NewPieChart(props) {
   };
 
   useEffect(() => {
-    this.chart.setOption({
+    chart.setOption({
         series: [
           {
             data: props.data
@@ -95,9 +95,9 @@ export function NewPieChart(props) {
                 <ECharts
                 option={options}
                 backgroundColor={StyledTheme.colors.background}
-                additionalCode={this.additionalCode}
-                onData={this.onData}
-                ref={this.onRef}
+                additionalCode={additionalCode}
+                onData={onData}
+                ref={onRef}
                 />
     )
 }
