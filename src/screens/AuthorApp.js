@@ -20,8 +20,8 @@ const AuthOrApp = (props) => {
         let token = userToken
         let credentials = await Keychain.getGenericPassword();
         //console.warn(token)
-        if (true) {
-        if (false) {
+        if (token) {
+        if (expiration < date) {
             //console.warn('eita')
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {

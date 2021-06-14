@@ -161,7 +161,7 @@ const LineChartKit = props => {
     return (
         <SafeAreaView 
                 style={{ height: 370, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
-               key={Math.random()}>
+               >
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
 
             <ECharts
