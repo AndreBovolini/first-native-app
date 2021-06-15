@@ -66,47 +66,18 @@ const LineChartKit = props => {
             scale: false
         },
         series: props.data
-        // [
-        //     {
-        //         symbol: 'none',
-        //         name: "Carteira",
-        //         data: [13.08, 13.13, 12.74, 13.34, 14.04, 13.79, 14.01, 13.78, 14.03,
-        //             13.58, 13.75, 13.8, 13.66, 13.36, 13.19, 13.17, 13.07, 12.9, 13.44,
-        //             12.9, 13.27, 13.57, 13.96, 13.93, 14.08, 14.16, 13.99, 13.65, 13.91,
-        //             13.79, 14.04, 13.86, 13.84, 12.91, 13.2, 13.27, 12.71, 12.28, 12.41,
-        //             12.42, 12.28, 12.54, 12.92, 12.04, 12.05, 12.25, 12.77, 12.66, 12.79,
-        //             12.6, 13.09, 12.58, 12.93, 12.68, 12.49, 12.18, 12.47, 12.46, 12.45,
-        //             12.8, 12.81],
-        //         type: "line",
-        //         smooth: true,
-                
-        //     },
-        //     {
-        //         symbol: 'none',
-        //         name: "CDI",
-        //         data: [9.45, 9.45, 9.46, 9.47, 9.48, 9.49, 9.5, 9.5, 9.51, 9.52, 9.53, 9.54,
-        //             9.54, 9.55, 9.56, 9.57, 9.58, 9.59, 9.59, 9.6, 9.61, 9.62, 9.63, 9.63,
-        //             9.64, 9.65, 9.66, 9.67, 9.68, 9.68, 9.69, 9.7, 9.71, 9.72, 9.72, 9.73,
-        //             9.74, 9.75, 9.76, 9.77, 9.77, 9.78, 9.79, 9.8, 9.81, 9.81, 9.82, 9.83,
-        //             9.84, 9.85, 9.86, 9.86, 9.88, 9.89, 9.9, 9.91, 9.92, 9.93, 9.94, 9.96,
-        //             9.97],
-        //         type: "line",
-        //         smooth: true
-        //     }
-        // ]
         ,
         tooltip: {
             trigger: "axis",
             backgroundColor: 'rgba(50,50,50,0.9)',
-            // formatter: '{a}: {b} %'
-            // formatter: '{a0}: {c0} <br /> {a1}: {c1}'
             formatter: function (params) {
+               
                 return  (
-                    'Data: ' + params[0].name + '<br />' +
-                    `<span style="height: 25px; width: 25px; background-color: ${params[0].color}; border-radius: 50%; display: inline-block;"></span>` +
-                     params[0].seriesName + ': ' + params[0].value +' %' + '<br />' 
-                    +
-                    params[1].seriesName + ': ' + params[1].value + ' %'
+                     params[0].name + '<br />' +
+                     `<span style="height: 10px; width: 10px; background-color: ${params[0].color}; border-radius: 50%; display: inline-block;"></span>  ` + params[0].seriesName + ': ' + params[0].value +'%' 
+                     + '<br />' +
+                    `<span style="height: 10px; width: 10px; background-color: ${params[1].color}; border-radius: 50%; display: inline-block;"></span>  ` + params[1].seriesName + ': ' + params[1].value + '%' 
+                    
                     )
             }
         },
@@ -170,10 +141,7 @@ const LineChartKit = props => {
                 option={option}
                 additionalCode={additionalCode}
                 onData={onData}
-                onLoadEnd={() => {
-                    chart.setBackgroundColor('StyledTheme.colors.background');
-                     
-                }}
+                backgroundColor={StyledTheme.colors.background}
             />
         </SafeAreaView>
     );

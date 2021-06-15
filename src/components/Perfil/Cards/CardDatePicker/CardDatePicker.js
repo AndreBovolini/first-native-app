@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,Platform
+  TouchableOpacity,
+  ScrollView
 } from 'react-native';
 
 import globalStyles from '../../../../styles/globalStyles';
@@ -12,6 +13,7 @@ import globalStyles from '../../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import CalendarPicker from '../Calendar/CalendarPicker'
 
 import { connect } from 'react-redux';
 import * as Actions from '../../../../store/actions/actions';
@@ -34,11 +36,22 @@ const CardDatePicker = (props) => {
   const [errorData, setErrorData] = useState(false)
   const [selectedInitialDate, setSelectedInitialDate] = useState('')
   const [selectedFinalDate, setSelectedFinalDate] = useState('')
+  const [height, setHeight] = useState(200)
 
   const StyledTheme = useContext(ThemeContext)
 
+  useEffect(() => {
+    if (showSelectorInicial){
+      setHeight(350)
+      
+    }else{
+      setHeight(200)
+    }
+  },[showSelectorInicial, showSelectorFinal])
+
   const showDateInicial = () => {
     setShowSelectorInicial(true)
+      
   };
 
   const showDateFinal = () => {
@@ -46,12 +59,13 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateInicial = (data) => {
-   if (data.getTime() > props.dataMaisAntiga) {
-    setShowSelectorInicial(false);
+    console.log('data format ', data)
+   if (data > props.dataMaisAntiga) {
+    // setShowSelectorInicial(false);
     //props.newDataInicial(data.getTime());
-    setSelectedInitialDate(data.getTime())
+    setSelectedInitialDate(data)
    } else {
-    setShowSelectorInicial(false);
+    // setShowSelectorInicial(false);
     setErrorData(true)
     setTimeout(() => {
       setErrorData(false)
@@ -60,13 +74,14 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateFinal = (data) => {
-    if (data.getTime() < props.dataMaisRecente) {
-      setShowSelectorFinal(false);
+    console.log('data format ', props.dataMaisRecente)
+    if (data < props.dataMaisRecente) {
+      // setShowSelectorFinal(false);
     //props.newDataFinal(data.getTime());
-    setSelectedFinalDate(data.getTime())
+    setSelectedFinalDate(data)
     }
     else {
-      setShowSelectorFinal(false);
+      // setShowSelectorFinal(false);
       setErrorData(true)
       setTimeout(() => {
         setErrorData(false)
@@ -78,6 +93,9 @@ const CardDatePicker = (props) => {
     const initialDate = selectedInitialDate !== '' ? selectedInitialDate : props.datas.dataInicial
     const finalDate = selectedFinalDate !== '' ? selectedFinalDate : props.datas.dataFinal
     props.newData(initialDate, finalDate);
+    setShowSelectorFinal(false)
+    setShowSelectorInicial(false)
+    
   }
 
   
@@ -101,7 +119,9 @@ const CardDatePicker = (props) => {
                 { props.show && (
                   <View style={[styles.blocoExpandCor, {backgroundColor: '#2A0DB8'}]}>
                     <View style={{flexDirection: 'column'}}>
+                    
                     <BlocoExpand>
+                    <ScrollView style={{height: props.scroll ? null : height }} nestedScrollEnabled={true}>
                       <TouchableOpacity activeOpacity={0.7} onPress={showDateInicial} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
                             <ButtonView>
                                 <ButtonText>De: { selectedInitialDate === '' ?
@@ -113,13 +133,20 @@ const CardDatePicker = (props) => {
                             </ButtonView>
                         </TouchableOpacity>
                         {showSelectorInicial ? (
-                            <DateTimePicker
-                            value={new Date(props.datas.dataInicial)}
-                            mode={'date'}
-                            onChange={(_,data) => selectNewDateInicial(data)}
-                            style={{marginLeft: globalStyles.dimensions.width * 0.2}}
+                            // <DateTimePicker
+                            // value={new Date(props.datas.dataInicial)}
+                            // mode={'date'}
+                            // onChange={(_,data) => selectNewDateInicial(data)}
+                            // style={{marginLeft: globalStyles.dimensions.width * 0.2}}
+                            // />
+                            <CalendarPicker
+                              minDate={new Date(props.datas.dataInicial)}
+                              onChange={(data) => selectNewDateInicial(data)}
+                              id={'inicial'}
+                              // show={() =>showSelectorInicial}
                             />
-                        ) : null}
+                        ) 
+                        : null}
                         <TouchableOpacity activeOpacity={0.7} onPress={showDateFinal} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
                             <ButtonView>
                                 <ButtonText>Até: { selectedFinalDate === '' ?
@@ -131,19 +158,28 @@ const CardDatePicker = (props) => {
                             </ButtonView>
                         </TouchableOpacity>
                         {showSelectorFinal ?  (
-                            <DateTimePicker
-                            value={new Date(props.datas.dataFinal)}
-                            mode={'date'}
-                            onChange={(_,data) => selectNewDateFinal(data)}
-                            style={{marginLeft: globalStyles.dimensions.width * 0.2}}
+                            // <DateTimePicker
+                            // value={new Date(props.datas.dataFinal)}
+                            // mode={'date'}
+                            // onChange={(_,data) => selectNewDateFinal(data)}
+                            // style={{marginLeft: globalStyles.dimensions.width * 0.2}}
+                            // />
+                            <CalendarPicker
+                              maxDate={new Date(props.datas.dataFinal)}
+                              onChange={(data) => selectNewDateFinal(data)}
+                              id={'final'}
+                              // show={() =>showSelectorInicial}
                             />
                         ) : null}
                         <TouchableOpacity activeOpacity={0.7} onPress={saveNewDates}>
                           <View style={styles.Button}>
-                            <Text atyle={{color: '#FFF', fontSize: 20,}}>Salvar</Text>
+                            <Text style={{color: '#FFF', fontSize: 20,}}>Salvar</Text>
                           </View>
                         </TouchableOpacity>
+                        </ScrollView>
+                        
                        </BlocoExpand> 
+                       
                        {
                           errorData ? (<Text style={{fontSize: 15, color: 'red'}}>Selecione uma data válida</Text>) : null
                         }
@@ -195,6 +231,7 @@ const styles = StyleSheet.create({
       Button :{
         marginTop: 20,
         height: 50,
+        marginLeft: globalStyles.dimensions.width* 0.22,
         width: globalStyles.dimensions.width * 0.4,
         backgroundColor: '#1A0873',
         borderRadius: 10,

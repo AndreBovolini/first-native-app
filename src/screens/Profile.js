@@ -28,23 +28,28 @@ import CardAlteraCarteira from '../components/Perfil/Cards/CardAlteraCarteira/Ca
 import CardCarousel from '../components/Performance/Portrait/CardCarousel';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import RenderCalendar  from '../components/Perfil/Cards/Calendar/CalendarPicker'
 
 import { connect, Provider } from 'react-redux';
 import store from '../store/index';
 
 import { alteraViewMode } from '../store/actions/actions'
+import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
+import { Value } from 'react-native-reanimated';
 
 const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
     const [showAlteraSenha, setShowAlteraSenha] = useState(false);
     const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [height, setHeight] = useState(630);
+    const [heightScroll, setHeightScroll] = useState(200)
+    const [value, setValue] = useState('not')
     const StyledTheme = useContext(ThemeContext)
 
     useEffect(() => {
         let increment = 0;
         if (showDatePicker) {
-            increment = increment + 90
+            increment = increment + heightScroll
         }
         if(showAlteraSenha) {
             increment = increment + 320
@@ -83,6 +88,8 @@ const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
         AsyncStorage.setItem('mode', 'dark')
       }
     }
+  
+
   return (
     <SafeArea>
     <ScrollView contentContainerStyle={{height: height, width: globalStyles.dimensions.width,
@@ -93,12 +100,15 @@ const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
             <TextUser> Olá, Usuário </TextUser>
             
         </ContainerInfos> 
+        
+        
         <View>
               <Provider store={store}>
               <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
               <CardDatePicker
                show={showDatePicker}
-               handleClick={handleCardDatePicker}  />
+               handleClick={handleCardDatePicker}
+               />
                </Provider>
               <CardAlteraSenha show={showAlteraSenha} handleClick={handleCardSenha}/>
         </View>
