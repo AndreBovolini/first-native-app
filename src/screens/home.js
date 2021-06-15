@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+
 import ValueBox from '../components/Home/ValueBox/valueBox';
 import globalStyles from '../styles/globalStyles';
 
@@ -271,10 +272,11 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
     () => {
     if (Platform.OS === 'ios')  {
       navigation.addListener('beforeRemove', (e) => {
-        console.log(e.data.action.payload)
+        console.log(e.data.action)
         // Prevent default behavior of leaving the screen
-        if (e.data.action.payload.name === 'Login') {
+        if (e.data.action.payload.name === 'Login' || e.data.action.payload.name === 'AfterLogin') {
           navigation.dispatch(e.data.action);
+          return unsubscribe;
         } else {
         e.preventDefault();
   

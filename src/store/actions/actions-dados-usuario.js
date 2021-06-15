@@ -4,6 +4,10 @@ import fetchComAppCarteiras from '../../dados/conta/Carteiras';
 import fetchComAppInfosCarteiras from '../../dados/conta/infosCarteiras';
 import fetchComAppDatasCarteiras from '../../dados/conta/datasCarteiras'
 import { alteraDataLimite, newData } from './actions'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as RootNavigation from '../../navigation/RootNavigation';
+
+
 
 
 export const pegarDadosCarteiras = (token) => ({
@@ -38,9 +42,18 @@ export function* asyncPegarDadosCarteiras(action){
 }
 
 export function* asyncPegarDatasCarteiras(action){
+
   console.log('CCCCCCCCCCC' + action.dados.nomeCarteira)
     try {
       let response = yield call(fetchComAppDatasCarteiras, action.dados);
+      if (response.msg === 'Expired token') {
+        yield put({type: 'USER_LOGOUT'})
+        yield AsyncStorage.removeItem('token')
+        RootNavigation.navigate('Login', {
+          credentials: false
+        })
+          return
+      }
       yield put({ type: 'SUCCESS_GET_DATAS_CARTEIRAS',  data: response});
       let dataAntiga = '';
       let dataRecente = '';

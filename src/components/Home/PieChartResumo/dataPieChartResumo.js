@@ -30,7 +30,7 @@ export const dataPieChartHome = (response, color) => {
           }
         })
 
-        console.arrayData
+        //console.arrayData
     
     return ({
       infos: {

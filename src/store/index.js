@@ -10,13 +10,24 @@ import rootSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleWare();
 
-const store = createStore(combineReducers({
+
+const appReducer = combineReducers({
     dates: dates,
     dadosHomePage: homePage.dadosHomePage,
     dadosCarteiras: dadosUsuario.dadosCarteiras,
     infosCarteiras: dadosUsuario.infosCarteiras,
     datasCarteiras: dadosUsuario.datasCarteiras
-}),
+  })
+  
+const rootReducer = (state, action) => {
+    if (action.type === 'USER_LOGOUT') {
+        state = undefined;
+    }
+  
+    return appReducer(state, action)
+  }
+
+const store = createStore(rootReducer,
     applyMiddleware(sagaMiddleware),
 );
 

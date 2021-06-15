@@ -28,7 +28,7 @@ const NewBarChartHome = (props) => {
   indices.forEach((indice) => {
       dataValues.push(props.data[indice])
   })
-  console.warn(dataValues)
+  //console.warn(dataValues)
 
   let numeros = indices.map((indice, el) => {
     return props.data[indice]

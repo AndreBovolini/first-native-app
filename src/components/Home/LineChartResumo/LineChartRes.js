@@ -6,9 +6,9 @@ import { ThemeContext } from 'styled-components/native';
 
 const LineChartRes = props => {
     const StyledTheme = useContext(ThemeContext)
-    console.log('dataa ', props.data)
-    console.log('labels ', props.labels)
-    console.log('keys ', props.ativos)
+    // console.log('dataa ', props.data)
+    // console.log('labels ', props.labels)
+    // console.log('keys ', props.ativos)
 
     onRef = ref => {
         if (ref) {

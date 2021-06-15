@@ -23,6 +23,7 @@ import { getDeviceId } from 'react-native-device-info';
 import { ThemeProvider } from 'styled-components';
 import darkTheme from '../styles/themes/darkTheme';
 import lightTheme from '../styles/themes/lightTheme';
+import { navigationRef } from './RootNavigation';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -128,7 +129,7 @@ const AuthNavigator = () => {
 const Navigator = ({stateCarteira}) => {
     return (
         <ThemeProvider theme={stateCarteira.mode === 'dark' ? darkTheme : lightTheme}>
-            <NavigationContainer>
+            <NavigationContainer ref={navigationRef}>
             <StatusBar barStyle={stateCarteira.mode === 'dark' ? "light-content" : 'dark-content' }/>
                 <AuthNavigator />
 
