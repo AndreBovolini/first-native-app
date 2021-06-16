@@ -99,7 +99,8 @@ export const dataLineChart = (response, periodoSelecionado) => {
                 if (ativo !== 'PL') {
                     return {
                         name: el.data,
-                        value: el[ativo]
+                        value: el[ativo],
+                        
                     }
                 }
             })
@@ -140,7 +141,7 @@ export const dataLineChart = (response, periodoSelecionado) => {
             data: el.dataset,
             name: el.label,
             type: 'line',
-            smooth: true
+            smooth: true,
         }
     })
     

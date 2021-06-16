@@ -99,7 +99,10 @@ export const dataLineChartRes = (response) => {
         values = keysAtivos.map((ativo, i) => {
             const valores = filteredData.map((el, i) => {
                 if (ativo !== 'PL' && ativo !== 'CDI') {
-                    return el[ativo]
+                    return {
+                        name: el.data,
+                        value: el[ativo]
+                    } 
                 }
             })
             return {

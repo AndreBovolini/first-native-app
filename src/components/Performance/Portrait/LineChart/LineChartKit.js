@@ -1,4 +1,4 @@
-import React, { useContext, useEffect} from "react";
+import React, { useContext, useEffect, useState} from "react";
 import { StyleSheet, SafeAreaView, Button } from "react-native";
 import { ECharts } from "react-native-echarts-wrapper";
 import globalStyles from "../../../../styles/globalStyles";
@@ -70,15 +70,12 @@ const LineChartKit = props => {
         tooltip: {
             trigger: "axis",
             backgroundColor: 'rgba(50,50,50,0.9)',
-            formatter: function (params) {
-               
-                return  (
-                     params[0].name + '<br />' +
-                     `<span style="height: 10px; width: 10px; background-color: ${params[0].color}; border-radius: 50%; display: inline-block;"></span>  ` + params[0].seriesName + ': ' + params[0].value +'%' 
-                     + '<br />' +
-                    `<span style="height: 10px; width: 10px; background-color: ${params[1].color}; border-radius: 50%; display: inline-block;"></span>  ` + params[1].seriesName + ': ' + params[1].value + '%' 
-                    
-                    )
+            formatter: function(params) {
+                output =  params[0].name + '<br />'
+                params.forEach((el,i)=> {
+                    output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
+                })
+                return output
             }
         },
         legend: {
@@ -88,7 +85,8 @@ const LineChartKit = props => {
                 color: StyledTheme.colors.fontColor
             },
             bottom: '-15',
-            padding: 10
+            padding: 10,
+            
             
         
         }
@@ -132,7 +130,7 @@ const LineChartKit = props => {
     return (
         <SafeAreaView 
                 style={{ height: 370, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
-               >
+              >
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
 
             <ECharts

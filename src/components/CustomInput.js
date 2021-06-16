@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import globalStyles from '../styles/globalStyles';
 
@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Container, ContainerInput, Label} from './CustomInput/styles'
 import { ThemeContext } from 'styled-components';
 const CustomInput = (props) => {
+  const StyledTheme = useContext(ThemeContext)
   return (
     <Container>
       <View>

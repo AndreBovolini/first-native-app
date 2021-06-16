@@ -14,5 +14,5 @@ export const Label = styled.Text`
 export const ContainerInput = styled.View`
   flex-direction: row;
   background-color: ${props => props.theme.colors.invertedBackground};
-    border-radius: 10px;
+  border-radius: 10px;
 `;

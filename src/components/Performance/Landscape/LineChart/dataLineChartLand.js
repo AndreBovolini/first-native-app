@@ -97,7 +97,10 @@ export const dataLineChartLand = (response, periodoSelecionado) => {
         values = keysAtivos.map((ativo, i) => {
             const valores = filteredData.map((el, i) => {
                 if (ativo !== 'PL') {
-                    return el[ativo]
+                    return {
+                    name: el.data,
+                    value: el[ativo]
+                    }
                 }
             })
             return {

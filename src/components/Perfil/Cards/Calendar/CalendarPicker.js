@@ -21,7 +21,6 @@ const RenderCalendar = props => {
     const [days, setDays] = useState()
     const [markedDates, setMarkedDates] = useState(
         {
-       
     }
     )
     const StyledTheme = useContext(ThemeContext)
@@ -47,12 +46,14 @@ const RenderCalendar = props => {
     return (
         <View>
         <Calendar
+            current={props.id === 'inicial' ? props.minDate: props.maxDate}
+
             minDate = {props.id === 'inicial' ? props.minDate : null}
             maxDate={props.id === 'final' ? props.maxDate : new Date()}
             onDayPress={(day) => handleDayPress(day)}
             enableSwipeMonths={true}
             // markingType={'simple'}
-            // selected={'2021-05-02'}
+            
             markedDates={markedDates}
             style={{
                 borderRadius: 10,
