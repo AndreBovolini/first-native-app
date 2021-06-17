@@ -27,6 +27,7 @@
     "react-native-echarts-wrapper": "^2.0.0",
     "react-native-exit-app": "^1.1.0",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-iphone-x-helper": "^1.3.1",
     "react-native-keychain": "^6.2.0",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-modal": "^11.10.0",

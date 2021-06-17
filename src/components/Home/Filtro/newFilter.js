@@ -72,7 +72,12 @@ function NewFilter() {
     function handleShowError(message) {
         setErrorMessage(message)
         showError(true)
-      }
+    }
+
+
+    const handleSaveChanges = () => {
+        
+    }
 
     return (
         <View>
