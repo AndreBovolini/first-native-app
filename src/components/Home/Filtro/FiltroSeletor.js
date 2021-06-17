@@ -25,13 +25,14 @@ import { pegarDadosCarteiras } from '../../../store/actions/actions-dados-usuari
 import { alteraCarteira } from '../../../store/actions/actions'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import fetchComAppDatasCarteiras from '../../../dados/conta/datasCarteiras';
 
 const FiltroSeletor = props => {
     const [carteiras, setCarteiras] = useState([])
     const [inputCarteira, setInputCarteira] = useState('')
     const [todasCarteiras, setTodasCarteiras] = useState([])
 
-    const [selectedWallet, setSelectedWallet] = useState('');
+    const [selectedWallet, setSelectedWallet] = useState(props.stateCarteira.carteira);
     const [selectPeriod, setSelectPeriod] = useState(false);
     const [showError, setShowError] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -43,6 +44,7 @@ const FiltroSeletor = props => {
 
     const StyledTheme = useContext(ThemeContext)
 
+
     useEffect(() => {
         if (!props.isLoadingCarteirasUsuario && props.ResponseCarteirasUsuario !== []) {
           setCarteiras(props.ResponseCarteirasUsuario);
@@ -52,29 +54,37 @@ const FiltroSeletor = props => {
 
 
     useEffect(() => {
-      async function getWalletDates() {
-       
-          try {
-              await fetchComAppDatasCarteiras().then(response => {
-                  return {
+      async function getWalletDates(carteira) {
+              await fetchComAppDatasCarteiras({nomeCarteira: carteira}).then(response => {
+                
+                  let datas = {
                       inicio: response.data_mais_antiga,
-                      final: response.data_mais_antiga
+                      final: response.data_mais_recente
                   }
-              })
-          } catch {
-              return 'error'
-          }
-  }
 
+                  const diaA = datas.inicio.substr(0,2);
+                  const mesA = datas.inicio.substr(3,2)
+                  const anoA = datas.inicio.substr(6,4)
+                  let timestamp = new Date(`${anoA}-${mesA}-${diaA}`).getTime()
+                  const diaR = datas.final.substr(0,2);
+                  const mesR = datas.final.substr(3,2)
+                  const anoR = datas.final.substr(6,4)
+                  console.log('bbbb'+diaR,mesR,anoR)
+                  let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
+                  setFirstWalletDate(timestamp);
+                  setFirstSelectedDate(timestamp);
+                  setLastWalletDate(timestampR);
+                  setLastSelectedDate(timestampR);
+                  setIsLoadingDatas(false)
+
+              }).catch(error => 
+                error
+              )
+
+  }
   if (selectPeriod && selectedWallet !== '') {
-      let datas = getWalletDates()
-      if (datas !== error) {
-          setFirstWalletDate(datas.inicio);
-          setFirstSelectedDate(datas.inicio);
-          setLastWalletDate(datas.final);
-          setLastSelectedDate(datas.final);
-          setIsLoadingDatas(false)
-      }
+      getWalletDates(selectedWallet)
+
   }
   }, [selectPeriod])
 
