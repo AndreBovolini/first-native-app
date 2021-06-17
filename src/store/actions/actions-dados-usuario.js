@@ -3,7 +3,7 @@ import { put, call } from 'redux-saga/effects';
 import fetchComAppCarteiras from '../../dados/conta/Carteiras';
 import fetchComAppInfosCarteiras from '../../dados/conta/infosCarteiras';
 import fetchComAppDatasCarteiras from '../../dados/conta/datasCarteiras'
-import { alteraDataLimite, newData } from './actions'
+import { alteraDataLimite, newData, logout } from './actions'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as RootNavigation from '../../navigation/RootNavigation';
 
@@ -47,12 +47,7 @@ export function* asyncPegarDatasCarteiras(action){
     try {
       let response = yield call(fetchComAppDatasCarteiras, action.dados);
       if (response.msg === 'Expired token') {
-        yield put({type: 'USER_LOGOUT'})
-        yield AsyncStorage.removeItem('token')
-        RootNavigation.navigate('Login', {
-          credentials: false
-        })
-          return
+        yield put(logout())
       }
       yield put({ type: 'SUCCESS_GET_DATAS_CARTEIRAS',  data: response});
       let dataAntiga = '';

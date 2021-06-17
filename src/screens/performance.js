@@ -51,7 +51,7 @@ const Performance = (props) => {
   const [labels, setLabels] = useState([]);
   const [granularity, setGranularity] = useState(50)
   const [anoSelecionado, setAnoSelecionado] = useState('2021');
-  const [periodoSelecionado, setPeriodoSelecionado] = useState('2021');
+  const [periodoSelecionado, setPeriodoSelecionado] = useState('Tudo');
   const [indiceAno, setIndiceAno] = useState(0);
   const [orientation, setOrientation] = useState('portrait')
   const [scrollPosition, setScrollPosition] = useState(0)

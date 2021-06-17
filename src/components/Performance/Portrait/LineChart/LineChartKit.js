@@ -70,14 +70,14 @@ const LineChartKit = props => {
         tooltip: {
             trigger: "axis",
             backgroundColor: 'rgba(50,50,50,0.9)',
-            // formatter: '{a}: {b} %'
-            // formatter: '{a0}: {c0} <br /> {a1}: {c1}'
             formatter: function (params) {
+               
                 return  (
-                    params[0].name + '<br />' +
-                    `<span style="height: 10px; width: 10px; background-color: ${params[0].color}; border-radius: 50%; display: inline-block;"></span>  ` + params[0].seriesName + ': ' + params[0].value +'%' + '<br />' 
-                    +
-                    `<span style="height: 10px; width: 10px; background-color: ${params[1].color}; border-radius: 50%; display: inline-block;"></span>  ` + params[1].seriesName + ': ' + params[1].value + '%'
+                     params[0].name + '<br />' +
+                     `<span style="height: 10px; width: 10px; background-color: ${params[0].color}; border-radius: 50%; display: inline-block;"></span>  ` + params[0].seriesName + ': ' + params[0].value +'%' 
+                     + '<br />' +
+                    `<span style="height: 10px; width: 10px; background-color: ${params[1].color}; border-radius: 50%; display: inline-block;"></span>  ` + params[1].seriesName + ': ' + params[1].value + '%' 
+                    
                     )
             }
         },

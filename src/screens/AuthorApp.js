@@ -59,7 +59,7 @@ const AuthOrApp = (props) => {
 
     return (
         <View style={styles.container}>
-            <ActivityIndicator size='large' color='#FFF'/>
+            <ActivityIndicator size='large' color='red'/>
         </View>
     )
 }
