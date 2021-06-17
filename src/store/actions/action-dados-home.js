@@ -17,7 +17,7 @@ function apiGet() {
   return new Promise((resolve, reject) => {
       setTimeout(() => {
           resolve(resposta2)
-      }, 10000)
+      }, 1000)
   })
 };
 

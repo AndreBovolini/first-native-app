@@ -33,11 +33,11 @@ import RenderCalendar  from '../components/Perfil/Cards/Calendar/CalendarPicker'
 import { connect, Provider } from 'react-redux';
 import store from '../store/index';
 
-import { alteraViewMode } from '../store/actions/actions'
+import { alteraViewMode, logout } from '../store/actions/actions'
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 import { Value } from 'react-native-reanimated';
 
-const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
+const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
     const [showAlteraSenha, setShowAlteraSenha] = useState(false);
     const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -73,10 +73,7 @@ const Profile = ({navigation, stateCarteira, alteraViewMode}) => {
     };
 
     const handleClickLogout = () => {
-        AsyncStorage.removeItem('token');
-        navigation.navigate('Login', {
-          credentials: false
-        })
+        logout();
     }
 
     const handleAlteraMode = () => {
@@ -136,7 +133,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ( dispatch )=> ({
-  alteraViewMode: (mode) => dispatch(alteraViewMode(mode))
+  alteraViewMode: (mode) => dispatch(alteraViewMode(mode)),
+  logout: () => dispatch(logout())
 }) 
   
 

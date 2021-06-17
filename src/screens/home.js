@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+
 import ValueBox from '../components/Home/ValueBox/valueBox';
 import globalStyles from '../styles/globalStyles';
 
@@ -267,51 +268,56 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   }, [])
 
 
-  useEffect(
-    () => {
-    if (Platform.OS === 'ios')  {
-      navigation.addListener('beforeRemove', (e) => {
-        console.log(e.data.action.payload)
-        // Prevent default behavior of leaving the screen
-        if (e.data.action.payload.name === 'Login') {
-          navigation.dispatch(e.data.action);
-        } else {
-        e.preventDefault();
+  // useEffect(
+  //   () => {
+  //   if (Platform.OS === 'ios')  {
+  //     navigation.addListener('beforeRemove', (e) => {
+  //       console.log(e.data.action)
+  //       const unsubscribe = navigation.addListener('focus', () => {
+  //         // do something
+  //       });
+  //       if (e.data.action.payload.name === 'Login' ) {
+  //         navigation.dispatch(e.data.action);
+  //         return unsubscribe;
+  //        } else if ( e.data.action.payload.name === 'AfterLogin') {
+  //          console.log('teste after')
+  //        return
+  //       } else {
+  //       e.preventDefault();
   
-        // Prompt the user before leaving the screen
-        Alert.alert(
-          'Você deseja sair do app?',
-          'You have unsaved changes. Are you sure to discard them and leave the screen?',
-          [
-            { text: "Manter", style: 'cancel', onPress: () => {} },
-            { text: "Logout", style: 'cancel', onPress: () => {
-              AsyncStorage.removeItem('token');
-              navigation.dispatch(
-                CommonActions.navigate({
-                  name: 'Login',
-                  params: {
-                    credentials: false,
-                  },
-                })
-              );
-          } },
-            {
-              text: 'Sair',
-              style: 'destructive',
-              // If the user confirmed, then we dispatch the action we blocked earlier
-              // This will continue the action that had triggered the removal of the screen
-              onPress: () => RNExitApp.exitApp(),
-            },
-          ]
-        )
-        }
-      })
-    }
-  }
-    ,
-  
-    []
-  );
+  //       // Prompt the user before leaving the screen
+  //       Alert.alert(
+  //         'Você deseja sair do app?',
+  //         'You have unsaved changes. Are you sure to discard them and leave the screen?',
+  //         [
+  //           { text: "Manter", style: 'cancel', onPress: () => {} },
+  //           { text: "Logout", style: 'cancel', onPress: () => {
+  //             AsyncStorage.removeItem('token');
+  //             navigation.dispatch(
+  //               CommonActions.navigate({
+  //                 name: 'Login',
+  //                 params: {
+  //                   credentials: false,
+  //                 },
+  //               })
+  //             );
+  //         } },
+  //           {
+  //             text: 'Sair',
+  //             style: 'destructive',
+  //             // If the user confirmed, then we dispatch the action we blocked earlier
+  //             // This will continue the action that had triggered the removal of the screen
+  //             onPress: () => RNExitApp.exitApp(),
+  //           },
+  //         ]
+  //       )
+  //       }
+  //     })
+  //   }
+  // }
+  //   ,
+  //   [navigation]
+  // );
 
   useEffect(() => {
     if (!dadosHomePage.loading && dadosHomePage.data.grafico5) {

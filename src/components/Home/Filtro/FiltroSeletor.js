@@ -8,25 +8,38 @@ import {
   Platform,
   ScrollView
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Modal from 'react-native-modal';
 import CustomInput from '../../CustomInput'
 import globalStyles from '../../../styles/globalStyles';
 import { ThemeContext } from 'styled-components/native';	
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { Container, ModalCustom, TitleText, ButtonView, Button, ButtonText } from './styles';
+import { Container, ModalCustom, TitleText, ButtonView, Button, ButtonText, ToggleView, Percent, PercentPress, Currency, CurrencyPress, RightCard,
+SelectPeriodView, ToggleLabelText, FirstLastDateView,
+DateButtonText, DateButtonView, DatesView
+} from './styles';
 
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras } from '../../../store/actions/actions-dados-usuario'
 import { alteraCarteira } from '../../../store/actions/actions'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 const FiltroSeletor = props => {
     const [carteiras, setCarteiras] = useState([])
-    const [isPadrao, setIsPadrao] = useState(false)
-    const [selectedCart, setSelectedCart] = useState()
     const [inputCarteira, setInputCarteira] = useState('')
     const [todasCarteiras, setTodasCarteiras] = useState([])
+
+    const [selectedWallet, setSelectedWallet] = useState('');
+    const [selectPeriod, setSelectPeriod] = useState(false);
+    const [showError, setShowError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
+    const [isLoadingDatas, setIsLoadingDatas] = useState(false);
+    const [firstWalletDate, setFirstWalletDate] = useState('')
+    const [lastWalletDate, setLastWalletDate] = useState('')
+    const [firstSelectedDate, setFirstSelectedDate] = useState('')
+    const [lastSelectedDate, setLastSelectedDate] = useState('')
 
     const StyledTheme = useContext(ThemeContext)
 
@@ -37,21 +50,38 @@ const FiltroSeletor = props => {
         }
     }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
 
-    const handleSalvarPadrao = () => {
-        setIsPadrao(!isPadrao)
-    }
 
-    const handleSelectCarteira = (carteira) => {
-        setSelectedCart(carteira)
-        setInputCarteira(carteira);
-    }
+    useEffect(() => {
+      async function getWalletDates() {
+       
+          try {
+              await fetchComAppDatasCarteiras().then(response => {
+                  return {
+                      inicio: response.data_mais_antiga,
+                      final: response.data_mais_antiga
+                  }
+              })
+          } catch {
+              return 'error'
+          }
+  }
 
-    async function handleSendInfo(carteira) {
-        if (isPadrao) {
-          await AsyncStorage.setItem('Carteira', carteira);
-        }
-        props.alteraCarteira(carteira)
+  if (selectPeriod && selectedWallet !== '') {
+      let datas = getWalletDates()
+      if (datas !== error) {
+          setFirstWalletDate(datas.inicio);
+          setFirstSelectedDate(datas.inicio);
+          setLastWalletDate(datas.final);
+          setLastSelectedDate(datas.final);
+          setIsLoadingDatas(false)
       }
+  }
+  }, [selectPeriod])
+
+    const handleSetecWallet = (name) => {
+      setSelectedWallet(name);
+      setInputCarteira(name)
+    }
 
     function handleChangeText(carteira) {
         setInputCarteira(carteira);
@@ -66,6 +96,49 @@ const FiltroSeletor = props => {
           setCarteiras(filtradas)
         }
       }
+
+      const handleChangeSelectPeriod = () =>  {
+        setSelectPeriod(!selectPeriod)
+        if (selectedWallet) {
+            setIsLoadingDatas(true)
+        }
+    }
+
+    const handleShowFirstDate = () => {
+
+    }
+
+    const handleShowLastDate = () => {
+
+    }
+
+    const handleSelectFirstDate = (date) => {
+        if (date > firstWalletDate) {
+            setFirstSelectedDate(date)
+            showError(false)
+        } else {
+            handleShowError(`Escolha uma data posterior a ${firstWalletDate}`)
+        }
+    }
+
+    const handleSelectLastDate = (date) => {
+        if (date < firstWalletDate) {
+            setFirstSelectedDate(date)
+            showError(false)
+        } else {
+            handleShowError(`Escolha uma data anterior a ${lastWalletDate}`)
+        }
+    }
+
+    function handleShowError(message) {
+        setErrorMessage(message)
+        showError(true)
+    }
+
+
+    const handleSaveChanges = () => {
+        
+    }
 
 
     return (
@@ -86,23 +159,14 @@ const FiltroSeletor = props => {
             }}
             useNativeDriverForBackdrop>
                 <ModalCustom
-                    style={{height: props.height, width: props.width, marginTop: Platform.OS === 'ios' ? 30 : 0}}>
+                    style={{height: props.height, width: props.width, marginTop: getStatusBarHeight()}}>
                     <View style={{flexDirection: 'row'}}>
-                    <View style={{marginTop: 15, marginLeft: globalStyles.dimensions.width*-0.2}}>
+                    <View style={{marginTop: 15, marginLeft: globalStyles.dimensions.width*-0.4}}>
                         <TouchableOpacity onPress={props.buttonAction}>
                             <Ionicons name="arrow-undo" size={25} color={StyledTheme.colors.fontColor}/>
                         </TouchableOpacity>
                     </View>
-                    <View style={{flexDirection: 'row', marginTop: 18, marginLeft: globalStyles.dimensions.width*0.15, marginBottom: -5}}>
-                        <TouchableOpacity onPress={handleSalvarPadrao}>
-                            {isPadrao? 
-                            <Ionicons name="checkbox" size={25} color={StyledTheme.colors.fontColor}/>
-                            :
-                            <Ionicons name="square-outline" size={25} color={StyledTheme.colors.fontColor}/>
-                            }
-                        </TouchableOpacity>
-                        <TitleText>Salvar como padrão</TitleText>
-                    </View>
+                    
                     </View>
                     <View style={{flexDirection: 'row'}}>
                         <CustomInput
@@ -119,8 +183,8 @@ const FiltroSeletor = props => {
                         {carteiras[0] ?
                         carteiras.map((el, i) => {
                             return (
-                            <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => handleSelectCarteira(el)}>
-                                {selectedCart === el ? 
+                            <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => handleSetecWallet(el)}>
+                                {selectedWallet === el ? 
                                     <ButtonView style={{backgroundColor: '#FFF'}}>
                                     <Text style={{color: '#2A0DB8', fontSize: 18, fontWeight: 'bold', marginRight: 20,}}>{el}</Text>
                                     <Ionicons name={'wallet'} size={18} color={'#2A0DB8'} />
@@ -136,6 +200,90 @@ const FiltroSeletor = props => {
                         })
                         : null}
                     </ScrollView>
+                      <SelectPeriodView>
+                        <ToggleLabelText>Todo o período</ToggleLabelText>
+                      <ToggleView>
+                      <RightCard onPress={handleChangeSelectPeriod} activeOpacity={1} pressDuration={0.5}>
+                        {
+                          !selectPeriod ? (
+                            <CurrencyPress>
+                              <Text style={{ color: StyledTheme.colors.firstLayer, fontSize: 25, marginRight: 4 }
+                              }>o</Text>
+                            </CurrencyPress>
+                          ) : (
+                            <Currency>
+                              <Text style={
+                                { color: StyledTheme.colors.invertedBackground, fontSize: 25, marginRight: 4 }
+                              }>o</Text>
+                            </Currency>
+                          )
+                        }
+
+
+                      </RightCard>
+
+                      {
+                        selectPeriod ? (
+                          <PercentPress>
+                            <Icon.Button
+                              name="calendar"
+                              color={StyledTheme.colors.firstLayer}
+                              backgroundColor={StyledTheme.colors.invertedBackground}
+                              iconStyle={{
+                                alignItems: 'center',
+                                alignSelf: 'center',
+                                marginLeft: 8
+                              }
+                              }
+                              onPress={handleChangeSelectPeriod}
+                            />
+                          </PercentPress>
+                        ) : (
+                          <Percent>
+                            <Icon.Button
+                              name="calendar"
+                              color={StyledTheme.colors.fontColor}
+                              backgroundColor={StyledTheme.colors.background}
+                              iconStyle={{
+                                alignItems: 'center',
+                                alignSelf: 'center',
+                                marginLeft: 8
+                              }}
+                              onPress={handleChangeSelectPeriod}
+                            />
+                          </Percent>
+                        )
+                      }
+                    </ToggleView>
+                    <ToggleLabelText>Selecionar período</ToggleLabelText>
+                    </SelectPeriodView>
+                    {
+                      selectPeriod ? (
+                        <DatesView style={{width: props.width}}>
+                          <Text>Selecione o período de análise</Text>
+                          <FirstLastDateView  style={{width: props.width}}>
+                            <TouchableOpacity activeOpacity={0.7} onPress={handleShowFirstDate} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
+                                <DateButtonView>
+                                    <DateButtonText>De: {
+                                    (new Date(firstSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'})
+                                    }
+                                    </DateButtonText>
+                                    <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
+                                </DateButtonView>
+                            </TouchableOpacity>
+                            <TouchableOpacity activeOpacity={0.7} onPress={handleShowLastDate} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
+                                <DateButtonView>
+                                    <DateButtonText>De: {
+                                    (new Date(lastSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'})
+                                    }
+                                    </DateButtonText>
+                                    <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
+                                </DateButtonView>
+                            </TouchableOpacity>
+                          </FirstLastDateView>
+                        </DatesView>
+                      ) :  null
+                    }
                     <TouchableOpacity activeOpacity={0.7}>
                           <Button>
                             <Text style={{color: '#FFF', fontSize: 20,}}>Salvar</Text>

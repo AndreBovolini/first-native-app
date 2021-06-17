@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions, SafeAreaView, Platform, StatusBar } from 'react-native';
+import { StyleSheet, View, Dimensions, SafeAreaView, Platform, StatusBar, Alert } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,7 +14,7 @@ import Performance from '../screens/performance'
 import Profile from '../screens/Profile'
 import ResetPassword from  '../screens/ResetPassword';
 import globalStyles from '../styles/globalStyles';
-import { StackRouter } from 'react-navigation';
+import { NavigationActions, StackRouter } from 'react-navigation';
 
 import { connect, Provider } from 'react-redux';
 import store from '../store/index';
@@ -23,6 +23,8 @@ import { getDeviceId } from 'react-native-device-info';
 import { ThemeProvider } from 'styled-components';
 import darkTheme from '../styles/themes/darkTheme';
 import lightTheme from '../styles/themes/lightTheme';
+import { navigationRef } from './RootNavigation';
+import RNExitApp from 'react-native-exit-app';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -116,9 +118,57 @@ const AuthNavigator = () => {
         <SafeAreaProvider>
             <Stack.Navigator screenOptions={{ headerShown: false }}> 
                 <Stack.Screen name="AuthOrApp" component={AuthorApp} />
-                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Login" component={Login} 
+                listeners={{
+                    beforeRemove: e => {
+
+                    },
+                  }}
+                />
                 <Stack.Screen name="AfterLogin" component={AfterLogin} /> 
-                <Stack.Screen name="Home" component={TabNavigation} />
+                <Stack.Screen name="Home" component={TabNavigation} 
+                    listeners={({ navigation, route }) => ({
+                        beforeRemove: e => {
+                            if (e.data.action.payload.name === 'Login' ) {
+                                navigation.push('Login')
+
+                            } else if (e.data.action.payload.name === 'AfterLogin') {
+                                console.log('teste'+e.data.action)
+                                navigation.push('AfterLogin')
+                            } else {
+                              e.preventDefault();
+                        
+                              // Prompt the user before leaving the screen
+                              Alert.alert(
+                                'Você deseja sair do app?',
+                                'You have unsaved changes. Are you sure to discard them and leave the screen?',
+                                [
+                                  { text: "Manter", style: 'cancel', onPress: () => {} },
+                                  { text: "Logout", style: 'cancel', onPress: () => {
+                                    AsyncStorage.removeItem('token');
+                                    navigation.dispatch(
+                                      CommonActions.navigate({
+                                        name: 'Login',
+                                        params: {
+                                          credentials: false,
+                                        },
+                                      })
+                                    );
+                                } },
+                                  {
+                                    text: 'Sair',
+                                    style: 'destructive',
+                                    // If the user confirmed, then we dispatch the action we blocked earlier
+                                    // This will continue the action that had triggered the removal of the screen
+                                    onPress: () => RNExitApp.exitApp(),
+                                  },
+                                ]
+                              )
+                              }
+                        },
+                    })}
+                
+                />
                 <Stack.Screen name="ResetPassword" component={ResetPassword}/>
             </Stack.Navigator>
         </SafeAreaProvider>
@@ -128,7 +178,7 @@ const AuthNavigator = () => {
 const Navigator = ({stateCarteira}) => {
     return (
         <ThemeProvider theme={stateCarteira.mode === 'dark' ? darkTheme : lightTheme}>
-            <NavigationContainer>
+            <NavigationContainer ref={navigationRef}>
             <StatusBar barStyle={stateCarteira.mode === 'dark' ? "light-content" : 'dark-content' }/>
                 <AuthNavigator />
 
@@ -142,3 +192,4 @@ const mapStateToProps = state => ({
   });
 
 export default connect(mapStateToProps)(Navigator);
+
