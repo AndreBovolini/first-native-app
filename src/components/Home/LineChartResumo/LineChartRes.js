@@ -15,6 +15,7 @@ const LineChartRes = props => {
              chart = ref;
         }
     };
+    
     const colors = 'rgb(26, 182, 151)'
     option = {
         color: colors,
@@ -103,7 +104,14 @@ const LineChartRes = props => {
             axisPointer: {
                 type: 'line',
             },
-            backgroundColor: 'rgba(50,50,50,0.9)'
+            backgroundColor: 'rgba(50,50,50,0.9)',
+            formatter: function(params) {
+                output =  params[0].name + '<br />'
+                params.forEach((el,i)=> {
+                    output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
+                })
+                return output
+            }
             
         },
         legend: {
@@ -167,10 +175,7 @@ const LineChartRes = props => {
                 option={option}
                 additionalCode={additionalCode}
                 onData={onData}
-                onLoadEnd={() => {
-                    chart.setBackgroundColor('StyledTheme.colors.background');
-                     
-                }}
+                backgroundColor={StyledTheme.colors.background}
             />
         </SafeAreaView>
     );

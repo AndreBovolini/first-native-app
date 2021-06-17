@@ -26,7 +26,7 @@ import Filtro from '../components/Home/Filtro/FiltroHome';
 import Benchmarks from '../components/Home/Benchmarks';
 import CardCarousel from '../components/Performance/Portrait/CardCarousel'
 import TableRow from '../components/Home/Table/TableRow'
-
+import FiltroSeletor from '../components/Home/Filtro/FiltroSeletor'
 import {
   dados,
   dataHomeBox,
@@ -419,6 +419,13 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   return (
     <LargeContainer>
       <SafeAreaView >
+      <FiltroSeletor 
+        visible={showModal} 
+        width={globalStyles.dimensions.width}
+        buttonAction={handleCloseModal} 
+      /> 
+
+      {/*}
       <Filtro visible={showModal} 
             accepted={accepted}
             acceptedProgrammed={acceptedProgrammed}
@@ -427,6 +434,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
             width={globalStyles.dimensions.width} buttonAction={handleCloseModal} 
             
             />
+      */}
         {dadosHomePage.loading || !dadosHomePage.data.grafico5 ? <SkeletonHome isLoading={true}/> :
         (<ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', height: 1730, width: globalStyles.dimensions.width,
         backgroundColor: StyledTheme.colors.background}}>
