@@ -58,7 +58,8 @@ const RenderCalendar = props => {
             style={{
                 borderRadius: 10,
                 width: globalStyles.dimensions.width*0.7,
-                marginLeft: globalStyles.dimensions.width*0.07,
+                marginLeft: globalStyles.dimensions.width*0.15,
+                marginTop: 5,
                 marginBottom: 10,
                 // borderLeftWidth: 2,
                 // borderBottomWidth: 2,
@@ -88,8 +89,8 @@ const RenderCalendar = props => {
             // textDayFontWeight: '300',
             textMonthFontWeight: 'bold',
             // textDayHeaderFontWeight: '300',
-            textDayFontSize: 16,
-            textMonthFontSize: 18,
+            textDayFontSize: 15,
+            textMonthFontSize: 15,
             }}
             
       />

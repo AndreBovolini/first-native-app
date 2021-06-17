@@ -108,7 +108,9 @@ export const SelectPeriodView = styled.View`
 
 export const ToggleLabelText = styled.Text`
   font-size: 15px;
-  margin: 0px 5px;
+  margin: 0px 7px;
+  margin-top: 6px;
+  color: ${props => props.theme.colors.fontColor};
 `;
 
 export const DatesView = styled.View`
@@ -118,12 +120,15 @@ export const DatesView = styled.View`
 export const FirstLastDateView = styled.View`
 
   flex-direction: row;
+  justify-content: space-between;
+  margin-left: -54px;
  
 `;
 
 export const DateButtonText = styled.Text`
   color: #FFF;
   font-size: 15px;
+  margin-right: 5px;
 `;
 
 export const DateButtonView = styled.View`
