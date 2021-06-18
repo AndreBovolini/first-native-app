@@ -295,14 +295,17 @@ const FiltroSeletor = props => {
                     </ToggleView>
                     <ToggleLabelText>Selecionar período</ToggleLabelText>
                     </SelectPeriodView>
-                    { isLoadingDatas ? (
-                       <LoadingView>
-                        <ActivityIndicator size='large' color={StyledTheme.colors.invertedBackground}/>
-                      </LoadingView>
-                    ) : (<>
+                    
 
                     {
                       selectPeriod ? (
+                        <>
+                        { isLoadingDatas ? (
+                          <LoadingView>
+                           <ActivityIndicator size='large' color={StyledTheme.colors.invertedBackground}/>
+                         </LoadingView>
+                       ) : (
+                         <>
                         <DatesView style={{width: props.width}}>
                           <Text style={{color: StyledTheme.colors.fontColor, fontSize: 15, alignSelf: 'center', marginBottom: 10 }}>Selecione o período de análise</Text>
                           <FirstLastDateView  style={{width: props.width}}>
@@ -342,12 +345,12 @@ const FiltroSeletor = props => {
                         )
                       : null}
                         </DatesView>
+                        </>
+                       )}
+                       </>
                       ) :  null
                     }
-                    </>
-                    )
 
-                    }
                     <TouchableOpacity activeOpacity={0.7} onPress={handleSaveChanges}>
                           <Button>
                             <Text style={{color: '#FFF', fontSize: 20,}}>Salvar</Text>
