@@ -17,7 +17,8 @@ export function NewPieChartResumo(props) {
         },
         legend: {
             left: 'center',
-            bottom: 'bottom',
+            bottom: '-15',
+            padding: 10,
             borderRadius: 10,
             textStyle: {
               color: StyledTheme.colors.fontColor,
