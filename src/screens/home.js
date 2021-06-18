@@ -40,7 +40,7 @@ import SkeletonHome from '../components/Home/Skeleton/SkeletonHome'
 
 import { connect } from 'react-redux';
 import BarChartHome from '../components/Home/BarChart';
-import { Container, LargeContainer, LeftCard, RightCard, TitleContainer, Title, CurrencyPress, Currency, ButtonView, ValueBoxContainer, ValueBoxContainerRow, Percent, PercentPress, BenchmarksButton, TitleNavigationContainer, TitleNavigation, ChartContainer, LineChartContainer } from './Home/style';
+import { Container, LargeContainer, LeftCard, RightCard, SettingsButton, TitleContainer, Title, CurrencyPress, Currency, ButtonView, ValueBoxContainer, ValueBoxContainerRow, Percent, PercentPress, BenchmarksButton, TitleNavigationContainer, TitleNavigation, ChartContainer, LineChartContainer } from './Home/style';
 import { ThemeContext } from 'styled-components/native';
 import { CommonActions } from '@react-navigation/native';
 import RNExitApp from 'react-native-exit-app';
@@ -225,47 +225,47 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
     ]
   }
 
-  useEffect(() => {
-    OneSignal.setAppId('9c34a82a-2fc6-4d7a-bb50-10512cbba842');
-    OneSignal.sendTags({
-      "user_teste": acceptedProgrammed ? 'accepted' : null,
-      "user_type": accepted ? 'acceptedNotify' : null,
-    })
-    OneSignal.setLocationShared(false);
-    OneSignal.promptForPushNotificationsWithUserResponse(response => {
-      console.log("Prompt response:", response);
-    });
+  // useEffect(() => {
+  //   OneSignal.setAppId('9c34a82a-2fc6-4d7a-bb50-10512cbba842');
+  //   OneSignal.sendTags({
+  //     "user_teste": acceptedProgrammed ? 'accepted' : null,
+  //     "user_type": accepted ? 'acceptedNotify' : null,
+  //   })
+  //   OneSignal.setLocationShared(false);
+  //   OneSignal.promptForPushNotificationsWithUserResponse(response => {
+  //     console.log("Prompt response:", response);
+  //   });
 
-    OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
-      console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
-      let notification = notificationReceivedEvent.getNotification();
-      console.log("notification: ", notification);
-      const data = notification.additionalData
-      console.log("additionalData: ", data);
-      const button1 = {
-        text: "Cancel",
-        onPress: () => { notificationReceivedEvent.complete(); },
-        style: "cancel"
-      };
-      const button2 = { text: "Complete", onPress: () => { notificationReceivedEvent.complete(notification); } };
-      Alert.alert("Complete notification?", "Test", [button1, button2], { cancelable: true });
-    });
+  //   OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+  //     console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+  //     let notification = notificationReceivedEvent.getNotification();
+  //     console.log("notification: ", notification);
+  //     const data = notification.additionalData
+  //     console.log("additionalData: ", data);
+  //     const button1 = {
+  //       text: "Cancel",
+  //       onPress: () => { notificationReceivedEvent.complete(); },
+  //       style: "cancel"
+  //     };
+  //     const button2 = { text: "Complete", onPress: () => { notificationReceivedEvent.complete(notification); } };
+  //     Alert.alert("Complete notification?", "Test", [button1, button2], { cancelable: true });
+  //   });
 
-    OneSignal.setNotificationOpenedHandler(notification => {
-      console.log("OneSignal: notification opened:", notification);
-      navigation.navigate('Home')
-    });
+  //   OneSignal.setNotificationOpenedHandler(notification => {
+  //     console.log("OneSignal: notification opened:", notification);
+  //     navigation.navigate('Home')
+  //   });
 
-  }, [acceptedProgrammed, accepted])
+  // }, [acceptedProgrammed, accepted])
 
 
-  useEffect(async () => {
-    let acceptPush = await AsyncStorage.getItem('Push');
-    let acceptPushProgrammed = await AsyncStorage.getItem('PushProgramada');
-    //console.warn(acceptPush, acceptPushProgrammed)
-    setAccepted(acceptPush === 'true' ? true : false);
-    setAcceptedProgrammed(acceptPushProgrammed === 'true' ? true : false);
-  }, [])
+  // useEffect(async () => {
+  //   let acceptPush = await AsyncStorage.getItem('Push');
+  //   let acceptPushProgrammed = await AsyncStorage.getItem('PushProgramada');
+  //   //console.warn(acceptPush, acceptPushProgrammed)
+  //   setAccepted(acceptPush === 'true' ? true : false);
+  //   setAcceptedProgrammed(acceptPushProgrammed === 'true' ? true : false);
+  // }, [])
 
 
   // useEffect(
@@ -400,20 +400,20 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
     setGraficoCarrossel(index + 1)
   }
 
-  async function handleAccept() {
-    //(accepted)
-    await AsyncStorage.setItem('Push', (!accepted ? 'true' : 'false'))
-    setAccepted(!accepted)
-    if (accepted === true) {
-      setAcceptedProgrammed(false)
-      await AsyncStorage.setItem('PushProgramada', ('false'))
-    }
-  }
+  // async function handleAccept() {
+  //   //(accepted)
+  //   await AsyncStorage.setItem('Push', (!accepted ? 'true' : 'false'))
+  //   setAccepted(!accepted)
+  //   if (accepted === true) {
+  //     setAcceptedProgrammed(false)
+  //     await AsyncStorage.setItem('PushProgramada', ('false'))
+  //   }
+  // }
 
-  async function handleAcceptProgrammed() {
-    await AsyncStorage.setItem('PushProgramada', (!acceptedProgrammed ? 'true' : 'false'))
-    setAcceptedProgrammed(!acceptedProgrammed)
-  }
+  // async function handleAcceptProgrammed() {
+  //   await AsyncStorage.setItem('PushProgramada', (!acceptedProgrammed ? 'true' : 'false'))
+  //   setAcceptedProgrammed(!acceptedProgrammed)
+  // }
 
   // console.log('INDICE ' + index)
   return (
@@ -445,7 +445,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
               <LeftCard>
                 <Title>Portfólio</Title>
               </LeftCard>
-              <View>
+              <View style={{flexDirection: 'row'}}>
                 <RightCard onPress={handleOpenModal}>
                   <Icon name="bars" size={25} color={StyledTheme.colors.invertedBackground} />
                 </RightCard>

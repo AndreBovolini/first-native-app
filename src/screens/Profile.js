@@ -29,9 +29,10 @@ import CardCarousel from '../components/Performance/Portrait/CardCarousel';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import RenderCalendar  from '../components/Perfil/Cards/Calendar/CalendarPicker'
-
+import ToggleAnimation from '../components/Perfil/ToggleAnimation'
 import { connect, Provider } from 'react-redux';
 import store from '../store/index';
+import OneSignal from 'react-native-onesignal';
 
 import { alteraViewMode, logout } from '../store/actions/actions'
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
@@ -41,9 +42,11 @@ const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
     const [showAlteraSenha, setShowAlteraSenha] = useState(false);
     const [showAlteraCarteira, setShowAlteraCarteira] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
-    const [height, setHeight] = useState(630);
+    const [height, setHeight] = useState(680);
     const [heightScroll, setHeightScroll] = useState(200)
     const [value, setValue] = useState('not')
+    const [accepted, setAccepted] = useState(false)
+    const [acceptedProgrammed, setAcceptedProgrammed] = useState(false)
     const StyledTheme = useContext(ThemeContext)
 
     useEffect(() => {
@@ -58,8 +61,52 @@ const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
             increment += 100
         }
 
-        setHeight(700 + increment);
+        setHeight(750 + increment);
     }, [showAlteraSenha, showDatePicker])
+
+    useEffect(() => {
+      OneSignal.setAppId('9c34a82a-2fc6-4d7a-bb50-10512cbba842');
+      OneSignal.sendTags({
+        "user_teste": acceptedProgrammed ? 'accepted' : null,
+        "user_type": accepted ? 'acceptedNotify' : null,
+      })
+      OneSignal.setLocationShared(false);
+      OneSignal.promptForPushNotificationsWithUserResponse(response => {
+        console.log("Prompt response:", response);
+      });
+
+      
+  
+      OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+        console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+        let notification = notificationReceivedEvent.getNotification();
+        console.log("notification: ", notification);
+        const data = notification.additionalData
+        console.log("additionalData: ", data);
+        const button1 = {
+          text: "Cancel",
+          onPress: () => { notificationReceivedEvent.complete(); },
+          style: "cancel"
+        };
+        const button2 = { text: "Complete", onPress: () => { notificationReceivedEvent.complete(notification); } };
+        Alert.alert("Complete notification?", "Test", [button1, button2], { cancelable: true });
+      });
+  
+      OneSignal.setNotificationOpenedHandler(notification => {
+        console.log("OneSignal: notification opened:", notification);
+        navigation.navigate('Home')
+      });
+  
+    }, [acceptedProgrammed, accepted])
+  
+  
+    useEffect(async () => {
+      let acceptPush = await AsyncStorage.getItem('Push');
+      let acceptPushProgrammed = await AsyncStorage.getItem('PushProgramada');
+      //console.warn(acceptPush, acceptPushProgrammed)
+      setAccepted(acceptPush === 'true' ? true : false);
+      setAcceptedProgrammed(acceptPushProgrammed === 'true' ? true : false);
+    }, [])
 
     const handleCardSenha = () => {
         setShowAlteraSenha(!showAlteraSenha);
@@ -85,6 +132,21 @@ const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
         AsyncStorage.setItem('mode', 'dark')
       }
     }
+
+    async function handleAccept() {
+      //(accepted)
+      await AsyncStorage.setItem('Push', (!accepted ? 'true' : 'false'))
+      setAccepted(!accepted)
+      if (accepted === true) {
+        setAcceptedProgrammed(false)
+        await AsyncStorage.setItem('PushProgramada', ('false'))
+      }
+    }
+  
+    async function handleAcceptProgrammed() {
+      await AsyncStorage.setItem('PushProgramada', (!acceptedProgrammed ? 'true' : 'false'))
+      setAcceptedProgrammed(!acceptedProgrammed)
+    }
   
 
   return (
@@ -93,11 +155,56 @@ const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
       backgroundColor: StyledTheme.colors.background, justifyContent: 'flex-start', alignItems: 'center',}}>
     
         <ContainerInfos>
-            <Image source={profile} style={styles.profileImage}/>
-            <TextUser> Olá, Usuário </TextUser>
-            
+            {/*<Image source={profile} style={styles.profileImage}/>
+    <TextUser> Olá, Usuário </TextUser> */}
+            <ToggleAnimation/>
         </ContainerInfos> 
         
+        <TouchableOpacity onPress={handleAccept} style={{ flexDirection: 'row', backgroundColor: StyledTheme.colors.firstLayer, width: globalStyles.dimensions.width * 0.85, borderRadius: 10, height: 30, marginTop:10}}>	
+              <Text style={{ fontSize: 20, marginTop: 4, marginRight: 10, marginLeft: 10, color: StyledTheme.colors.fontColor }}>Notificações Push: </Text>	
+              <View>	
+                {!accepted ?	
+                  (	
+                    <View style={{ flexDirection: 'row' }}>	
+                      <Text style={{ fontSize: 20, marginTop: 4, marginRight: 10, color: StyledTheme.colors.fontColor }}>Off</Text>	
+                      <Ionicons name="notifications-off-circle" size={25} color={StyledTheme.colors.fontColor} style={{ marginTop: 2, marginRight: 10, }} />	
+                    </View>	
+                  )	
+                  :	
+                  (	
+                    <View style={{ flexDirection: 'row' }}>	
+                      <Text style={{ fontSize: 20, marginTop: 4, marginRight: 10, color: StyledTheme.colors.fontColor }}>On</Text>	
+                      <Ionicons name="notifications-circle" size={25} color={StyledTheme.colors.fontColor} style={{ marginTop: 2, marginRight: 10, }} />	
+                    </View>	
+                  )	
+                }
+              </View>	
+            </TouchableOpacity>
+
+            {
+              accepted ?
+              <TouchableOpacity onPress={handleAcceptProgrammed} style={{ flexDirection: 'row', backgroundColor: StyledTheme.colors.firstLayer, width: globalStyles.dimensions.width * 0.85, borderRadius: 10, height: 30, marginTop:10}}>	
+              <Text style={{ fontSize: 20, marginTop: 4, marginRight: 10, marginLeft: 10, color: StyledTheme.colors.fontColor }}>Notificações Programadas: </Text>	
+              <View>	
+                {!acceptedProgrammed ?	
+                  (	
+                    <View style={{ flexDirection: 'row' }}>	
+                      <Text style={{ fontSize: 20, marginTop: 4, marginRight: 10, color: StyledTheme.colors.fontColor }}>Off</Text>	
+                      <Ionicons name="notifications-off-circle" size={25} color={StyledTheme.colors.fontColor} style={{ marginTop: 2, marginRight: 10, }} />	
+                    </View>	
+                  )	
+                  :	
+                  (	
+                    <View style={{ flexDirection: 'row' }}>	
+                      <Text style={{ fontSize: 20, marginTop: 4, marginRight: 10, color: StyledTheme.colors.fontColor }}>On</Text>	
+                      <Ionicons name="notifications-circle" size={25} color={StyledTheme.colors.fontColor} style={{ marginTop: 2, marginRight: 10, }} />	
+                    </View>	
+                  )	
+                }	
+              </View>	
+            </TouchableOpacity>
+            : null
+            }
         
         <View>
               <Provider store={store}>

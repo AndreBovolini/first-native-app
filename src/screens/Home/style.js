@@ -23,6 +23,12 @@ export const RightCard = styled.TouchableOpacity`
     align-items: center;
     justify-content: center;
 `;
+export const SettingsButton = styled.TouchableOpacity`
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+`
 
 export const Title = styled.Text`
     color: ${props => props.theme.colors.fontColor};

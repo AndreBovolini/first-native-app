@@ -67,7 +67,7 @@ const Filtro = props => {
         
         <ModalCustom
           style={{height: props.height, width: props.width, marginTop: Platform.OS === 'ios' ? 30 : 0}}>
-          <TouchableOpacity onPress={props.handleAccept} style={{ flexDirection: 'row', backgroundColor: StyledTheme.colors.firstLayer, width: globalStyles.dimensions.width * 0.85, borderRadius: 10, height: 30, marginTop:10}}>	
+         {/* } <TouchableOpacity onPress={props.handleAccept} style={{ flexDirection: 'row', backgroundColor: StyledTheme.colors.firstLayer, width: globalStyles.dimensions.width * 0.85, borderRadius: 10, height: 30, marginTop:10}}>	
               <Text style={{ fontSize: 20, marginTop: 4, marginRight: 10, marginLeft: 10, color: StyledTheme.colors.fontColor }}>Notificações Push: </Text>	
               <View>	
                 {!props.accepted ?	
@@ -111,7 +111,7 @@ const Filtro = props => {
               </View>	
             </TouchableOpacity>
             : null
-            }
+            } */}
           <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
           <CardDatePicker
                show={showDatePicker}
