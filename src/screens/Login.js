@@ -40,6 +40,7 @@ const Login = ({route, navigation}) => {
     await AsyncStorage.removeItem('Carteira')
     const { credentials} = route.params;
         if (credentials) {
+            fillCredentials()
             pressHandler()
         } else {
         }
@@ -96,6 +97,12 @@ const Login = ({route, navigation}) => {
     title: "Authentication Required", // Android
     color: "#e00606", // Android,
     fallbackLabel: "Show Passcode" // iOS (if empty, then label is hidden)
+  }
+
+  async function fillCredentials() {
+    let credentials = await Keychain.getGenericPassword();
+    setInputUsuario(credentials.username);
+    setInputSenha(credentials.password);
   }
  
    async function pressHandler() {

@@ -139,4 +139,12 @@ export const DateButtonView = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-`
+`;
+
+export const LoadingView = styled.View`
+  width: 100%;
+  height: 200px;
+
+  justify-content: center;
+  align-items: center;
+`;

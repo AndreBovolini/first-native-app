@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -18,21 +19,23 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import CalendarPicker from '../../Perfil/Cards/Calendar/CalendarPicker'
 import { Container, ModalCustom, TitleText, ButtonView, Button, ButtonText, ToggleView, Percent, PercentPress, Currency, CurrencyPress, RightCard,
 SelectPeriodView, ToggleLabelText, FirstLastDateView,
-DateButtonText, DateButtonView, DatesView
+DateButtonText, DateButtonView, DatesView, LoadingView
 } from './styles';
 
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras } from '../../../store/actions/actions-dados-usuario'
-import { alteraCarteira } from '../../../store/actions/actions'
+import { alteraCarteira, logout } from '../../../store/actions/actions'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import fetchComAppDatasCarteiras from '../../../dados/conta/datasCarteiras';
+import { pegarDadosHomePage } from '../../../store/actions/action-dados-home';
 
 const FiltroSeletor = props => {
     const [carteiras, setCarteiras] = useState([])
     const [inputCarteira, setInputCarteira] = useState('')
     const [todasCarteiras, setTodasCarteiras] = useState([])
 
-    const [selectedWallet, setSelectedWallet] = useState('');
+    const [selectedWallet, setSelectedWallet] = useState(props.stateCarteira.carteira);
     const [selectPeriod, setSelectPeriod] = useState(false);
     const [showSelectorInicial, setShowSelectorInicial] = useState(false)
     const [showSelectorFinal, setShowSelectorFinal] = useState(false)
@@ -46,6 +49,7 @@ const FiltroSeletor = props => {
 
     const StyledTheme = useContext(ThemeContext)
 
+
     useEffect(() => {
         if (!props.isLoadingCarteirasUsuario && props.ResponseCarteirasUsuario !== []) {
           setCarteiras(props.ResponseCarteirasUsuario);
@@ -55,36 +59,49 @@ const FiltroSeletor = props => {
 
 
     useEffect(() => {
-      async function getWalletDates() {
-       
-          try {
-              await fetchComAppDatasCarteiras().then(response => {
-                  return {
+      async function getWalletDates(carteira) {
+              await fetchComAppDatasCarteiras({nomeCarteira: carteira}).then(response => {
+                if (response.msg === 'Expired token') {
+                  props.buttonAction();
+                  props.logout();
+                  return
+                }
+                  let datas = {
                       inicio: response.data_mais_antiga,
-                      final: response.data_mais_antiga
-                  }
-              })
-          } catch {
-              return 'error'
-          }
-  }
+                      final: response.data_mais_recente
+                  } 
+                  const diaA = datas.inicio.substr(0,2);
+                  const mesA = datas.inicio.substr(3,2)
+                  const anoA = datas.inicio.substr(6,4)
+                  let timestamp = new Date(`${anoA}-${mesA}-${diaA}`).getTime()
+                  const diaR = datas.final.substr(0,2);
+                  const mesR = datas.final.substr(3,2)
+                  const anoR = datas.final.substr(6,4)
+                  console.log('bbbb'+diaR,mesR,anoR)
+                  let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
+                  setFirstWalletDate(timestamp);
+                  setFirstSelectedDate(timestamp);
+                  setLastWalletDate(timestampR);
+                  setLastSelectedDate(timestampR);
+                  setIsLoadingDatas(false)
+                  setShowSelectorFinal(false)
+                  setShowSelectorInicial(false)
+                  
+              }).catch(error => 
+                error
+              )
 
+  }
   if (selectPeriod && selectedWallet !== '') {
-    let datas = getWalletDates()
-    if (datas) {
-        setFirstWalletDate(datas.inicio);
-        setFirstSelectedDate(datas.inicio);
-        setLastWalletDate(datas.final);
-        setLastSelectedDate(datas.final);
-        setIsLoadingDatas(false)
-        
-    }
-    }
-  }, [selectPeriod])
+      getWalletDates(selectedWallet)
+
+  }
+  }, [selectPeriod, selectedWallet])
 
     const handleSetecWallet = (name) => {
       setSelectedWallet(name);
-      setInputCarteira(name)
+      setInputCarteira(name);
+      setIsLoadingDatas(true)
     }
 
     function handleChangeText(carteira) {
@@ -150,7 +167,15 @@ const FiltroSeletor = props => {
 
 
     const handleSaveChanges = () => {
-        
+        if (props.stateCarteira.carteira === selectedWallet) {
+          if ( firstSelectedDate === firstWalletDate && lastSelectedDate === lastWalletDate) {
+            handleShowError('Esta já é a análise atual')
+          } else {
+            props.pegarDadosHomePage()
+          }
+        } else {
+          props.pegarDadosHomePage()
+        }
     }
 
 
@@ -270,27 +295,30 @@ const FiltroSeletor = props => {
                     </ToggleView>
                     <ToggleLabelText>Selecionar período</ToggleLabelText>
                     </SelectPeriodView>
+                    
+
                     {
                       selectPeriod ? (
+                        <>
+                        { isLoadingDatas ? (
+                          <LoadingView>
+                           <ActivityIndicator size='large' color={StyledTheme.colors.invertedBackground}/>
+                         </LoadingView>
+                       ) : (
+                         <>
                         <DatesView style={{width: props.width}}>
                           <Text style={{color: StyledTheme.colors.fontColor, fontSize: 15, alignSelf: 'center', marginBottom: 10 }}>Selecione o período de análise</Text>
                           <FirstLastDateView  style={{width: props.width}}>
                             <TouchableOpacity activeOpacity={0.7} onPress={handleShowFirstDate} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
                                 <DateButtonView>
-                                    <DateButtonText>De: { firstSelectedDate === '' ?
-                                    (new Date(props.datas.dataInicial)).toLocaleDateString('pt-br', {timeZone: 'UTC'}) :
-                                    (new Date(firstSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'})
-                                    }
+                                    <DateButtonText>De: { (new Date(firstSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'}) }
                                     </DateButtonText>
                                     <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                                 </DateButtonView>
                             </TouchableOpacity>
                             <TouchableOpacity activeOpacity={0.7} onPress={handleShowLastDate} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
                                 <DateButtonView>
-                                    <DateButtonText>Até: { lastSelectedDate === '' ?
-                                    (new Date(props.datas.dataFinal)).toLocaleDateString('pt-br', {timeZone: 'UTC'}) :
-                                    (new Date(lastSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'})
-                                    }
+                                    <DateButtonText>Até: { (new Date(lastSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'}) }
                                     </DateButtonText>
                                     <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                                 </DateButtonView>
@@ -300,7 +328,8 @@ const FiltroSeletor = props => {
                           
                           {showSelectorInicial ? (
                             <CalendarPicker
-                              minDate={new Date(props.datas.dataInicial)}
+                              minDate={new Date(firstWalletDate)}
+                              current={new Date(firstSelectedDate)}
                               onChange={(data) => handleSelectFirstDate(data)}
                               id={'inicial'}
                             />
@@ -308,16 +337,21 @@ const FiltroSeletor = props => {
                         : null}
                         {showSelectorFinal ? (
                           <CalendarPicker
-                            maxDate={new Date(props.datas.dataFinal)}
+                            maxDate={new Date(lastWalletDate)}
+                            current={new Date(lastSelectedDate)}
                             onChange={(data) => handleSelectLastDate(data)}
                             id={'final'}
                           />
                         )
                       : null}
                         </DatesView>
+                        </>
+                       )}
+                       </>
                       ) :  null
                     }
-                    <TouchableOpacity activeOpacity={0.7}>
+
+                    <TouchableOpacity activeOpacity={0.7} onPress={handleSaveChanges}>
                           <Button>
                             <Text style={{color: '#FFF', fontSize: 20,}}>Salvar</Text>
                           </Button>
@@ -341,9 +375,10 @@ const mapStateToProps = state => ({
   });
 
 const mapDispatchToProps = ( dispatch )=> ({
-alteraCarteira: (carteira) => dispatch(alteraCarteira(carteira)),
-pegarCarteirasUsuario: (token) => dispatch(pegarDadosCarteiras(token)
-)
+  alteraCarteira: (carteira) => dispatch(alteraCarteira(carteira)),
+  pegarCarteirasUsuario: (token) => dispatch(pegarDadosCarteiras(token)),
+  pegarDadosHomePage: () => dispatch(pegarDadosHomePage()),
+  logout: () => dispatch(logout())
 }) 
 
 export default connect(mapStateToProps, mapDispatchToProps)(FiltroSeletor);
