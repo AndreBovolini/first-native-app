@@ -1,6 +1,7 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useRef} from 'react';
 import {
-    View
+    View,
+    Text,TouchableOpacity
 } from 'react-native'
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import {LocaleConfig} from 'react-native-calendars';
@@ -19,6 +20,8 @@ LocaleConfig.defaultLocale = 'pt';
 
 const RenderCalendar = props => {
     const [days, setDays] = useState()
+    const [month, setMonth] =useState('July')
+    const [year, setYear] = useState('1950')
     const [markedDates, setMarkedDates] = useState(
         {
     }
@@ -26,11 +29,23 @@ const RenderCalendar = props => {
     const StyledTheme = useContext(ThemeContext)
     
     useEffect(()=> {
-        console.log('aa',markedDates)
-    },[markedDates])
+        
+        let date = props.current.toLocaleDateString('pt-br', {timeZone: 'UTC'})
+        setYear(date.slice(6))
+        
+        let dateFormatted = date.slice(6) + '-' + date.slice(3,5)  + '-' + date.slice(0,2)
+        console.log(typeof(props.current.toLocaleDateString('pt-br', {timeZone: 'UTC'})))
+        setMarkedDates({
+            [dateFormatted]: {
+                selected: true, marked: true, selectedColor: '#00adf5',
+            },
+        })
+    },[])
 
+      
       const handleDayPress = (day) => {
         console.log(day)
+        
         setMarkedDates({
             [day.dateString]: {
                 selected: true, marked: true, selectedColor: '#00adf5',
@@ -40,20 +55,23 @@ const RenderCalendar = props => {
         props.onChange(day.timestamp)
         console.log('days',days)
       }
+    console.log( 'hey', props.minDate ? props.minDate : props.maxDate)
+
+   
     
-    
-    
+
     return (
         <View>
         <Calendar
-            current={props.id === 'inicial' ? props.minDate: props.maxDate}
-
+            // current={props.id === 'inicial' ? props.minDate: props.maxDate}
+            current={props.current}
             minDate = {props.id === 'inicial' ? props.minDate : null}
             maxDate={props.id === 'final' ? props.maxDate : new Date()}
             onDayPress={(day) => handleDayPress(day)}
             enableSwipeMonths={true}
-            // markingType={'simple'}
             
+            // markingType={'simple'}
+            // customHeader={CustomHeader}
             markedDates={markedDates}
             style={{
                 borderRadius: 10,

@@ -22,6 +22,11 @@ SelectPeriodView, ToggleLabelText, FirstLastDateView,
 DateButtonText, DateButtonView, DatesView, LoadingView
 } from './styles';
 
+import { toDate } from 'date-fns';
+import { sub } from 'date-fns';
+import { subDays } from 'date-fns';
+import { getTime } from 'date-fns';
+
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras } from '../../../store/actions/actions-dados-usuario'
 import { alteraCarteira, logout } from '../../../store/actions/actions'
@@ -32,6 +37,10 @@ import { pegarDadosHomePage } from '../../../store/actions/action-dados-home';
 
 const FiltroSeletor = props => {
     const [carteiras, setCarteiras] = useState([])
+    const [carteira, setCarteira] = useState([
+        'Carteira 1', 'Carteira 2', 'Carteira 3', 'Carteira 4',  'Carteira 5'
+    ])
+    const [height, setHeight] = useState(210)
     const [inputCarteira, setInputCarteira] = useState('')
     const [todasCarteiras, setTodasCarteiras] = useState([])
 
@@ -57,6 +66,15 @@ const FiltroSeletor = props => {
         }
     }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
 
+    useEffect(() => {
+      if(carteira.length <= 2){
+        setHeight(120)
+      }else if(carteira.length === 3) {
+        setHeight(180)
+      }else{
+        setHeight(210)
+      }
+    },[carteira])
 
     useEffect(() => {
       async function getWalletDates(carteira) {
@@ -79,6 +97,7 @@ const FiltroSeletor = props => {
                   const anoR = datas.final.substr(6,4)
                   console.log('bbbb'+diaR,mesR,anoR)
                   let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
+                  console.log('times', new Date(timestamp).toLocaleDateString('pt-br', {timeZone: 'UTC'}))
                   setFirstWalletDate(timestamp);
                   setFirstSelectedDate(timestamp);
                   setLastWalletDate(timestampR);
@@ -120,17 +139,28 @@ const FiltroSeletor = props => {
 
       const handleChangeSelectPeriod = () =>  {
         setSelectPeriod(!selectPeriod)
+        if(selectPeriod === true){
+          if(carteira.length <= 2){
+            setHeight(120)
+          }else if( carteira.length === 3){
+            setHeight(180)
+          }else{
+          setHeight(210)
+          }
+        }
         if (selectedWallet) {
             setIsLoadingDatas(true)
         }
     }
 
     const handleShowFirstDate = () => {
+      setHeight(120)
       setShowSelectorInicial(true)
       setShowSelectorFinal(false)
     }
 
     const handleShowLastDate = () => {
+      setHeight(120)
       setShowSelectorFinal(true)
       setShowSelectorInicial(false)
     }
@@ -199,27 +229,29 @@ const FiltroSeletor = props => {
                 <ModalCustom
                     style={{height: props.height, width: props.width, marginTop: getStatusBarHeight()}}>
                     <View style={{flexDirection: 'row'}}>
-                    <View style={{marginTop: 2, marginLeft: globalStyles.dimensions.width*-0.45}}>
-                        <TouchableOpacity onPress={props.buttonAction}>
-                            <Ionicons name="arrow-undo" size={25} color={StyledTheme.colors.fontColor}/>
-                        </TouchableOpacity>
-                    </View>
                     
+                    
+                    <View style={{flexDirection: 'row', marginLeft:globalStyles.dimensions.width*-0.07}}></View>
+                      <View style={{marginTop: 2, marginLeft: globalStyles.dimensions.width*-0.09, marginTop: 20}}>
+                      <TouchableOpacity onPress={props.buttonAction}>
+                          <Ionicons name="arrow-undo" size={25} color={StyledTheme.colors.fontColor}/>
+                      </TouchableOpacity>
+                      </View>
+                      <View style={{flexDirection: 'row', marginTop: 0, marginBottom: -10, marginLeft: globalStyles.dimensions.width* 0.09}}>
+                          <CustomInput
+                          placeholder={'Selecione uma Carteira'}
+                          value={inputCarteira}
+                          onChangeText={carteira => handleChangeText(carteira)}
+                          label={''}
+                          style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: StyledTheme.colors.background}}
+                          placeholderTextColor={'#808080'}
+                          type={'usuário'}
+                          />
+                      </View>
                     </View>
-                    <View style={{flexDirection: 'row', marginTop: -20, marginBottom: -10}}>
-                        <CustomInput
-                        placeholder={'Selecione uma Carteira'}
-                        value={inputCarteira}
-                        onChangeText={carteira => handleChangeText(carteira)}
-                        label={''}
-                        style={{width: globalStyles.dimensions.width * 0.65, height: 40, color: StyledTheme.colors.background}}
-                        placeholderTextColor={'#808080'}
-                        type={'usuário'}
-                        />
-                    </View>
-                    <ScrollView>
+                    <ScrollView style={{height: height}}>
                         {carteiras[0] ?
-                        carteiras.map((el, i) => {
+                        carteira.map((el, i) => {
                             return (
                             <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => handleSetecWallet(el)}>
                                 {selectedWallet === el ? 
@@ -244,15 +276,15 @@ const FiltroSeletor = props => {
                       <RightCard onPress={handleChangeSelectPeriod} activeOpacity={1} pressDuration={0.5}>
                         {
                           !selectPeriod ? (
-                            <CurrencyPress>
+                            <CurrencyPress >
                               <Text style={{ color: StyledTheme.colors.firstLayer, fontSize: 25, marginRight: 4 }
-                              }>o</Text>
+                              }> O </Text>
                             </CurrencyPress>
                           ) : (
                             <Currency>
                               <Text style={
                                 { color: StyledTheme.colors.invertedBackground, fontSize: 25, marginRight: 4 }
-                              }>o</Text>
+                              }> O </Text>
                             </Currency>
                           )
                         }
@@ -308,17 +340,26 @@ const FiltroSeletor = props => {
                          <>
                         <DatesView style={{width: props.width}}>
                           <Text style={{color: StyledTheme.colors.fontColor, fontSize: 15, alignSelf: 'center', marginBottom: 10 }}>Selecione o período de análise</Text>
-                          <FirstLastDateView  style={{width: props.width}}>
+                          <FirstLastDateView  style={{width: props.width, marginTop: -5}}>
                             <TouchableOpacity activeOpacity={0.7} onPress={handleShowFirstDate} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
                                 <DateButtonView>
-                                    <DateButtonText>De: { (new Date(firstSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'}) }
+                                    <DateButtonText>De: { 
+                                      firstWalletDate === firstSelectedDate ? 
+                                      (subDays(new Date(firstSelectedDate),1)).toLocaleDateString('pt-br', {timeZone: 'UTC'} )
+                                      :
+                                      (new Date(firstSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'} )
+                                    }
                                     </DateButtonText>
                                     <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                                 </DateButtonView>
                             </TouchableOpacity>
                             <TouchableOpacity activeOpacity={0.7} onPress={handleShowLastDate} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
                                 <DateButtonView>
-                                    <DateButtonText>Até: { (new Date(lastSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'}) }
+                                    <DateButtonText>Até: { 
+                                      lastWalletDate === lastSelectedDate ?
+                                      (subDays(new Date(lastSelectedDate),1)).toLocaleDateString('pt-br', {timeZone: 'UTC'} )
+                                      :
+                                      (new Date(lastSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'} )}
                                     </DateButtonText>
                                     <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
                                 </DateButtonView>
@@ -329,7 +370,7 @@ const FiltroSeletor = props => {
                           {showSelectorInicial ? (
                             <CalendarPicker
                               minDate={new Date(firstWalletDate)}
-                              current={new Date(firstSelectedDate)}
+                              current={firstSelectedDate === firstWalletDate ? subDays(new Date(firstSelectedDate),1) : new Date(firstSelectedDate)}
                               onChange={(data) => handleSelectFirstDate(data)}
                               id={'inicial'}
                             />
@@ -338,7 +379,7 @@ const FiltroSeletor = props => {
                         {showSelectorFinal ? (
                           <CalendarPicker
                             maxDate={new Date(lastWalletDate)}
-                            current={new Date(lastSelectedDate)}
+                            current={lastSelectedDate === lastWalletDate ? subDays(new Date(lastSelectedDate),1) : new Date(lastSelectedDate)}
                             onChange={(data) => handleSelectLastDate(data)}
                             id={'final'}
                           />

@@ -102,14 +102,15 @@ export const RightCard = styled.TouchableOpacity`
 
 export const SelectPeriodView = styled.View`
     flex-direction: row;
-
+    margin-top: 10px;
     justify-content: space-between;
 `;
 
 export const ToggleLabelText = styled.Text`
   font-size: 15px;
   margin: 0px 7px;
-  margin-top: 6px;
+  margin-top: 8px;
+  font-weight: bold;
   color: ${props => props.theme.colors.fontColor};
 `;
 

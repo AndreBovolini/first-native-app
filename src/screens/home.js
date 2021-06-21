@@ -49,6 +49,8 @@ import OneSignal from 'react-native-onesignal';
 import { newDataPieChartHome } from '../components/Home/NewPieChartResumo/dataNewPieChartResumo';
 import { NewPieChartResumo } from '../components/Home/NewPieChartResumo';
 
+// import Animated, { useSharedValue } from 'react-native-reanimated';
+
 export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira }) => {
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState(false)
@@ -66,6 +68,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
 
   const StyledTheme = useContext(ThemeContext)
 
+  // const animation = useSharedValue(0)
   const dadosTable = {
     table1: [
       {
