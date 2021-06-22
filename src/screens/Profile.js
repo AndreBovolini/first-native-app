@@ -155,9 +155,8 @@ const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
       backgroundColor: StyledTheme.colors.background, justifyContent: 'flex-start', alignItems: 'center',}}>
     
         <ContainerInfos>
-            {/*<Image source={profile} style={styles.profileImage}/>
-    <TextUser> Olá, Usuário </TextUser> */}
-            <ToggleAnimation/>
+            <Image source={profile} style={styles.profileImage}/>
+            <TextUser> Olá, Usuário </TextUser> 
         </ContainerInfos> 
         
         <TouchableOpacity onPress={handleAccept} style={{ flexDirection: 'row', backgroundColor: StyledTheme.colors.firstLayer, width: globalStyles.dimensions.width * 0.85, borderRadius: 10, height: 30, marginTop:10}}>	

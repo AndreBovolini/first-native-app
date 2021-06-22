@@ -71,7 +71,7 @@ const RenderCalendar = props => {
             enableSwipeMonths={true}
             
             // markingType={'simple'}
-            // customHeader={CustomHeader}
+            //customHeader={CustomHeader}
             markedDates={markedDates}
             style={{
                 borderRadius: 10,

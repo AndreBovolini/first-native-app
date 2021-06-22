@@ -38,7 +38,7 @@ import { ThemeContext } from 'styled-components';
 
 import LineChartKit from '../components/Performance/Portrait/LineChart/LineChartKit'
 import Orientation, {
-  useDeviceOrientationChange
+  useDeviceOrientationChange, useOrientationChange
 } from 'react-native-orientation-locker';
 import LineChartLand from '../components/Performance/Landscape/LineChart/LineChartLand';
 const Performance = (props) => {
@@ -60,6 +60,7 @@ const Performance = (props) => {
   const [dadosLineChart, setDadosLineChart] = useState({})
   const [dadosLineChartLand, setDadosLineChartLand] = useState({})
   const [orientacao, setOrientacao] = useState('portrait')
+  const [autoRotate, setAutoRotate] = useState()
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
@@ -73,6 +74,15 @@ const Performance = (props) => {
   });
 
   useEffect(() => {
+    Orientation.getAutoRotateState((state) => setAutoRotate(state))
+    if(autoRotate === false){
+      Orientation.lockToPortrait()
+    }else{
+      Orientation.unlockAllOrientations()
+    }
+  }, [orientation, periodoSelecionado])
+
+  useEffect(() => {
     if (orientacao.toLowerCase().includes('portrait')) {
       setOrientation('portrait')
       setScrollPosition(0)
@@ -80,8 +90,7 @@ const Performance = (props) => {
       setOrientation('landscape')
     }
   }, [orientacao])
-
-
+  
   const StyledTheme = useContext(ThemeContext)
   console.log('orientation ', orientation)
 
@@ -98,6 +107,8 @@ const Performance = (props) => {
   //     }
   //   })
   // }, [])
+  
+  
 
   function handleSelecionaAno(ano) {
     setAnoSelecionado(ano);
@@ -281,7 +292,7 @@ const Performance = (props) => {
   console.log('datasets ', dadosLineChart.dataSets)
   
 
-  if (orientation === 'landscape') {
+  if (orientation === 'landscape' && autoRotate) {
     if (scrollPosition > 390) {
       return (
         <PerformanceTableLandscape>
