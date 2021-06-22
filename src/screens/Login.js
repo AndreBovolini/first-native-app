@@ -12,6 +12,7 @@ import {
 
 import CustomInput from '../components/CustomInput';
 import FingerPrint from '../components/Login/FingerPrint';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import globalStyles from '../styles/globalStyles';
 
@@ -33,6 +34,8 @@ const Login = ({route, navigation}) => {
   const [inputSenha, setInputSenha] = useState('');
   const [hideSenha, setHideSenha] = useState(true);
   const [showCredenciaisErradas, setShowCredenciaisErradas] = useState(false)
+  const [saveUser, setSaveUser] = useState(true)
+  const [showSave, setShowSave] = useState(true)
 
   const StyledTheme = useContext(ThemeContext)
 
@@ -42,6 +45,7 @@ const Login = ({route, navigation}) => {
         if (credentials) {
             fillCredentials()
             pressHandler()
+            setShowSave(false)
         } else {
         }
     }, []);
@@ -68,13 +72,14 @@ const Login = ({route, navigation}) => {
               await AsyncStorage.setItem('expiration', fixedDate.getTime().toString())
               await AsyncStorage.setItem('token_type', response['token_type'])
               setInputSenha('');
-              setInputUsuario('')
 
               try{
+                if (saveUser) {
                 await Keychain.setGenericPassword(
                   inputUsuario,
                   inputSenha
                 )
+                }
               } catch (error) {
               }
               navigation.navigate('AfterLogin');
@@ -135,7 +140,7 @@ const Login = ({route, navigation}) => {
                   await AsyncStorage.setItem('token', response['access_token'].toString())
                   await AsyncStorage.setItem('expiration', fixedDate.getTime().toString())
                   await AsyncStorage.setItem('token_type', response['token_type'])
-    
+                  setInputSenha('');
                   navigation.navigate('AfterLogin');
                 } else {
                   handleErrologin();
@@ -204,9 +209,23 @@ const Login = ({route, navigation}) => {
               type={'senha'}
               hidePassword={handleHidePassword}
             />
-            { showCredenciaisErradas ?
+             { showCredenciaisErradas ?
             (<Text style={{color: 'red', fontSize: 16}}>Credencias inválidas</Text>)
             : null }
+            { showSave ?
+            <View style={{flexDirection: 'row', marginBottom: 10, marginLeft: -40}}>
+              <TouchableOpacity onPress={() => {setSaveUser(!saveUser)}}>
+                {saveUser? 
+                <Ionicons name="checkbox" size={16} color={'#FFF'}/>
+                :
+                <Ionicons name="square-outline" size={16} color={'#FFF'}/>
+                }
+              </TouchableOpacity>
+              <Text style={styles.textSalvar}>Manter-me conectado</Text>
+            </View>
+           : null}
+
+              
           <TouchableOpacity activeOpacity={0.7} onPress={handleLogin}>
             <ButtonView>
               <ButtonText>Login</ButtonText>
@@ -236,6 +255,10 @@ const styles = StyleSheet.create({
   text: {
     color: globalStyles.colors.fontColor,
     fontSize: 24,
+  },
+  textSalvar: {
+    color: '#FFF',
+    fontSize: 15,
   },
   button: {
     height: 50,

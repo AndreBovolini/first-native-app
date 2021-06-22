@@ -48,8 +48,20 @@ import OneSignal from 'react-native-onesignal';
 
 import { newDataPieChartHome } from '../components/Home/NewPieChartResumo/dataNewPieChartResumo';
 import { NewPieChartResumo } from '../components/Home/NewPieChartResumo';
+import { logout } from '../store/actions/actions';
 
-export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira }) => {
+import { RectButton, PanGestureHandler } from 'react-native-gesture-handler'
+
+import Animated, { 
+  useSharedValue,
+  useAnimatedStyle,
+  useAnimatedGestureHandler,
+  withSpring
+} from 'react-native-reanimated'
+
+const ButtonAnimated = Animated.createAnimatedComponent(RectButton)
+
+export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout }) => {
   const [percent, setPercent] = useState(true)
   const [currency, setCurrency] = useState(false)
   const [showModal, setShowModal] = useState(false);
@@ -267,6 +279,38 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
     setAcceptedProgrammed(acceptPushProgrammed === 'true' ? true : false);
   }, [])
 
+  const userLogout = () => {
+    logout()
+  }
+
+
+  const positionY = useSharedValue(0)
+  const positionX = useSharedValue(0)
+
+    const animatedButtonStyle = useAnimatedStyle(() => {
+        return {
+            transform : [
+                { translateX: positionX.value},
+                { translateY: positionY.value }
+            ]
+        }
+    })
+
+    const onGestureEvent = useAnimatedGestureHandler({
+        onStart(_, ctx) {
+            ctx.positionX = positionX.value
+            ctx.positionY = positionY.value
+        },
+        onActive(event, ctx) {
+            positionX.value = ctx.positionX + event.translationX;
+            positionY.value = ctx.positionY + event.translationY;
+        },
+        onEnd() {
+
+        }
+    })
+
+
 
   // useEffect(
   //   () => {
@@ -336,38 +380,44 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
 
   console.log('AAAA ', dadosLineChartRes)
 
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     Alert.alert("O que você deseja fazer?", '', [
+  //       {
+  //         text: "Manter",
+  //         onPress: () => null,
+  //         style: "cancel"
+  //       },
+  //       {
+  //         text: "Sair",
+  //         onPress: () => BackHandler.exitApp()
+  //       },
+  //       {
+  //         text: 'Fazer Logoff',
+  //         onPress: () => {
+  //           AsyncStorage.removeItem('token');
+  //           navigation.navigate('Login', {
+  //             credentials: false
+  //           })
+  //         }
+  //       }
+  //     ]);
+  //     return true;
+  //   };
+
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, [navigation])
+
   useEffect(() => {
-    const backAction = () => {
-      Alert.alert("O que você deseja fazer?", '', [
-        {
-          text: "Manter",
-          onPress: () => null,
-          style: "cancel"
-        },
-        {
-          text: "Sair",
-          onPress: () => BackHandler.exitApp()
-        },
-        {
-          text: 'Fazer Logoff',
-          onPress: () => {
-            AsyncStorage.removeItem('token');
-            navigation.navigate('Login', {
-              credentials: false
-            })
-          }
-        }
-      ]);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-
-    return () => backHandler.remove();
-  }, [navigation])
+    BackHandler.addEventListener('hardwareBackPress', () => {
+        return true
+    })
+}, [])
 
 
   const handleOpenModal = () => {
@@ -422,7 +472,8 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
       <FiltroSeletor 
         visible={showModal} 
         width={globalStyles.dimensions.width}
-        buttonAction={handleCloseModal} 
+        buttonAction={handleCloseModal}
+        userLogout={userLogout}
       /> 
 
       {/*}
@@ -586,8 +637,31 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
             </ChartContainer>
 
 
+           
           </ScrollView>
           )}
+          <PanGestureHandler onGestureEvent={onGestureEvent}>
+            <Animated.View style={[
+                animatedButtonStyle, {
+                    position: "absolute",
+                    bottom: 113,
+                    right: 22,
+                }
+            ]}>
+                <ButtonAnimated onPress={handleOpenModal}
+                style={[{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  zIndex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+              }, {backgroundColor: '#2A0DB8'}]}
+                >
+                    <Icon name="filter" size={25} color={StyledTheme.colors.invertedBackground} />
+                </ButtonAnimated>
+            </Animated.View>
+        </PanGestureHandler>
       </SafeAreaView>
     </LargeContainer>
   )
@@ -600,5 +674,8 @@ const mapStateToProps = state => ({
   infosCarteiras: state.infosCarteiras
 });
 
+const mapDispatchToProps = ( dispatch )=> ({
+  logout : () => dispatch(logout())
+}) 
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

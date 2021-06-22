@@ -5,6 +5,7 @@ import createSagaMiddleWare from 'redux-saga'
 import dates from './reducers/infos-gerais';
 import * as homePage from './reducers/reducer-dados-home';
 import * as dadosUsuario from './reducers/reducer-dados-usuario';
+import * as posicaoConsolidada from './reducers/reducer-posicao-consolidada'
 import * as RootNavigation from '../navigation/RootNavigation';
 
 import rootSaga from './sagas';
@@ -18,7 +19,8 @@ const appReducer = combineReducers({
     dadosHomePage: homePage.dadosHomePage,
     dadosCarteiras: dadosUsuario.dadosCarteiras,
     infosCarteiras: dadosUsuario.infosCarteiras,
-    datasCarteiras: dadosUsuario.datasCarteiras
+    datasCarteiras: dadosUsuario.datasCarteiras,
+    dadosPosicaoConsolidada: posicaoConsolidada.dadosPosicaoConsolidada
   })
   
 const rootReducer = (state, action) => {

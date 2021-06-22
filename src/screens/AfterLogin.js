@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { pegarDadosCarteiras, pegarDatasCarteiras, pegarInfosCarteiras } from '../store/actions/actions-dados-usuario'
 import { pegarDadosHomePage } from '../store/actions/action-dados-home';
 import { alteraCarteira, alteraDataLimite, newData } from '../store/actions/actions'
+import { pegarDadosPosicaoConsolidada } from '../store/actions/action-posicao-consolidada';
 
 
 const AfterLogin = (props) => {
@@ -111,6 +112,8 @@ const AfterLogin = (props) => {
     useEffect(async () => {
         if (props.stateCarteira.carteira !== '' && props.stateCarteira.dataMaisAntiga !== '') {
             setShowModal(false)
+            //console.warn(props.stateCarteira.carteira)
+            //props.pegarDadosPosicaoConsolidada(props.stateCarteira.carteira)
             let token = await AsyncStorage.getItem('token')
             props.navigation.navigate('Home');
             //props.pegarDadosHomePage(token)
@@ -148,7 +151,8 @@ const mapDispatchToProps = ( dispatch )=> ({
     pegarCarteirasUsuario: (token) => dispatch(pegarDadosCarteiras(token)),
     pegarInfosCarteiras: (token) => dispatch(pegarInfosCarteiras(token)),
     pegarDadosHomePage: (token) => dispatch(pegarDadosHomePage(token)),
-    pegarDatasCarteiras: (token, nomeCarteira ) => dispatch(pegarDatasCarteiras(token, nomeCarteira))
+    pegarDatasCarteiras: (token, nomeCarteira ) => dispatch(pegarDatasCarteiras(token, nomeCarteira)),
+    pegarDadosPosicaoConsolidada: (nomeCarteira) => dispatch(pegarDadosPosicaoConsolidada(nomeCarteira))
 }) 
     
   
