@@ -166,7 +166,7 @@ const StyledTheme = useContext(ThemeContext)
                 infos={dadosChart.infos}
                 handleSelectPie={handleSelectPie}
               />    : null}  */}
-              { newDadosChart !== {} ? 
+              { newDadosChart !== {} && !props.isLoadingDadosPosicaoConsolidada ? 
                 <NewPieChart data={newDadosChart}
                 handleSelectPie={handleSelectPie}
                 />
