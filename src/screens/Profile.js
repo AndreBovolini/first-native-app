@@ -36,7 +36,7 @@ import OneSignal from 'react-native-onesignal';
 
 import { alteraViewMode, logout } from '../store/actions/actions'
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
-import { Value } from 'react-native-reanimated';
+// import { Value } from 'react-native-reanimated';
 
 const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
     const [showAlteraSenha, setShowAlteraSenha] = useState(false);

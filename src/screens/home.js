@@ -49,7 +49,7 @@ import OneSignal from 'react-native-onesignal';
 import { newDataPieChartHome } from '../components/Home/NewPieChartResumo/dataNewPieChartResumo';
 import { NewPieChartResumo } from '../components/Home/NewPieChartResumo';
 
-// import Animated, { useSharedValue } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle  } from 'react-native-reanimated';
 
 export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira }) => {
   const [percent, setPercent] = useState(true)
@@ -68,7 +68,8 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
 
   const StyledTheme = useContext(ThemeContext)
 
-  // const animation = useSharedValue(0)
+  const animation = useSharedValue(0)
+
   const dadosTable = {
     table1: [
       {
@@ -322,6 +323,8 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   //   [navigation]
   // );
 
+  
+  
   useEffect(() => {
     if (!dadosHomePage.loading && dadosHomePage.data.grafico5) {
       const dadosLineChart = dataLineChartHome(dadosHomePage.data.grafico5, StyledTheme.colors.invertedBackground);
