@@ -678,14 +678,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
               <Benchmarks visible={showBench} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseBench} />
             </View>
 
-            <View style={{height: 80, width: 300, backgroundColor: '#121212', zIndex: 100}}>
-              <Animated.View style={[{ height: 80, width: 300, zIndex: 0}, animatedSkeletonStyles]}>
-              <LinearGradient style={{ height: 80, width: 300, zIndex: 0}} start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={[  '#121212', '#333333', '#121212']
-                }>
-
-              </LinearGradient>
-              </Animated.View>
-            </View>
+            
 
             <RightCard style={{ marginTop: -3 }} onPress={handleOpenBench}>
               <BenchmarksButton>
