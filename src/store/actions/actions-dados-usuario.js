@@ -6,6 +6,7 @@ import fetchComAppDatasCarteiras from '../../dados/conta/datasCarteiras'
 import { alteraDataLimite, newData, logout } from './actions'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as RootNavigation from '../../navigation/RootNavigation';
+import { pegarDadosPosicaoConsolidada } from './action-posicao-consolidada';
 
 
 
@@ -69,6 +70,7 @@ export function* asyncPegarDatasCarteiras(action){
               console.log('bbbb'+diaR,mesR,anoR)
               let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
               yield put(alteraDataLimite(timestamp, timestampR))
+              yield put(pegarDadosPosicaoConsolidada(action.dados.nomeCarteira))
               yield put(newData(timestamp, timestampR))
           }
       

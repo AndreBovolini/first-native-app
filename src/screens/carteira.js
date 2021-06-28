@@ -53,11 +53,12 @@ const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
 const StyledTheme = useContext(ThemeContext)
 
   useEffect(() => {
-    if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== []) {
-      const keysAtivos = Object.keys(showAtivos ? resposta2.grafico0 : resposta2.grafico1)
+    if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== [] && !props.isLoadingDadosPosicaoConsolidada && props.responseDadosPosicaoConsolidada !== undefined) {
+      console.warn(props.responseDadosPosicaoConsolidada)
+      const keysAtivos = Object.keys(showAtivos ? props.responseDadosPosicaoConsolidada : resposta2.grafico1)
     const AtivosCarteira = keysAtivos.map((el,i) => {
       return {
-        value: parseFloat(showAtivos ? resposta2.grafico0[el] : resposta2.grafico1[el]),
+        value: parseFloat(showAtivos ? props.responseDadosPosicaoConsolidada[el] : resposta2.grafico1[el]),
         label: (el === 'nd' ? 'Outros' : el) ,
       }
     })
@@ -85,8 +86,8 @@ const StyledTheme = useContext(ThemeContext)
    let infos = ''
    let dadosChartNew = '';
     if(showAtivos){
-      infos = dataPieChart(resposta2.grafico0,StyledTheme.colors.invertedBackground)
-      dadosChartNew = newDataPieChart(resposta2.grafico0, StyledTheme)
+      infos = dataPieChart(props.responseDadosPosicaoConsolidada,StyledTheme.colors.invertedBackground)
+      dadosChartNew = newDataPieChart(props.responseDadosPosicaoConsolidada, StyledTheme)
     }else{
       infos = dataPieChart(resposta2.grafico1,StyledTheme.colors.invertedBackground )
       dadosChartNew = newDataPieChart(resposta2.grafico1, StyledTheme)
@@ -99,7 +100,7 @@ const StyledTheme = useContext(ThemeContext)
     }
     
     
-  }, [showAtivos, props.isLoadingDadosHomePage, props.responseDadosHomePage, StyledTheme]);
+  }, [showAtivos, props.isLoadingDadosHomePage, props.responseDadosHomePage, StyledTheme, props.responseDadosPosicaoConsolidada, props.isLoadingDadosPosicaoConsolidada]);
 
   
   function handleSelectorAtivos() {
@@ -137,7 +138,8 @@ const StyledTheme = useContext(ThemeContext)
         setArrayAtivos(newArray)
     }
 
-  function handleSelectPie(event) { 
+  function handleSelectPie(event) {
+    console.warn(event)
       try{
         let selectName = event.data.label
         let filtrado = arrayAtivos.filter(ativo => ativo.ativo === selectName)
@@ -164,7 +166,7 @@ const StyledTheme = useContext(ThemeContext)
                 infos={dadosChart.infos}
                 handleSelectPie={handleSelectPie}
               />    : null}  */}
-              { newDadosChart !== {} ? 
+              { newDadosChart !== {} && !props.isLoadingDadosPosicaoConsolidada ? 
                 <NewPieChart data={newDadosChart}
                 handleSelectPie={handleSelectPie}
                 />
@@ -191,6 +193,8 @@ const StyledTheme = useContext(ThemeContext)
 const mapStateToProps = state => ({
   isLoadingDadosHomePage: state.dadosHomePage.loading,
   responseDadosHomePage: state.dadosHomePage.response,
+  responseDadosPosicaoConsolidada: state.dadosPosicaoConsolidada.data,
+  isLoadingDadosPosicaoConsolidada: state.dadosPosicaoConsolidada.loading,
 });
 
 export default connect(mapStateToProps)(Carteira);

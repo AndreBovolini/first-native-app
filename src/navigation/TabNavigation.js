@@ -126,47 +126,49 @@ const AuthNavigator = () => {
                   }}
                 />
                 <Stack.Screen name="AfterLogin" component={AfterLogin} /> 
-                <Stack.Screen name="Home" component={TabNavigation} 
-                    listeners={({ navigation, route }) => ({
-                        beforeRemove: e => {
-                            if (e.data.action.payload.name === 'Login' ) {
-                                navigation.push('Login')
+                <Stack.Screen name="Home" component={TabNavigation}  options={{
+                    gestureEnabled: false
+                }}
+                    // listeners={({ navigation, route }) => ({
+                    //     beforeRemove: e => {
+                    //         if (e.data.action.payload.name === 'Login' ) {
+                    //             navigation.push('Login')
 
-                            } else if (e.data.action.payload.name === 'AfterLogin') {
-                                console.log('teste'+e.data.action)
-                                navigation.push('AfterLogin')
-                            } else {
-                              e.preventDefault();
+                    //         } else if (e.data.action.payload.name === 'AfterLogin') {
+                    //             console.log('teste'+e.data.action)
+                    //             navigation.push('AfterLogin')
+                    //         } else {
+                    //           e.preventDefault();
                         
-                              // Prompt the user before leaving the screen
-                              Alert.alert(
-                                'Você deseja sair do app?',
-                                'You have unsaved changes. Are you sure to discard them and leave the screen?',
-                                [
-                                  { text: "Manter", style: 'cancel', onPress: () => {} },
-                                  { text: "Logout", style: 'cancel', onPress: () => {
-                                    AsyncStorage.removeItem('token');
-                                    navigation.dispatch(
-                                      CommonActions.navigate({
-                                        name: 'Login',
-                                        params: {
-                                          credentials: false,
-                                        },
-                                      })
-                                    );
-                                } },
-                                  {
-                                    text: 'Sair',
-                                    style: 'destructive',
-                                    // If the user confirmed, then we dispatch the action we blocked earlier
-                                    // This will continue the action that had triggered the removal of the screen
-                                    onPress: () => RNExitApp.exitApp(),
-                                  },
-                                ]
-                              )
-                              }
-                        },
-                    })}
+                    //           // Prompt the user before leaving the screen
+                    //           Alert.alert(
+                    //             'Você deseja sair do app?',
+                    //             'You have unsaved changes. Are you sure to discard them and leave the screen?',
+                    //             [
+                    //               { text: "Manter", style: 'cancel', onPress: () => {} },
+                    //               { text: "Logout", style: 'cancel', onPress: () => {
+                    //                 AsyncStorage.removeItem('token');
+                    //                 navigation.dispatch(
+                    //                   CommonActions.navigate({
+                    //                     name: 'Login',
+                    //                     params: {
+                    //                       credentials: false,
+                    //                     },
+                    //                   })
+                    //                 );
+                    //             } },
+                    //               {
+                    //                 text: 'Sair',
+                    //                 style: 'destructive',
+                    //                 // If the user confirmed, then we dispatch the action we blocked earlier
+                    //                 // This will continue the action that had triggered the removal of the screen
+                    //                 onPress: () => RNExitApp.exitApp(),
+                    //               },
+                    //             ]
+                    //           )
+                    //           }
+                    //     },
+                    // })}
                 
                 />
                 <Stack.Screen name="ResetPassword" component={ResetPassword}/>

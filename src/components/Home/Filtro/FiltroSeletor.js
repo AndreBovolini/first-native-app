@@ -35,6 +35,13 @@ import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import fetchComAppDatasCarteiras from '../../../dados/conta/datasCarteiras';
 import { pegarDadosHomePage } from '../../../store/actions/action-dados-home';
 
+import Animated , {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming
+} from 'react-native-reanimated';
+
+
 const FiltroSeletor = props => {
     const [carteiras, setCarteiras] = useState([])
     const [carteira, setCarteira] = useState([
@@ -59,6 +66,42 @@ const FiltroSeletor = props => {
     const StyledTheme = useContext(ThemeContext)
 
 
+    const animation = useSharedValue(0)
+
+    const animatedStyles = useAnimatedStyle(() => {
+      return {
+        transform: [
+          {
+            translateX: withTiming(animation.value, {
+              duration: 400
+            })
+          }
+        ]
+      }
+    })
+
+    function switchMode() {
+      if (!selectPeriod) {
+        selectPeriodMode()
+      } else {
+        allPeriodMode()
+      }
+      setSelectPeriod(!selectPeriod)
+      if (selectedWallet) {
+          setIsLoadingDatas(true)
+      }
+    }
+
+    function selectPeriodMode() {
+      animation.value = 45
+
+    }
+
+    function allPeriodMode() {
+      animation.value = 0
+    }
+
+
     useEffect(() => {
         if (!props.isLoadingCarteirasUsuario && props.ResponseCarteirasUsuario !== []) {
           setCarteiras(props.ResponseCarteirasUsuario);
@@ -78,12 +121,13 @@ const FiltroSeletor = props => {
 
     useEffect(() => {
       async function getWalletDates(carteira) {
+              const expiration = await AsyncStorage.getItem('expiration')
+              console.warn(carteira)
               await fetchComAppDatasCarteiras({nomeCarteira: carteira}).then(response => {
+
                 if (response.msg === 'Expired token') {
-                  props.buttonAction();
-                  props.logout();
-                  return
-                }
+                  handleShowError('Token Expirado')
+                } else {
                   let datas = {
                       inicio: response.data_mais_antiga,
                       final: response.data_mais_recente
@@ -105,13 +149,14 @@ const FiltroSeletor = props => {
                   setIsLoadingDatas(false)
                   setShowSelectorFinal(false)
                   setShowSelectorInicial(false)
-                  
+                }
               }).catch(error => 
                 error
               )
 
   }
   if (selectPeriod && selectedWallet !== '') {
+
       getWalletDates(selectedWallet)
 
   }
@@ -191,6 +236,11 @@ const FiltroSeletor = props => {
     }
 
     function handleShowError(message) {
+      if (message === 'Token Expirado') {
+        setTimeout(() => {
+          props.logout()
+        }, 500)
+      }
         setErrorMessage(message)
         setShowError(true)
     }
@@ -272,61 +322,29 @@ const FiltroSeletor = props => {
                     </ScrollView>
                       <SelectPeriodView>
                         <ToggleLabelText>Todo o período</ToggleLabelText>
-                      <ToggleView>
-                      <RightCard onPress={handleChangeSelectPeriod} activeOpacity={1} pressDuration={0.5}>
-                        {
-                          !selectPeriod ? (
-                            <CurrencyPress >
-                              <Text style={{ color: StyledTheme.colors.firstLayer, fontSize: 25, marginRight: 4 }
-                              }> O </Text>
-                            </CurrencyPress>
-                          ) : (
-                            <Currency>
-                              <Text style={
-                                { color: StyledTheme.colors.invertedBackground, fontSize: 25, marginRight: 4 }
-                              }> O </Text>
-                            </Currency>
-                          )
-                        }
+                    <TouchableOpacity style={{
+                      backgroundColor: !selectPeriod ? '#FFF' : '#2A0DB8',
+                      height: 25,
+                      width: 70,
+                      borderRadius: 15,
+                    }}
+                    onPress={switchMode}
+                    >
+                      <Animated.View style={[{
+                        backgroundColor: !selectPeriod ? '#000' : '#FFF',
+                        width: 20,
+                        height: 20,
+                        borderRadius: 10,
+                        margin: 2.5,
+                      }, animatedStyles]}>
 
+                      </Animated.View>
 
-                      </RightCard>
-
-                      {
-                        selectPeriod ? (
-                          <PercentPress>
-                            <Icon.Button
-                              name="calendar"
-                              color={StyledTheme.colors.firstLayer}
-                              backgroundColor={StyledTheme.colors.invertedBackground}
-                              iconStyle={{
-                                alignItems: 'center',
-                                alignSelf: 'center',
-                                marginLeft: 8
-                              }
-                              }
-                              onPress={handleChangeSelectPeriod}
-                            />
-                          </PercentPress>
-                        ) : (
-                          <Percent>
-                            <Icon.Button
-                              name="calendar"
-                              color={StyledTheme.colors.fontColor}
-                              backgroundColor={StyledTheme.colors.background}
-                              iconStyle={{
-                                alignItems: 'center',
-                                alignSelf: 'center',
-                                marginLeft: 8
-                              }}
-                              onPress={handleChangeSelectPeriod}
-                            />
-                          </Percent>
-                        )
-                      }
-                    </ToggleView>
+                    </TouchableOpacity>
                     <ToggleLabelText>Selecionar período</ToggleLabelText>
                     </SelectPeriodView>
+
+                    
                     
 
                     {
@@ -391,7 +409,9 @@ const FiltroSeletor = props => {
                        </>
                       ) :  null
                     }
-
+                    { showError ? 
+                    <Text style={{color: 'red'}}>{errorMessage}</Text>
+                    : null }
                     <TouchableOpacity activeOpacity={0.7} onPress={handleSaveChanges}>
                           <Button>
                             <Text style={{color: '#FFF', fontSize: 20,}}>Salvar</Text>

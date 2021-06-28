@@ -48,12 +48,26 @@ import OneSignal from 'react-native-onesignal';
 
 import { newDataPieChartHome } from '../components/Home/NewPieChartResumo/dataNewPieChartResumo';
 import { NewPieChartResumo } from '../components/Home/NewPieChartResumo';
+import { alteraViewMode, logout } from '../store/actions/actions';
 
-import Animated, { useSharedValue, useAnimatedStyle  } from 'react-native-reanimated';
+import { RectButton, PanGestureHandler } from 'react-native-gesture-handler'
 
-export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira }) => {
-  const [percent, setPercent] = useState(true)
-  const [currency, setCurrency] = useState(false)
+import LinearGradient from 'react-native-linear-gradient'
+
+import Animated, { 
+  useSharedValue,
+  useAnimatedStyle,
+  useAnimatedGestureHandler,
+  withSpring,
+  withTiming,
+  withRepeat
+} from 'react-native-reanimated'
+
+const ButtonAnimated = Animated.createAnimatedComponent(RectButton)
+
+export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout, alteraViewMode }) => {
+  const [percent, setPercent] = useState(false)
+  const [currency, setCurrency] = useState(true)
   const [showModal, setShowModal] = useState(false);
   const [showBench, setShowBench] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -66,9 +80,23 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   const [acceptedProgrammed, setAcceptedProgrammed] = useState(false)
   const [dadosLineChartRes, setDadosLineChartRes] = useState({})
 
+
+
   const StyledTheme = useContext(ThemeContext)
 
   const animation = useSharedValue(0)
+
+  const animatedStyles = useAnimatedStyle(() => {
+      return {
+        transform: [
+          {
+            translateX: withTiming(animation.value, {
+              duration: 400
+            })
+          }
+        ]
+      }
+    })
 
   const dadosTable = {
     table1: [
@@ -271,6 +299,38 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   //   setAcceptedProgrammed(acceptPushProgrammed === 'true' ? true : false);
   // }, [])
 
+  const userLogout = () => {
+    logout()
+  }
+
+
+  const positionY = useSharedValue(0)
+  const positionX = useSharedValue(0)
+
+    const animatedButtonStyle = useAnimatedStyle(() => {
+        return {
+            transform : [
+                { translateX: positionX.value},
+                { translateY: positionY.value }
+            ]
+        }
+    })
+
+    const onGestureEvent = useAnimatedGestureHandler({
+        onStart(_, ctx) {
+            ctx.positionX = positionX.value
+            ctx.positionY = positionY.value
+        },
+        onActive(event, ctx) {
+            positionX.value = ctx.positionX + event.translationX;
+            positionY.value = ctx.positionY + event.translationY;
+        },
+        onEnd() {
+
+        }
+    })
+
+
 
   // useEffect(
   //   () => {
@@ -342,38 +402,44 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
 
   console.log('AAAA ', dadosLineChartRes)
 
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     Alert.alert("O que você deseja fazer?", '', [
+  //       {
+  //         text: "Manter",
+  //         onPress: () => null,
+  //         style: "cancel"
+  //       },
+  //       {
+  //         text: "Sair",
+  //         onPress: () => BackHandler.exitApp()
+  //       },
+  //       {
+  //         text: 'Fazer Logoff',
+  //         onPress: () => {
+  //           AsyncStorage.removeItem('token');
+  //           navigation.navigate('Login', {
+  //             credentials: false
+  //           })
+  //         }
+  //       }
+  //     ]);
+  //     return true;
+  //   };
+
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, [navigation])
+
   useEffect(() => {
-    const backAction = () => {
-      Alert.alert("O que você deseja fazer?", '', [
-        {
-          text: "Manter",
-          onPress: () => null,
-          style: "cancel"
-        },
-        {
-          text: "Sair",
-          onPress: () => BackHandler.exitApp()
-        },
-        {
-          text: 'Fazer Logoff',
-          onPress: () => {
-            AsyncStorage.removeItem('token');
-            navigation.navigate('Login', {
-              credentials: false
-            })
-          }
-        }
-      ]);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-
-    return () => backHandler.remove();
-  }, [navigation])
+    BackHandler.addEventListener('hardwareBackPress', () => {
+        return true
+    })
+}, [])
 
 
   const handleOpenModal = () => {
@@ -386,6 +452,25 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
   const handleCurrency = () => {
     setCurrency(true)
     setPercent(false)
+  }
+
+  const handleChangeFormat = () => {
+    setCurrency(!currency)
+    setPercent(!percent)
+    if(!currency){
+      currencyMode()
+    }else{
+      percentMode()
+    }
+  }
+
+  function currencyMode() {
+    animation.value = 0
+
+  }
+
+  function percentMode() {
+    animation.value = 45
   }
 
   const handleCloseModal = () => {
@@ -406,15 +491,73 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
     setGraficoCarrossel(index + 1)
   }
 
-  // async function handleAccept() {
-  //   //(accepted)
-  //   await AsyncStorage.setItem('Push', (!accepted ? 'true' : 'false'))
-  //   setAccepted(!accepted)
-  //   if (accepted === true) {
-  //     setAcceptedProgrammed(false)
-  //     await AsyncStorage.setItem('PushProgramada', ('false'))
-  //   }
-  // }
+  const animationSwitch = useSharedValue(stateCarteira.mode === 'dark' ? 44 : 0)
+
+    const animatedSwitchStyles = useAnimatedStyle(() => {
+      return {
+        transform: [
+          {
+            translateX: withTiming(animationSwitch.value, {
+              duration: 400
+            })
+          }
+        ]
+      }
+    })
+
+    function nightSwitchMode() {
+      animationSwitch.value = 44
+
+    }
+
+    function daySwitchMode() {
+      animationSwitch.value = 0
+    }
+
+
+  const handleAlteraMode = () => {
+    if (stateCarteira.mode === 'dark') {
+      alteraViewMode('light')
+      daySwitchMode()
+      AsyncStorage.setItem('mode', 'light')
+    } else {
+      alteraViewMode('dark')
+      nightSwitchMode()
+      AsyncStorage.setItem('mode', 'dark')
+    }
+  }
+
+  const animationSkeleton = useSharedValue(-200)
+
+    const animatedSkeletonStyles = useAnimatedStyle(() => {
+      return {
+        transform: [
+          {
+            translateX: withRepeat(withTiming(animationSkeleton.value, {
+              duration: 600
+            }),
+            15
+            )
+          }
+        ]
+      }
+    })
+
+    useEffect(() => {
+      animationSkeleton.value = 200
+    }, [])
+
+  
+
+  async function handleAccept() {
+    //(accepted)
+    await AsyncStorage.setItem('Push', (!accepted ? 'true' : 'false'))
+    setAccepted(!accepted)
+    if (accepted === true) {
+      setAcceptedProgrammed(false)
+      await AsyncStorage.setItem('PushProgramada', ('false'))
+    }
+  }
 
   // async function handleAcceptProgrammed() {
   //   await AsyncStorage.setItem('PushProgramada', (!acceptedProgrammed ? 'true' : 'false'))
@@ -428,7 +571,8 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
       <FiltroSeletor 
         visible={showModal} 
         width={globalStyles.dimensions.width}
-        buttonAction={handleCloseModal} 
+        buttonAction={handleCloseModal}
+        userLogout={userLogout}
       /> 
 
       {/*}
@@ -451,13 +595,55 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
               <LeftCard>
                 <Title>Portfólio</Title>
               </LeftCard>
-              <View style={{flexDirection: 'row'}}>
-                <RightCard onPress={handleOpenModal}>
+              <View>
+                {/* <RightCard onPress={handleOpenModal}>
                   <Icon name="bars" size={25} color={StyledTheme.colors.invertedBackground} />
-                </RightCard>
+                </RightCard> */}
+                <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={ stateCarteira.mode === 'dark' ?
+                  ['#f7c81b', '#f7821b', '#f01fb8'] : ['#eb00f7', '#61038a', '#180475']
+                } style={{
+                      height: 25,
+                      width: 70,
+                      borderRadius: 15,
+                    }}>
+                <TouchableOpacity style={{
+                      backgroundColor: 'transparent',
+                      height: 25,
+                      width: 70,
+                      borderRadius: 15,
+                    }}
+                    onPress={handleAlteraMode}
+                    >
+                      {/* { stateCarteira.mode === 'dark' ?
+                      <View style={{marginLeft: 8}}>
+                        <Text style={{color: '#FFF', fontSize: 10, textAlign: 'center', fontWeight: '700'}}>Day {'\n'} Mode</Text>
+                      </View> : null
+                      } */}
+                      <Animated.View style={[{
+                        backgroundColor:'#FFF',
+                        width: 20,
+                        height: 20,
+                        borderRadius: 10,
+                        margin: 2.5,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }, animatedSwitchStyles]}>
+                        { stateCarteira.mode === 'dark' ? 
+                        <Ionicons name="sunny" size={15} color={'#f7821b'} /> :
+                        <Ionicons name="moon-outline" size={15} color={'#61038a'} />
+                    }
+                      </Animated.View>
+                      {/* { stateCarteira.mode === 'light' ?
+                      <View style={{marginRight: 8}}>
+                        <Text style={{color: '#FFF', fontSize: 10, textAlign: 'center', fontWeight: '700'}}>Night {'\n'} Mode</Text>
+                      </View> : null
+                      } */}
+                    </TouchableOpacity>
+                    </LinearGradient>
               </View>
             </TitleContainer>
             <ButtonView>
+              {/*
               <RightCard onPress={handleCurrency} activeOpacity={1} pressDuration={0.5}>
                 {
                   currency ? (
@@ -509,6 +695,30 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
                   </Percent>
                 )
               }
+            */}
+              <TouchableOpacity style={{
+                backgroundColor: !percent ? (stateCarteira.mode === 'dark' ? '#FFF' : StyledTheme.colors.firstLayer) : '#2A0DB8',
+                height: 25,
+                width: 70,
+                borderRadius: 15,
+              }}
+                onPress={handleChangeFormat}
+              >
+                <Animated.View style={[{
+                  backgroundColor: !percent ? '#000' : '#FFF' ,
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  margin: 2.5,
+                }, animatedStyles]}>
+                {!percent ? 
+                <Text style={{color:'#FFF', fontSize:14, marginLeft:1}}>R$</Text>:
+                <Text style={{color:'#000', fontSize:18, fontWeight:'bold', marginTop: -2, marginLeft: -1.5}}> %</Text>
+               }
+
+                </Animated.View>
+
+              </TouchableOpacity>
             </ButtonView>
             <ValueBoxContainer>
               <ValueBoxContainerRow>
@@ -523,6 +733,8 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Benchmarks visible={showBench} minHeight={200} width={globalStyles.dimensions.width} buttonAction={handleCloseBench} />
             </View>
+
+            
 
             <RightCard style={{ marginTop: -3 }} onPress={handleOpenBench}>
               <BenchmarksButton>
@@ -592,8 +804,31 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira 
             </ChartContainer>
 
 
+           
           </ScrollView>
           )}
+          <PanGestureHandler onGestureEvent={onGestureEvent}>
+            <Animated.View style={[
+                animatedButtonStyle, {
+                    position: "absolute",
+                    bottom: 113,
+                    right: 22,
+                }
+            ]}>
+                <ButtonAnimated onPress={handleOpenModal}
+                style={[{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  zIndex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+              }, {backgroundColor: '#2A0DB8'}]}
+                >
+                    <Icon name="filter" size={25} color={StyledTheme.colors.invertedBackground} />
+                </ButtonAnimated>
+            </Animated.View>
+        </PanGestureHandler>
       </SafeAreaView>
     </LargeContainer>
   )
@@ -606,5 +841,9 @@ const mapStateToProps = state => ({
   infosCarteiras: state.infosCarteiras
 });
 
+const mapDispatchToProps = ( dispatch )=> ({
+  logout : () => dispatch(logout()),
+  alteraViewMode: (mode) => dispatch(alteraViewMode(mode)),
+}) 
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
