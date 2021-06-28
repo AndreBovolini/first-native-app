@@ -3,7 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from 'react-native';
 
 import globalStyles from '../styles/globalStyles';
@@ -36,23 +37,18 @@ import { NewPieChart } from '../components/Carteira/NewGraficoPie';
 
 const Carteira = (props) => {
   const [arrayAtivos, setArrayAtivos] = useState([]);
-  const [selectedEntry, setSelectedEntry] = useState(null);
-  const [selecionadoPie, setSelecionadoPie] = useState({});
   const [scrollViewHeight, setScrollViewHeight] = useState(1183)
   const [cores, setCores] = useState(globalStyles.chartColors.pieChartColors);
-  const [teste,setTeste]=useState({
-    teste:false
-  }
-)
-const [dadosChart, setDadosChart] = useState({})
-const [newDadosChart, setNewDadosChart] = useState([])
-const [showAtivos, setShowAtivos ] = useState(true)
-const [heightDefault, setHeightDefault] = useState((AtivosCarteira.length-1)*90)
-const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
+  const [newDadosChart, setNewDadosChart] = useState([])
+  const [showAtivos, setShowAtivos ] = useState(true)
+  const [heightDefault, setHeightDefault] = useState((AtivosCarteira.length-1)*90)
+  const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
+  const [isLoading, setIsLoading] = useState(true)
 
 const StyledTheme = useContext(ThemeContext)
 
   useEffect(() => {
+    setIsLoading(true)
     if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== [] && !props.isLoadingDadosPosicaoConsolidada && props.responseDadosPosicaoConsolidada !== undefined) {
       console.warn(props.responseDadosPosicaoConsolidada)
       const keysAtivos = Object.keys(showAtivos ? props.responseDadosPosicaoConsolidada : resposta2.grafico1)
@@ -95,7 +91,9 @@ const StyledTheme = useContext(ThemeContext)
     // const infos = dataPieChart(showAtivos ? (resposta2.grafico0, StyledTheme.colors.invertedBackground)
     //   : (resposta2.grafico1, StyledTheme.colors.invertedBackground))
     if (newDadosChart != dadosChartNew ) {
+      console.warn(dadosChartNew)
    setNewDadosChart(dadosChartNew)
+   setIsLoading(false)
     }
     }
     
@@ -156,6 +154,9 @@ const StyledTheme = useContext(ThemeContext)
 
       return (
         <SafeAreaView style={{flex: 1, backgroundColor: StyledTheme.colors.background}}>
+          { isLoading ? (
+            <ActivityIndicator color="#FFF" size="large"/>
+          ) : (
         <ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', width: globalStyles.dimensions.width, height: scrollViewHeight, backgroundColor: StyledTheme.colors.background}}>
         <Title>Carteira</Title>
         <Seletor handleSelectorCustodiante={handleSelectorCustodiante} handleSelectorAtivos={handleSelectorAtivos}/>
@@ -166,7 +167,7 @@ const StyledTheme = useContext(ThemeContext)
                 infos={dadosChart.infos}
                 handleSelectPie={handleSelectPie}
               />    : null}  */}
-              { newDadosChart !== {} && !props.isLoadingDadosPosicaoConsolidada ? 
+              { newDadosChart[0] && !props.isLoadingDadosPosicaoConsolidada ? 
                 <NewPieChart data={newDadosChart}
                 handleSelectPie={handleSelectPie}
                 />
@@ -185,6 +186,7 @@ const StyledTheme = useContext(ThemeContext)
               })}
             </ContainerCards>
         </ScrollView>
+          )}
         </SafeAreaView>
     )
     

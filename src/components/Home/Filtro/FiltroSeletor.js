@@ -35,6 +35,7 @@ import Animated , {
   useSharedValue,
   withTiming
 } from 'react-native-reanimated';
+import { pegarDadosPosicaoConsolidada } from '../../../store/actions/action-posicao-consolidada';
 
 
 const FiltroSeletor = props => {
@@ -201,8 +202,9 @@ const FiltroSeletor = props => {
     function handleShowError(message) {
       if (message === 'Token Expirado') {
         setTimeout(() => {
-          props.logout()
-        }, 500)
+          props.logout();
+          props.buttonAction
+        }, 100)
       }
         setErrorMessage(message)
         setShowError(true)
@@ -214,9 +216,12 @@ const FiltroSeletor = props => {
           if ( firstSelectedDate === firstWalletDate && lastSelectedDate === lastWalletDate) {
             handleShowError('Esta já é a análise atual')
           } else {
+            props.pegarDadosPosicaoConsolidada(selectedWallet)
             props.pegarDadosHomePage()
           }
         } else {
+          props.alteraCarteira(selectedWallet)
+          props.pegarDadosPosicaoConsolidada(selectedWallet)
           props.pegarDadosHomePage()
         }
     }
@@ -391,6 +396,7 @@ const mapDispatchToProps = ( dispatch )=> ({
   alteraCarteira: (carteira) => dispatch(alteraCarteira(carteira)),
   pegarCarteirasUsuario: (token) => dispatch(pegarDadosCarteiras(token)),
   pegarDadosHomePage: () => dispatch(pegarDadosHomePage()),
+  pegarDadosPosicaoConsolidada: (carteira) => dispatch(pegarDadosPosicaoConsolidada(carteira)),
   logout: () => dispatch(logout())
 }) 
 
