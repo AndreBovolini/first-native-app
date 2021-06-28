@@ -111,14 +111,14 @@ const FiltroSeletor = props => {
     }, [props.isLoadingCarteirasUsuario, props.ResponseCarteirasUsuario])
 
     useEffect(() => {
-      if(carteira.length <= 2){
+      if(carteiras.length <= 2){
         setHeight(120)
-      }else if(carteira.length === 3) {
+      }else if(carteiras.length === 3) {
         setHeight(180)
       }else{
         setHeight(210)
       }
-    },[carteira])
+    },[carteiras])
 
     useEffect(() => {
       async function getWalletDates(carteira) {
@@ -186,9 +186,9 @@ const FiltroSeletor = props => {
       const handleChangeSelectPeriod = () =>  {
         setSelectPeriod(!selectPeriod)
         if(selectPeriod === true){
-          if(carteira.length <= 2){
+          if(carteiras.length <= 2){
             setHeight(120)
-          }else if( carteira.length === 3){
+          }else if( carteiras.length === 3){
             setHeight(180)
           }else{
           setHeight(210)
@@ -306,7 +306,7 @@ const FiltroSeletor = props => {
                     </View>
                     <ScrollView style={{height: height}}>
                         {carteiras[0] ?
-                        carteira.map((el, i) => {
+                        carteiras.map((el, i) => {
                             return (
                             <TouchableOpacity key={i} activeOpacity={0.7} onPress={() => handleSetecWallet(el)}>
                                 {selectedWallet === el ? 
