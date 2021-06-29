@@ -1,5 +1,6 @@
 package com.first_react_native_app;
 
+
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {

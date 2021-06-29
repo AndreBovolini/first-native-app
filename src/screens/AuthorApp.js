@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    View, ActivityIndicator , StyleSheet
+    View, ActivityIndicator , StyleSheet, StatusBar
 } from 'react-native'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -9,6 +9,13 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { alteraViewMode } from '../store/actions/actions'
+
+import LogoBranco from '../assets/logoBranco.svg';
+
+import LogoInteiroBranco from '../assets/logoInteiroBranco';
+
+
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing, interpolate, Extrapolate, runOnJS } from 'react-native-reanimated'
 
 const AuthOrApp = (props) => {
 
@@ -25,31 +32,57 @@ const AuthOrApp = (props) => {
             //console.warn('eita')
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {
-                props.navigation.navigate('Login', {
-                    credentials: true
-                })
+                splashAnimation.value = withTiming(
+                    50,
+                    { duration: 2000 },
+                    () => {
+                        'worklet';
+                        runOnJS(navigateLoginParams)();
+                    }
+                )
             } else {
-                props.navigation.navigate('Login', {
-                    credentials: false
-                })
+                splashAnimation.value = withTiming(
+                    50,
+                    { duration: 2000 },
+                    () => {
+                        'worklet';
+                        runOnJS(navigateLogin)();
+                    }
+                )
             }
         } else {
-            
-            props.navigation.navigate('AfterLogin')
+            splashAnimation.value = withTiming(
+                50,
+                { duration: 2000 },
+                () => {
+                    'worklet';
+                    runOnJS(navigateAfterLogin)();
+                }
+            )
         }
         } else {
             let credentials = await Keychain.getGenericPassword();
             if (credentials) {
-                props.navigation.navigate('Login', {
-                    credentials: true
-                })
+                splashAnimation.value = withTiming(
+                    50,
+                    { duration: 2000 },
+                    () => {
+                        'worklet';
+                        runOnJS(navigateLoginParams)();
+                    }
+                )
             } else {
-                props.navigation.navigate('Login', {
-                    credentials: false
-                })
+                splashAnimation.value = withTiming(
+                    50,
+                    { duration: 2000 },
+                    () => {
+                        'worklet';
+                        runOnJS(navigateLogin)();
+                    }
+                )
             }
         }
-
+d
         if (mode === 'light') {
             props.alteraViewMode('light')
         } else {
@@ -57,9 +90,64 @@ const AuthOrApp = (props) => {
         }
     },[]);
 
+    const splashAnimation = useSharedValue(0);
+
+
+    const brandStyle = useAnimatedStyle(() => {
+        return {
+            opacity: interpolate(splashAnimation.value, [0, 50], [1, 0] ),
+            transform: [
+                {
+                    translateY: interpolate(splashAnimation.value,
+                        [0, 50], [0, -50], Extrapolate.CLAMP)
+                }
+            ]
+        }
+    });
+
+    const logoStyle = useAnimatedStyle(() => {
+        return {
+            opacity: interpolate(splashAnimation.value, 
+                [0, 25, 50],
+                [0, 0.3, 1],
+            ),
+            transform: [
+                {
+                    translateY: interpolate(splashAnimation.value,
+                        [0, 50], [-50, 0], Extrapolate.CLAMP)
+                }
+            ]
+        }
+    });
+
+    function navigateLoginParams() {
+        props.navigation.navigate('Login', {
+            credentials: true
+        })
+    }
+
+    function navigateLogin() {
+        props.navigation.navigate('Login', {
+            credentials: false
+        })
+    }
+
+    function navigateAfterLogin() {
+        props.navigation.navigate('AfterLogin')
+    }
+
+
     return (
         <View style={styles.container}>
-            <ActivityIndicator size='large' color='red'/>
+            {/* <StatusBar  barStyle="light-content"
+         translucent
+         backgroundColor="transparent"/> */}
+            <Animated.View style={[brandStyle, {position: "absolute"}]}>
+                <LogoBranco width={200} height={200} />
+            </Animated.View>
+            <Animated.View style={[logoStyle, { position: "absolute"}]}>
+            <LogoInteiroBranco width={240} height={128}/>
+            </Animated.View>
         </View>
     )
 }
@@ -79,6 +167,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#000'
+        backgroundColor: '#1f1f1b'
     }
 })

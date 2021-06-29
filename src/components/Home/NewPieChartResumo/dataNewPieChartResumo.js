@@ -33,7 +33,7 @@ export const newDataPieChartHome = (response, StyledTheme) => {
             }
           }
         })
-        console.warn(arrayData)
+        //console.warn(arrayData)
 
     return ( arrayData )
 }

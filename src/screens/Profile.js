@@ -207,11 +207,11 @@ const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
         
         <View>
               <Provider store={store}>
-              <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
+              {/* <CardAlteraCarteira show={showAlteraCarteira} handleClick={handleCardCarteira}/>
               <CardDatePicker
                show={showDatePicker}
                handleClick={handleCardDatePicker}
-               />
+               /> */}
                </Provider>
               <CardAlteraSenha show={showAlteraSenha} handleClick={handleCardSenha}/>
         </View>
