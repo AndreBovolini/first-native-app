@@ -12,7 +12,7 @@ import { BlocoTitulo, Wrapper, Line, BlocoValor, TextLabelHeader, TextHeader } f
 
 
 const TableRowData = (props) => {
-    console.log(props)
+    //console.log(props)
     return (
         <Wrapper>
         <BlocoTitulo style={[{width: globalStyles.dimensions.width / (1.15/ (props.keys.length > 3 ? 0.3 : 0.5))}]}>

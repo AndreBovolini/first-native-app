@@ -44,7 +44,7 @@ export function* asyncPegarDadosCarteiras(action){
 
 export function* asyncPegarDatasCarteiras(action){
 
-  console.log('CCCCCCCCCCC' + action.dados.nomeCarteira)
+  //console.log('CCCCCCCCCCC' + action.dados.nomeCarteira)
     try {
       let response = yield call(fetchComAppDatasCarteiras, action.dados);
       if (response.msg === 'Expired token') {
@@ -55,19 +55,19 @@ export function* asyncPegarDatasCarteiras(action){
       let dataRecente = '';
       dataAntiga = response["data_mais_antiga"]
           if (dataAntiga) {
-              console.log('xxxxxxxxxxxxxxx' + dataAntiga)
+              //console.log('xxxxxxxxxxxxxxx' + dataAntiga)
               const diaA = dataAntiga.substr(0,2);
               const mesA = dataAntiga.substr(3,2)
               const anoA = dataAntiga.substr(6,4)
-              console.log(diaA,mesA,anoA)
+              //console.log(diaA,mesA,anoA)
               let timestamp = new Date(`${anoA}-${mesA}-${diaA}`).getTime()
-              console.log('aaaaaa'+timestamp)
+              //console.log('aaaaaa'+timestamp)
               
               dataRecente = response["data_mais_recente"]
               const diaR = dataRecente.substr(0,2);
               const mesR = dataRecente.substr(3,2)
               const anoR = dataRecente.substr(6,4)
-              console.log('bbbb'+diaR,mesR,anoR)
+              //console.log('bbbb'+diaR,mesR,anoR)
               let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
               yield put(alteraDataLimite(timestamp, timestampR))
               yield put(pegarDadosPosicaoConsolidada(action.dados.nomeCarteira))
@@ -75,7 +75,7 @@ export function* asyncPegarDatasCarteiras(action){
           }
       
     } catch (err) {
-        console.log(err)
+        //console.log(err)
       yield put({ type: 'FAILURE_GET_DATAS_CARTEIRAS' });
     }  
 }
@@ -83,10 +83,10 @@ export function* asyncPegarDatasCarteiras(action){
 export function* asyncPegarInfosCarteiras(action){
     try {
       let response = yield call(fetchComAppInfosCarteiras, action.token);
-      console.log(response)
+      //console.log(response)
       yield put({ type: 'SUCCESS_GET_INFOS_CARTEIRAS',  data: response});
     } catch (err) {
-        console.log(err)
+        //console.log(err)
       yield put({ type: 'FAILURE_GET_INFOS_CARTEIRAS' });
     }  
 }

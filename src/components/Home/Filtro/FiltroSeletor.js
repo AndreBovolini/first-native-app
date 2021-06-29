@@ -29,7 +29,7 @@ import { getTime } from 'date-fns';
 
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras } from '../../../store/actions/actions-dados-usuario'
-import { alteraCarteira, logout } from '../../../store/actions/actions'
+import { alteraCarteira, logout, newData } from '../../../store/actions/actions'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import fetchComAppDatasCarteiras from '../../../dados/conta/datasCarteiras';
@@ -41,6 +41,7 @@ import Animated , {
   withTiming
 } from 'react-native-reanimated';
 import { pegarDadosPosicaoConsolidada } from '../../../store/actions/action-posicao-consolidada';
+import { LoadAnimation } from '../../loading';
 
 
 const FiltroSeletor = props => {
@@ -140,9 +141,9 @@ const FiltroSeletor = props => {
                   const diaR = datas.final.substr(0,2);
                   const mesR = datas.final.substr(3,2)
                   const anoR = datas.final.substr(6,4)
-                  console.log('bbbb'+diaR,mesR,anoR)
+                  //console.log('bbbb'+diaR,mesR,anoR)
                   let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
-                  console.log('times', new Date(timestamp).toLocaleDateString('pt-br', {timeZone: 'UTC'}))
+                  //console.log('times', new Date(timestamp).toLocaleDateString('pt-br', {timeZone: 'UTC'}))
                   setFirstWalletDate(timestamp);
                   setFirstSelectedDate(timestamp);
                   setLastWalletDate(timestampR);
@@ -254,6 +255,7 @@ const FiltroSeletor = props => {
             handleShowError('Esta já é a análise atual')
           } else {
             props.pegarDadosPosicaoConsolidada(selectedWallet)
+            props.newData(firstSelectedDate, lastSelectedDate)
             props.pegarDadosHomePage()
           }
         } else {
@@ -357,7 +359,7 @@ const FiltroSeletor = props => {
                         <>
                         { isLoadingDatas ? (
                           <LoadingView>
-                           <ActivityIndicator size='large' color={StyledTheme.colors.invertedBackground}/>
+                           <LoadAnimation />
                          </LoadingView>
                        ) : (
                          <>
@@ -445,7 +447,8 @@ const mapDispatchToProps = ( dispatch )=> ({
   pegarCarteirasUsuario: (token) => dispatch(pegarDadosCarteiras(token)),
   pegarDadosHomePage: () => dispatch(pegarDadosHomePage()),
   pegarDadosPosicaoConsolidada: (carteira) => dispatch(pegarDadosPosicaoConsolidada(carteira)),
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
+  newData: (dataInicial, dataFinal) => dispatch(newData(dataInicial, dataFinal)),
 }) 
 
 export default connect(mapStateToProps, mapDispatchToProps)(FiltroSeletor);

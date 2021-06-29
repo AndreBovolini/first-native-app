@@ -80,6 +80,13 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
   const [acceptedProgrammed, setAcceptedProgrammed] = useState(false)
   const [dadosLineChartRes, setDadosLineChartRes] = useState({})
   const [opacity, setOpacity] = useState(0)
+  const [periodo, setPeriodo] = useState('')
+
+  useEffect(() => {
+      let datas =`${(new Date(stateCarteira.dataInicial)).toLocaleDateString('pt-br', {timeZone: 'UTC'})} - ${(new Date(stateCarteira.dataFinal)).toLocaleDateString('pt-br', {timeZone: 'UTC'})}`
+      setPeriodo(datas);
+      //console.warn('alterou')
+    }, [stateCarteira.dataInicial, stateCarteira.dataFinal])
 
 
 
@@ -392,7 +399,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
       setDadosLineChart(dadosLineChart)
       const infos = dataPieChartHome(dadosHomePage.data, StyledTheme.colors.invertedBackground)
       const optionEcharts = newDataPieChartHome(dadosHomePage.data, StyledTheme)
-      console.log(optionEcharts)
+      //(optionEcharts)
       setDadosPie(infos)
       setDadosNewPie(optionEcharts)
       const dadosLineChartRes = dataLineChartRes(dadosHomePage.data)
@@ -404,7 +411,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
     }
   }, [dadosHomePage.loading, dadosHomePage.data, StyledTheme])
 
-  console.log('AAAA ', dadosLineChartRes)
+  //console.log('AAAA ', dadosLineChartRes)
 
   // useEffect(() => {
   //   const backAction = () => {
@@ -597,6 +604,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
             </View>
             <TitleContainer>
               <LeftCard>
+                <Text style={{color: StyledTheme.colors.fontColor}}>{periodo}</Text>
                 <Title>Portfólio</Title>
               </LeftCard>
               <View>

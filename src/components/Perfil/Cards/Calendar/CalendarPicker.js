@@ -34,7 +34,7 @@ const RenderCalendar = props => {
         setYear(date.slice(6))
         
         let dateFormatted = date.slice(6) + '-' + date.slice(3,5)  + '-' + date.slice(0,2)
-        console.log(typeof(props.current.toLocaleDateString('pt-br', {timeZone: 'UTC'})))
+        //(typeof(props.current.toLocaleDateString('pt-br', {timeZone: 'UTC'})))
         setMarkedDates({
             [dateFormatted]: {
                 selected: true, marked: true, selectedColor: '#00adf5',
@@ -44,7 +44,7 @@ const RenderCalendar = props => {
 
       
       const handleDayPress = (day) => {
-        console.log(day)
+        //console.log(day)
         
         setMarkedDates({
             [day.dateString]: {
@@ -53,9 +53,9 @@ const RenderCalendar = props => {
         })
         setDays(day.dateString)
         props.onChange(day.timestamp)
-        console.log('days',days)
+        //console.log('days',days)
       }
-    console.log( 'hey', props.minDate ? props.minDate : props.maxDate)
+    //console.log( 'hey', props.minDate ? props.minDate : props.maxDate)
 
    
     

@@ -86,7 +86,7 @@ export const dataLineChartLandscape = ( response, periodoSelecionado) => {
       keysAtivos.splice(keysAtivos.indexOf(el), 1);
       keysAtivos.unshift(el)
    })
-   console.log(keysAtivos)
+  //  console.log(keysAtivos)
    
 
    let maior = 0

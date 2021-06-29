@@ -74,8 +74,8 @@ const AfterLogin = (props) => {
     useEffect(async() => {
         if(props.stateCarteira.carteira !== ''){
             let token = await AsyncStorage.getItem('token')
-            console.log('o token ' + token)
-            console.log('o nome ' + props.stateCarteira.carteira)
+            //console.log('o token ' + token)
+            //console.log('o nome ' + props.stateCarteira.carteira)
             await props.pegarDatasCarteiras(token, props.stateCarteira.carteira)
         }
     },[props.stateCarteira.carteira])

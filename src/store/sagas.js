@@ -7,7 +7,7 @@ import * as posicaoConsolidada from './actions/action-posicao-consolidada';
 
 
 export default function* root() {
-    yield takeLatest('ASYNC_SET_DATA', datas.asyncSetDatas);
+    yield takeEvery('ASYNC_SET_DATA', datas.asyncSetDatas);
     yield takeLatest('ASYNC_SET_CARTEIRA', datas.asyncAlteraCarteira);
     yield takeLatest('ASYNC_SET_DATA_LIMITE', datas.asyncAlteraDataLimite);
     yield takeLatest('GET_DADOS_HOME_PAGE_APP', homePage.asyncPegarDadosHomePage);
