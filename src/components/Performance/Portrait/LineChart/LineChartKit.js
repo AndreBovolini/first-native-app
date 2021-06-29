@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState} from "react";
-import { StyleSheet, SafeAreaView, Button } from "react-native";
+import { StyleSheet, SafeAreaView, Button,  ActivityIndicator } from "react-native";
 import { ECharts } from "react-native-echarts-wrapper";
 import globalStyles from "../../../../styles/globalStyles";
 import { ThemeContext } from 'styled-components/native';
-
+import { LoadingView } from '../../../../screens/Performance/styles'
 const LineChartKit = props => {
+    const [isLoadingDatas, setIsLoadingDatas] = useState(false);
+    
     const StyledTheme = useContext(ThemeContext)
     console.log('dataa ', props.data)
     console.log('labels ', props.labels)
@@ -126,13 +128,18 @@ const LineChartKit = props => {
     useEffect(() => {
         chart.setBackgroundColor(StyledTheme.colors.background)
         chart.setOption(option)
+        setTimeout(() => {
+            setIsLoadingDatas(true)
+            
+        }, 2000)
     },[StyledTheme, option])
     return (
         <SafeAreaView 
                 style={{ height: 370, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
               >
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
-
+            
+             
             <ECharts
                
                 ref={onRef}
@@ -141,6 +148,7 @@ const LineChartKit = props => {
                 onData={onData}
                 backgroundColor={StyledTheme.colors.background}
             />
+            
         </SafeAreaView>
     );
 }

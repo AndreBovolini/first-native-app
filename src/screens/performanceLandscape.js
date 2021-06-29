@@ -31,10 +31,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: globalStyles.colors.backGround,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        
     },
     landscapeChartContainer: {
         width: globalStyles.dimensions.height,
         height: globalStyles.dimensions.width,
+        
     }
 })

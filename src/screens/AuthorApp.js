@@ -15,6 +15,7 @@ import LogoBranco from '../assets/logoBranco.svg';
 import LogoInteiroBranco from '../assets/logoInteiroBranco';
 
 
+
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing, interpolate, Extrapolate, runOnJS } from 'react-native-reanimated'
 
 const AuthOrApp = (props) => {
