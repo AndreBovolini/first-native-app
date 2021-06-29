@@ -11,6 +11,7 @@ import { pegarDadosCarteiras, pegarDatasCarteiras, pegarInfosCarteiras } from '.
 import { pegarDadosHomePage } from '../store/actions/action-dados-home';
 import { alteraCarteira, alteraDataLimite, newData } from '../store/actions/actions'
 import { pegarDadosPosicaoConsolidada } from '../store/actions/action-posicao-consolidada';
+import { LoadAnimation } from '../components/loading';
 
 
 const AfterLogin = (props) => {
@@ -128,7 +129,7 @@ const AfterLogin = (props) => {
     return (
         <View style={styles.container}>
             <ModalEscolheCarteira  visible={showModal}/>
-            <ActivityIndicator size='large' color='#FFF'/>
+            <LoadAnimation/>
         </View>
     )
 }
