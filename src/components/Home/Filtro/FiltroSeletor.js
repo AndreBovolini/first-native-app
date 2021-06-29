@@ -346,6 +346,7 @@ const FiltroSeletor = props => {
                       </Animated.View>
 
                     </TouchableOpacity>
+                  
                     <ToggleLabelText>Selecionar período</ToggleLabelText>
                     </SelectPeriodView>
 

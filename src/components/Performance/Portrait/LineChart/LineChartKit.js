@@ -79,7 +79,9 @@ const LineChartKit = props => {
                 })
                 return output
             }
+            // formatter: '{a0}: {c0} <br/> {a1}: {c1}'
         },
+
         legend: {
             data: props.ativos,
             textStyle:{
