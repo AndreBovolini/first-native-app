@@ -50,7 +50,7 @@ const StyledTheme = useContext(ThemeContext)
   useEffect(() => {
     setIsLoading(true)
     if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== [] && !props.isLoadingDadosPosicaoConsolidada && props.responseDadosPosicaoConsolidada !== undefined) {
-      console.warn(props.responseDadosPosicaoConsolidada)
+      //console.warn(props.responseDadosPosicaoConsolidada)
       const keysAtivos = Object.keys(showAtivos ? props.responseDadosPosicaoConsolidada : resposta2.grafico1)
     const AtivosCarteira = keysAtivos.map((el,i) => {
       return {
@@ -91,7 +91,7 @@ const StyledTheme = useContext(ThemeContext)
     // const infos = dataPieChart(showAtivos ? (resposta2.grafico0, StyledTheme.colors.invertedBackground)
     //   : (resposta2.grafico1, StyledTheme.colors.invertedBackground))
     if (newDadosChart != dadosChartNew ) {
-      console.warn(dadosChartNew)
+      //console.warn(dadosChartNew)
    setNewDadosChart(dadosChartNew)
    setIsLoading(false)
     }
@@ -139,7 +139,7 @@ const StyledTheme = useContext(ThemeContext)
   function handleSelectPie(event) {
     console.warn(event)
       try{
-        let selectName = event.data.label
+        let selectName = event.data.name
         let filtrado = arrayAtivos.filter(ativo => ativo.ativo === selectName)
         filtrado[0].show = true;
         let newArray = [...arrayAtivos];

@@ -710,10 +710,12 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
                   height: 20,
                   borderRadius: 10,
                   margin: 2.5,
+                  justifyContent: 'center',
+                  alignItems: 'center'
                 }, animatedStyles]}>
                 {!percent ? 
-                <Text style={{color:'#FFF', fontSize:14, marginLeft:1}}>R$</Text>:
-                <Text style={{color:'#000', fontSize:18, fontWeight:'bold', marginTop: -2, marginLeft: -1.5}}> %</Text>
+                <Text style={{color:'#FFF', fontSize:12, marginLeft:1}}>R$</Text>:
+                <Text style={{color:'#000', fontSize:14, fontWeight:'bold', marginTop: -2, marginLeft: -1.5}}> %</Text>
                }
 
                 </Animated.View>
@@ -797,7 +799,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
             </ChartContainer>
             */}
 
-            <ChartContainer key={dadosNewPie + Math.random()}>
+            <ChartContainer>
               {dadosNewPie !== {} ?
                 <NewPieChartResumo data={dadosNewPie} />
                 : null}

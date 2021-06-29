@@ -17,7 +17,7 @@ export const pegarDadosPosicaoConsolidada = (nomeCarteira) => ({
 export function* asyncPegarDadosPosicaoConsolidada(action){
     try {
       let response = yield call(getDadosPosicaoConsolidada, action.dados);
-      console.warn(response['saldo_por_classe'])
+      //console.warn(response['saldo_por_classe'])
       yield put({ type: 'SUCCESS_GET_DADOS_POSICAO_CONSOLIDADA',  data: response['saldo_por_classe']});
     } catch (err) {
       console.log(err)

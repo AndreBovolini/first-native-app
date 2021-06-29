@@ -123,7 +123,7 @@ const FiltroSeletor = props => {
     useEffect(() => {
       async function getWalletDates(carteira) {
               const expiration = await AsyncStorage.getItem('expiration')
-              console.warn(carteira)
+              //console.warn(carteira)
               await fetchComAppDatasCarteiras({nomeCarteira: carteira}).then(response => {
 
                 if (response.msg === 'Expired token') {
