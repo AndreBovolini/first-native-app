@@ -7,7 +7,8 @@ import {
   Text,
   processColor,
   View,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native';
 
 import globalStyles from '../styles/globalStyles';
@@ -33,7 +34,7 @@ import { connect } from 'react-redux'
 import TableRow from '../components/Performance/Portrait/Table/TableRow';
 import Table from '../components/Performance/Portrait/Table/Table';
 
-import { ContainerHeader, Title, ContainerTableLandscape, ContainerTable, ChartContainer, ContainerSelector, TextoHeader, ContainerSelectorTable } from './Performance/styles'
+import { ContainerHeader, Title, ContainerTableLandscape, ContainerTable, ChartContainer, ContainerSelector, TextoHeader, ContainerSelectorTable,  LoadingView } from './Performance/styles'
 import { ThemeContext } from 'styled-components';
 
 import LineChartKit from '../components/Performance/Portrait/LineChart/LineChartKit'
@@ -61,6 +62,8 @@ const Performance = (props) => {
   const [dadosLineChartLand, setDadosLineChartLand] = useState({})
   const [orientacao, setOrientacao] = useState('portrait')
   const [autoRotate, setAutoRotate] = useState()
+  const [isLoadingDatas, setIsLoadingDatas] = useState(false);
+  const [opacity, setOpacity] = useState(0)
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
@@ -73,21 +76,48 @@ const Performance = (props) => {
     console.log('uipa ', orientacao)
   });
 
+  useEffect(()=>{
+    setOpacity(0)
+    setIsLoadingDatas(false)
+    
+    setTimeout(()=> {
+      setOpacity(1)
+    }, 4000)
+    setTimeout(()=>{
+      setIsLoadingDatas(true)
+    }, 1000)
+  },[orientacao, orientation])
+
   useEffect(() => {
     Orientation.getAutoRotateState((state) => setAutoRotate(state))
     if(autoRotate === false){
       Orientation.lockToPortrait()
+    }else if(orientacao.toLowerCase().includes('upsidedown')){
+      Orientation.lockToPortrait()
     }else{
       Orientation.unlockAllOrientations()
     }
-  }, [orientation, periodoSelecionado])
+  }, [orientation, periodoSelecionado, autoRotate, orientacao])
 
   useEffect(() => {
     if (orientacao.toLowerCase().includes('portrait')) {
       setOrientation('portrait')
+      setIsLoadingDatas(false)
+      setOpacity(0)
       setScrollPosition(0)
-    } else {
+      
+    }else if(orientacao.toLowerCase().includes('landscape')) {
       setOrientation('landscape')
+      setIsLoadingDatas(false)
+      setOpacity(0)
+      setTimeout(()=> {
+        setIsLoadingDatas(true)
+        
+      }, 1800)
+    }else if(orientacao.toLowerCase().includes('upsidedown')){
+      
+      setOrientation('portrait')
+      
     }
   }, [orientacao])
   
@@ -288,8 +318,8 @@ const Performance = (props) => {
     }
   }, [periodoSelecionado, props.isLoadingDadosHomePage, props.responseDadosHomePage])
 
-  console.log('linechart ', dadosLineChart)
-  console.log('datasets ', dadosLineChart.dataSets)
+  // console.log('linechart ', dadosLineChart)
+  // console.log('datasets ', dadosLineChart.dataSets)
   
 
   if (orientation === 'landscape' && autoRotate) {
@@ -316,8 +346,18 @@ const Performance = (props) => {
         </PerformanceTableLandscape>
       )
     }
+   
     return (
-      <PerformanceLandscape>
+      <View>
+      {!isLoadingDatas ? (
+        <LoadingView>
+          <ActivityIndicator size='large' color={StyledTheme.colors.invertedBackground}/>
+        </LoadingView> 
+      )
+      :
+      (
+        <PerformanceLandscape>
+
         {/* <LineChartLandscape
           data={dadosLineChartLandscape.data}
           labels={dadosLineChartLandscape.labels}
@@ -325,7 +365,7 @@ const Performance = (props) => {
           number={dadosLineChartLandscape.number}
           symbol={dadosLineChartLandscape.symbol}
         /> */}
-        {!props.isLoadingDadosHomePage && Object.keys(dadosLineChartLand).length !== 0 ?
+        {!props.isLoadingDadosHomePage && Object.keys(dadosLineChartLand).length !== 0?
             
             <LineChartLand
               data={dadosLineChartLand.dataSets}
@@ -334,9 +374,17 @@ const Performance = (props) => {
               periodo={periodoSelecionado}
               
             />
-            : null}
+            : 
+            null
+        }
+    
+      
       </PerformanceLandscape>
+      )
+      }
+      </View>
     )
+      
   }
 
   return (
@@ -371,16 +419,26 @@ const Performance = (props) => {
             null}
         </ChartContainer> */}
         <View>
-          {!props.isLoadingDadosHomePage && Object.keys(dadosLineChart).length !== 0?
-            <LineChartKit
-              data={dadosLineChart.dataSets}
-              labels={dadosLineChart.labels}
-              ativos={dadosLineChart.keysAtivos}
-              periodo={periodoSelecionado}
-              labelTool={dadosLineChart.labelTool}
-            />
-            : 
-            null}
+        {!isLoadingDatas ? (
+          <LoadingView>
+            <ActivityIndicator size='small' color={StyledTheme.colors.invertedBackground}/>
+          </LoadingView> 
+        )
+        :
+          <View style={{opacity: opacity}}>
+          
+            {!props.isLoadingDadosHomePage && Object.keys(dadosLineChart).length !== 0?
+              <LineChartKit
+                data={dadosLineChart.dataSets}
+                labels={dadosLineChart.labels}
+                ativos={dadosLineChart.keysAtivos}
+                periodo={periodoSelecionado}
+                labelTool={dadosLineChart.labelTool}
+              />
+              : 
+              null}
+          </View>
+            }
         </View>
         <ContainerSelectorTable>
           {anos.map((el, i) => {

@@ -79,6 +79,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
   const [accepted, setAccepted] = useState(false)
   const [acceptedProgrammed, setAcceptedProgrammed] = useState(false)
   const [dadosLineChartRes, setDadosLineChartRes] = useState({})
+  const [opacity, setOpacity] = useState(0)
 
 
 
@@ -397,6 +398,9 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
       const dadosLineChartRes = dataLineChartRes(dadosHomePage.data)
       setDadosLineChartRes(dadosLineChartRes)
       setLoading(dadosHomePage.loading)
+      setTimeout(()=> {
+        setOpacity(1)
+      }, 1000)
     }
   }, [dadosHomePage.loading, dadosHomePage.data, StyledTheme])
 
@@ -755,7 +759,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
                 <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor} />
               </TouchableOpacity>
             </TitleNavigationContainer>
-            <LineChartContainer>
+            <LineChartContainer style={{opacity: opacity}}>
               {!dadosHomePage.loading && Object.keys(dadosLineChartRes).length !== 0 ?
                 <LineChartRes
                   data={dadosLineChartRes.dataSets}
@@ -797,7 +801,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
             </ChartContainer>
             */}
 
-            <ChartContainer key={dadosNewPie + Math.random()}>
+            <ChartContainer>
               {dadosNewPie !== {} ?
                 <NewPieChartResumo data={dadosNewPie} />
                 : null}
