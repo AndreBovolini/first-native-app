@@ -112,6 +112,9 @@ const LineChartRes = props => {
                 })
                 return output
             }
+            // formatter: params => {
+            //     return 'baby'
+            // }
             
         },
         legend: {
@@ -166,7 +169,7 @@ const LineChartRes = props => {
     return (
         <SafeAreaView 
                 style={{ height: 220, width: globalStyles.dimensions.width * 0.95, backgroundColor:StyledTheme.colors.background}} 
-               >
+               key={Math.random()}>
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
 
             <ECharts

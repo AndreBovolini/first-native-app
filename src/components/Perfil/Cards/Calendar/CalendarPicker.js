@@ -7,7 +7,7 @@ import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import {LocaleConfig} from 'react-native-calendars';
 import globalStyles from '../../../../styles/globalStyles'
 import { ThemeContext } from 'styled-components/native';
-
+import { formatISO9075, toDate } from 'date-fns';
 LocaleConfig.locales['pt'] = {
   monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
   monthNamesShort: ['Jan.','Fev.','Mar.','Abril','Maio','Junho','Julho.','Agosto','Set.','Out.','Nov.','Dez.'],
@@ -30,13 +30,14 @@ const RenderCalendar = props => {
     
     useEffect(()=> {
         
-        let date = props.current.toLocaleDateString('pt-br', {timeZone: 'UTC'})
+        // let date = props.current.toLocaleDateString('pt-BR', {timeZone: 'UTC'})
+        let date = formatISO9075(props.current, {representation:'date'})
         setYear(date.slice(6))
         
-        let dateFormatted = date.slice(6) + '-' + date.slice(3,5)  + '-' + date.slice(0,2)
-        console.log(typeof(props.current.toLocaleDateString('pt-br', {timeZone: 'UTC'})))
+        // let dateFormatted = date.slice(6) + '-' + date.slice(3,5)  + '-' + date.slice(0,2)
+        //console.log(typeof(props.current.toLocaleDateString('pt-BR', {timeZone: 'UTC'})))
         setMarkedDates({
-            [dateFormatted]: {
+            [date]: {
                 selected: true, marked: true, selectedColor: '#00adf5',
             },
         })
@@ -44,7 +45,8 @@ const RenderCalendar = props => {
 
       
       const handleDayPress = (day) => {
-        console.log(day)
+          console.log('min',props.minDate)
+        //console.log(day)
         
         setMarkedDates({
             [day.dateString]: {
@@ -53,9 +55,9 @@ const RenderCalendar = props => {
         })
         setDays(day.dateString)
         props.onChange(day.timestamp)
-        console.log('days',days)
+        //console.log('days',days)
       }
-    console.log( 'hey', props.minDate ? props.minDate : props.maxDate)
+    //console.log( 'hey', props.minDate ? props.minDate : props.maxDate)
 
    
     

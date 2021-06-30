@@ -22,7 +22,7 @@ SelectPeriodView, ToggleLabelText, FirstLastDateView,
 DateButtonText, DateButtonView, DatesView, LoadingView
 } from './styles';
 
-import { toDate } from 'date-fns';
+import { formatISO9075, toDate } from 'date-fns';
 import { sub } from 'date-fns';
 import { subDays } from 'date-fns';
 import { getTime } from 'date-fns';
@@ -140,9 +140,9 @@ const FiltroSeletor = props => {
                   const diaR = datas.final.substr(0,2);
                   const mesR = datas.final.substr(3,2)
                   const anoR = datas.final.substr(6,4)
-                  console.log('bbbb'+diaR,mesR,anoR)
+                  //console.log('bbbb'+diaR,mesR,anoR)
                   let timestampR = new Date(`${anoR}-${mesR}-${diaR}`).getTime()
-                  console.log('times', new Date(timestamp).toLocaleDateString('pt-br', {timeZone: 'UTC'}))
+                  //console.log('times', new Date(timestamp).toLocaleDateString('pt-br', {timeZone: 'UTC'}))
                   setFirstWalletDate(timestamp);
                   setFirstSelectedDate(timestamp);
                   setLastWalletDate(timestampR);
@@ -362,54 +362,74 @@ const FiltroSeletor = props => {
                          </LoadingView>
                        ) : (
                          <>
-                        <DatesView style={{width: props.width}}>
-                          <Text style={{color: StyledTheme.colors.fontColor, fontSize: 15, alignSelf: 'center', marginBottom: 10 }}>Selecione o período de análise</Text>
-                          <FirstLastDateView  style={{width: props.width, marginTop: -5}}>
-                            <TouchableOpacity activeOpacity={0.7} onPress={handleShowFirstDate} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
-                                <DateButtonView>
-                                    <DateButtonText>De: { 
-                                      firstWalletDate === firstSelectedDate ? 
-                                      (subDays(new Date(firstSelectedDate),1)).toLocaleDateString('pt-br', {timeZone: 'UTC'} )
-                                      :
-                                      (new Date(firstSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'} )
-                                    }
-                                    </DateButtonText>
-                                    <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
-                                </DateButtonView>
-                            </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.7} onPress={handleShowLastDate} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
-                                <DateButtonView>
-                                    <DateButtonText>Até: { 
-                                      lastWalletDate === lastSelectedDate ?
-                                      (subDays(new Date(lastSelectedDate),1)).toLocaleDateString('pt-br', {timeZone: 'UTC'} )
-                                      :
-                                      (new Date(lastSelectedDate)).toLocaleDateString('pt-br', {timeZone: 'UTC'} )}
-                                    </DateButtonText>
-                                    <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
-                                </DateButtonView>
-                            </TouchableOpacity>
-                            
-                          </FirstLastDateView>
-                          
-                          {showSelectorInicial ? (
-                            <CalendarPicker
-                              minDate={new Date(firstWalletDate)}
-                              current={firstSelectedDate === firstWalletDate ? subDays(new Date(firstSelectedDate),1) : new Date(firstSelectedDate)}
-                              onChange={(data) => handleSelectFirstDate(data)}
-                              id={'inicial'}
-                            />
-                          )
-                        : null}
-                        {showSelectorFinal ? (
-                          <CalendarPicker
-                            maxDate={new Date(lastWalletDate)}
-                            current={lastSelectedDate === lastWalletDate ? subDays(new Date(lastSelectedDate),1) : new Date(lastSelectedDate)}
-                            onChange={(data) => handleSelectLastDate(data)}
-                            id={'final'}
-                          />
-                        )
-                      : null}
-                        </DatesView>
+                         <DatesView style={{width: props.width}}>
+                         <Text style={{color: StyledTheme.colors.fontColor, fontSize: 15, alignSelf: 'center', marginBottom: 10 }}>Selecione o período de análise</Text>
+                         <FirstLastDateView  style={{width: props.width, marginTop: -5}}>
+                           <TouchableOpacity activeOpacity={0.7} onPress={handleShowFirstDate} style={{marginLeft: globalStyles.dimensions.width * 0.18}}>
+                               <DateButtonView>
+                                   <DateButtonText>De: { 
+                                    //  firstWalletDate === firstSelectedDate ? 
+                                    //  formatISO9075(subDays(new Date(firstSelectedDate),1), {representation:'date'}).slice(8)
+                                    //  +'/'+
+                                    //  formatISO9075(subDays(new Date(firstSelectedDate),1), {representation:'date'}).slice(5,7)
+                                    //  +'/'+
+                                    //  formatISO9075(subDays(new Date(firstSelectedDate),1), {representation:'date'}).slice(0,4)
+                                    //  :
+                                     formatISO9075(new Date(firstSelectedDate), {representation:'date'}).slice(8)
+                                     +'/'+
+                                     formatISO9075(new Date(firstSelectedDate), {representation:'date'}).slice(5,7)
+                                     +'/'+
+                                     formatISO9075(new Date(firstSelectedDate), {representation:'date'}).slice(0,4)
+
+                                   }
+                                   </DateButtonText>
+                                   <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
+                               </DateButtonView>
+                           </TouchableOpacity>
+                           <TouchableOpacity activeOpacity={0.7} onPress={handleShowLastDate} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
+                               <DateButtonView>
+                                   <DateButtonText>Até: { 
+                                    //  lastWalletDate === lastSelectedDate ?
+                                    //  formatISO9075(subDays(new Date(lastSelectedDate),1), {representation: 'date'}).slice(8)
+                                    //  +'/'+
+                                    //  formatISO9075(subDays(new Date(lastSelectedDate),1), {representation: 'date'}).slice(5,7)
+                                    //  +'/'+
+                                    //  formatISO9075(subDays(new Date(lastSelectedDate),1), {representation: 'date'}).slice(0,4)
+                                    //  :
+                                     (
+                                     formatISO9075(new Date(lastSelectedDate),{representation: 'date'}).slice(8)
+                                     +'/'+
+                                     formatISO9075(new Date(lastSelectedDate),{representation: 'date'}).slice(5,7)
+                                     +'/'+
+                                     formatISO9075(new Date(lastSelectedDate),{representation: 'date'}).slice(0,4)
+                                     )
+                                   }
+                                   </DateButtonText>
+                                   <Ionicons name={'calendar'} size={18} color={globalStyles.colors.fontColor} />
+                               </DateButtonView>
+                           </TouchableOpacity>
+                           
+                         </FirstLastDateView>
+                         
+                         {showSelectorInicial ? (
+                           <CalendarPicker
+                             minDate={new Date(firstWalletDate)}
+                             current={firstSelectedDate === firstWalletDate ? new Date(firstSelectedDate) : new Date(firstSelectedDate)}
+                             onChange={(data) => handleSelectFirstDate(data)}
+                             id={'inicial'}
+                           />
+                         )
+                       : null}
+                       {showSelectorFinal ? (
+                         <CalendarPicker
+                           maxDate={new Date(lastWalletDate)}
+                           current={lastSelectedDate === lastWalletDate ?new Date(lastSelectedDate) : new Date(lastSelectedDate)}
+                           onChange={(data) => handleSelectLastDate(data)}
+                           id={'final'}
+                         />
+                       )
+                     : null}
+                       </DatesView>
                         </>
                        )}
                        </>
