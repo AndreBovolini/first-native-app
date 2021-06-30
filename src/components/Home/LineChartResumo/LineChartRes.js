@@ -17,6 +17,8 @@ const LineChartRes = props => {
     };
     
     const colors = 'rgb(26, 182, 151)'
+    let symbol = `<span style="height: 10px; width: 10px; background-color: ${colors}; border-radius: 50%; display: inline-block;"></span> `
+    
     option = {
         color: colors,
         grid: {
@@ -99,22 +101,22 @@ const LineChartRes = props => {
         // ]
         ,
         tooltip: {
-            show: true,
+            // show: false,
             trigger: 'axis',
             axisPointer: {
                 type: 'line',
             },
             backgroundColor: 'rgba(50,50,50,0.9)',
-            formatter: function(params) {
-                output =  params[0].name + '<br />'
-                params.forEach((el,i)=> {
-                    output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
-                })
-                return output
-            }
-            // formatter: params => {
-            //     return 'baby'
+            // formatter: function(params) {
+            //     output =  params[0].name + '<br />'
+            //     params.forEach((el,i)=> {
+            //         output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
+            //     })
+            //     return output
             // }
+        
+           formatter: '{b0} <br />' + symbol + '{a0}: {c0} %'
+                
             
         },
         legend: {
@@ -144,7 +146,13 @@ const LineChartRes = props => {
         });
     `;
 
-    
+    // chart.setOption({
+    //     tooltip: {
+    //       formatter: params => {
+    //         return 'baby'
+    //       }
+    //     }
+    //   });
 
     onData = param => {
         const obj = JSON.parse(param);
@@ -161,7 +169,7 @@ const LineChartRes = props => {
         chart.clear();
     };
 
-    // chart.setOption(option)   
+
     useEffect(() => {
         chart.setBackgroundColor(StyledTheme.colors.background)
         chart.setOption(option)

@@ -14,7 +14,7 @@ const LineChartKit = props => {
 
     onRef = ref => {
         if (ref) {
-             chart = ref;
+             chartPerformancePortrait = ref;
         }
     };
 
@@ -99,7 +99,7 @@ const LineChartKit = props => {
     };
 
     additionalCode = `
-        chart.on('click', function(param) {
+    chartPerformancePortrait.on('click', function(param) {
             var obj = {
             type: 'event_clicked',
             data: param.data
@@ -126,15 +126,30 @@ const LineChartKit = props => {
         chart.clear();
     };
 
-    // chart.setOption(option)   
+     
     useEffect(() => {
-        chart.setBackgroundColor(StyledTheme.colors.background)
-        chart.setOption(option)
+        chartPerformancePortrait.setBackgroundColor(StyledTheme.colors.background)
+        chartPerformancePortrait.setOption({
+            ...option,
+            tooltip: {
+                trigger: "axis",
+                backgroundColor: 'rgba(50,50,50,0.9)',
+                formatter: function(params) {
+                    output =  params[0].name + '<br />'
+                    params.forEach((el,i)=> {
+                        output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
+                    })
+                    return output
+                }
+                // formatter: '{a0}: {c0} <br/> {a1}: {c1}'
+            }
+        })
         setTimeout(() => {
             setIsLoadingDatas(true)
             
         }, 2000)
-    },[StyledTheme, option])
+        
+    },[StyledTheme, option, props.periodo])
     return (
         <SafeAreaView 
                 style={{ height: 370, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
