@@ -42,6 +42,7 @@ import Orientation, {
   useDeviceOrientationChange, useOrientationChange
 } from 'react-native-orientation-locker';
 import LineChartLand from '../components/Performance/Landscape/LineChart/LineChartLand';
+import { LoadAnimation } from '../components/loading';
 const Performance = (props) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
@@ -68,12 +69,12 @@ const Performance = (props) => {
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
 
-  console.log('wid ', windowWidth, 'hei ', windowHeight)
+  //console.log('wid ', windowWidth, 'hei ', windowHeight)
 
-  console.log(orientacao, 'ici')
+  //console.log(orientacao, 'ici')
   useDeviceOrientationChange((o) => {
     setOrientacao(o)
-    console.log('uipa ', orientacao)
+    //console.log('uipa ', orientacao)
   });
 
   useEffect(()=>{
@@ -122,7 +123,7 @@ const Performance = (props) => {
   }, [orientacao])
   
   const StyledTheme = useContext(ThemeContext)
-  console.log('orientation ', orientation)
+  //console.log('orientation ', orientation)
 
   // useEffect(() => {
   //   console.log('AAAAAAAAAAAAAAAAA')
@@ -351,7 +352,7 @@ const Performance = (props) => {
       <View>
       {!isLoadingDatas ? (
         <LoadingView>
-          <ActivityIndicator size='large' color={StyledTheme.colors.invertedBackground}/>
+          <LoadAnimation/>
         </LoadingView> 
       )
       :
@@ -421,7 +422,7 @@ const Performance = (props) => {
         <View>
         {!isLoadingDatas ? (
           <LoadingView>
-            <ActivityIndicator size='small' color={StyledTheme.colors.invertedBackground}/>
+            <LoadAnimation/>
           </LoadingView> 
         )
         :

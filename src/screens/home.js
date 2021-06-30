@@ -47,7 +47,7 @@ import RNExitApp from 'react-native-exit-app';
 import OneSignal from 'react-native-onesignal';
 
 import { newDataPieChartHome } from '../components/Home/NewPieChartResumo/dataNewPieChartResumo';
-import { NewPieChartResumo } from '../components/Home/NewPieChartResumo';
+import NewPieChartResumo from '../components/Home/NewPieChartResumo';
 import { alteraViewMode, logout } from '../store/actions/actions';
 
 import { RectButton, PanGestureHandler } from 'react-native-gesture-handler'
@@ -65,7 +65,7 @@ import Animated, {
 
 const ButtonAnimated = Animated.createAnimatedComponent(RectButton)
 
-export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout, alteraViewMode }) => {
+const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout, alteraViewMode }) => {
   const [percent, setPercent] = useState(false)
   const [currency, setCurrency] = useState(true)
   const [showModal, setShowModal] = useState(false);
@@ -80,6 +80,13 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
   const [acceptedProgrammed, setAcceptedProgrammed] = useState(false)
   const [dadosLineChartRes, setDadosLineChartRes] = useState({})
   const [opacity, setOpacity] = useState(0)
+  const [periodo, setPeriodo] = useState('')
+
+  useEffect(() => {
+      let datas =`${(new Date(stateCarteira.dataInicial)).toLocaleDateString('pt-br', {timeZone: 'UTC'})} - ${(new Date(stateCarteira.dataFinal)).toLocaleDateString('pt-br', {timeZone: 'UTC'})}`
+      setPeriodo(datas);
+      //console.warn('alterou')
+    }, [stateCarteira.dataInicial, stateCarteira.dataFinal])
 
 
 
@@ -392,7 +399,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
       setDadosLineChart(dadosLineChart)
       const infos = dataPieChartHome(dadosHomePage.data, StyledTheme.colors.invertedBackground)
       const optionEcharts = newDataPieChartHome(dadosHomePage.data, StyledTheme)
-      console.log(optionEcharts)
+      //(optionEcharts)
       setDadosPie(infos)
       setDadosNewPie(optionEcharts)
       const dadosLineChartRes = dataLineChartRes(dadosHomePage.data)
@@ -404,7 +411,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
     }
   }, [dadosHomePage.loading, dadosHomePage.data, StyledTheme])
 
-  console.log('AAAA ', dadosLineChartRes)
+  //console.log('AAAA ', dadosLineChartRes)
 
   // useEffect(() => {
   //   const backAction = () => {
@@ -597,6 +604,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
             </View>
             <TitleContainer>
               <LeftCard>
+                <Text style={{color: StyledTheme.colors.fontColor}}>{periodo}</Text>
                 <Title>Portfólio</Title>
               </LeftCard>
               <View>
@@ -714,12 +722,10 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
                   height: 20,
                   borderRadius: 10,
                   margin: 2.5,
-                  justifyContent: 'center',
-                  alignItems: 'center'
                 }, animatedStyles]}>
                 {!percent ? 
-                <Text style={{color:'#FFF', fontSize:12, marginLeft:1}}>R$</Text>:
-                <Text style={{color:'#000', fontSize:14, fontWeight:'bold', marginTop: -2, marginLeft: -1.5}}> %</Text>
+                <Text style={{color:'#FFF', fontSize:14, marginLeft:1}}>R$</Text>:
+                <Text style={{color:'#000', fontSize:18, fontWeight:'bold', marginTop: -2, marginLeft: -1.5}}> %</Text>
                }
 
                 </Animated.View>

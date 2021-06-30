@@ -20,7 +20,7 @@ export function* asyncPegarDadosPosicaoConsolidada(action){
       //console.warn(response['saldo_por_classe'])
       yield put({ type: 'SUCCESS_GET_DADOS_POSICAO_CONSOLIDADA',  data: response['saldo_por_classe']});
     } catch (err) {
-      console.log(err)
+      //console.log(err)
       yield put({ type: 'FAILURE_GET_DADOS_POSICAO_CONSOLIDADA' });
     }  
 }

@@ -33,6 +33,7 @@ import {
 } from '../screens/Carteira/style'
 import { newDataPieChart } from '../components/Carteira/NewGraficoPie/newDataPieChart';
 import { NewPieChart } from '../components/Carteira/NewGraficoPie';
+import { LoadAnimation } from '../components/loading';
 
 
 const Carteira = (props) => {
@@ -137,7 +138,6 @@ const StyledTheme = useContext(ThemeContext)
     }
 
   function handleSelectPie(event) {
-    console.warn(event)
       try{
         let selectName = event.data.name
         let filtrado = arrayAtivos.filter(ativo => ativo.ativo === selectName)
@@ -155,7 +155,7 @@ const StyledTheme = useContext(ThemeContext)
       return (
         <SafeAreaView style={{flex: 1, backgroundColor: StyledTheme.colors.background}}>
           { isLoading ? (
-            <ActivityIndicator color="#FFF" size="large"/>
+            <LoadAnimation/>
           ) : (
         <ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', width: globalStyles.dimensions.width, height: scrollViewHeight, backgroundColor: StyledTheme.colors.background}}>
         <Title>Carteira</Title>

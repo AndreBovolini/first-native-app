@@ -28,7 +28,7 @@ export function datasCarteiras(state= INITIAL_STATE_RESPONSE, action) {
       default:
         return state;
    }
-   console.log(action.data)
+   //console.log(action.data)
 }
 
 export function infosCarteiras(state= INITIAL_STATE_RESPONSE, action) {

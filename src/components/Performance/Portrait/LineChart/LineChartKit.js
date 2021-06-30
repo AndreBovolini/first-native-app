@@ -8,15 +8,17 @@ const LineChartKit = props => {
     const [isLoadingDatas, setIsLoadingDatas] = useState(false);
     
     const StyledTheme = useContext(ThemeContext)
-    console.log('dataa ', props.data)
-    console.log('labels ', props.labels)
-    console.log('keys ', props.ativos)
+    // console.log('dataa ', props.data)
+    // console.log('labels ', props.labels)
+    // console.log('keys ', props.ativos)
 
     onRef = ref => {
         if (ref) {
              chart = ref;
         }
     };
+
+    // console.log(props.data, props.labels, props.ativos, props.periodo)
 
     const colors = ['rgb(26, 192, 151)','rgb(75, 50, 128)']
     option = {
@@ -72,14 +74,8 @@ const LineChartKit = props => {
         tooltip: {
             trigger: "axis",
             backgroundColor: 'rgba(50,50,50,0.9)',
-            formatter: function(params) {
-                output =  params[0].name + '<br />'
-                params.forEach((el,i)=> {
-                    output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
-                })
-                return output
-            }
         },
+
         legend: {
             data: props.ativos,
             textStyle:{

@@ -14,7 +14,7 @@ export const TitleContainer = styled.View`
 `;
 
 export const LeftCard = styled.View`
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
 `;
 

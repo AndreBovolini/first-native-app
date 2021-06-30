@@ -25,7 +25,7 @@ const appReducer = combineReducers({
   
 const rootReducer = (state, action) => {
     if (action.type === 'USER_LOGOUT') {
-      console.log(action.type)
+      //console.log(action.type)
         state = undefined;
         AsyncStorage.removeItem('token')
         RootNavigation.navigate('Login', {
