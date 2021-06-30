@@ -32,7 +32,7 @@ import {
   ContainerCards
 } from '../screens/Carteira/style'
 import { newDataPieChart } from '../components/Carteira/NewGraficoPie/newDataPieChart';
-import { NewPieChart } from '../components/Carteira/NewGraficoPie';
+import NewPieChart from '../components/Carteira/NewGraficoPie';
 import { LoadAnimation } from '../components/loading';
 
 

@@ -38,7 +38,6 @@ const NewPieChartResumo = (props) => {
             },
         },
       });
-    console.warn('alterou')
   }, [props.stateCarteira.mode])
 
   
