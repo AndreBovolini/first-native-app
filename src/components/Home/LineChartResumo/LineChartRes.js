@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView, Button } from "react-native";
 import { ECharts } from "react-native-echarts-wrapper";
 import globalStyles from "../../../styles/globalStyles";
 import { ThemeContext } from 'styled-components/native';
+import { connect } from "react-redux";
 
 const LineChartRes = props => {
     const StyledTheme = useContext(ThemeContext)
@@ -12,12 +13,14 @@ const LineChartRes = props => {
 
     onRef = ref => {
         if (ref) {
-             chart = ref;
+             chartLineHome = ref;
         }
     };
     
     const colors = 'rgb(26, 182, 151)'
+    let symbol = `<span style="height: 10px; width: 10px; background-color: ${colors}; border-radius: 50%; display: inline-block;"></span> `
     option = {
+        backgroundColor: StyledTheme.colors.background,
         color: colors,
         grid: {
             left: '0%',
@@ -154,15 +157,16 @@ const LineChartRes = props => {
 
     
 
-    onButtonClearPressed = () => {
-        chart.clear();
-    };
 
     // chart.setOption(option)   
     useEffect(() => {
-        chart.setBackgroundColor(StyledTheme.colors.background)
-        chart.setOption(option)
-    },[StyledTheme, option])
+        chartLineHome.setOption({
+            ...option,
+            backgroundColor: StyledTheme.colors.background,
+        })
+    },[props.stateCarteira.mode])
+
+
     return (
         <SafeAreaView 
                 style={{ height: 220, width: globalStyles.dimensions.width * 0.95, backgroundColor:StyledTheme.colors.background}} 
@@ -175,10 +179,14 @@ const LineChartRes = props => {
                 option={option}
                 additionalCode={additionalCode}
                 onData={onData}
-                backgroundColor={StyledTheme.colors.background}
             />
         </SafeAreaView>
     );
 }
 
-export default LineChartRes;
+
+const mapStateToProps = state => ({
+    stateCarteira: state.dates,
+  });
+
+export default connect(mapStateToProps)(LineChartRes);

@@ -52,6 +52,8 @@ import { alteraViewMode, logout } from '../store/actions/actions';
 
 import { RectButton, PanGestureHandler } from 'react-native-gesture-handler'
 
+import { OrientationLocker, PORTRAIT, LANDSCAPE } from "react-native-orientation-locker";
+
 import LinearGradient from 'react-native-linear-gradient'
 
 import Animated, { 
@@ -577,7 +579,9 @@ const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout
 
   // console.log('INDICE ' + index)
   return (
+   
     <LargeContainer>
+       <OrientationLocker orientation={PORTRAIT} />
       <SafeAreaView >
       <FiltroSeletor 
         visible={showModal} 
@@ -842,7 +846,9 @@ const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout
             </Animated.View>
         </PanGestureHandler>
       </SafeAreaView>
+      
     </LargeContainer>
+   
   )
 }
 

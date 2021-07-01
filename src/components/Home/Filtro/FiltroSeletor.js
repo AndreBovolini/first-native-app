@@ -365,7 +365,7 @@ const FiltroSeletor = props => {
                          <DatesView style={{width: props.width}}>
                          <Text style={{color: StyledTheme.colors.fontColor, fontSize: 15, alignSelf: 'center', marginBottom: 10 }}>Selecione o período de análise</Text>
                          <FirstLastDateView  style={{width: props.width, marginTop: -5}}>
-                           <TouchableOpacity activeOpacity={0.7} onPress={handleShowFirstDate} style={{marginLeft: globalStyles.dimensions.width * 0.2}}>
+                           <TouchableOpacity activeOpacity={0.7} onPress={handleShowFirstDate} style={{marginLeft: globalStyles.dimensions.width * 0.18}}>
                                <DateButtonView>
                                    <DateButtonText>De: { 
                                     //  firstWalletDate === firstSelectedDate ? 

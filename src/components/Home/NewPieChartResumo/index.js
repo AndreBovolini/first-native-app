@@ -15,7 +15,7 @@ const NewPieChartResumo = (props) => {
       };
 
     additionalCode = `
-        chartPieHome.on('click', function(param) {
+        chart.on('click', function(param) {
             var obj = {
             type: 'event_clicked',
             data: param.data
