@@ -12,7 +12,7 @@ import globalStyles from '../../../styles/globalStyles'
 import { Wrapper, BlocoTitulo, BlocoValor, Line, TextHeader, TextLabelHeader } from './styles'
 
 const TableHeader = (props) => {
-    console.log(props)
+    //console.log(props)
     return (
         <Wrapper>
         <BlocoTitulo style={[{width: globalStyles.dimensions.width / (1.15/ (props.keys.length > 3 ? 0.3 : 0.5))}]}>

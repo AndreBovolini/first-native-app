@@ -11,6 +11,7 @@ import { pegarDadosCarteiras, pegarDatasCarteiras, pegarInfosCarteiras } from '.
 import { pegarDadosHomePage } from '../store/actions/action-dados-home';
 import { alteraCarteira, alteraDataLimite, newData } from '../store/actions/actions'
 import { pegarDadosPosicaoConsolidada } from '../store/actions/action-posicao-consolidada';
+import { LoadAnimation } from '../components/loading';
 
 
 const AfterLogin = (props) => {
@@ -73,8 +74,8 @@ const AfterLogin = (props) => {
     useEffect(async() => {
         if(props.stateCarteira.carteira !== ''){
             let token = await AsyncStorage.getItem('token')
-            console.log('o token ' + token)
-            console.log('o nome ' + props.stateCarteira.carteira)
+            //console.log('o token ' + token)
+            //console.log('o nome ' + props.stateCarteira.carteira)
             await props.pegarDatasCarteiras(token, props.stateCarteira.carteira)
         }
     },[props.stateCarteira.carteira])
@@ -128,7 +129,7 @@ const AfterLogin = (props) => {
     return (
         <View style={styles.container}>
             <ModalEscolheCarteira  visible={showModal}/>
-            <ActivityIndicator size='large' color='#FFF'/>
+            <LoadAnimation/>
         </View>
     )
 }

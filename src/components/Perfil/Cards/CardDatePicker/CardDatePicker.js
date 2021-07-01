@@ -59,7 +59,7 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateInicial = (data) => {
-    console.log('data format ', data)
+    //console.log('data format ', data)
    if (data > props.dataMaisAntiga) {
     // setShowSelectorInicial(false);
     //props.newDataInicial(data.getTime());
@@ -74,7 +74,7 @@ const CardDatePicker = (props) => {
   };
 
   const selectNewDateFinal = (data) => {
-    console.log('data format ', props.dataMaisRecente)
+    //console.log('data format ', props.dataMaisRecente)
     if (data < props.dataMaisRecente) {
       // setShowSelectorFinal(false);
     //props.newDataFinal(data.getTime());
@@ -100,7 +100,7 @@ const CardDatePicker = (props) => {
 
   
 
-  console.log('props ' + props.datas.dataInicial)
+  //console.log('props ' + props.datas.dataInicial)
     return (
         <View style={props.dadosHomePage.loading ? {backgroundColor: 'rgba(0, 0, 0, 0.5)'} : null}>
         <View style={[styles.blocoCor, {backgroundColor: '#2A0DB8'}]}>

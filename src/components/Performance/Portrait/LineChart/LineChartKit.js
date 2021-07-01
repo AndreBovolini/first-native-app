@@ -8,15 +8,17 @@ const LineChartKit = props => {
     const [isLoadingDatas, setIsLoadingDatas] = useState(false);
     
     const StyledTheme = useContext(ThemeContext)
-    console.log('dataa ', props.data)
-    console.log('labels ', props.labels)
-    console.log('keys ', props.ativos)
+    // console.log('dataa ', props.data[0].data.length)
+    // console.log('labels ', props.labels)
+    // console.log('keys ', props.ativos)
 
     onRef = ref => {
         if (ref) {
-             chartPerformancePortrait = ref;
+             chart = ref;
         }
     };
+
+    // console.log(props.data, props.labels, props.ativos, props.periodo)
 
     const colors = ['rgb(26, 192, 151)','rgb(75, 50, 128)']
     option = {
@@ -24,14 +26,15 @@ const LineChartKit = props => {
         grid: {
             left: '2%',
             right: '3%',
-            bottom: '3%',
+            // bottom: props.labels ? '15%' : '5%',
+            bottom: '5%',
             containLabel: true,
         },
         xAxis: {
             type: "category",
             // max: props.labels.length,
             data: props.labels,
-            splitLine: {
+             splitLine: {
                 show: false
              },
             axisTick: {
@@ -40,11 +43,13 @@ const LineChartKit = props => {
                 interval: props.periodo ===  'Tudo' ? 20 : 5,
             },
             axisLabel: {
+                show: true,
                 interval: props.periodo ===  'Tudo' ? 7 : 0,
                 rotate: 50,
+                inside: false,
                 fontFamily: 'HelveticaNeue-Medium',
                 fontWeight: 'bold',
-                margin: 10
+                margin: 15,
             },
             axisLine: {
                 onZero: true,
@@ -99,7 +104,7 @@ const LineChartKit = props => {
     };
 
     additionalCode = `
-    chartPerformancePortrait.on('click', function(param) {
+    chart.on('click', function(param) {
             var obj = {
             type: 'event_clicked',
             data: param.data
@@ -123,27 +128,13 @@ const LineChartKit = props => {
     
 
     onButtonClearPressed = () => {
-        chart.clear();
+        chartPerformancePortrait.clear();
     };
 
      
     useEffect(() => {
-        chartPerformancePortrait.setBackgroundColor(StyledTheme.colors.background)
-        chartPerformancePortrait.setOption({
-            ...option,
-            tooltip: {
-                trigger: "axis",
-                backgroundColor: 'rgba(50,50,50,0.9)',
-                formatter: function(params) {
-                    output =  params[0].name + '<br />'
-                    params.forEach((el,i)=> {
-                        output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
-                    })
-                    return output
-                }
-                // formatter: '{a0}: {c0} <br/> {a1}: {c1}'
-            }
-        })
+        chart.setBackgroundColor(StyledTheme.colors.background)
+        chart.setOption(option)
         setTimeout(() => {
             setIsLoadingDatas(true)
             
@@ -152,8 +143,8 @@ const LineChartKit = props => {
     },[StyledTheme, option, props.periodo])
     return (
         <SafeAreaView 
-                style={{ height: 370, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
-              >
+                style={{ height: 380, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
+                >
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
             
              

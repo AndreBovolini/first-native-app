@@ -72,17 +72,17 @@ const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
       })
       OneSignal.setLocationShared(false);
       OneSignal.promptForPushNotificationsWithUserResponse(response => {
-        console.log("Prompt response:", response);
+        //("Prompt response:", response);
       });
 
       
   
       OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
-        console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+        //console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
         let notification = notificationReceivedEvent.getNotification();
-        console.log("notification: ", notification);
+        //console.log("notification: ", notification);
         const data = notification.additionalData
-        console.log("additionalData: ", data);
+        //console.log("additionalData: ", data);
         const button1 = {
           text: "Cancel",
           onPress: () => { notificationReceivedEvent.complete(); },
@@ -93,7 +93,7 @@ const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
       });
   
       OneSignal.setNotificationOpenedHandler(notification => {
-        console.log("OneSignal: notification opened:", notification);
+        //("OneSignal: notification opened:", notification);
         navigation.navigate('Home')
       });
   

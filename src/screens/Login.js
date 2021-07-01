@@ -19,6 +19,7 @@ import globalStyles from '../styles/globalStyles';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id'
 import { useEffect } from 'react';
+import {parseISO, getUnixTime } from 'date-fns'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useRoute } from '@react-navigation/native';
@@ -67,7 +68,7 @@ const Login = ({route, navigation}) => {
           if (inputSenha !== '') {
             comdadoLogin(inputUsuario, inputSenha).then( async (response) => {
                if (response.allowed.includes('COMAPP001')) {
-              let fixedDate = new Date(response.expires_in.replace('-', '/').replace('-', '/') + ' -0300');
+              let fixedDate = new Date(parseISO(response.expires_in+'-03:00'));
               await AsyncStorage.setItem('token', response['access_token'].toString())
               await AsyncStorage.setItem('expiration', fixedDate.getTime().toString())
               await AsyncStorage.setItem('token_type', response['token_type'])
@@ -90,7 +91,7 @@ const Login = ({route, navigation}) => {
             }
             )
             .catch(error => {
-              console.log(error);
+              //console.log(error);
               handleErrologin();
             })
             
@@ -136,10 +137,10 @@ const Login = ({route, navigation}) => {
               comdadoLogin(credentials.username, credentials.password).then( async (response) => {
             
                 if (response.allowed.includes('COMAPP001')) {
-                  let fixedDate = new Date(response.expires_in.replace('-', '/').replace('-', '/') + ' -0300');
-                  await AsyncStorage.setItem('token', response['access_token'].toString())
-                  await AsyncStorage.setItem('expiration', fixedDate.getTime().toString())
-                  await AsyncStorage.setItem('token_type', response['token_type'])
+                  let fixedDate = new Date(parseISO(response.expires_in+'-03:00'));
+                    await AsyncStorage.setItem('token', response['access_token'].toString())
+                    await AsyncStorage.setItem('expiration', fixedDate.getTime().toString())
+                    await AsyncStorage.setItem('token_type', response['token_type'])
                   setInputSenha('');
                   navigation.navigate('AfterLogin');
                 } else {
@@ -148,7 +149,7 @@ const Login = ({route, navigation}) => {
               }
               )
               .catch(error => {
-                console.log(error);
+                //(error);
                 handleErrologin();
               })
             } else {

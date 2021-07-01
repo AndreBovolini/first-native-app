@@ -136,7 +136,7 @@ const LineChartRes = props => {
     };
 
     additionalCode = `
-        chart.on('click', function(param) {
+    chart.on('click', function(param) {
             var obj = {
             type: 'event_clicked',
             data: param.data
@@ -177,7 +177,7 @@ const LineChartRes = props => {
     return (
         <SafeAreaView 
                 style={{ height: 220, width: globalStyles.dimensions.width * 0.95, backgroundColor:StyledTheme.colors.background}} 
-               key={Math.random()}>
+               >
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
 
             <ECharts

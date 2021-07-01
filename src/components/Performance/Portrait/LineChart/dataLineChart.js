@@ -116,7 +116,6 @@ export const dataLineChart = (response, periodoSelecionado) => {
     }
     
     const labelTool = [...linelabes]
-    console.log('tool',labelTool)
     const label = [...linelabes].reverse()
     let reverseArray = label.map((el) => {
         return transformaClasseAtivo(SiglaMes(), el.slice(3, 5)) + '/' + '20' + el.slice(8, 10)
@@ -134,7 +133,7 @@ export const dataLineChart = (response, periodoSelecionado) => {
     meuArray = meuArray.reverse()
 
     const labels = [...meuArray]
-    console.log('aaaa',values[0].dataset)
+
     const dataSets = values.map((el, i) => {
         return {
             symbol: 'none',
@@ -144,6 +143,7 @@ export const dataLineChart = (response, periodoSelecionado) => {
             smooth: true,
         }
     })
+
     
     return ({
         dataSets,

@@ -9,12 +9,12 @@ export function NewPieChart(props) {
 
     onRef = ref => {
         if (ref) {
-          chart = ref;
+          chartCarteira = ref;
         }
       };
 
     additionalCode = `
-        chart.on('click', function(param) {
+          chartCarteira.on('click', function(param) {
             var obj = {
             type: 'event_clicked',
             data: param.data
@@ -33,7 +33,7 @@ export function NewPieChart(props) {
   };
 
   useEffect(() => {
-    chart.setOption({
+    chartCarteira.setOption({
         series: [
           {
             data: props.data
@@ -45,6 +45,7 @@ export function NewPieChart(props) {
     const StyledTheme = useContext(ThemeContext)
 
     const options = {
+        backgroundColor: StyledTheme.colors.background,
         tooltip: {
             trigger: 'item',
             formatter: '{b}: {d}%'
@@ -94,7 +95,6 @@ export function NewPieChart(props) {
     return(
                 <ECharts
                 option={options}
-                backgroundColor={StyledTheme.colors.background}
                 additionalCode={additionalCode}
                 onData={onData}
                 ref={onRef}

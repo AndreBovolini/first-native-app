@@ -113,14 +113,14 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
       keysAtivos.unshift(el)
    })
 
-  console.log('AQUI ', keysAtivos)
+  //console.log('AQUI ', keysAtivos)
    let values = []
    let linelabes = []
    let formatedValues = []
    let dadosCart = []
 
    let maior = 0
-   console.log(filteredData)
+   //console.log(filteredData)
    filteredData.forEach((el,i) => {
     if (parseFloat(el.PL) > maior) {
           maior = parseFloat(el.PL);
@@ -150,7 +150,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
       return parseFloat(el['CDI'])
     })
 
-    console.log('ici', cartdados)
+    //console.log('ici', cartdados)
  
 
     if (filteredData !== []) {
@@ -204,7 +204,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
   
 
     
-  console.log(linelabes)
+  //console.log(linelabes)
     const label = [...linelabes].reverse()
     let reverseArray = label.map((el) => {
       return transformaClasseAtivo(SiglaMes(), el.slice(3,5)) + '/' + '20' + el.slice(8,10)
@@ -220,7 +220,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
     }
     })
     meuArray = meuArray.reverse()
-    console.log(meuArray, meuArray.length)
+    //console.log(meuArray, meuArray.length)
 
     
     // const labels = linelabes.map((el)=> {
@@ -232,7 +232,7 @@ export const dataLineChartPortrait = (response, periodoSelecionado) => {
 
     // console.log('here ' + label)
     const formated = [...formatedValues]
-    console.log(labels, labels.length)
+    //console.log(labels, labels.length)
     const dataSets = values.map((el,i) => {
         return {
         values: el.dataset,

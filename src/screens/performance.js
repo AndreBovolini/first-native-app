@@ -42,6 +42,7 @@ import Orientation, {
   useDeviceOrientationChange, useOrientationChange
 } from 'react-native-orientation-locker';
 import LineChartLand from '../components/Performance/Landscape/LineChart/LineChartLand';
+import { LoadAnimation } from '../components/loading';
 const Performance = (props) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selecionadoLine, setSelecionadoLine] = useState({})
@@ -68,13 +69,23 @@ const Performance = (props) => {
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
 
-  console.log('wid ', windowWidth, 'hei ', windowHeight)
+  //console.log('wid ', windowWidth, 'hei ', windowHeight)
 
-  console.log(orientacao, 'ici')
+  //console.log(orientacao, 'ici')
   useDeviceOrientationChange((o) => {
+    // if (orientacao.toLowerCase().includes('portrait')){
+    //   console.log('ici', orientacao)
+    //   Orientation.lockToPortrait()
+    // }
     setOrientacao(o)
-    console.log('uipa ', orientacao)
+    // Orientation.unlockAllOrientations()
+    //console.log('uipa ', orientacao)
   });
+  // useEffect(()=>{
+  //   if(autoRotate){
+  //     Orientation.unlockAllOrientations()
+  //   }
+  // },[orientacao])
 
   useEffect(()=>{
     setOpacity(0)
@@ -94,20 +105,35 @@ const Performance = (props) => {
       Orientation.lockToPortrait()
     }else if(orientacao.toLowerCase().includes('upsidedown')){
       Orientation.lockToPortrait()
-    }else{
-      Orientation.unlockAllOrientations()
+    }else if(autoRotate){
+      // Orientation.unlockAllOrientations()
     }
   }, [orientation, periodoSelecionado, autoRotate, orientacao])
+
+  useEffect(()=>{
+    let {index, routes} = props.navigation.dangerouslyGetState()
+    let currentRoute = routes[index].name
+    console.log(routes, routes[index].name)
+    if(orientation === 'portrait'){
+      Orientation.lockToPortrait()
+      console.log('bloqueado')
+    }else if(orientation === 'landscape' && currentRoute === 'Performance'){
+      console.log('desbloqueado')
+      Orientation.unlockAllOrientations()
+    }
+  },[orientation])
 
   useEffect(() => {
     if (orientacao.toLowerCase().includes('portrait')) {
       setOrientation('portrait')
+      // Orientation.lockToPortrait()
       setIsLoadingDatas(false)
       setOpacity(0)
       setScrollPosition(0)
       
     }else if(orientacao.toLowerCase().includes('landscape')) {
       setOrientation('landscape')
+      // Orientation.unlockAllOrientations()
       setIsLoadingDatas(false)
       setOpacity(0)
       setTimeout(()=> {
@@ -122,7 +148,7 @@ const Performance = (props) => {
   }, [orientacao])
   
   const StyledTheme = useContext(ThemeContext)
-  console.log('orientation ', orientation)
+  //console.log('orientation ', orientation)
 
   // useEffect(() => {
   //   console.log('AAAAAAAAAAAAAAAAA')
@@ -351,7 +377,7 @@ const Performance = (props) => {
       <View>
       {!isLoadingDatas ? (
         <LoadingView>
-          <ActivityIndicator size='large' color={StyledTheme.colors.invertedBackground}/>
+          <LoadAnimation/>
         </LoadingView> 
       )
       :
@@ -418,28 +444,18 @@ const Performance = (props) => {
             /> :
             null}
         </ChartContainer> */}
-        <View>
-        {!isLoadingDatas ? (
-          <LoadingView>
-            <ActivityIndicator size='small' color={StyledTheme.colors.invertedBackground}/>
-          </LoadingView> 
-        )
-        :
-          <View style={{opacity: opacity}}>
-          
-            {!props.isLoadingDadosHomePage && Object.keys(dadosLineChart).length !== 0?
-              <LineChartKit
-                data={dadosLineChart.dataSets}
-                labels={dadosLineChart.labels}
-                ativos={dadosLineChart.keysAtivos}
-                periodo={periodoSelecionado}
-                labelTool={dadosLineChart.labelTool}
-              />
-              : 
-              null}
-          </View>
-            }
-        </View>
+        <View style={{marginBottom: 30}}>
+        {!props.isLoadingDadosHomePage && Object.keys(dadosLineChart).length !== 0?
+          <LineChartKit
+            data={dadosLineChart.dataSets}
+            labels={dadosLineChart.labels}
+            ativos={dadosLineChart.keysAtivos}
+            periodo={periodoSelecionado}
+            labelTool={dadosLineChart.labelTool}
+          />
+          : 
+          null}
+      </View>
         <ContainerSelectorTable>
           {anos.map((el, i) => {
             return (

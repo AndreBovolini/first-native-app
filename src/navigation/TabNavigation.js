@@ -41,7 +41,7 @@ const TabNavigation = () => {
     }, [])
     let deviceId = getDeviceId().split("").filter(n => (Number(n) || n == 0 || n == ',')).join("")
     deviceId = parseFloat((deviceId).replace(",", "."),2);
-    console.log(deviceId)
+    //console.log(deviceId)
     return (
         
         <Provider store={store}>

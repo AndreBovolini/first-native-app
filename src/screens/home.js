@@ -47,12 +47,17 @@ import RNExitApp from 'react-native-exit-app';
 import OneSignal from 'react-native-onesignal';
 
 import { newDataPieChartHome } from '../components/Home/NewPieChartResumo/dataNewPieChartResumo';
-import { NewPieChartResumo } from '../components/Home/NewPieChartResumo';
+import NewPieChartResumo from '../components/Home/NewPieChartResumo';
 import { alteraViewMode, logout } from '../store/actions/actions';
 
 import { RectButton, PanGestureHandler } from 'react-native-gesture-handler'
 
 import LinearGradient from 'react-native-linear-gradient'
+
+import Orientation, {
+  useDeviceOrientationChange, OrientationLocker, PORTRAIT
+} from 'react-native-orientation-locker';
+
 
 import Animated, { 
   useSharedValue,
@@ -65,7 +70,7 @@ import Animated, {
 
 const ButtonAnimated = Animated.createAnimatedComponent(RectButton)
 
-export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout, alteraViewMode }) => {
+const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout, alteraViewMode }) => {
   const [percent, setPercent] = useState(false)
   const [currency, setCurrency] = useState(true)
   const [showModal, setShowModal] = useState(false);
@@ -80,6 +85,24 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
   const [acceptedProgrammed, setAcceptedProgrammed] = useState(false)
   const [dadosLineChartRes, setDadosLineChartRes] = useState({})
   const [opacity, setOpacity] = useState(0)
+  const [periodo, setPeriodo] = useState('')
+  const [orientacao, setOrientacao] = useState('portrait')
+
+  useEffect(() => {
+      let datas =`${(new Date(stateCarteira.dataInicial)).toLocaleDateString('pt-br', {timeZone: 'UTC'})} - ${(new Date(stateCarteira.dataFinal)).toLocaleDateString('pt-br', {timeZone: 'UTC'})}`
+      setPeriodo(datas);
+      //console.warn('alterou')
+    }, [stateCarteira.dataInicial, stateCarteira.dataFinal])
+
+    // useDeviceOrientationChange((o) => {
+     
+    //   setOrientacao(o)
+    //   console.log(orientacao)
+    // });
+
+
+        Orientation.lockToPortrait()
+  
 
 
 
@@ -392,7 +415,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
       setDadosLineChart(dadosLineChart)
       const infos = dataPieChartHome(dadosHomePage.data, StyledTheme.colors.invertedBackground)
       const optionEcharts = newDataPieChartHome(dadosHomePage.data, StyledTheme)
-      console.log(optionEcharts)
+      //(optionEcharts)
       setDadosPie(infos)
       setDadosNewPie(optionEcharts)
       const dadosLineChartRes = dataLineChartRes(dadosHomePage.data)
@@ -404,7 +427,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
     }
   }, [dadosHomePage.loading, dadosHomePage.data, StyledTheme])
 
-  console.log('AAAA ', dadosLineChartRes)
+  //console.log('AAAA ', dadosLineChartRes)
 
   // useEffect(() => {
   //   const backAction = () => {
@@ -570,8 +593,11 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
 
   // console.log('INDICE ' + index)
   return (
+    
     <LargeContainer>
+    
       <SafeAreaView >
+      
       <FiltroSeletor 
         visible={showModal} 
         width={globalStyles.dimensions.width}
@@ -597,6 +623,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
             </View>
             <TitleContainer>
               <LeftCard>
+                <Text style={{color: StyledTheme.colors.fontColor}}>{periodo}</Text>
                 <Title>Portfólio</Title>
               </LeftCard>
               <View>
@@ -759,6 +786,7 @@ export const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira,
                 <Icon name="chevron-right" size={20} color={globalStyles.colors.fontColor} />
               </TouchableOpacity>
             </TitleNavigationContainer>
+            
             <LineChartContainer style={{opacity: opacity}}>
               {!dadosHomePage.loading && Object.keys(dadosLineChartRes).length !== 0 ?
                 <LineChartRes

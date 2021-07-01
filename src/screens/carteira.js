@@ -33,7 +33,9 @@ import {
 } from '../screens/Carteira/style'
 import { newDataPieChart } from '../components/Carteira/NewGraficoPie/newDataPieChart';
 import { NewPieChart } from '../components/Carteira/NewGraficoPie';
+import { LoadAnimation } from '../components/loading';
 
+import { OrientationLocker, PORTRAIT, LANDSCAPE } from "react-native-orientation-locker";
 
 const Carteira = (props) => {
   const [arrayAtivos, setArrayAtivos] = useState([]);
@@ -44,8 +46,21 @@ const Carteira = (props) => {
   const [heightDefault, setHeightDefault] = useState((AtivosCarteira.length-1)*90)
   const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
   const [isLoading, setIsLoading] = useState(true)
+  const [orientacao, setOrientacao] = useState('portrait')
+  // const [screen, setScreen] = useState('carteira')
 
 const StyledTheme = useContext(ThemeContext)
+
+  // useDeviceOrientationChange((o) => {
+  //   setScreen('carteira')
+  //   setOrientacao(o)
+  // });
+
+  // useEffect(() => {
+  //   if (orientacao.toLowerCase().includes('landscape')){
+  //     Orientation.lockToPortrait()
+  //   }     
+  // }, [orientacao])
 
   useEffect(() => {
     setIsLoading(true)
@@ -137,7 +152,6 @@ const StyledTheme = useContext(ThemeContext)
     }
 
   function handleSelectPie(event) {
-    console.warn(event)
       try{
         let selectName = event.data.name
         let filtrado = arrayAtivos.filter(ativo => ativo.ativo === selectName)
@@ -154,8 +168,8 @@ const StyledTheme = useContext(ThemeContext)
 
       return (
         <SafeAreaView style={{flex: 1, backgroundColor: StyledTheme.colors.background}}>
-          { isLoading ? (
-            <ActivityIndicator color="#FFF" size="large"/>
+        { isLoading ? (
+            <LoadAnimation/>
           ) : (
         <ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', width: globalStyles.dimensions.width, height: scrollViewHeight, backgroundColor: StyledTheme.colors.background}}>
         <Title>Carteira</Title>
