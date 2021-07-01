@@ -56,7 +56,7 @@ export const dataLineChart = (response, periodoSelecionado) => {
 
     function oneYearPeriod(value) {
         let date = Date.parse(alteraDataPTParaEN(value.data));
-        let dataAtual = new Date().getTime() - (1000 * 60 * 60 * 24 * 365);
+        let dataAtual = new Date().getTime() - (1000 * 60 * 60 * 24 * 366);
         return date >= dataAtual
     }
 
@@ -72,12 +72,15 @@ export const dataLineChart = (response, periodoSelecionado) => {
             break;
         case '3m':
             filteredData = respostaDados.filter(threeMonthPeriod);
+            
             break;
         case '2021':
             filteredData = respostaDados.filter(thisYear);
+           
             break;
         case '12m':
             filteredData = respostaDados.filter(oneYearPeriod);
+           
             break;
         case 'Tudo':
             filteredData = respostaDados;

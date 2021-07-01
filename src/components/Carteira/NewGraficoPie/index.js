@@ -4,8 +4,9 @@ import React, { useContext, useEffect } from 'react';
 import { ECharts } from "react-native-echarts-wrapper";
 
 import { ThemeContext } from 'styled-components';
+import { connect } from 'react-redux';
 
-export function NewPieChart(props) {
+const NewPieChart = (props) => {
 
     onRef = ref => {
         if (ref) {
@@ -14,7 +15,7 @@ export function NewPieChart(props) {
       };
 
     additionalCode = `
-          chartCarteira.on('click', function(param) {
+          chart.on('click', function(param) {
             var obj = {
             type: 'event_clicked',
             data: param.data
@@ -42,10 +43,23 @@ export function NewPieChart(props) {
       });
   }, [props.data])
 
+
     const StyledTheme = useContext(ThemeContext)
 
+
+  useEffect(() => {
+    chartCarteira.setOption({
+      backgroundColor: StyledTheme.colors?.background,
+      legend: {
+          textStyle: {
+            color: StyledTheme.colors?.fontColor,
+          },
+      },
+    });
+  }, [props.stateCarteira?.mode])
+
     const options = {
-        backgroundColor: StyledTheme.colors.background,
+        backgroundColor: StyledTheme.colors?.background,
         tooltip: {
             trigger: 'item',
             formatter: '{b}: {d}%'
@@ -55,7 +69,7 @@ export function NewPieChart(props) {
             bottom: 'bottom',
             borderRadius: 10,
             textStyle: {
-              color: StyledTheme.colors.fontColor,
+              color: StyledTheme.colors?.fontColor,
             },
             icon: 'circle'
         },
@@ -69,7 +83,7 @@ export function NewPieChart(props) {
                 avoidLabelOverlap: false,
                 itemStyle: {
                     borderRadius: 20,
-                    borderColor: StyledTheme.colors.background,
+                    borderColor: 'transparent',
                     borderWidth: 2
                 },
                 label: {
@@ -101,3 +115,11 @@ export function NewPieChart(props) {
                 />
     )
 }
+
+
+const mapStateToProps = state => ({
+  stateCarteira: state.dates,
+});
+
+
+export default connect(mapStateToProps)(NewPieChart);

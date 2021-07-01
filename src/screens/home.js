@@ -862,7 +862,9 @@ const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout
             </Animated.View>
         </PanGestureHandler>
       </SafeAreaView>
+      
     </LargeContainer>
+   
   )
 }
 

@@ -4,17 +4,20 @@ import { ECharts } from "react-native-echarts-wrapper";
 import globalStyles from "../../../../styles/globalStyles";
 import { ThemeContext } from 'styled-components/native';
 import { LoadingView } from '../../../../screens/Performance/styles'
+import { connect } from "react-redux";
 const LineChartKit = props => {
     const [isLoadingDatas, setIsLoadingDatas] = useState(false);
     
     const StyledTheme = useContext(ThemeContext)
-    // console.log('dataa ', props.data[0].data.length)
-    // console.log('labels ', props.labels)
+    // console.log('dataa ', props.data)
+    console.log('labels ', props.labels)
     // console.log('keys ', props.ativos)
 
-    onRef = ref => {
+    chartPerformancePortrait = null;
+
+    onChartRef = ref => {
         if (ref) {
-             chart = ref;
+             chartPerformancePortrait = ref;
         }
     };
 
@@ -22,19 +25,19 @@ const LineChartKit = props => {
 
     const colors = ['rgb(26, 192, 151)','rgb(75, 50, 128)']
     option = {
+        backgroundColor: StyledTheme.colors.background,
         color: colors,
         grid: {
             left: '2%',
             right: '3%',
-            // bottom: props.labels ? '15%' : '5%',
-            bottom: '5%',
+            bottom: '3%',
             containLabel: true,
         },
         xAxis: {
             type: "category",
             // max: props.labels.length,
             data: props.labels,
-             splitLine: {
+            splitLine: {
                 show: false
              },
             axisTick: {
@@ -43,13 +46,11 @@ const LineChartKit = props => {
                 interval: props.periodo ===  'Tudo' ? 20 : 5,
             },
             axisLabel: {
-                show: true,
                 interval: props.periodo ===  'Tudo' ? 7 : 0,
                 rotate: 50,
-                inside: false,
                 fontFamily: 'HelveticaNeue-Medium',
                 fontWeight: 'bold',
-                margin: 15,
+                margin: 10
             },
             axisLine: {
                 onZero: true,
@@ -77,13 +78,6 @@ const LineChartKit = props => {
         tooltip: {
             trigger: "axis",
             backgroundColor: 'rgba(50,50,50,0.9)',
-            // formatter: function(params) {
-            //     output =  params[0].name + '<br />'
-            //     params.forEach((el,i)=> {
-            //         output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
-            //     })
-            //     return output
-            // }
             // formatter: '{a0}: {c0} <br/> {a1}: {c1}'
         },
 
@@ -103,62 +97,90 @@ const LineChartKit = props => {
 
     };
 
-    additionalCode = `
-    chart.on('click', function(param) {
-            var obj = {
-            type: 'event_clicked',
-            data: param.data
-            };
-
-            sendData(JSON.stringify(obj));
-        });
-    `;
-
     
 
-    onData = param => {
-        const obj = JSON.parse(param);
 
-        if (obj.type === "event_clicked") {
-            alert(`you tapped the chart series: ${obj.data}`);
-        
-        }
-    };
-
-    
-
-    onButtonClearPressed = () => {
-        chartPerformancePortrait.clear();
-    };
 
      
     useEffect(() => {
-        chart.setBackgroundColor(StyledTheme.colors.background)
-        chart.setOption(option)
+        console.warn('mudou o grafico')
+        chartPerformancePortrait.setOption(
+            {
+                xAxis: {
+                    data: props.labels,
+                    axisTick: {
+                        interval: props.periodo ===  'Tudo' ? 20 : 5,
+                    },
+                    axisLabel: {
+                        interval: props.periodo ===  'Tudo' ? 7 : 0,
+                    },
+                },
+                series: props.data,
+                legend: {
+                    data: props.ativos,
+                },
+                tooltip: {
+                    formatter: function(params) {
+                        output =  params[0].name + '<br />'
+                        params.forEach((el,i)=> {
+                            output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
+                        })
+                        return output
+                    }
+                    // formatter: '{a0}: {c0} <br/> {a1}: {c1}'
+                },
+            }
+        )
         setTimeout(() => {
             setIsLoadingDatas(true)
             
         }, 2000)
         
-    },[StyledTheme, option, props.periodo])
+    },[props.data, props.periodo, props.labels])
+
+    useEffect(() => {
+        chartPerformancePortrait.setOption({
+            backgroundColor: StyledTheme.colors.background,
+        xAxis: {
+            axisLine: {
+                onZero: true,
+                lineStyle: {
+                    color: StyledTheme.colors.fontColor
+                }
+            }
+            
+        },
+        yAxis: {
+            axisLabel: {
+                color: StyledTheme.colors.fontColor
+            },
+        },
+            legend: {
+                textStyle: {
+                  color: StyledTheme.colors.fontColor,
+                },
+            },
+          })
+
+    }, [props.stateCarteira.mode])
+
+
     return (
         <SafeAreaView 
-                style={{ height: 380, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
-                >
+                style={{ height: 370, width: globalStyles.dimensions.width * 0.9, backgroundColor:StyledTheme.colors.background}} 
+              >
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
-            
-             
             <ECharts
-               
-                ref={onRef}
+                ref={onChartRef}
                 option={option}
-                additionalCode={additionalCode}
-                onData={onData}
-                backgroundColor={StyledTheme.colors.background}
             />
             
         </SafeAreaView>
     );
 }
 
-export default LineChartKit;
+const mapStateToProps = state => ({
+    stateCarteira: state.dates,
+  });
+
+export default connect(mapStateToProps)(LineChartKit);
