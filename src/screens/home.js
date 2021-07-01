@@ -101,7 +101,10 @@ const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout
     // });
 
 
-        Orientation.lockToPortrait()
+    useEffect(() => {
+      console.warn('lockou')
+      Orientation.lockToPortrait()
+    }, [])
   
 
 

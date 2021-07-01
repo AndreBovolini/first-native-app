@@ -3,13 +3,10 @@ import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
-  Platform,
   ScrollView,
   ActivityIndicator
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Modal from 'react-native-modal';
 import CustomInput from '../../CustomInput'
@@ -17,15 +14,11 @@ import globalStyles from '../../../styles/globalStyles';
 import { ThemeContext } from 'styled-components/native';	
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import CalendarPicker from '../../Perfil/Cards/Calendar/CalendarPicker'
-import { Container, ModalCustom, TitleText, ButtonView, Button, ButtonText, ToggleView, Percent, PercentPress, Currency, CurrencyPress, RightCard,
-SelectPeriodView, ToggleLabelText, FirstLastDateView,
+import { Container, ModalCustom, ButtonView, Button, SelectPeriodView, ToggleLabelText, FirstLastDateView,
 DateButtonText, DateButtonView, DatesView, LoadingView
 } from './styles';
 
-import { formatISO9075, toDate } from 'date-fns';
-import { sub } from 'date-fns';
-import { subDays } from 'date-fns';
-import { getTime } from 'date-fns';
+import { formatISO9075, subDays } from 'date-fns';
 
 import { connect } from 'react-redux';
 import { pegarDadosCarteiras } from '../../../store/actions/actions-dados-usuario'
@@ -41,6 +34,8 @@ import Animated , {
   withTiming
 } from 'react-native-reanimated';
 import { pegarDadosPosicaoConsolidada } from '../../../store/actions/action-posicao-consolidada';
+import addDays from 'date-fns/addDays';
+import { LoadAnimation } from '../../loading';
 
 
 const FiltroSeletor = props => {
@@ -133,6 +128,7 @@ const FiltroSeletor = props => {
                       inicio: response.data_mais_antiga,
                       final: response.data_mais_recente
                   } 
+                  console.log(datas.inicio, datas.final)
                   const diaA = datas.inicio.substr(0,2);
                   const mesA = datas.inicio.substr(3,2)
                   const anoA = datas.inicio.substr(6,4)
@@ -212,7 +208,7 @@ const FiltroSeletor = props => {
     }
 
     const handleSelectFirstDate = (date) => {
-        if (date > firstWalletDate) {
+        if (date >= firstWalletDate) {
             
             setFirstSelectedDate(date)
             setShowError(false)
@@ -224,7 +220,7 @@ const FiltroSeletor = props => {
     }
 
     const handleSelectLastDate = (date) => {
-        if (date < lastWalletDate) {
+        if (date <= lastWalletDate) {
             
             setLastSelectedDate(date)
             setShowError(false)
@@ -358,7 +354,7 @@ const FiltroSeletor = props => {
                         <>
                         { isLoadingDatas ? (
                           <LoadingView>
-                           <ActivityIndicator size='large' color={StyledTheme.colors.invertedBackground}/>
+                           <LoadAnimation />
                          </LoadingView>
                        ) : (
                          <>
@@ -375,7 +371,7 @@ const FiltroSeletor = props => {
                                     //  +'/'+
                                     //  formatISO9075(subDays(new Date(firstSelectedDate),1), {representation:'date'}).slice(0,4)
                                     //  :
-                                     formatISO9075(new Date(firstSelectedDate), {representation:'date'}).slice(8)
+                                     formatISO9075(addDays(new Date(firstSelectedDate), 1), {representation:'date'}).slice(8)
                                      +'/'+
                                      formatISO9075(new Date(firstSelectedDate), {representation:'date'}).slice(5,7)
                                      +'/'+
@@ -397,7 +393,7 @@ const FiltroSeletor = props => {
                                     //  formatISO9075(subDays(new Date(lastSelectedDate),1), {representation: 'date'}).slice(0,4)
                                     //  :
                                      (
-                                     formatISO9075(new Date(lastSelectedDate),{representation: 'date'}).slice(8)
+                                     formatISO9075(addDays(new Date(lastSelectedDate), 1),{representation: 'date'}).slice(8)
                                      +'/'+
                                      formatISO9075(new Date(lastSelectedDate),{representation: 'date'}).slice(5,7)
                                      +'/'+
@@ -423,7 +419,7 @@ const FiltroSeletor = props => {
                        {showSelectorFinal ? (
                          <CalendarPicker
                            maxDate={new Date(lastWalletDate)}
-                           current={lastSelectedDate === lastWalletDate ?new Date(lastSelectedDate) : new Date(lastSelectedDate)}
+                           current={lastSelectedDate === lastWalletDate ?  new Date(lastSelectedDate) : new Date(lastSelectedDate)}
                            onChange={(data) => handleSelectLastDate(data)}
                            id={'final'}
                          />
