@@ -178,10 +178,11 @@ const AuthNavigator = () => {
 };
 
 const Navigator = ({stateCarteira}) => {
+    console.warn(stateCarteira.mode)
     return (
         <ThemeProvider theme={stateCarteira.mode === 'dark' ? darkTheme : lightTheme}>
             <NavigationContainer ref={navigationRef}>
-            <StatusBar barStyle={stateCarteira.mode === 'dark' ? "light-content" : 'dark-content' }/>
+            <StatusBar barStyle={stateCarteira.mode === 'dark' ? "light-content" : 'dark-content' } translucent />
                 <AuthNavigator />
 
             </NavigationContainer>

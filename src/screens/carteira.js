@@ -14,11 +14,6 @@ import Seletor from '../components/Carteira/Seletor/Seletor'
 
 import { resposta2 } from '../data/dataTeste';
 
-import {
-  AtivosCarteira,
-} from '../data/data';
-
-
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 import { dataPieChart } from '../components/Carteira/GraficoPie/dataPieChart';
 
@@ -39,12 +34,12 @@ import { OrientationLocker, PORTRAIT, LANDSCAPE } from "react-native-orientation
 
 const Carteira = (props) => {
   const [arrayAtivos, setArrayAtivos] = useState([]);
-  const [scrollViewHeight, setScrollViewHeight] = useState(1183)
+  const [scrollViewHeight, setScrollViewHeight] = useState(globalStyles.dimensions.height)
   const [cores, setCores] = useState(globalStyles.chartColors.pieChartColors);
   const [newDadosChart, setNewDadosChart] = useState([])
   const [showAtivos, setShowAtivos ] = useState(true)
-  const [heightDefault, setHeightDefault] = useState((AtivosCarteira.length-1)*90)
-  const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
+  const [heightDefault, setHeightDefault] = useState(558)
+  const [tabsScrollHeight, setTabsScrollHeight] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [orientacao, setOrientacao] = useState('portrait')
   // const [screen, setScreen] = useState('carteira')
@@ -74,6 +69,7 @@ const StyledTheme = useContext(ThemeContext)
       }
     })
     let ativos = []
+    
 
     
     AtivosCarteira.forEach((el, i) => {
@@ -86,14 +82,12 @@ const StyledTheme = useContext(ThemeContext)
         show: false,
       });
     });
+    console.warn(ativos)
 
     setArrayAtivos(ativos);
-    if(arrayAtivos.length !== 0 ) {
-      setLengthAtivos(arrayAtivos.length)
-    }else{
-      setLengthAtivos(AtivosCarteira.length)
-    }
-    
+    setScrollViewHeight(heightDefault + (ativos.length * 120));
+    setTabsScrollHeight(heightDefault + (ativos.length * 120));
+
    let infos = ''
    let dadosChartNew = '';
     if(showAtivos){
@@ -118,11 +112,10 @@ const StyledTheme = useContext(ThemeContext)
   
   function handleSelectorAtivos() {
     setShowAtivos(true)
-    setHeightDefault((lengthAtivos-1)*90)
   }
+
   function handleSelectorCustodiante() {
     setShowAtivos(false)
-    setHeightDefault((lengthAtivos-1)*90)
   }
 
   useEffect(() => {
@@ -136,8 +129,10 @@ const StyledTheme = useContext(ThemeContext)
         showCount = showCount +1;
       }
     })
+    console.warn(showCount, acao)
     const increasedHeight = ((showCount * 93) + (acao * 300));
-    setScrollViewHeight(heightDefault + globalStyles.dimensions.height + increasedHeight)
+    //console.warn(heightDefault, globalStyles.dimensions.height, increasedHeight)
+    setScrollViewHeight(tabsScrollHeight + increasedHeight)
   }, [arrayAtivos])
 
   function handleClick(tipoAtivo) {
@@ -171,7 +166,12 @@ const StyledTheme = useContext(ThemeContext)
         { isLoading ? (
             <LoadAnimation/>
           ) : (
-        <ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', width: globalStyles.dimensions.width, height: scrollViewHeight, backgroundColor: StyledTheme.colors.background}}>
+        <ScrollView 
+        contentContainerStyle={{justifyContent: 'flex-start', 
+        alignItems: 'center', 
+        width: globalStyles.dimensions.width, 
+        height: scrollViewHeight < globalStyles.dimensions.height ? globalStyles.dimensions.height : scrollViewHeight, 
+        backgroundColor: StyledTheme.colors.background}}>
         <Title>Carteira</Title>
         <Seletor handleSelectorCustodiante={handleSelectorCustodiante} handleSelectorAtivos={handleSelectorAtivos}/>
             <ChartContainer>

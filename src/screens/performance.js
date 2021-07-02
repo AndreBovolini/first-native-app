@@ -381,7 +381,7 @@ const Performance = (props) => {
     }
    
     return (
-      <View>
+      <View style={{flex: 1, backgroundColor: StyledTheme.colors.background}}>
       {!isLoadingDatas ? (
         <LoadingView>
           <LoadAnimation/>
@@ -390,14 +390,6 @@ const Performance = (props) => {
       :
       (
         <PerformanceLandscape>
-
-        {/* <LineChartLandscape
-          data={dadosLineChartLandscape.data}
-          labels={dadosLineChartLandscape.labels}
-          granularity={dadosLineChartLandscape.granularity}
-          number={dadosLineChartLandscape.number}
-          symbol={dadosLineChartLandscape.symbol}
-        /> */}
         {!props.isLoadingDadosHomePage && Object.keys(dadosLineChartLand).length !== 0?
             
             <LineChartLand

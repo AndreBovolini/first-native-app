@@ -23,6 +23,7 @@ const LineChartLand = props => {
             right: '2%',
             bottom: '5%',
             containLabel: true,
+            height: globalStyles.dimensions.width*0.8
         },
         xAxis: {
             type: "category",
@@ -178,12 +179,12 @@ const LineChartLand = props => {
     }, [StyledTheme, option])
     return (
         <SafeAreaView
-            style={{ flex: 1, height: globalStyles.dimensions.width * 0.9, backgroundColor: StyledTheme.colors.background, padding: 2 }}
+            style={{ flex: 1, height: globalStyles.dimensions.width * 0.5, backgroundColor: StyledTheme.colors.background, padding: 2 }}
         >
             {/* <Button title="Clear" onPress={onButtonClearPressed} /> */}
 
             <ECharts
-
+                height={globalStyles.dimensions.width * 0.5}
                 ref={onRef}
                 option={option}
                 additionalCode={additionalCode}
