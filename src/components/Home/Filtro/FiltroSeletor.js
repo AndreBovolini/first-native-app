@@ -414,7 +414,7 @@ const FiltroSeletor = props => {
                          {showSelectorInicial ? (
                            <CalendarPicker
                              minDate={new Date(firstWalletDate)}
-                             current={firstSelectedDate === firstWalletDate ? new Date(firstSelectedDate) : new Date(firstSelectedDate)}
+                             current={new Date(firstSelectedDate)}
                              onChange={(data) => handleSelectFirstDate(data)}
                              id={'inicial'}
                            />
@@ -423,7 +423,7 @@ const FiltroSeletor = props => {
                        {showSelectorFinal ? (
                          <CalendarPicker
                            maxDate={new Date(lastWalletDate)}
-                           current={lastSelectedDate === lastWalletDate ?new Date(lastSelectedDate) : new Date(lastSelectedDate)}
+                           current={new Date(lastSelectedDate)}
                            onChange={(data) => handleSelectLastDate(data)}
                            id={'final'}
                          />

@@ -46,7 +46,9 @@ const RenderCalendar = props => {
       
       const handleDayPress = (day) => {
           console.log('min',props.minDate)
-        //console.log(day)
+         
+          console.log('max',props.maxDate)
+        console.log(day)
         
         setMarkedDates({
             [day.dateString]: {

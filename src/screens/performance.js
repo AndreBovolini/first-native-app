@@ -100,6 +100,7 @@ const Performance = (props) => {
   },[orientacao, orientation])
 
   useEffect(()=>{
+    Orientation.lockToPortrait()
     let {index, routes} = props.navigation.dangerouslyGetState()
     let currentRoute = routes[index].name
     console.log(routes, routes[index].name)
@@ -120,7 +121,7 @@ const Performance = (props) => {
       Orientation.lockToPortrait()
     }else if(orientacao.toLowerCase().includes('upsidedown')){
       Orientation.lockToPortrait()
-    }else if(autoRotate && currentRoute === 'Performance'){
+    }else if(autoRotate && currentRoute === 'Performance' && orientation === 'landscape'){
       Orientation.unlockAllOrientations()
     }
   }, [orientation, periodoSelecionado, autoRotate, orientacao])
