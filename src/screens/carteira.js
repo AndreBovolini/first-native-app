@@ -29,7 +29,8 @@ import { ThemeContext } from 'styled-components/native';
 import {
   Title,
   ChartContainer,
-  ContainerCards
+  ContainerCards,
+  LoadingView
 } from '../screens/Carteira/style'
 import { newDataPieChart } from '../components/Carteira/NewGraficoPie/newDataPieChart';
 import NewPieChart from '../components/Carteira/NewGraficoPie';
@@ -47,6 +48,8 @@ const Carteira = (props) => {
   const [lengthAtivos, setLengthAtivos] = useState(AtivosCarteira.length)
   const [isLoading, setIsLoading] = useState(true)
   const [orientacao, setOrientacao] = useState('portrait')
+  const [opacity, setOpacity] = useState(0)
+  const [isLoadingDatas, setIsLoadingDatas] = useState(false);
   // const [screen, setScreen] = useState('carteira')
 
 const StyledTheme = useContext(ThemeContext)
@@ -64,9 +67,11 @@ const StyledTheme = useContext(ThemeContext)
 
   useEffect(() => {
     setIsLoading(true)
+    
     if (!props.isLoadingDadosHomePage && props.responseDadosHomePage !== [] && !props.isLoadingDadosPosicaoConsolidada && props.responseDadosPosicaoConsolidada !== undefined) {
       //console.warn(props.responseDadosPosicaoConsolidada)
       const keysAtivos = Object.keys(showAtivos ? props.responseDadosPosicaoConsolidada : resposta2.grafico1)
+      
     const AtivosCarteira = keysAtivos.map((el,i) => {
       return {
         value: parseFloat(showAtivos ? props.responseDadosPosicaoConsolidada[el] : resposta2.grafico1[el]),
@@ -90,6 +95,7 @@ const StyledTheme = useContext(ThemeContext)
     setArrayAtivos(ativos);
     if(arrayAtivos.length !== 0 ) {
       setLengthAtivos(arrayAtivos.length)
+      
     }else{
       setLengthAtivos(AtivosCarteira.length)
     }
@@ -98,9 +104,11 @@ const StyledTheme = useContext(ThemeContext)
    let dadosChartNew = '';
     if(showAtivos){
       infos = dataPieChart(props.responseDadosPosicaoConsolidada,StyledTheme.colors.invertedBackground)
+      
       dadosChartNew = newDataPieChart(props.responseDadosPosicaoConsolidada, StyledTheme)
     }else{
       infos = dataPieChart(resposta2.grafico1,StyledTheme.colors.invertedBackground )
+      
       dadosChartNew = newDataPieChart(resposta2.grafico1, StyledTheme)
     }
     // const infos = dataPieChart(showAtivos ? (resposta2.grafico0, StyledTheme.colors.invertedBackground)
@@ -108,20 +116,41 @@ const StyledTheme = useContext(ThemeContext)
     if (newDadosChart != dadosChartNew ) {
       //console.warn(dadosChartNew)
    setNewDadosChart(dadosChartNew)
-   setIsLoading(false)
+    setIsLoading(false)
+   
+    
+   
     }
     }
+   
     
     
   }, [showAtivos, props.isLoadingDadosHomePage, props.responseDadosHomePage, StyledTheme, props.responseDadosPosicaoConsolidada, props.isLoadingDadosPosicaoConsolidada]);
 
-  
+  useEffect(()=>{
+
+    setOpacity(0)
+    if(true){
+      setIsLoadingDatas(false)
+      console.log("AAAA")
+      setTimeout(()=> {
+        setOpacity(1)
+      }, 2000)
+      setTimeout(()=>{
+        setIsLoadingDatas(true)
+      }, 1000)
+  }
+  },[StyledTheme])
+
+
   function handleSelectorAtivos() {
     setShowAtivos(true)
+    
     setHeightDefault((lengthAtivos-1)*90)
   }
   function handleSelectorCustodiante() {
     setShowAtivos(false)
+   
     setHeightDefault((lengthAtivos-1)*90)
   }
 
@@ -153,6 +182,7 @@ const StyledTheme = useContext(ThemeContext)
 
   function handleSelectPie(event) {
       try{
+        
         let selectName = event.data.name
         let filtrado = arrayAtivos.filter(ativo => ativo.ativo === selectName)
         filtrado[0].show = true;
@@ -171,9 +201,10 @@ const StyledTheme = useContext(ThemeContext)
         { isLoading ? (
             <LoadAnimation/>
           ) : (
-        <ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', width: globalStyles.dimensions.width, height: scrollViewHeight, backgroundColor: StyledTheme.colors.background}}>
+        <ScrollView contentContainerStyle={{justifyContent: 'flex-start', alignItems: 'center', width: globalStyles.dimensions.width, height: scrollViewHeight, backgroundColor: StyledTheme.colors.background, opacity: opacity}}>
         <Title>Carteira</Title>
         <Seletor handleSelectorCustodiante={handleSelectorCustodiante} handleSelectorAtivos={handleSelectorAtivos}/>
+        
             <ChartContainer>
               {/*
               { dadosChart.infos ?
@@ -187,6 +218,8 @@ const StyledTheme = useContext(ThemeContext)
                 />
               : null}
             </ChartContainer>
+            
+       
             <ContainerCards>
               {arrayAtivos.map((el, i) => {
                 return <Cards id={i} 

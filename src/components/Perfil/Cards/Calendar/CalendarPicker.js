@@ -7,7 +7,7 @@ import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import {LocaleConfig} from 'react-native-calendars';
 import globalStyles from '../../../../styles/globalStyles'
 import { ThemeContext } from 'styled-components/native';
-import { formatISO9075, toDate } from 'date-fns';
+import { addDays, formatISO9075, toDate } from 'date-fns';
 LocaleConfig.locales['pt'] = {
   monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
   monthNamesShort: ['Jan.','Fev.','Mar.','Abril','Maio','Junho','Julho.','Agosto','Set.','Out.','Nov.','Dez.'],
@@ -29,13 +29,17 @@ const RenderCalendar = props => {
     const StyledTheme = useContext(ThemeContext)
     
     useEffect(()=> {
-        
+       console.log(props.current)
+        let correctedDate = addDays(props.current, 1)
+        console.log(correctedDate)
         // let date = props.current.toLocaleDateString('pt-BR', {timeZone: 'UTC'})
-        let date = formatISO9075(props.current, {representation:'date'})
+        let date = formatISO9075(correctedDate, {representation:'date'})
+        
         setYear(date.slice(6))
         
         // let dateFormatted = date.slice(6) + '-' + date.slice(3,5)  + '-' + date.slice(0,2)
         //console.log(typeof(props.current.toLocaleDateString('pt-BR', {timeZone: 'UTC'})))
+        console.log(date)
         setMarkedDates({
             [date]: {
                 selected: true, marked: true, selectedColor: '#00adf5',
@@ -45,10 +49,8 @@ const RenderCalendar = props => {
 
       
       const handleDayPress = (day) => {
-          console.log('min',props.minDate)
-         
-          console.log('max',props.maxDate)
-        console.log(day)
+          console.log('min',props.minDate, day)
+        //console.log(day)
         
         setMarkedDates({
             [day.dateString]: {
@@ -61,7 +63,9 @@ const RenderCalendar = props => {
       }
     //console.log( 'hey', props.minDate ? props.minDate : props.maxDate)
 
-   
+   useEffect(() => {
+    console.log(markedDates)
+   }, [markedDates])
     
 
     return (
@@ -69,8 +73,8 @@ const RenderCalendar = props => {
         <Calendar
             // current={props.id === 'inicial' ? props.minDate: props.maxDate}
             current={props.current}
-            minDate = {props.id === 'inicial' ? props.minDate : null}
-            maxDate={props.id === 'final' ? props.maxDate : new Date()}
+            minDate = {props.id === 'inicial' ? addDays(props.minDate,1) : null}
+            maxDate={props.id === 'final' ? addDays(props.maxDate,1) : new Date()}
             onDayPress={(day) => handleDayPress(day)}
             enableSwipeMonths={true}
             

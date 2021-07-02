@@ -21,3 +21,10 @@ export const ContainerCards = styled.View`
     flex:1;
     align-items: center;
 `
+export const LoadingView = styled.View`
+  width: 100%;
+  height: ${globalStyles.dimensions.width}px;
+  background-color: ${props => props.theme.colors.background};
+  justify-content: center;
+  align-items: center;
+`;

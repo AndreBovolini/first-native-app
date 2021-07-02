@@ -93,7 +93,7 @@ const Performance = (props) => {
     
     setTimeout(()=> {
       setOpacity(1)
-    }, 4000)
+    }, 3000)
     setTimeout(()=>{
       setIsLoadingDatas(true)
     }, 1000)
@@ -101,6 +101,7 @@ const Performance = (props) => {
 
   useEffect(()=>{
     Orientation.lockToPortrait()
+    console.log(orientation)
     let {index, routes} = props.navigation.dangerouslyGetState()
     let currentRoute = routes[index].name
     console.log(routes, routes[index].name)
@@ -110,6 +111,8 @@ const Performance = (props) => {
     }else if(orientation === 'landscape' && currentRoute === 'Performance'){
       console.log('desbloqueado')
       Orientation.unlockAllOrientations()
+    } else {
+      Orientation.lockToPortrait()
     }
   },[orientation])
 

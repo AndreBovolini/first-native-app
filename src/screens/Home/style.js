@@ -112,12 +112,19 @@ export const TitleNavigation = styled.Text`
 export const ChartContainer = styled.View`
       width: ${globalStyles.dimensions.width}px;
       height: 433px;
-      margin-top: 0px; 
+      margin-top: -5px; 
 `;
 
 export const LineChartContainer = styled.View`
       width: ${globalStyles.dimensions.width}px;
       height: 230px;
       margin-top: -5px; 
+`;
+export const LoadingView = styled.View`
+  width: 100%;
+  height: ${globalStyles.dimensions.width}px;
+  background-color: ${props => props.theme.colors.background};
+  justify-content: center;
+  align-items: center;
 `;
 

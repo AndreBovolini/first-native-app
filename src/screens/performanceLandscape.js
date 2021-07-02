@@ -33,10 +33,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         
+
+        
     },
     landscapeChartContainer: {
         width: globalStyles.dimensions.height,
         height: globalStyles.dimensions.width,
+        
         
     }
 })
