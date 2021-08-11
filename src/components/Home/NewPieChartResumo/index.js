@@ -20,7 +20,7 @@ const NewPieChartResumo = (props) => {
             type: 'event_clicked',
             data: param.data
             };
-
+            
             sendData(JSON.stringify(obj));
         });
     `;

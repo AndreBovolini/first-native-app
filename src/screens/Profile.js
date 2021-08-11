@@ -33,6 +33,7 @@ import ToggleAnimation from '../components/Perfil/ToggleAnimation'
 import { connect, Provider } from 'react-redux';
 import store from '../store/index';
 import OneSignal from 'react-native-onesignal';
+import DropComponent from '../components/Perfil/Dropdown'
 
 import { alteraViewMode, logout } from '../store/actions/actions'
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
@@ -156,8 +157,11 @@ const Profile = ({navigation, stateCarteira, alteraViewMode, logout}) => {
     
         <ContainerInfos>
             <Image source={profile} style={styles.profileImage}/>
-            <TextUser> Olá, Usuário </TextUser> 
+            <TextUser> Olá, Usuário </TextUser>
         </ContainerInfos> 
+        <View>
+          <DropComponent/>
+        </View>
         
         <TouchableOpacity onPress={handleAccept} style={{ flexDirection: 'row', backgroundColor: StyledTheme.colors.firstLayer, width: globalStyles.dimensions.width * 0.85, borderRadius: 10, height: 30, marginTop:10}}>	
               <Text style={{ fontSize: 20, marginTop: 4, marginRight: 10, marginLeft: 10, color: StyledTheme.colors.fontColor }}>Notificações Push: </Text>	

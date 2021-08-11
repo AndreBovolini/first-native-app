@@ -5,66 +5,28 @@ import globalStyles from "../../../../styles/globalStyles";
 import { ThemeContext } from 'styled-components/native';
 import { LoadingView } from '../../../../screens/Performance/styles'
 import { connect } from "react-redux";
+
 const LineChartKit = props => {
     const [isLoadingDatas, setIsLoadingDatas] = useState(false);
     const [height, setHeight] = useState(370)
+    const [selected, setSelected]=useState(true)
+    const [name, setName] = useState('')
+    const [index, setIndex] = useState(0)
     const StyledTheme = useContext(ThemeContext)
     // console.log('dataa ', props.data)
     // console.log('labels ', props.labels.length)
     // console.log('keys ', props.ativos)
+    const colors = ['rgb(26, 192, 151)','rgb(75, 50, 128)']
 
-    const SiglaMes = () => ({
-        '01': 'Jan',
-        '02': 'Fev',
-        '03': 'Mar',
-        '04': 'Abr',
-        '05': 'Mai',
-        '06': 'Jun',
-        '07': 'Jul',
-        '08': 'Ago',
-        '09': 'Set',
-        '10': 'Out',
-        '11': 'Nov',
-        '12': 'Dez',
-    });
-
-    const transformaClasseAtivo = (classe, tipoAtivo) => {
-        let classAtivo = '';
-        if (classe) {
-            for (const [key, value] of Object.entries(classe)) {
-                tipoAtivo === key ? (classAtivo = value) : null;
-            }
+    let configs = props.ativos.map((el,i)=>{
+        return {
+            name: el,
+            color: colors[i],
+            symbol: `<span style="height: 10px; width: 10px; background-color: ${colors[i]}; border-radius: 50%; display: inline-block;"></span> `
         }
-        return classAtivo;
-    };
-
-    const label = [...props.labelTool].reverse()
-    let reverseArray = label.map((el) => {
-        return transformaClasseAtivo(SiglaMes(), el.slice(3, 5)) + '/' + '20' + el.slice(8, 10)
-    })
-    let meuArray = []
-    reverseArray.forEach((el) => {
-        if (meuArray === []) {
-            meuArray.push(el)
-        } else if (meuArray.find(element => element === el)) {
-            meuArray.push("")
-        } else {
-            meuArray.push(el)
-        }
-    })
-    meuArray = meuArray.reverse()
-    let hey = 0
-
-    props.labels.forEach((el)=>{
-        if(el === ''){
-          hey = ''
-        }else{
-           hey = el
-        }
-    }) 
+        })
+    // console.log(symbol)
     
-    const labels = [...meuArray]
-    console.log(labels)
 
     chartPerformancePortrait = null;
 
@@ -76,7 +38,7 @@ const LineChartKit = props => {
 
     // console.log(props.data, props.labels, props.ativos, props.periodo)
 
-    const colors = ['rgb(26, 192, 151)','rgb(75, 50, 128)']
+    
     option = {
         
         backgroundColor: StyledTheme.colors.background,
@@ -106,7 +68,7 @@ const LineChartKit = props => {
                 fontFamily: 'HelveticaNeue-Medium',
                 fontWeight: 'bold',
                 margin: 10,
-                // formatter: 
+                
 
 
             },
@@ -137,12 +99,19 @@ const LineChartKit = props => {
         tooltip: {
             trigger: "axis",
             backgroundColor: 'rgba(50,50,50,0.9)',
-            // formatter: '{a0}: {c0} <br/> {a1}: {c1}'
+            formatter: selected ? '{b0} </br>' + configs[0].symbol + '{a0}: {c0} % </br>'  + configs[1].symbol + '{a1}: {c1} %' : 
+                    '{b0} </br>' + configs[index].symbol+ '{a0}: {c0} %'
+           
         },
 
         legend: {
            
             data: props.ativos,
+            selected: {
+                'Carteira': true,
+                'CDI': true
+            },
+            selectedMode: 'onlyHover',
             textStyle:{
                 fontSize: 18,
                 color: StyledTheme.colors.fontColor
@@ -156,15 +125,48 @@ const LineChartKit = props => {
 
 
     };
+    additionalCode = `
+        chart.on('legendselectchanged', function (params) {
+        var obj = params;
+        //console.log((isSelected ? 'select' : 'unselect') + 'legend' + params.name);
+        console.log(params.selected);
+        sendData(JSON.stringify(obj))
 
-    
-
-
+        })
+    `;
+   
+    onData = (param) => {
+        
+        let obj = JSON.parse(param)
+        //console.log(obj)
+        let name = obj.name
+        //console.log(name)
+        let isSelected = obj.selected[name]
+        //console.log(isSelected) 
+        configs.forEach((el,i)=>{
+            if(!Object.values(el).includes(name)){
+                
+                setIndex(i)
+                }
+        })
+        
+        if (isSelected === false) {
+            //alert(`you tapped the chart series: ${isSelected}`);
+            setSelected(false)
+            setName(name)
+        
+        }else{
+            //alert(`you tapped the chart series: ${isSelected}`);
+            setSelected(true)
+            setName(name)
+        }
+    };
 
      
     useEffect(() => {
        
         console.warn('mudou o grafico')
+        
         chartPerformancePortrait.setOption(
             {
                 xAxis: {
@@ -182,13 +184,15 @@ const LineChartKit = props => {
                     data: props.ativos,
                 },
                 tooltip: {
-                    formatter: function(params) {
-                        output =  params[0].name + '<br />'
-                        params.forEach((el,i)=> {
-                            output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
-                        })
-                        return output
-                    }
+                    formatter: selected ? '{b0} </br>' + configs[0].symbol + '{a0}: {c0} % </br>'  + configs[1].symbol + '{a1}: {c1} %' : 
+                    '{b0} </br>' + configs[index].symbol+ '{a0}: {c0} %'
+                    // formatter: function(params) {
+                    //     output =  params[0].name + '<br />'
+                    //     params.forEach((el,i)=> {
+                    //         output += `<span style="height: 10px; width: 10px; background-color: ${el.color}; border-radius: 50%; display: inline-block;"></span> ` + el.seriesName + ': ' + el.value + ' %' +'<br />';
+                    //     })
+                    //     return output
+                    // }
                     // formatter: '{a0}: {c0} <br/> {a1}: {c1}'
                 },
             }
@@ -198,7 +202,7 @@ const LineChartKit = props => {
             
         }, 2000)
         
-    },[props.data, props.periodo, props.labels])
+    },[props.data, props.periodo, props.labels, selected])
 
     useEffect(() => {
         chartPerformancePortrait.setOption({
@@ -235,6 +239,8 @@ const LineChartKit = props => {
             <ECharts
                 ref={onChartRef}
                 option={option}
+                additionalCode={additionalCode}
+                onData={onData}
             />
             
         </SafeAreaView>

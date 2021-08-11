@@ -39,6 +39,7 @@
     "react-native-reanimated": "^2.2.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.1.0",
+    "react-native-select-dropdown": "^1.0.6",
     "react-native-skeleton-content-nonexpo": "^1.0.13",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^12.1.1",
