@@ -1,3 +1,4 @@
+import { formatISO9075, subDays, toDate } from 'date-fns';
 export const dataLineChart = (response, periodoSelecionado) => {
 
     const keysDatas = Object.keys(response.grafico5.Carteira)
@@ -56,7 +57,12 @@ export const dataLineChart = (response, periodoSelecionado) => {
 
     function oneYearPeriod(value) {
         let date = Date.parse(alteraDataPTParaEN(value.data));
-        let dataAtual = new Date().getTime() - (1000 * 60 * 60 * 24 * 366);
+        let dataAtual = new Date().getTime() - (1000 * 60 * 60 * 24 * 365)
+        let day = formatISO9075(dataAtual,{representation:'date'}).slice(8)
+        if(day === '01'){
+            dataAtual =  new Date().getTime() - (1000 * 60 * 60 * 24 * 366)
+        }
+        //console.log('dataAtual',typeof(formatISO9075(dataAtual,{representation:'date'}).slice(8)))
         return date >= dataAtual
     }
 

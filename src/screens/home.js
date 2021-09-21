@@ -40,7 +40,7 @@ import SkeletonHome from '../components/Home/Skeleton/SkeletonHome'
 
 import { connect } from 'react-redux';
 import BarChartHome from '../components/Home/BarChart';
-import { Container, LargeContainer, LeftCard, RightCard, SettingsButton, TitleContainer, Title, CurrencyPress, Currency, ButtonView, ValueBoxContainer, ValueBoxContainerRow, Percent, PercentPress, BenchmarksButton, TitleNavigationContainer, TitleNavigation, ChartContainer, LineChartContainer } from './Home/style';
+import { Container, LargeContainer, LeftCard, RightCard, LoadingView, SettingsButton, TitleContainer, Title, CurrencyPress, Currency, ButtonView, ValueBoxContainer, ValueBoxContainerRow, Percent, PercentPress, BenchmarksButton, TitleNavigationContainer, TitleNavigation, ChartContainer, LineChartContainer } from './Home/style';
 import { ThemeContext } from 'styled-components/native';
 import { CommonActions } from '@react-navigation/native';
 import RNExitApp from 'react-native-exit-app';
@@ -50,7 +50,7 @@ import { newDataPieChartHome } from '../components/Home/NewPieChartResumo/dataNe
 import NewPieChartResumo from '../components/Home/NewPieChartResumo';
 import { alteraViewMode, logout } from '../store/actions/actions';
 
-import { RectButton, PanGestureHandler } from 'react-native-gesture-handler'
+
 
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -58,7 +58,7 @@ import Orientation, {
   useDeviceOrientationChange, OrientationLocker, PORTRAIT
 } from 'react-native-orientation-locker';
 
-
+import { RectButton, PanGestureHandler } from 'react-native-gesture-handler'
 import Animated, { 
   useSharedValue,
   useAnimatedStyle,
@@ -67,6 +67,8 @@ import Animated, {
   withTiming,
   withRepeat
 } from 'react-native-reanimated'
+
+import { LoadAnimation } from '../components/loading';
 
 const ButtonAnimated = Animated.createAnimatedComponent(RectButton)
 
@@ -87,7 +89,7 @@ const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout
   const [opacity, setOpacity] = useState(0)
   const [periodo, setPeriodo] = useState('')
   const [orientacao, setOrientacao] = useState('portrait')
-
+  const [isLoadingDatas, setIsLoadingDatas] = useState(false);
   useEffect(() => {
       let datas =`${(new Date(stateCarteira.dataInicial)).toLocaleDateString('pt-br', {timeZone: 'UTC'})} - ${(new Date(stateCarteira.dataFinal)).toLocaleDateString('pt-br', {timeZone: 'UTC'})}`
       setPeriodo(datas);
@@ -424,9 +426,16 @@ const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout
       const dadosLineChartRes = dataLineChartRes(dadosHomePage.data)
       setDadosLineChartRes(dadosLineChartRes)
       setLoading(dadosHomePage.loading)
-      setTimeout(()=> {
-        setOpacity(1)
-      }, 1000)
+
+      setOpacity(0)
+    setIsLoadingDatas(false)
+    
+    setTimeout(()=> {
+      setOpacity(1)
+    }, 2000)
+    setTimeout(()=>{
+      setIsLoadingDatas(true)
+    }, 1000)
     }
   }, [dadosHomePage.loading, dadosHomePage.data, StyledTheme])
 
@@ -790,22 +799,33 @@ const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout
               </TouchableOpacity>
             </TitleNavigationContainer>
             
-            <LineChartContainer style={{opacity: opacity}}>
-              {!dadosHomePage.loading && Object.keys(dadosLineChartRes).length !== 0 ?
-                <LineChartRes
-                  data={dadosLineChartRes.dataSets}
-                  labels={dadosLineChartRes.labels}
-                  ativos={dadosLineChartRes.keysAtivos}
+            <View>
+            {!isLoadingDatas ? (
+              <LoadingView>
+                <LoadAnimation/>
+              </LoadingView> 
+            )
+            :
+            (
+              <LineChartContainer style={{opacity: opacity}}>
+                {!dadosHomePage.loading && Object.keys(dadosLineChartRes).length !== 0 ?
+                  <LineChartRes
+                    data={dadosLineChartRes.dataSets}
+                    labels={dadosLineChartRes.labels}
+                    ativos={dadosLineChartRes.keysAtivos}
 
-                />
-                : null}
-              {/* {!dadosHomePage.loading && dadosHomePage.data !== [] ?
-                <LineChartResumo
-                  data={dadosLineChart.data}
-                  label={dadosLineChart.labels}
-                /> :
-                null} */}
-            </LineChartContainer>
+                  />
+                  : null}
+                {/* {!dadosHomePage.loading && dadosHomePage.data !== [] ?
+                  <LineChartResumo
+                    data={dadosLineChart.data}
+                    label={dadosLineChart.labels}
+                  /> :
+                  null} */}
+              </LineChartContainer>
+            )
+                }
+            </View>
             {/* <View>
               {!dadosHomePage.loading && Object.keys(dadosLineChartRes).length !== 0?
                 <LineChartRes
@@ -831,12 +851,22 @@ const Home = ({ infosCarteiras, dadosHomePage, navigation, stateCarteira, logout
               />
             </ChartContainer>
             */}
-
-            <ChartContainer>
-              {dadosNewPie !== {} ?
-                <NewPieChartResumo data={dadosNewPie} />
-                : null}
-            </ChartContainer>
+            <View>
+            {!isLoadingDatas ? (
+              <LoadingView>
+                <LoadAnimation/>
+              </LoadingView> 
+            )
+            :
+            (
+              <ChartContainer style={{opacity:opacity}}>
+                {dadosNewPie !== {} ?
+                  <NewPieChartResumo data={dadosNewPie} />
+                  : null}
+              </ChartContainer>
+            )
+            }
+            </View>
 
 
            

@@ -93,7 +93,7 @@ const Performance = (props) => {
     
     setTimeout(()=> {
       setOpacity(1)
-    }, 4000)
+    }, 3000)
     setTimeout(()=>{
       setIsLoadingDatas(true)
     }, 1000)

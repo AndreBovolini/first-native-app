@@ -29,9 +29,9 @@ const RenderCalendar = props => {
     const StyledTheme = useContext(ThemeContext)
     
     useEffect(()=> {
-       console.log(props.current)
+       //console.log(props.current)
         let correctedDate = addDays(props.current, 1)
-        console.log(correctedDate)
+        //console.log(correctedDate)
         // let date = props.current.toLocaleDateString('pt-BR', {timeZone: 'UTC'})
         let date = formatISO9075(correctedDate, {representation:'date'})
         
@@ -39,7 +39,7 @@ const RenderCalendar = props => {
         
         // let dateFormatted = date.slice(6) + '-' + date.slice(3,5)  + '-' + date.slice(0,2)
         //console.log(typeof(props.current.toLocaleDateString('pt-BR', {timeZone: 'UTC'})))
-        console.log(date)
+        //console.log(date)
         setMarkedDates({
             [date]: {
                 selected: true, marked: true, selectedColor: '#00adf5',
@@ -49,7 +49,7 @@ const RenderCalendar = props => {
 
       
       const handleDayPress = (day) => {
-          console.log('min',props.minDate, day)
+          //console.log('min',props.minDate, day)
         //console.log(day)
         
         setMarkedDates({

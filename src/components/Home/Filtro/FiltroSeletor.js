@@ -128,7 +128,7 @@ const FiltroSeletor = props => {
                       inicio: response.data_mais_antiga,
                       final: response.data_mais_recente
                   } 
-                  console.log(datas.inicio, datas.final)
+                  //console.log(datas.inicio, datas.final)
                   const diaA = datas.inicio.substr(0,2);
                   const mesA = datas.inicio.substr(3,2)
                   const anoA = datas.inicio.substr(6,4)
@@ -410,7 +410,7 @@ const FiltroSeletor = props => {
                          {showSelectorInicial ? (
                            <CalendarPicker
                              minDate={new Date(firstWalletDate)}
-                             current={firstSelectedDate === firstWalletDate ? new Date(firstSelectedDate) : new Date(firstSelectedDate)}
+                             current={new Date(firstSelectedDate)}
                              onChange={(data) => handleSelectFirstDate(data)}
                              id={'inicial'}
                            />

@@ -182,7 +182,7 @@ const Navigator = ({stateCarteira}) => {
     return (
         <ThemeProvider theme={stateCarteira.mode === 'dark' ? darkTheme : lightTheme}>
             <NavigationContainer ref={navigationRef}>
-            <StatusBar barStyle={stateCarteira.mode === 'dark' ? "light-content" : 'dark-content' } translucent />
+            <StatusBar barStyle={stateCarteira.mode === 'dark' ? "light-content" : 'dark-content'} />
                 <AuthNavigator />
 
             </NavigationContainer>

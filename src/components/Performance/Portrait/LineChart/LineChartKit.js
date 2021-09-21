@@ -7,11 +7,64 @@ import { LoadingView } from '../../../../screens/Performance/styles'
 import { connect } from "react-redux";
 const LineChartKit = props => {
     const [isLoadingDatas, setIsLoadingDatas] = useState(false);
-    
+    const [height, setHeight] = useState(370)
     const StyledTheme = useContext(ThemeContext)
     // console.log('dataa ', props.data)
-    console.log('labels ', props.labels)
+    // console.log('labels ', props.labels.length)
     // console.log('keys ', props.ativos)
+
+    const SiglaMes = () => ({
+        '01': 'Jan',
+        '02': 'Fev',
+        '03': 'Mar',
+        '04': 'Abr',
+        '05': 'Mai',
+        '06': 'Jun',
+        '07': 'Jul',
+        '08': 'Ago',
+        '09': 'Set',
+        '10': 'Out',
+        '11': 'Nov',
+        '12': 'Dez',
+    });
+
+    const transformaClasseAtivo = (classe, tipoAtivo) => {
+        let classAtivo = '';
+        if (classe) {
+            for (const [key, value] of Object.entries(classe)) {
+                tipoAtivo === key ? (classAtivo = value) : null;
+            }
+        }
+        return classAtivo;
+    };
+
+    const label = [...props.labelTool].reverse()
+    let reverseArray = label.map((el) => {
+        return transformaClasseAtivo(SiglaMes(), el.slice(3, 5)) + '/' + '20' + el.slice(8, 10)
+    })
+    let meuArray = []
+    reverseArray.forEach((el) => {
+        if (meuArray === []) {
+            meuArray.push(el)
+        } else if (meuArray.find(element => element === el)) {
+            meuArray.push("")
+        } else {
+            meuArray.push(el)
+        }
+    })
+    meuArray = meuArray.reverse()
+    let hey = 0
+
+    props.labels.forEach((el)=>{
+        if(el === ''){
+          hey = ''
+        }else{
+           hey = el
+        }
+    }) 
+    
+    const labels = [...meuArray]
+    //console.log(labels)
 
     chartPerformancePortrait = null;
 
@@ -25,15 +78,17 @@ const LineChartKit = props => {
 
     const colors = ['rgb(26, 192, 151)','rgb(75, 50, 128)']
     option = {
+        
         backgroundColor: StyledTheme.colors.background,
         color: colors,
         grid: {
             left: '2%',
             right: '3%',
-            bottom: '3%',
+            bottom: '6%',
             containLabel: true,
         },
         xAxis: {
+            
             type: "category",
             // max: props.labels.length,
             data: props.labels,
@@ -50,7 +105,10 @@ const LineChartKit = props => {
                 rotate: 50,
                 fontFamily: 'HelveticaNeue-Medium',
                 fontWeight: 'bold',
-                margin: 10
+                margin: 10,
+                // formatter: 
+
+
             },
             axisLine: {
                 onZero: true,
@@ -61,6 +119,7 @@ const LineChartKit = props => {
             
         },
         yAxis: {
+            
             type: "value",
             splitLine: {
                 show: false
@@ -82,6 +141,7 @@ const LineChartKit = props => {
         },
 
         legend: {
+           
             data: props.ativos,
             textStyle:{
                 fontSize: 18,
@@ -103,10 +163,12 @@ const LineChartKit = props => {
 
      
     useEffect(() => {
-        console.warn('mudou o grafico')
+       
+        //console.warn('mudou o grafico')
         chartPerformancePortrait.setOption(
             {
                 xAxis: {
+                    
                     data: props.labels,
                     axisTick: {
                         interval: props.periodo ===  'Tudo' ? 20 : 5,
